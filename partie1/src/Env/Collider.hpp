@@ -6,8 +6,13 @@ class Collider
 {
 	public:
 
-	Collider 
-	(Vec2d position, double radius);
+	Collider (Vec2d position, double radius);
+	
+	//constructeur de copie
+	Collider (const Collider& col);
+	
+	//surcharge de l'opérateur de copie
+	Collider& operator= (const Collider& col)
 	
 	//methode de clamping corrigeant la position
 	Vec2d clamping(); 
@@ -18,11 +23,6 @@ class Collider
 	//permet d'obtenir le rayon
 	double getRadius() const;
 	
-	//constructeur de copie
-	Collider (const Collider& col);
-	
-	//surcharge de l'opérateur de copie
-	Collider& operator= (const Collider& col)
 	
 	private:
 
