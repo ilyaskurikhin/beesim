@@ -2,11 +2,12 @@
 #define COLLIDER_H
 #include "../Utility/Vec2d.hpp"
 
-class Collider {
-
+class Collider 
+{
 	public:
 
-	Collider (Vec2d position, double radius);
+	Collider 
+	(Vec2d position, double radius);
 	
 	//methode de clamping corrigeant la position
 	Vec2d clamping(); 
@@ -27,7 +28,6 @@ class Collider {
 
 	Vec2d position_;
 	double radius_;
-	
 };
 
 #endif
