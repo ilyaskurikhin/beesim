@@ -38,14 +38,22 @@ class Collider
 	// returns true if this is within radius of other
 	bool isColliderInside (const Collider& other);
 	
+<<<<<<< HEAD
 	// return true if either of this or other are within
 	// the others radius
 	bool isColliding (const Collider& other);
+=======
+	//surcharge de l'opérateur de copie
+	Collider& operator= (const Collider& col);
+	
+	Vec2d directionTo(Vec2d to) const;
+>>>>>>> cbe2b0d2c49b0d31fa8e465fae8bff5d3fd72dfb
 	
 	// return true is distance in between p and this < radius_
 	bool isPointInside (Vec2d p);
 	private:
 
+	
 	Vec2d position_;
 	double radius_;
 };
