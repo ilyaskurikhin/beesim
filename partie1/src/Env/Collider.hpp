@@ -1,17 +1,32 @@
 #ifndef COLLIDER_H
 #define COLLIDER_H
-#include <"Vec2d">
+#include "../Utility/Vec2d.hpp"
 
 class Collider {
+
+	public:
+
+	Collider (Vec2d position, double radius);
 	
-private:
-Vec2d pos;
-double radius;
+	//methode de clamping corrigeant la position
+	Vec2d clamping(); 
 
+	//permet d'obtenir la position
+	Vec2d getPosition() const;
 
-public:
-Collider (Vec2d pos, double r);
+	//permet d'obtenir le rayon
+	double getRadius() const;
+	
+	//constructeur de copie
+	Collider (const Collider& col);
+	
+	//surcharge de l'opérateur de copie
+	Collider& operator= (const Collider& col)
+	
+	private:
 
+	Vec2d position_;
+	double radius_;
 	
 };
 
