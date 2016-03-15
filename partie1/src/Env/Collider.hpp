@@ -22,10 +22,13 @@ class Collider
 	Collider (const Collider& col);
 	
 	//surcharge de l'opérateur de copie
-	Collider& operator= (const Collider& col)
+	Collider& operator= (const Collider& col);
+	
+	Vec2d directionTo(Vec2d to) const;
 	
 	private:
 
+	
 	Vec2d position_;
 	double radius_;
 };
