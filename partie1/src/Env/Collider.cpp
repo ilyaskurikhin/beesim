@@ -8,7 +8,7 @@
 using namespace std;
 
 
-Collider::Collider(Vec2d position, double radius)
+Collider::Collider(const Vec2d& position, double radius)
 	// affecte par défaut le rayon et la position
 	: radius_(radius), position_(position)
 { 
@@ -19,9 +19,9 @@ Collider::Collider(Vec2d position, double radius)
 	clamping();
 }
 
-Collider::Collider(const Collider& col) {
-	radius_=col.getRadius();
-	position_=col.getPosition();
+Collider::Collider(const Collider& collider) {
+	radius_=collider.getRadius();
+	position_=collider.getPosition();
 }
 
 
@@ -51,20 +51,21 @@ Collider::operator> (const Vec2d& p)
 
 
 std::ostream&
-Collider::operator<< (std::ostream oss)
+operator<< (std::ostream& oss, const Collider& collider)
 {
-        oss << "Collider: position = (" << position_.x << "," << position_.y << ") ";
-        oss << "radius = " << radius_ << std::endl;
+        oss << "Collider: position = (" << collider.getPosition().x << "," << collider.getPosition().y << ") ";
+        oss << "radius = " << collider.getRadius() << std::endl;
 
         return oss;
 }
 
 
 
-Collider 
+Collider& 
 Collider::operator=(Collider other) 
 {
-	swap(*this, other);
+        position_ = other.getPosition();
+        radius_ = other.getRadius();
 	return *this;
 }
 
@@ -116,11 +117,7 @@ Collider::clamping() {
 bool
 Collider::isColliderInside (const Collider& other)
 {
-        double dx(other.getPosition().x - position_.x);
-        double dy(other.getPosition().y - position_.y);
-        double d(sqrt(dx*dx + dy*dy));
-
-        if (d > radius_) {
+        if ((other.getRadius() > radius_) || (distanceTo(other) > radius_ - other.getRadius())) {
             return false;
         } else {
             return true;
@@ -134,14 +131,10 @@ Collider::isColliding (const Collider& other)
 {
         double minimumDistance(other.getRadius() + radius_);
 
-        double dx(other.getPosition().x - position_.x);
-        double dy(other.getPosition().y - position_.y);
-        double d(sqrt(dx*dx + dy*dy));
-
-        if (d > minimumDistance) {
-            return false;
-        } else {
+        if (distanceTo(other) <= minimumDistance) {
             return true;
+        } else {
+            return false;
         }
 }
 
@@ -150,28 +143,21 @@ Collider::isColliding (const Collider& other)
 bool 
 Collider::isPointInside (const Vec2d& p)
 {
-        double dx(p.x - position_.x);
-        double dy(p.y - position_.y);
-        double d(sqrt(dx*dx + dy*dy));
-
-        if (d > radius_) {
-            return false;
-        } else {
+        if (distanceTo(p) <= radius_) {
             return true;
+        } else {
+            return false;
         }
 }
 
 
 Vec2d
-Collider::directionTo(Vec2d to) {
-	
+Collider::directionTo(const Vec2d& to) {
 			
-	//permet d'obtenir largeur et hautueur du monde
+	// permet d'obtenir largeur et hautueur du monde
 	auto worldSize = getApp().getWorldSize();
 	auto width  = worldSize.x;
 	auto height = worldSize.y;
-	
-	Vec2d from(position_);
 	
 	// create vector of possible positions of to 
 	vector<vector<double>> multipliers; 
@@ -185,22 +171,21 @@ Collider::directionTo(Vec2d to) {
 	multipliers.push_back({-1,1});
 	multipliers.push_back({-1,-1});
 	
-	// find the 'to' at minimal distance from 'from'
-	Vec2d iTo;
-	Vec2d toMin;
-	Vec2d moveTo;
+	// find the 'to' at minimal distance from position_'
+	Vec2d currentTo;
+	Vec2d minimumTo;
+        Vec2d moveTo;
 	double min(100000);
 	size_t size(multipliers.size());
 	for (size_t i(0); i < size; ++i) {
-		iTo.x = multipliers[i][0]*width + to.x;
-		iTo.y = multipliers[i][1]*height + to.y;
-		
-		moveTo.x = iTo.x - from.x;
-		moveTo.y = iTo.y - from.y;
+		currentTo.x = multipliers[i][0]*width + to.x;
+		currentTo.y = multipliers[i][1]*height + to.y;
 
-		if (moveTo.length() < min) {
-			toMin = iTo;
-			min = moveTo.length();
+                if (distance(position_, currentTo) < min) {
+			minimumTo = currentTo;
+			min = distance(position_, currentTo);
+                        moveTo.x = minimumTo.x - position_.x;
+                        moveTo.y = minimumTo.y - position_.y;
 		}
 	}
 
@@ -218,16 +203,15 @@ Collider::directionTo(const Collider& other)
 
 
 double
-Collider::distanceTo(Vec2d to) 
+Collider::distanceTo(const Vec2d& to) 
 {
-        Vec2d optimumVector(directionTo(to));
-        return optimumVector.length();
+        return directionTo(to).length();
 }
 
 
 
 double 
-Collider::distanceTo(Collider other) 
+Collider::distanceTo(const Collider& other) 
 {
         return distanceTo(other.getPosition());
 }

@@ -10,7 +10,7 @@ class Collider
         // CONSTRUCTORS
         //
 
-	Collider (Vec2d position, double radius);
+	Collider (const Vec2d& position, double radius);
 	
 	//constructeur de copie
 	Collider (const Collider& collider);
@@ -20,7 +20,7 @@ class Collider
         //
 
 	//surcharge de l'opérateur de copie
-	Collider 
+	Collider& 
         operator= (Collider collider);
 	
 	// return true if other is in this
@@ -36,8 +36,9 @@ class Collider
         operator> (const Vec2d& p);
 	
 	// print the contents of this to a stream
+        friend
         std::ostream& 
-        operator<< (std::ostream odd);
+        operator<< (std::ostream& oss, const Collider& collider);
 	
         // move this horizontaly by dx
         Collider& 
@@ -66,7 +67,7 @@ class Collider
 
         // return direction vector to other
 	Vec2d 
-        directionTo(Vec2d other);
+        directionTo(const Vec2d& other);
 	
         // return direction vector to other
         Vec2d
@@ -74,11 +75,11 @@ class Collider
 
         // return distance to other
         double
-        distanceTo(Vec2d other);
+        distanceTo(const Vec2d& other);
 
         // return distance to other
         double 
-        distanceTo(Collider other);
+        distanceTo(const Collider& other);
         
         // move this horizontaly by dx
         void 

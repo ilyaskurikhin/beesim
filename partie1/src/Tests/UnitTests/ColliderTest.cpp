@@ -27,7 +27,7 @@ SCENARIO("Collision/IsColliderInside with Collider", "[Body]")
     {
         auto b1 = Body({ 1, 1 }, 2);
         auto b2 = b1;
-
+         
         THEN("they collide")
         {
             std::cout << b1 << std::endl;
@@ -37,22 +37,22 @@ SCENARIO("Collision/IsColliderInside with Collider", "[Body]")
             CHECK((b1 | b2));
             CHECK((b2 | b1));
         }
-
+     
         THEN("they are inside of each other")
         {
             CHECK(b1.isColliderInside(b2));
             CHECK(b2.isColliderInside(b1));
             CHECK(b1 > b2);
             CHECK(b2 > b1);
-        }
+        } 
     }
-
+    
     GIVEN("Two bodies that don't overlap")
     {
         auto b1 = Body({ 1, 1 }, 0.5);
         auto b2 = Body({ -1, -1 }, 0.5);
 
-        THEN("they don't collide")
+        THEN("they /don't collide")
         {
             CHECK_FALSE(b1.isColliding(b2));
             CHECK_FALSE(b2.isColliding(b1));
@@ -154,12 +154,12 @@ SCENARIO("Collision/IsColliderInside with Collider", "[Body]")
             docy = b;
             CHECK(b.getPosition() == docy.getPosition());
             CHECK(b.getRadius() == docy.getRadius());
-        }
-    }
+        } 
+    } 
 }
 
 SCENARIO("Collision/IsColliderInside with Collider using toric properties", "[Collider]")
-{
+{   
     GIVEN("A few bodies")
     {
         //
@@ -256,7 +256,8 @@ SCENARIO("Collision/IsColliderInside with Collider using toric properties", "[Co
             CHECK(!b1.isPointInside({ -2, -2 }));
         }
     }
-	GIVEN("One body inside another one")
+    
+    GIVEN("One body inside another one")
     {
         // Those two bodies are colliding and the
         // second one is inside the first one because
@@ -321,5 +322,6 @@ SCENARIO("Collision/IsColliderInside with Collider using toric properties", "[Co
             CHECK(b.directionTo(y) == Vec2d( 0, -2 ));
             CHECK(b.directionTo(z) == Vec2d( -2, -2 ));
         }
-    }
+    } 
 }
+
