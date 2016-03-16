@@ -24,7 +24,7 @@ Collider::Collider(Vec2d position, double radius)
 bool
 Collider::operator> (const Collider& other)
 {   
-    return isColliderInside(other);
+        return isColliderInside(other);
 }
 
 
@@ -32,7 +32,7 @@ Collider::operator> (const Collider& other)
 bool
 Collider::operator| (const Collider& other)
 {
-    return isColliding(other);
+         return isColliding(other);
 }
 
 
@@ -40,7 +40,7 @@ Collider::operator| (const Collider& other)
 bool 
 Collider::operator> (const Vec2d& p)
 {
-    return isPointInside(p);
+        return isPointInside(p);
 }
 
 
@@ -48,10 +48,10 @@ Collider::operator> (const Vec2d& p)
 std::ostream&
 Collider::operator<< (std::ostream oss)
 {
-    oss << "Collider: position = (" << position_.x << "," << position_.y << ") ";
-    oss << "radius = " << radius_ << std::endl;
+        oss << "Collider: position = (" << position_.x << "," << position_.y << ") ";
+        oss << "radius = " << radius_ << std::endl;
 
-    return oss;
+        return oss;
 }
 
 
