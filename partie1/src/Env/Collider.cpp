@@ -3,6 +3,7 @@
 #include "../Utility/Vec2d.hpp"
 #include <Application.hpp>
 #include <cassert>
+#include <vector>
 
 using namespace std;
 
@@ -26,45 +27,90 @@ Collider::Collider(const Collider& col) {
 }
 
 
-	
-Collider& 
-operator= (const Collider& col) {
-	Collider tmp(col);
-	swap(radius_,tmp.getRadius());
-	swap(position_,tmp.getPosition());
+
+Collider Collider::operator=(Collider col) {
+	swap(*this, col);
 	return *this;
 }
-	 
+
+
+
 Vec2d 
 Collider::clamping() {
+                
+        //permet d'obtenir largeur et hautueur du monde
+        auto worldSize = getApp().getWorldSize();
+        auto width  = worldSize.x;
+        auto height = worldSize.y;
+        
+        //tant que position en x <0, on lui incrémente la largeur du monde
+        //tant que position > largeur du monde, on lui décremente la largeur du monde
+        
+        while (position_.x < 0) {
+                position_.x += width;
+        }
+                
+        while(position_.x > width) {
+                                position_.x -= width;
+        } 
+                
+        //idem pour position en y
+        while (position_.y < 0) {
+                position_.y += width;
+        }
+                
+        while(position_.y > width) {
+                position_.y -= width;
+        } 
+        
+        //retourne le nouveau vec2d position
+        return position_;
+}
+
+
+Vec2d
+Collider::directionTo(Vec2d to) {
+	
 			
-		//permet d'obtenir largeur et hautueur du monde
-		auto worldSize = getApp().getWorldSize();
-		auto width  = worldSize.x;
-		auto height = worldSize.y;
+	//permet d'obtenir largeur et hautueur du monde
+	auto worldSize = getApp().getWorldSize();
+	auto width  = worldSize.x;
+	auto height = worldSize.y;
+	
+	Vec2d from(position_);
+	
+	// create vector of possible positions of to 
+	vector<vector<double>> multipliers; 
+	multipliers.push_back({0,0});
+	multipliers.push_back({0,1});
+	multipliers.push_back({0,-1});
+	multipliers.push_back({1,0});
+	multipliers.push_back({-1,0});
+	multipliers.push_back({1,1});
+	multipliers.push_back({1,-1});
+	multipliers.push_back({-1,1});
+	multipliers.push_back({-1,-1});
+	
+	// find the 'to' at minimal distance from 'from'
+	Vec2d iTo;
+	Vec2d toMin;
+	Vec2d moveTo;
+	double min(100000);
+	size_t size(multipliers.size());
+	for (size_t i(0); i < size; ++i) {
+		iTo.x = multipliers[i][0]*width + to.x;
+		iTo.y = multipliers[i][1]*height + to.y;
 		
-		//tant que position en x <0, on lui incrémente la largeur du monde
-		//tant que position > largeur du monde, on lui décremente la largeur du monde
-		
-		while (position_.x < 0) {
-			position_.x += width;
+		moveTo.x = iTo.x - from.x;
+		moveTo.y = iTo.y - from.y;
+
+		if (moveTo.length() < min) {
+			toMin = iTo;
+			min = moveTo.length();
 		}
-			
-		while(position_.x > width) {
-					position_.x -= width;
-		} 
-			
-		//idem pour position en y
-		while (position_.y < 0) {
-			position_.y += width;
-		}
-			
-		while(position_.y > width) {
-			position_.y -= width;
-		} 
-		
-		//retourne le nouveau vec2d position
-		return position_;
+	}
+
+	return moveTo; 
 }
 
 

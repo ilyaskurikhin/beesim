@@ -44,9 +44,9 @@ class Collider
 	bool isColliding (const Collider& other);
 =======
 	//surcharge de l'opérateur de copie
-	Collider& operator= (const Collider& col);
+	Collider operator= (Collider col);
 	
-	Vec2d directionTo(Vec2d to) const;
+	Vec2d directionTo(Vec2d to);
 >>>>>>> cbe2b0d2c49b0d31fa8e465fae8bff5d3fd72dfb
 	
 	// return true is distance in between p and this < radius_
