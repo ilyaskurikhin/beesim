@@ -19,6 +19,11 @@ Collider::Collider(Vec2d position, double radius)
 	clamping();
 }
 
+Collider::Collider(const Collider& col) {
+	radius_=col.getRadius();
+	position_=col.getPosition();
+}
+
 
 
 bool
@@ -56,16 +61,8 @@ Collider::operator<< (std::ostream oss)
 
 
 
-	 
-Collider::Collider(const Collider& col) {
-	radius_=col.getRadius();
-	position_=col.getPosition();
-}
-
-
-
-Collider Collider::operator=(Collider col) {
-	swap(*this, col);
+Collider Collider::operator=(Collider other) {
+	swap(*this, other);
 	return *this;
 }
 
@@ -87,16 +84,16 @@ Collider::clamping() {
         }
                 
         while(position_.x > width) {
-                                position_.x -= width;
+                position_.x -= width;
         } 
                 
         //idem pour position en y
         while (position_.y < 0) {
-                position_.y += width;
+                position_.y += height;
         }
                 
         while(position_.y > width) {
-                position_.y -= width;
+                position_.y -= height;
         } 
         
         //retourne le nouveau vec2d position
@@ -201,8 +198,44 @@ Collider::directionTo(Vec2d to) {
 
 
 
+Vec2d
+Collider::directionTo(const Collider& other) 
+{
+        return directionTo(other.getPosition());
+}
+
+
+
+double
+Collider::distanceTo(Vec2d to) 
+{
+        Vec2d optimumVector(directionTo(to));
+        return optimumVector.length();
+}
+
+
+
+double 
+Collider::distanceTo(Collider other) 
+{
+        return distanceTo(other.getPosition());
+}
+
+
+
 Vec2d 
-Collider::getPosition() const {
+Collider::move(Vec2d dx)
+{
+        position_ = position_ + dx;
+        clamping();
+        return position_;
+}
+
+
+
+Vec2d 
+Collider::getPosition() const 
+{
 	return position_;
 }
 

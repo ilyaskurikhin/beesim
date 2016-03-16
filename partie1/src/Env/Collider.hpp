@@ -20,8 +20,8 @@ class Collider
         //
 
 	//surcharge de l'opérateur de copie
-	Collider& 
-        operator= (const Collider& collider);
+	Collider 
+        operator= (Collider collider);
 	
 	// return true if other is in this
 	bool 
@@ -56,12 +56,30 @@ class Collider
 	bool 
         isColliding (const Collider& other);
 	
-	Vec2d 
-        directionTo(Vec2d to);
-	
 	// return true is distance in between p and this < radius_
 	bool 
-        isPointInside (Vec2d p);
+        isPointInside (const Vec2d& p);
+
+        // return direction vector to other
+	Vec2d 
+        directionTo(Vec2d other);
+	
+        // return direction vector to other
+        Vec2d
+        directionTo(const Collider& other);
+
+        // return distance to other
+        double
+        distanceTo(Vec2d other);
+
+        // return distance to other
+        double 
+        distanceTo(Collider other);
+        
+        // move this horizontaly by dx
+        Vec2d 
+        move(Vec2d dx);
+
 
         // 
         // GETTERS & SETTERS
@@ -77,8 +95,8 @@ class Collider
 	
         private:
 
-	Vec2d position_;
 	double radius_;
+	Vec2d position_;
 };
 
 #endif
