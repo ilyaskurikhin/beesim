@@ -20,6 +20,42 @@ Collider::Collider(Vec2d position, double radius)
 }
 
 
+
+bool
+Collider::operator> (const Collider& other)
+{   
+    return isColliderInside(other);
+}
+
+
+
+bool
+Collider::operator| (const Collider& other)
+{
+    return isColliding(other);
+}
+
+
+
+bool 
+Collider::operator> (const Vec2d& p)
+{
+    return isPointInside(p);
+}
+
+
+
+std::ostream&
+Collider::operator<< (std::ostream oss)
+{
+    oss << "Collider: position = (" << position_.x << "," << position_.y << ") ";
+    oss << "radius = " << radius_ << std::endl;
+
+    return oss;
+}
+
+
+
 	 
 Collider::Collider(const Collider& col) {
 	radius_=col.getRadius();
@@ -65,6 +101,56 @@ Collider::clamping() {
         
         //retourne le nouveau vec2d position
         return position_;
+}
+
+
+
+bool
+Collider::isColliderInside (const Collider& other)
+{
+        double dx(other.getPosition().x - position_.x);
+        double dy(other.getPosition().y - position_.y);
+        double d(sqrt(dx*dx + dy*dy));
+
+        if (d > radius_) {
+            return false;
+        } else {
+            return true;
+        }
+}
+
+
+
+bool
+Collider::isColliding (const Collider& other)
+{
+        double minimumDistance(other.getRadius() + radius_);
+
+        double dx(other.getPosition().x - position_.x);
+        double dy(other.getPosition().y - position_.y);
+        double d(sqrt(dx*dx + dy*dy));
+
+        if (d > minimumDistance) {
+            return false;
+        } else {
+            return true;
+        }
+}
+
+
+
+bool 
+Collider::isPointInside (const Vec2d& p)
+{
+        double dx(p.x - position_.x);
+        double dy(p.y - position_.y);
+        double d(sqrt(dx*dx + dy*dy));
+
+        if (d > radius_) {
+            return false;
+        } else {
+            return true;
+        }
 }
 
 

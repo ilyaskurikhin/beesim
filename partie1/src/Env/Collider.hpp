@@ -6,54 +6,77 @@ class Collider
 {
 	public:
 
+        // 
+        // CONSTRUCTORS
+        //
+
 	Collider (Vec2d position, double radius);
 	
 	//constructeur de copie
 	Collider (const Collider& collider);
 	
+        //
+        // OPERATORS
+        //
+
 	//surcharge de l'opérateur de copie
-	Collider& operator= (const Collider& collider);
+	Collider& 
+        operator= (const Collider& collider);
 	
 	// return true if other is in this
-	bool operator> (const Collider& other);
+	bool 
+        operator> (const Collider& other);
 	
 	// return true if this is colliding with other
-	bool operator| (const Collider& other);
+	bool
+        operator| (const Collider& other);
 	
 	// return true if point p is within radius_ of this
-	bool operator> (const Vec2d& p);
+	bool 
+        operator> (const Vec2d& p);
 	
 	// print the contents of this to a stream
-	ostream& operator<< ();
+        std::ostream& 
+        operator<< (std::ostream odd);
 	
+        //
+        // METHODS
+        //
+
 	//methode de clamping corrigeant la position
-	Vec2d clamping(); 
+	Vec2d 
+        clamping(); 
 
-	//permet d'obtenir la position
-	Vec2d getPosition() const;
-
-	//permet d'obtenir le rayon
-	double getRadius() const;
-	
 	// returns true if this is within radius of other
-	bool isColliderInside (const Collider& other);
+	bool 
+        isColliderInside (const Collider& other);
 	
-<<<<<<< HEAD
 	// return true if either of this or other are within
 	// the others radius
-	bool isColliding (const Collider& other);
-=======
-	//surcharge de l'opérateur de copie
-	Collider operator= (Collider col);
+	bool 
+        isColliding (const Collider& other);
 	
-	Vec2d directionTo(Vec2d to);
->>>>>>> cbe2b0d2c49b0d31fa8e465fae8bff5d3fd72dfb
+	Vec2d 
+        directionTo(Vec2d to);
 	
 	// return true is distance in between p and this < radius_
-	bool isPointInside (Vec2d p);
-	private:
+	bool 
+        isPointInside (Vec2d p);
 
+        // 
+        // GETTERS & SETTERS
+        //
+
+	//permet d'obtenir la position
+	Vec2d 
+        getPosition() const;
+
+	//permet d'obtenir le rayon
+	double 
+        getRadius() const;
 	
+        private:
+
 	Vec2d position_;
 	double radius_;
 };
