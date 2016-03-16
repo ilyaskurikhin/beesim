@@ -39,6 +39,10 @@ class Collider
         std::ostream& 
         operator<< (std::ostream odd);
 	
+        // move this horizontaly by dx
+        Collider& 
+        operator+= (const Vec2d& dx);
+
         //
         // METHODS
         //
@@ -77,8 +81,8 @@ class Collider
         distanceTo(Collider other);
         
         // move this horizontaly by dx
-        Vec2d 
-        move(Vec2d dx);
+        void 
+        move(const Vec2d& dx);
 
 
         // 

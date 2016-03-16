@@ -61,9 +61,20 @@ Collider::operator<< (std::ostream oss)
 
 
 
-Collider Collider::operator=(Collider other) {
+Collider 
+Collider::operator=(Collider other) 
+{
 	swap(*this, other);
 	return *this;
+}
+
+
+
+Collider& 
+Collider::operator+=(const Vec2d& dx) 
+{
+        move(dx);
+        return *this;
 }
 
 
@@ -223,12 +234,13 @@ Collider::distanceTo(Collider other)
 
 
 
-Vec2d 
-Collider::move(Vec2d dx)
+void
+Collider::move(const Vec2d& dx)
 {
-        position_ = position_ + dx;
+        position_.x += dx.x;
+        position_.y += dx.y;
+
         clamping();
-        return position_;
 }
 
 
