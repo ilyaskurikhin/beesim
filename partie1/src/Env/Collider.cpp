@@ -52,7 +52,7 @@ Collider::operator> (const Vec2d& p) const
 
 
 std::ostream&
-operator<< (std::ostream& oss, const Collider& collider) const
+operator<< (std::ostream& oss, const Collider& collider)
 {
         oss << "Collider: position = (" << collider.getPosition().x << "," << collider.getPosition().y << ") ";
         oss << "radius = " << collider.getRadius() << std::endl;
