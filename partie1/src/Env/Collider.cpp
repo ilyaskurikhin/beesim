@@ -75,8 +75,7 @@ Collider::operator=(Collider other)
 Collider& 
 Collider::operator+=(const Vec2d& dx) 
 {
-        move(dx);
-        return *this;
+        return move(dx);
 }
 
 
