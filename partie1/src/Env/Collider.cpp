@@ -19,15 +19,16 @@ Collider::Collider(const Vec2d& position, double radius)
 	clamping();
 }
 
-Collider::Collider(const Collider& collider) {
-	radius_=collider.getRadius();
-	position_=collider.getPosition();
+Collider::Collider(const Collider& collider) 
+{
+	radius_ = collider.getRadius();
+	position_ = collider.getPosition();
 }
 
 
 
 bool
-Collider::operator> (const Collider& other)
+Collider::operator> (const Collider& other) const
 {   
         return isColliderInside(other);
 }
@@ -35,7 +36,7 @@ Collider::operator> (const Collider& other)
 
 
 bool
-Collider::operator| (const Collider& other)
+Collider::operator| (const Collider& other) const
 {
          return isColliding(other);
 }
@@ -43,7 +44,7 @@ Collider::operator| (const Collider& other)
 
 
 bool 
-Collider::operator> (const Vec2d& p)
+Collider::operator> (const Vec2d& p) const
 {
         return isPointInside(p);
 }
@@ -51,7 +52,7 @@ Collider::operator> (const Vec2d& p)
 
 
 std::ostream&
-operator<< (std::ostream& oss, const Collider& collider)
+operator<< (std::ostream& oss, const Collider& collider) const
 {
         oss << "Collider: position = (" << collider.getPosition().x << "," << collider.getPosition().y << ") ";
         oss << "radius = " << collider.getRadius() << std::endl;
@@ -62,7 +63,7 @@ operator<< (std::ostream& oss, const Collider& collider)
 
 
 Collider& 
-Collider::operator=(Collider other) 
+Collider::operator=(Collider other)
 {
         position_ = other.getPosition();
         radius_ = other.getRadius();
@@ -81,7 +82,8 @@ Collider::operator+=(const Vec2d& dx)
 
 
 Vec2d 
-Collider::clamping() {
+Collider::clamping() 
+{
                 
         //permet d'obtenir largeur et hautueur du monde
         auto worldSize = getApp().getWorldSize();
@@ -115,7 +117,7 @@ Collider::clamping() {
 
 
 bool
-Collider::isColliderInside (const Collider& other)
+Collider::isColliderInside (const Collider& other) const
 {
         if ((other.getRadius() > radius_) || (distanceTo(other) > radius_ - other.getRadius())) {
             return false;
@@ -127,7 +129,7 @@ Collider::isColliderInside (const Collider& other)
 
 
 bool
-Collider::isColliding (const Collider& other)
+Collider::isColliding (const Collider& other) const
 {
         double minimumDistance(other.getRadius() + radius_);
 
@@ -141,7 +143,7 @@ Collider::isColliding (const Collider& other)
 
 
 bool 
-Collider::isPointInside (const Vec2d& p)
+Collider::isPointInside (const Vec2d& p) const
 {
         if (distanceTo(p) <= radius_) {
             return true;
@@ -152,7 +154,8 @@ Collider::isPointInside (const Vec2d& p)
 
 
 Vec2d
-Collider::directionTo(const Vec2d& to) {
+Collider::directionTo(const Vec2d& to) const
+{
 			
 	// permet d'obtenir largeur et hautueur du monde
 	auto worldSize = getApp().getWorldSize();
@@ -195,7 +198,7 @@ Collider::directionTo(const Vec2d& to) {
 
 
 Vec2d
-Collider::directionTo(const Collider& other) 
+Collider::directionTo(const Collider& other) const 
 {
         return directionTo(other.getPosition());
 }
@@ -203,7 +206,7 @@ Collider::directionTo(const Collider& other)
 
 
 double
-Collider::distanceTo(const Vec2d& to) 
+Collider::distanceTo(const Vec2d& to) const 
 {
         return directionTo(to).length();
 }
@@ -211,7 +214,7 @@ Collider::distanceTo(const Vec2d& to)
 
 
 double 
-Collider::distanceTo(const Collider& other) 
+Collider::distanceTo(const Collider& other) const 
 {
         return distanceTo(other.getPosition());
 }
@@ -238,6 +241,7 @@ Collider::getPosition() const
 
 
 double 
-Collider::getRadius() const {
+Collider::getRadius() const 
+{
 	return radius_;
 }

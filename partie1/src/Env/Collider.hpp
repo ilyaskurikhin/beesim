@@ -18,28 +18,28 @@ class Collider
         //
         // OPERATORS
         //
-
-	//surcharge de l'opérateur de copie
-	Collider& 
-        operator= (Collider collider);
 	
 	// return true if other is in this
 	bool 
-        operator> (const Collider& other);
+        operator> (const Collider& other) const;
 	
 	// return true if this is colliding with other
 	bool
-        operator| (const Collider& other);
+        operator| (const Collider& other) const;
 	
 	// return true if point p is within radius_ of this
 	bool 
-        operator> (const Vec2d& p);
+        operator> (const Vec2d& p) const;
 	
 	// print the contents of this to a stream
         friend
         std::ostream& 
-        operator<< (std::ostream& oss, const Collider& collider);
+        operator<< (std::ostream& oss, const Collider& collider) const;
 	
+	//surcharge de l'opérateur de copie
+	Collider& 
+        operator= (Collider collider);
+
         // move this horizontaly by dx
         Collider& 
         operator+= (const Vec2d& dx);
@@ -54,32 +54,32 @@ class Collider
 
 	// returns true if this is within radius of other
 	bool 
-        isColliderInside (const Collider& other);
+        isColliderInside (const Collider& other) const;
 	
 	// return true if either of this or other are within
 	// the others radius
 	bool 
-        isColliding (const Collider& other);
+        isColliding (const Collider& other) const;
 	
 	// return true is distance in between p and this < radius_
 	bool 
-        isPointInside (const Vec2d& p);
+        isPointInside (const Vec2d& p) const;
 
         // return direction vector to other
 	Vec2d 
-        directionTo(const Vec2d& other);
+        directionTo(const Vec2d& other) const;
 	
         // return direction vector to other
         Vec2d
-        directionTo(const Collider& other);
+        directionTo(const Collider& other) const;
 
         // return distance to other
         double
-        distanceTo(const Vec2d& other);
+        distanceTo(const Vec2d& other) const;
 
         // return distance to other
         double 
-        distanceTo(const Collider& other);
+        distanceTo(const Collider& other) const;
         
         // move this horizontaly by dx
         void 
