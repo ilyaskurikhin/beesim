@@ -34,7 +34,7 @@ class Collider
 	// print the contents of this to a stream
         friend
         std::ostream& 
-        operator<< (std::ostream& oss, const Collider& collider) const;
+        operator<< (std::ostream& oss, const Collider& collider);
 	
 	//surcharge de l'opérateur de copie
 	Collider& 
@@ -82,7 +82,7 @@ class Collider
         distanceTo(const Collider& other) const;
         
         // move this horizontaly by dx
-        void 
+        Collider& 
         move(const Vec2d& dx);
 
 
