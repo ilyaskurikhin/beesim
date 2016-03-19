@@ -48,7 +48,11 @@ sf::Text buildText(std::string const& msg, Vec2d const& position, sf::Font const
 {
     sf::Text txt(msg, font, size);
     txt.setPosition(position);
+#if SFML_VERSION_MAJOR >= 2 && (SFML_VERSION_MINOR > 3 || (SFML_VERSION_MINOR == 3 && SFML_VERSION_PATCH >= 2))
+    txt.setFillColor(color);
+#else
     txt.setColor(color);
+#endif
     txt.setCharacterSize(size);
     auto const bounds = txt.getLocalBounds();
     txt.setOrigin(bounds.width / 2, bounds.height / 2);

@@ -110,7 +110,7 @@
                 "water" : "water.jpg"
             },
             "show humidity" : false,
-            "file" : "world3.map"
+            "file" : "world4.map"
         },
         "env" : {
             "initial" : {
