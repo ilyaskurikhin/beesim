@@ -8,18 +8,20 @@
 using namespace std;
 
 
-Collider::Collider(const Vec2d& position, double radius)
+Collider::Collider (const Vec2d& position, double radius)
 	// affecte par défaut le rayon et la position
 	: radius_(radius), position_(position)
 { 
-	//si le rayon<0 envoie un message d'erreur "assertion failed"
+	// si le rayon<0 envoie un message d'erreur "assertion failed"
 	assert (radius_ >= 0); 
 	
-	//fait appelle a la méthode clamping pour corriger la position entrée
+	// fait appelle a la méthode clamping pour corriger la position entrée
 	clamping();
 }
 
-Collider::Collider(const Collider& collider) 
+
+
+Collider::Collider (const Collider& collider) 
 {
 	radius_ = collider.getRadius();
 	position_ = collider.getPosition();
