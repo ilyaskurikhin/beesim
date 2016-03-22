@@ -1,0 +1,137 @@
+\hypertarget{_application_8cpp}{\section{/home/jbesson/myfiles/cpp/svprog/partie1/src/\-Application.cpp File Reference}
+\label{_application_8cpp}\index{/home/jbesson/myfiles/cpp/svprog/partie1/src/\-Application.\-cpp@{/home/jbesson/myfiles/cpp/svprog/partie1/src/\-Application.\-cpp}}
+}
+{\ttfamily \#include $<$Application.\-hpp$>$}\\*
+{\ttfamily \#include $<$Config.\-hpp$>$}\\*
+{\ttfamily \#include $<$J\-S\-O\-N/\-J\-S\-O\-N\-Serialiser.\-hpp$>$}\\*
+{\ttfamily \#include $<$Utility/\-Constants.\-hpp$>$}\\*
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$cassert$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_application}{Application} \& \hyperlink{_application_8cpp_a8f44ecc5bce6861fe0e1e7ba6d579d67}{get\-App} ()
+\begin{DoxyCompactList}\small\item\em Get the current instance of \hyperlink{class_application}{Application}. \end{DoxyCompactList}\item 
+Env \& \hyperlink{_application_8cpp_a297522bb6f68b7f688c91a569f805ad5}{get\-App\-Env} ()
+\begin{DoxyCompactList}\small\item\em Get the environment (the env) of the current application. \end{DoxyCompactList}\item 
+\hyperlink{classj_1_1_value}{j\-::\-Value} \& \hyperlink{_application_8cpp_ac7728cb634dcf024e679116d7b6b1c85}{get\-App\-Config} ()
+\begin{DoxyCompactList}\small\item\em Get the bee tracker helper for the current application. \end{DoxyCompactList}\item 
+sf\-::\-Font const \& \hyperlink{_application_8cpp_aad5996611619196f44218c9a9b66a3ed}{get\-App\-Font} ()
+\begin{DoxyCompactList}\small\item\em Get the app's font. \end{DoxyCompactList}\item 
+sf\-::\-Texture \& \hyperlink{_application_8cpp_aa4a7cff7b1c9246a309a312fc6e4c165}{get\-App\-Texture} (std\-::string const \&name)
+\begin{DoxyCompactList}\small\item\em Get a texture. \end{DoxyCompactList}\item 
+bool \hyperlink{_application_8cpp_a6d9dec2d69ed42ef4d8cb1c823134047}{is\-Debug\-On} ()
+\begin{DoxyCompactList}\small\item\em Determine if debug mode is active or not. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{_application_8cpp_a8f44ecc5bce6861fe0e1e7ba6d579d67}{\index{Application.\-cpp@{Application.\-cpp}!get\-App@{get\-App}}
+\index{get\-App@{get\-App}!Application.cpp@{Application.\-cpp}}
+\subsubsection[{get\-App}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Application}\& get\-App (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_application_8cpp_a8f44ecc5bce6861fe0e1e7ba6d579d67}
+
+
+Get the current instance of \hyperlink{class_application}{Application}. 
+
+\begin{DoxyReturn}{Returns}
+a reference to the current instance of \hyperlink{class_application}{Application} 
+\end{DoxyReturn}
+\hypertarget{_application_8cpp_ac7728cb634dcf024e679116d7b6b1c85}{\index{Application.\-cpp@{Application.\-cpp}!get\-App\-Config@{get\-App\-Config}}
+\index{get\-App\-Config@{get\-App\-Config}!Application.cpp@{Application.\-cpp}}
+\subsubsection[{get\-App\-Config}]{\setlength{\rightskip}{0pt plus 5cm}{\bf j\-::\-Value}\& get\-App\-Config (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_application_8cpp_ac7728cb634dcf024e679116d7b6b1c85}
+
+
+Get the bee tracker helper for the current application. 
+
+\begin{DoxyReturn}{Returns}
+the app's bee tracker
+\end{DoxyReturn}
+Get the config of the current application
+
+Shorthand for \hyperlink{_application_8hpp_a8f44ecc5bce6861fe0e1e7ba6d579d67}{get\-App()}.get\-Config()
+
+\begin{DoxyReturn}{Returns}
+the app's config 
+\end{DoxyReturn}
+\hypertarget{_application_8cpp_a297522bb6f68b7f688c91a569f805ad5}{\index{Application.\-cpp@{Application.\-cpp}!get\-App\-Env@{get\-App\-Env}}
+\index{get\-App\-Env@{get\-App\-Env}!Application.cpp@{Application.\-cpp}}
+\subsubsection[{get\-App\-Env}]{\setlength{\rightskip}{0pt plus 5cm}Env\& get\-App\-Env (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_application_8cpp_a297522bb6f68b7f688c91a569f805ad5}
+
+
+Get the environment (the env) of the current application. 
+
+Shorthand for \hyperlink{_application_8hpp_a8f44ecc5bce6861fe0e1e7ba6d579d67}{get\-App()}.get\-Env()
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_application_a66c2e8b7340252006680158876db46e1}{Application\-::get\-Env()} comment about encapsulation
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+the app's env. 
+\end{DoxyReturn}
+\hypertarget{_application_8cpp_aad5996611619196f44218c9a9b66a3ed}{\index{Application.\-cpp@{Application.\-cpp}!get\-App\-Font@{get\-App\-Font}}
+\index{get\-App\-Font@{get\-App\-Font}!Application.cpp@{Application.\-cpp}}
+\subsubsection[{get\-App\-Font}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Font const\& get\-App\-Font (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_application_8cpp_aad5996611619196f44218c9a9b66a3ed}
+
+
+Get the app's font. 
+
+Shorthand for \hyperlink{_application_8hpp_a8f44ecc5bce6861fe0e1e7ba6d579d67}{get\-App()}.get\-Font()
+
+\begin{DoxyReturn}{Returns}
+a font 
+\end{DoxyReturn}
+\hypertarget{_application_8cpp_aa4a7cff7b1c9246a309a312fc6e4c165}{\index{Application.\-cpp@{Application.\-cpp}!get\-App\-Texture@{get\-App\-Texture}}
+\index{get\-App\-Texture@{get\-App\-Texture}!Application.cpp@{Application.\-cpp}}
+\subsubsection[{get\-App\-Texture}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Texture\& get\-App\-Texture (
+\begin{DoxyParamCaption}
+\item[{std\-::string const \&}]{name}
+\end{DoxyParamCaption}
+)}}\label{_application_8cpp_aa4a7cff7b1c9246a309a312fc6e4c165}
+
+
+Get a texture. 
+
+Shorthand for \hyperlink{_application_8hpp_a8f44ecc5bce6861fe0e1e7ba6d579d67}{get\-App()}.get\-Texture(name)
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & name of the texture \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a reference to the texture
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_application_a18f35a0326625f9818003dc7353d4208}{Application\-::get\-Texture} 
+\end{DoxySeeAlso}
+\hypertarget{_application_8cpp_a6d9dec2d69ed42ef4d8cb1c823134047}{\index{Application.\-cpp@{Application.\-cpp}!is\-Debug\-On@{is\-Debug\-On}}
+\index{is\-Debug\-On@{is\-Debug\-On}!Application.cpp@{Application.\-cpp}}
+\subsubsection[{is\-Debug\-On}]{\setlength{\rightskip}{0pt plus 5cm}bool is\-Debug\-On (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_application_8cpp_a6d9dec2d69ed42ef4d8cb1c823134047}
+
+
+Determine if debug mode is active or not. 
+
+Shorthand for \hyperlink{_application_8hpp_ac7728cb634dcf024e679116d7b6b1c85}{get\-App\-Config()}.get\-Bool(\-D\-E\-B\-U\-G\-\_\-\-M\-O\-D\-E)
+
+\begin{DoxyReturn}{Returns}
+true if cfg specify D\-E\-B\-U\-G=T\-R\-U\-E 
+\end{DoxyReturn}

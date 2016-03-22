@@ -1,0 +1,699 @@
+\hypertarget{class_application}{\section{Application Class Reference}
+\label{class_application}\index{Application@{Application}}
+}
+
+
+Abstract class managing the core of the program.  
+
+
+
+
+{\ttfamily \#include $<$Application.\-hpp$>$}
+
+Inheritance diagram for Application\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_application}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_application_a571b19044041fe7b63f0da45dc56532e}{Application} (int argc, char const $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_application_a045b831793669ac925c635dcb4786087}{Application} (\hyperlink{class_application}{Application} const \&)=delete
+\begin{DoxyCompactList}\small\item\em Forbid copy. \end{DoxyCompactList}\item 
+\hyperlink{class_application}{Application} \& \hyperlink{class_application_a1fee125c91f0e7c1fcb7a7fd4318c74e}{operator=} (\hyperlink{class_application}{Application} const \&)=delete
+\item 
+virtual \hyperlink{class_application_a748bca84fefb9c12661cfaa2f623748d}{$\sim$\-Application} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_application_a68965449404743bf1add056784d6cf81}{run} ()
+\begin{DoxyCompactList}\small\item\em Run the application. \end{DoxyCompactList}\item 
+Env \& \hyperlink{class_application_a66c2e8b7340252006680158876db46e1}{get\-Env} ()
+\begin{DoxyCompactList}\small\item\em Get access to the execution environment of the application (the env) \end{DoxyCompactList}\item 
+Env const \& \hyperlink{class_application_a88fc89d94da74af06091464e1dfe4a8f}{get\-Env} () const 
+\item 
+\hyperlink{classj_1_1_value}{j\-::\-Value} \& \hyperlink{class_application_a40ada3828cedc56606182850eb1ea267}{get\-Config} ()
+\begin{DoxyCompactList}\small\item\em Get the bee tracker helper. \end{DoxyCompactList}\item 
+\hyperlink{classj_1_1_value}{j\-::\-Value} const \& \hyperlink{class_application_a976052594bde1619931c0942967b9a92}{get\-Config} () const 
+\item 
+sf\-::\-Font const \& \hyperlink{class_application_af9ef0f6c5a9fde1cf31d7fad3e3176d6}{get\-Font} () const 
+\begin{DoxyCompactList}\small\item\em Get the app's font. \end{DoxyCompactList}\item 
+sf\-::\-Texture \& \hyperlink{class_application_a18f35a0326625f9818003dc7353d4208}{get\-Texture} (std\-::string const \&name)
+\begin{DoxyCompactList}\small\item\em Get a texture. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{class_application_aefb5a8a34ddfbffd38481010a71a1a4c}{get\-Res\-Path} () const 
+\begin{DoxyCompactList}\small\item\em Get the path to the resource folder. \end{DoxyCompactList}\item 
+\hyperlink{class_vec2d}{Vec2d} \hyperlink{class_application_ad55493fb479ede7b4c613c6d1c204180}{get\-World\-Size} () const 
+\begin{DoxyCompactList}\small\item\em Read the world size from the config manager. \end{DoxyCompactList}\item 
+\hyperlink{class_vec2d}{Vec2d} \hyperlink{class_application_a6bc4c1a004c1d3dd23afae420cd72978}{get\-Centre} () const 
+\begin{DoxyCompactList}\small\item\em Compute the centre of the world area (in local coordinates) \end{DoxyCompactList}\item 
+\hyperlink{class_vec2d}{Vec2d} \hyperlink{class_application_a7d49c36d1dff894f7d5533c614d9cf36}{get\-Cursor\-Position\-In\-View} () const 
+\begin{DoxyCompactList}\small\item\em Get the cursor position in the view coordinates (i.\-e. pixel coordinates) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_application_a5d2ae97c527f0ba88c259f2fdcecbb9b}{Texture\-Pool} = std\-::map$<$ std\-::string, sf\-::\-Texture $\ast$ $>$
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_application_af48ce2f324313699257c164dddb3b920}{on\-Run} ()
+\begin{DoxyCompactList}\small\item\em Add a graph to the stats manager and update G\-U\-I. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_application_a811e40a46923de963bbc87d54097ed54}{on\-Simulation\-Start} ()
+\begin{DoxyCompactList}\small\item\em Called when the simulation is (re)started, but not when importing data. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_application_ae6ea28bafe249f7005aa143f36651342}{on\-Event} (sf\-::\-Event event, sf\-::\-Render\-Window \&window)
+\begin{DoxyCompactList}\small\item\em Subclass can override this method to handle events. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_application_adfc65fcc3dda8aab7483d01f8b2b1e48}{on\-Update} (sf\-::\-Time dt)
+\begin{DoxyCompactList}\small\item\em Subclass can override this method to update their data. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_application_ac35bfbd486eb47fdd2b5d731962c6724}{on\-Draw} (sf\-::\-Render\-Target \&target)
+\begin{DoxyCompactList}\small\item\em Subclass can override this method to draw their data in the simulation view. \end{DoxyCompactList}\item 
+void \hyperlink{class_application_a8634280ed0a49eb67c2698a076f51a36}{create\-Window} (\hyperlink{class_vec2d}{Vec2d} const \&size)
+\begin{DoxyCompactList}\small\item\em Create the window. \end{DoxyCompactList}\item 
+void \hyperlink{class_application_a243bb0cf151bdaa9bc16e06498964cf6}{create\-Views} ()
+\begin{DoxyCompactList}\small\item\em Create the simulation and stats views. \end{DoxyCompactList}\item 
+void \hyperlink{class_application_aaac48a5982dd7c72f727f917347b07aa}{handle\-Event} (sf\-::\-Event event, sf\-::\-Render\-Window \&window)
+\begin{DoxyCompactList}\small\item\em Do the logic for a given event. \end{DoxyCompactList}\item 
+void \hyperlink{class_application_af3a3bba5fac5920c26ddb4ccd3ae69fa}{render} (sf\-::\-Drawable const \&simulation\-Background, sf\-::\-Drawable const \&stats\-Background)
+\begin{DoxyCompactList}\small\item\em Render the G\-U\-I, Simulation and Stats. \end{DoxyCompactList}\item 
+Stats \& \hyperlink{class_application_a9d9d5670dfd9ca54b4c39bb9b870d106}{get\-Stats} ()
+\begin{DoxyCompactList}\small\item\em Get access to the stats manager. \end{DoxyCompactList}\item 
+void \hyperlink{class_application_af03097cece8f7dbbe744bd7a242af033}{toggle\-Pause} ()
+\begin{DoxyCompactList}\small\item\em Toggle pause. \end{DoxyCompactList}\item 
+void \hyperlink{class_application_aed88c8943b8df942461e99c226d5bee2}{save\-Config} () const 
+\begin{DoxyCompactList}\small\item\em Save the current configuration. \end{DoxyCompactList}\item 
+void \hyperlink{class_application_aeecb0f55acec51532399693799d19fe7}{zoom\-View\-At} (sf\-::\-Vector2i const \&pixel, float zoom\-Factor)
+\begin{DoxyCompactList}\small\item\em Zoom the simulation view on the given pixel. \end{DoxyCompactList}\item 
+void \hyperlink{class_application_a3089c41134287645292eeb587f917f89}{drag\-View} (sf\-::\-Vector2i const \&src\-Pixel, sf\-::\-Vector2i const \&dest\-Pixel)
+\begin{DoxyCompactList}\small\item\em Drag the view by the given offset (i.\-e. src to dest) \end{DoxyCompactList}\item 
+void \hyperlink{class_application_a5d6a3cc615a2b345167b337c451c8d7e}{update\-Simulation\-View} ()
+\begin{DoxyCompactList}\small\item\em Center the simulation view on the tracked bee, if selection is active. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::string const \hyperlink{class_application_a4dfc28cc57cbf7099a9fb307f1bddb66}{m\-App\-Directory}
+\begin{DoxyCompactList}\small\item\em Path to the executable's directory. \end{DoxyCompactList}\item 
+std\-::string const \hyperlink{class_application_a47b102eeb6056257fad1b1073c62cd0e}{m\-Cfg\-File}
+\begin{DoxyCompactList}\small\item\em Relative path to the C\-F\-G. \end{DoxyCompactList}\item 
+\hyperlink{classj_1_1_value}{j\-::\-Value} \hyperlink{class_application_a7d54750ac09a1bc7e4d72944bb52e393}{m\-Config}
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_application}{Application} configuration. \end{DoxyCompactList}\item 
+Env $\ast$ \hyperlink{class_application_a17edefa78adf28e93132ce3d9af8aad5}{m\-Env}
+\begin{DoxyCompactList}\small\item\em Simulated environment. \end{DoxyCompactList}\item 
+sf\-::\-Font \hyperlink{class_application_a697d840b0ef9b447a9463996d5963e10}{m\-Font}
+\begin{DoxyCompactList}\small\item\em A font. \end{DoxyCompactList}\item 
+sf\-::\-Render\-Window \hyperlink{class_application_acde37e91150ea3a16e9e4849e08c7784}{m\-Render\-Window}
+\begin{DoxyCompactList}\small\item\em S\-F\-M\-L window / render target. \end{DoxyCompactList}\item 
+sf\-::\-View \hyperlink{class_application_a74a68526ce8ee51762f6d3313355b918}{m\-Simulation\-View}
+\begin{DoxyCompactList}\small\item\em View for simulation area. \end{DoxyCompactList}\item 
+Stats $\ast$ \hyperlink{class_application_a58c0745f95a42c636a1b914dac2e1ae6}{m\-Stats}
+\begin{DoxyCompactList}\small\item\em Statistic manager. \end{DoxyCompactList}\item 
+sf\-::\-View \hyperlink{class_application_a823c6ca5d9d397554b397810c940355a}{m\-Stats\-View}
+\begin{DoxyCompactList}\small\item\em View for the stats area. \end{DoxyCompactList}\item 
+\hyperlink{class_application_a5d2ae97c527f0ba88c259f2fdcecbb9b}{Texture\-Pool} \hyperlink{class_application_adee1221b74e94ac0fe94b3c99f52e03a}{m\-Textures}
+\begin{DoxyCompactList}\small\item\em Pool of textures. \end{DoxyCompactList}\item 
+sf\-::\-Texture \hyperlink{class_application_a79cda06cffa4e262a9c4ec066726831d}{m\-Default\-Texture}
+\begin{DoxyCompactList}\small\item\em Default, white texture. \end{DoxyCompactList}\item 
+bool \hyperlink{class_application_a29fd44db5b424d85f0fd35eee2494d1e}{m\-Paused}
+\begin{DoxyCompactList}\small\item\em Tells if the application is in pause or not. \end{DoxyCompactList}\item 
+bool \hyperlink{class_application_a2e3fd7543cf6e9a1da9940b60c512456}{m\-Is\-Resetting}
+\item 
+bool \hyperlink{class_application_a2d1510e1159955e12660faf4ad1230a0}{m\-Is\-Dragging}
+\begin{DoxyCompactList}\small\item\em Tells whether or not the user is dragging the view. \end{DoxyCompactList}\item 
+sf\-::\-Vector2i \hyperlink{class_application_a26c9135cd4290fbd7619f58f1a0c602b}{m\-Last\-Cursor\-Position}
+\begin{DoxyCompactList}\small\item\em For handling dragging logic. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Abstract class managing the core of the program. 
+
+Subclass can optionally re-\/implement \hyperlink{class_application_ae6ea28bafe249f7005aa143f36651342}{on\-Event()}, \hyperlink{class_application_adfc65fcc3dda8aab7483d01f8b2b1e48}{on\-Update()} and \hyperlink{class_application_ac35bfbd486eb47fdd2b5d731962c6724}{on\-Draw()}.
+
+The Env class handles the drawing and update of the system.
+
+Note that {\ttfamily simulation} and {\ttfamily world} usually mean the same thing here. 
+
+\subsection{Member Typedef Documentation}
+\hypertarget{class_application_a5d2ae97c527f0ba88c259f2fdcecbb9b}{\index{Application@{Application}!Texture\-Pool@{Texture\-Pool}}
+\index{Texture\-Pool@{Texture\-Pool}!Application@{Application}}
+\subsubsection[{Texture\-Pool}]{\setlength{\rightskip}{0pt plus 5cm}using {\bf Application\-::\-Texture\-Pool} =  std\-::map$<$std\-::string, sf\-::\-Texture$\ast$$>$\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a5d2ae97c527f0ba88c259f2fdcecbb9b}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_application_a571b19044041fe7b63f0da45dc56532e}{\index{Application@{Application}!Application@{Application}}
+\index{Application@{Application}!Application@{Application}}
+\subsubsection[{Application}]{\setlength{\rightskip}{0pt plus 5cm}Application\-::\-Application (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char const $\ast$$\ast$}]{argv}
+\end{DoxyParamCaption}
+)}}\label{class_application_a571b19044041fe7b63f0da45dc56532e}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & argument count \\
+\hline
+{\em argv} & launch arguments \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_application_a045b831793669ac925c635dcb4786087}{\index{Application@{Application}!Application@{Application}}
+\index{Application@{Application}!Application@{Application}}
+\subsubsection[{Application}]{\setlength{\rightskip}{0pt plus 5cm}Application\-::\-Application (
+\begin{DoxyParamCaption}
+\item[{{\bf Application} const \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}}\label{class_application_a045b831793669ac925c635dcb4786087}
+
+
+Forbid copy. 
+
+\hypertarget{class_application_a748bca84fefb9c12661cfaa2f623748d}{\index{Application@{Application}!$\sim$\-Application@{$\sim$\-Application}}
+\index{$\sim$\-Application@{$\sim$\-Application}!Application@{Application}}
+\subsubsection[{$\sim$\-Application}]{\setlength{\rightskip}{0pt plus 5cm}Application\-::$\sim$\-Application (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_application_a748bca84fefb9c12661cfaa2f623748d}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_application_a243bb0cf151bdaa9bc16e06498964cf6}{\index{Application@{Application}!create\-Views@{create\-Views}}
+\index{create\-Views@{create\-Views}!Application@{Application}}
+\subsubsection[{create\-Views}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::create\-Views (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a243bb0cf151bdaa9bc16e06498964cf6}
+
+
+Create the simulation and stats views. 
+
+\hypertarget{class_application_a8634280ed0a49eb67c2698a076f51a36}{\index{Application@{Application}!create\-Window@{create\-Window}}
+\index{create\-Window@{create\-Window}!Application@{Application}}
+\subsubsection[{create\-Window}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::create\-Window (
+\begin{DoxyParamCaption}
+\item[{{\bf Vec2d} const \&}]{size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a8634280ed0a49eb67c2698a076f51a36}
+
+
+Create the window. 
+
+\hypertarget{class_application_a3089c41134287645292eeb587f917f89}{\index{Application@{Application}!drag\-View@{drag\-View}}
+\index{drag\-View@{drag\-View}!Application@{Application}}
+\subsubsection[{drag\-View}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::drag\-View (
+\begin{DoxyParamCaption}
+\item[{sf\-::\-Vector2i const \&}]{src\-Pixel, }
+\item[{sf\-::\-Vector2i const \&}]{dest\-Pixel}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a3089c41134287645292eeb587f917f89}
+
+
+Drag the view by the given offset (i.\-e. src to dest) 
+
+\hypertarget{class_application_a6bc4c1a004c1d3dd23afae420cd72978}{\index{Application@{Application}!get\-Centre@{get\-Centre}}
+\index{get\-Centre@{get\-Centre}!Application@{Application}}
+\subsubsection[{get\-Centre}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vec2d} Application\-::get\-Centre (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_application_a6bc4c1a004c1d3dd23afae420cd72978}
+
+
+Compute the centre of the world area (in local coordinates) 
+
+\begin{DoxyReturn}{Returns}
+the centre of the app 
+\end{DoxyReturn}
+\hypertarget{class_application_a40ada3828cedc56606182850eb1ea267}{\index{Application@{Application}!get\-Config@{get\-Config}}
+\index{get\-Config@{get\-Config}!Application@{Application}}
+\subsubsection[{get\-Config}]{\setlength{\rightskip}{0pt plus 5cm}{\bf j\-::\-Value} \& Application\-::get\-Config (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_application_a40ada3828cedc56606182850eb1ea267}
+
+
+Get the bee tracker helper. 
+
+\begin{DoxyReturn}{Returns}
+the app's bee tracker
+\end{DoxyReturn}
+Get access to the application's configuration
+
+\begin{DoxyReturn}{Returns}
+the app's config 
+\end{DoxyReturn}
+\hypertarget{class_application_a976052594bde1619931c0942967b9a92}{\index{Application@{Application}!get\-Config@{get\-Config}}
+\index{get\-Config@{get\-Config}!Application@{Application}}
+\subsubsection[{get\-Config}]{\setlength{\rightskip}{0pt plus 5cm}{\bf j\-::\-Value} const \& Application\-::get\-Config (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_application_a976052594bde1619931c0942967b9a92}
+\hypertarget{class_application_a7d49c36d1dff894f7d5533c614d9cf36}{\index{Application@{Application}!get\-Cursor\-Position\-In\-View@{get\-Cursor\-Position\-In\-View}}
+\index{get\-Cursor\-Position\-In\-View@{get\-Cursor\-Position\-In\-View}!Application@{Application}}
+\subsubsection[{get\-Cursor\-Position\-In\-View}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vec2d} Application\-::get\-Cursor\-Position\-In\-View (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_application_a7d49c36d1dff894f7d5533c614d9cf36}
+
+
+Get the cursor position in the view coordinates (i.\-e. pixel coordinates) 
+
+\begin{DoxyReturn}{Returns}
+The cursor position converted in the view coordinates 
+\end{DoxyReturn}
+\hypertarget{class_application_a66c2e8b7340252006680158876db46e1}{\index{Application@{Application}!get\-Env@{get\-Env}}
+\index{get\-Env@{get\-Env}!Application@{Application}}
+\subsubsection[{get\-Env}]{\setlength{\rightskip}{0pt plus 5cm}Env \& Application\-::get\-Env (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_application_a66c2e8b7340252006680158876db46e1}
+
+
+Get access to the execution environment of the application (the env) 
+
+\begin{DoxyNote}{Note}
+This breaks the encapsulation but simplify everything!
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+the app's env 
+\end{DoxyReturn}
+\hypertarget{class_application_a88fc89d94da74af06091464e1dfe4a8f}{\index{Application@{Application}!get\-Env@{get\-Env}}
+\index{get\-Env@{get\-Env}!Application@{Application}}
+\subsubsection[{get\-Env}]{\setlength{\rightskip}{0pt plus 5cm}Env const \& Application\-::get\-Env (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_application_a88fc89d94da74af06091464e1dfe4a8f}
+\hypertarget{class_application_af9ef0f6c5a9fde1cf31d7fad3e3176d6}{\index{Application@{Application}!get\-Font@{get\-Font}}
+\index{get\-Font@{get\-Font}!Application@{Application}}
+\subsubsection[{get\-Font}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Font const \& Application\-::get\-Font (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_application_af9ef0f6c5a9fde1cf31d7fad3e3176d6}
+
+
+Get the app's font. 
+
+\begin{DoxyReturn}{Returns}
+a font 
+\end{DoxyReturn}
+\hypertarget{class_application_aefb5a8a34ddfbffd38481010a71a1a4c}{\index{Application@{Application}!get\-Res\-Path@{get\-Res\-Path}}
+\index{get\-Res\-Path@{get\-Res\-Path}!Application@{Application}}
+\subsubsection[{get\-Res\-Path}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Application\-::get\-Res\-Path (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_application_aefb5a8a34ddfbffd38481010a71a1a4c}
+
+
+Get the path to the resource folder. 
+
+\hypertarget{class_application_a9d9d5670dfd9ca54b4c39bb9b870d106}{\index{Application@{Application}!get\-Stats@{get\-Stats}}
+\index{get\-Stats@{get\-Stats}!Application@{Application}}
+\subsubsection[{get\-Stats}]{\setlength{\rightskip}{0pt plus 5cm}Stats \& Application\-::get\-Stats (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a9d9d5670dfd9ca54b4c39bb9b870d106}
+
+
+Get access to the stats manager. 
+
+\begin{DoxyReturn}{Returns}
+the application statistic manager 
+\end{DoxyReturn}
+\hypertarget{class_application_a18f35a0326625f9818003dc7353d4208}{\index{Application@{Application}!get\-Texture@{get\-Texture}}
+\index{get\-Texture@{get\-Texture}!Application@{Application}}
+\subsubsection[{get\-Texture}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Texture \& Application\-::get\-Texture (
+\begin{DoxyParamCaption}
+\item[{std\-::string const \&}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_application_a18f35a0326625f9818003dc7353d4208}
+
+
+Get a texture. 
+
+The texture is loaded on the fly from the 'res' folder and is owned by this application.
+
+The returned texture is read-\/write capable but in most case a read-\/only access should be enough.
+
+The application guarantees that the texture is not moved in memory and is not destroyed until the destruction of the application. This ensures that the returned reference will be valid until the end of the application and therefore can be given to a sprite.
+
+If the corresponding texture couldn't be loaded a default white texture is returned and an error message is displayed on sf\-::\-Err by S\-F\-M\-L.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & name of the texture \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a reference to the corresponding texture 
+\end{DoxyReturn}
+\hypertarget{class_application_ad55493fb479ede7b4c613c6d1c204180}{\index{Application@{Application}!get\-World\-Size@{get\-World\-Size}}
+\index{get\-World\-Size@{get\-World\-Size}!Application@{Application}}
+\subsubsection[{get\-World\-Size}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vec2d} Application\-::get\-World\-Size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_application_ad55493fb479ede7b4c613c6d1c204180}
+
+
+Read the world size from the config manager. 
+
+\begin{DoxyReturn}{Returns}
+the world size 
+\end{DoxyReturn}
+\hypertarget{class_application_aaac48a5982dd7c72f727f917347b07aa}{\index{Application@{Application}!handle\-Event@{handle\-Event}}
+\index{handle\-Event@{handle\-Event}!Application@{Application}}
+\subsubsection[{handle\-Event}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::handle\-Event (
+\begin{DoxyParamCaption}
+\item[{sf\-::\-Event}]{event, }
+\item[{sf\-::\-Render\-Window \&}]{window}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_aaac48a5982dd7c72f727f917347b07aa}
+
+
+Do the logic for a given event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & Event to handle \\
+\hline
+{\em window} & the window that emitted the event \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_application_ac35bfbd486eb47fdd2b5d731962c6724}{\index{Application@{Application}!on\-Draw@{on\-Draw}}
+\index{on\-Draw@{on\-Draw}!Application@{Application}}
+\subsubsection[{on\-Draw}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::on\-Draw (
+\begin{DoxyParamCaption}
+\item[{sf\-::\-Render\-Target \&}]{target}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}}\label{class_application_ac35bfbd486eb47fdd2b5d731962c6724}
+
+
+Subclass can override this method to draw their data in the simulation view. 
+
+The default implementation does nothing. However, the env is always displayed first.
+
+
+\begin{DoxyParams}{Parameters}
+{\em target} & a render target \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_world_test_a2dbf8fe3f7de226b01cd284d8b44816e}{World\-Test}, and \hyperlink{class_final_application_afd3b9ffb92088376f27d72c12f90643d}{Final\-Application}.
+
+\hypertarget{class_application_ae6ea28bafe249f7005aa143f36651342}{\index{Application@{Application}!on\-Event@{on\-Event}}
+\index{on\-Event@{on\-Event}!Application@{Application}}
+\subsubsection[{on\-Event}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::on\-Event (
+\begin{DoxyParamCaption}
+\item[{sf\-::\-Event}]{event, }
+\item[{sf\-::\-Render\-Window \&}]{window}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}}\label{class_application_ae6ea28bafe249f7005aa143f36651342}
+
+
+Subclass can override this method to handle events. 
+
+The default implementation does nothing.
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & an event \\
+\hline
+{\em window} & the window that emitted the event \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_world_test_aef2eb702d4f558c90308f8cfc0abb128}{World\-Test}, and \hyperlink{class_final_application_a855c3f89d43c92e216a31d39d3ca3ce6}{Final\-Application}.
+
+\hypertarget{class_application_af48ce2f324313699257c164dddb3b920}{\index{Application@{Application}!on\-Run@{on\-Run}}
+\index{on\-Run@{on\-Run}!Application@{Application}}
+\subsubsection[{on\-Run}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::on\-Run (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}}\label{class_application_af48ce2f324313699257c164dddb3b920}
+
+
+Add a graph to the stats manager and update G\-U\-I. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & graph's title \\
+\hline
+{\em series} & series' title \\
+\hline
+{\em min} & y-\/axis\-: min value expected \\
+\hline
+{\em max} & y-\/axis\-: max value expected\\
+\hline
+\end{DoxyParams}
+Called once before starting the main loop
+
+By default nothing is done. 
+
+Reimplemented in \hyperlink{class_final_application_acc4ece0398523f937ba601f006049efb}{Final\-Application}.
+
+\hypertarget{class_application_a811e40a46923de963bbc87d54097ed54}{\index{Application@{Application}!on\-Simulation\-Start@{on\-Simulation\-Start}}
+\index{on\-Simulation\-Start@{on\-Simulation\-Start}!Application@{Application}}
+\subsubsection[{on\-Simulation\-Start}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::on\-Simulation\-Start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}}\label{class_application_a811e40a46923de963bbc87d54097ed54}
+
+
+Called when the simulation is (re)started, but not when importing data. 
+
+By default nothing is done. \hypertarget{class_application_adfc65fcc3dda8aab7483d01f8b2b1e48}{\index{Application@{Application}!on\-Update@{on\-Update}}
+\index{on\-Update@{on\-Update}!Application@{Application}}
+\subsubsection[{on\-Update}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::on\-Update (
+\begin{DoxyParamCaption}
+\item[{sf\-::\-Time}]{dt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}}\label{class_application_adfc65fcc3dda8aab7483d01f8b2b1e48}
+
+
+Subclass can override this method to update their data. 
+
+The default implementation does nothing. However, the env is always updated first.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dt} & elapsed time \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_application_a1fee125c91f0e7c1fcb7a7fd4318c74e}{\index{Application@{Application}!operator=@{operator=}}
+\index{operator=@{operator=}!Application@{Application}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Application}\& Application\-::operator= (
+\begin{DoxyParamCaption}
+\item[{{\bf Application} const \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}}\label{class_application_a1fee125c91f0e7c1fcb7a7fd4318c74e}
+\hypertarget{class_application_af3a3bba5fac5920c26ddb4ccd3ae69fa}{\index{Application@{Application}!render@{render}}
+\index{render@{render}!Application@{Application}}
+\subsubsection[{render}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::render (
+\begin{DoxyParamCaption}
+\item[{sf\-::\-Drawable const \&}]{simulation\-Background, }
+\item[{sf\-::\-Drawable const \&}]{stats\-Background}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_af3a3bba5fac5920c26ddb4ccd3ae69fa}
+
+
+Render the G\-U\-I, Simulation and Stats. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em simulation\-Background} & Background of the simulation frame \\
+\hline
+{\em stats\-Background} & Background of the stats frame \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_application_a68965449404743bf1add056784d6cf81}{\index{Application@{Application}!run@{run}}
+\index{run@{run}!Application@{Application}}
+\subsubsection[{run}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::run (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_application_a68965449404743bf1add056784d6cf81}
+
+
+Run the application. 
+
+This function is the main loop.
+
+\begin{DoxyNote}{Note}
+Don't forget to call init() before \hyperlink{class_application_a68965449404743bf1add056784d6cf81}{run()} ! 
+\end{DoxyNote}
+\hypertarget{class_application_aed88c8943b8df942461e99c226d5bee2}{\index{Application@{Application}!save\-Config@{save\-Config}}
+\index{save\-Config@{save\-Config}!Application@{Application}}
+\subsubsection[{save\-Config}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::save\-Config (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_aed88c8943b8df942461e99c226d5bee2}
+
+
+Save the current configuration. 
+
+\hypertarget{class_application_af03097cece8f7dbbe744bd7a242af033}{\index{Application@{Application}!toggle\-Pause@{toggle\-Pause}}
+\index{toggle\-Pause@{toggle\-Pause}!Application@{Application}}
+\subsubsection[{toggle\-Pause}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::toggle\-Pause (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_af03097cece8f7dbbe744bd7a242af033}
+
+
+Toggle pause. 
+
+\hypertarget{class_application_a5d6a3cc615a2b345167b337c451c8d7e}{\index{Application@{Application}!update\-Simulation\-View@{update\-Simulation\-View}}
+\index{update\-Simulation\-View@{update\-Simulation\-View}!Application@{Application}}
+\subsubsection[{update\-Simulation\-View}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::update\-Simulation\-View (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a5d6a3cc615a2b345167b337c451c8d7e}
+
+
+Center the simulation view on the tracked bee, if selection is active. 
+
+\hypertarget{class_application_aeecb0f55acec51532399693799d19fe7}{\index{Application@{Application}!zoom\-View\-At@{zoom\-View\-At}}
+\index{zoom\-View\-At@{zoom\-View\-At}!Application@{Application}}
+\subsubsection[{zoom\-View\-At}]{\setlength{\rightskip}{0pt plus 5cm}void Application\-::zoom\-View\-At (
+\begin{DoxyParamCaption}
+\item[{sf\-::\-Vector2i const \&}]{pixel, }
+\item[{float}]{zoom\-Factor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_aeecb0f55acec51532399693799d19fe7}
+
+
+Zoom the simulation view on the given pixel. 
+
+\begin{DoxyNote}{Note}
+the view is centered on the selected entity if on is selected, or on the cursor if none is currently selected. 
+\end{DoxyNote}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_application_a4dfc28cc57cbf7099a9fb307f1bddb66}{\index{Application@{Application}!m\-App\-Directory@{m\-App\-Directory}}
+\index{m\-App\-Directory@{m\-App\-Directory}!Application@{Application}}
+\subsubsection[{m\-App\-Directory}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string const Application\-::m\-App\-Directory\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a4dfc28cc57cbf7099a9fb307f1bddb66}
+
+
+Path to the executable's directory. 
+
+\hypertarget{class_application_a47b102eeb6056257fad1b1073c62cd0e}{\index{Application@{Application}!m\-Cfg\-File@{m\-Cfg\-File}}
+\index{m\-Cfg\-File@{m\-Cfg\-File}!Application@{Application}}
+\subsubsection[{m\-Cfg\-File}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string const Application\-::m\-Cfg\-File\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a47b102eeb6056257fad1b1073c62cd0e}
+
+
+Relative path to the C\-F\-G. 
+
+\hypertarget{class_application_a7d54750ac09a1bc7e4d72944bb52e393}{\index{Application@{Application}!m\-Config@{m\-Config}}
+\index{m\-Config@{m\-Config}!Application@{Application}}
+\subsubsection[{m\-Config}]{\setlength{\rightskip}{0pt plus 5cm}{\bf j\-::\-Value} Application\-::m\-Config\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a7d54750ac09a1bc7e4d72944bb52e393}
+
+
+\hyperlink{class_application}{Application} configuration. 
+
+\hypertarget{class_application_a79cda06cffa4e262a9c4ec066726831d}{\index{Application@{Application}!m\-Default\-Texture@{m\-Default\-Texture}}
+\index{m\-Default\-Texture@{m\-Default\-Texture}!Application@{Application}}
+\subsubsection[{m\-Default\-Texture}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Texture Application\-::m\-Default\-Texture\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a79cda06cffa4e262a9c4ec066726831d}
+
+
+Default, white texture. 
+
+\hypertarget{class_application_a17edefa78adf28e93132ce3d9af8aad5}{\index{Application@{Application}!m\-Env@{m\-Env}}
+\index{m\-Env@{m\-Env}!Application@{Application}}
+\subsubsection[{m\-Env}]{\setlength{\rightskip}{0pt plus 5cm}Env$\ast$ Application\-::m\-Env\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a17edefa78adf28e93132ce3d9af8aad5}
+
+
+Simulated environment. 
+
+\hypertarget{class_application_a697d840b0ef9b447a9463996d5963e10}{\index{Application@{Application}!m\-Font@{m\-Font}}
+\index{m\-Font@{m\-Font}!Application@{Application}}
+\subsubsection[{m\-Font}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Font Application\-::m\-Font\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a697d840b0ef9b447a9463996d5963e10}
+
+
+A font. 
+
+\hypertarget{class_application_a2d1510e1159955e12660faf4ad1230a0}{\index{Application@{Application}!m\-Is\-Dragging@{m\-Is\-Dragging}}
+\index{m\-Is\-Dragging@{m\-Is\-Dragging}!Application@{Application}}
+\subsubsection[{m\-Is\-Dragging}]{\setlength{\rightskip}{0pt plus 5cm}bool Application\-::m\-Is\-Dragging\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a2d1510e1159955e12660faf4ad1230a0}
+
+
+Tells whether or not the user is dragging the view. 
+
+\hypertarget{class_application_a2e3fd7543cf6e9a1da9940b60c512456}{\index{Application@{Application}!m\-Is\-Resetting@{m\-Is\-Resetting}}
+\index{m\-Is\-Resetting@{m\-Is\-Resetting}!Application@{Application}}
+\subsubsection[{m\-Is\-Resetting}]{\setlength{\rightskip}{0pt plus 5cm}bool Application\-::m\-Is\-Resetting\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a2e3fd7543cf6e9a1da9940b60c512456}
+Is true for one main loop iteration when resetting. This is useful to pause the clock while generating a new world. Without this, a huge dt would result from rebuilding the world. \hypertarget{class_application_a26c9135cd4290fbd7619f58f1a0c602b}{\index{Application@{Application}!m\-Last\-Cursor\-Position@{m\-Last\-Cursor\-Position}}
+\index{m\-Last\-Cursor\-Position@{m\-Last\-Cursor\-Position}!Application@{Application}}
+\subsubsection[{m\-Last\-Cursor\-Position}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Vector2i Application\-::m\-Last\-Cursor\-Position\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a26c9135cd4290fbd7619f58f1a0c602b}
+
+
+For handling dragging logic. 
+
+\hypertarget{class_application_a29fd44db5b424d85f0fd35eee2494d1e}{\index{Application@{Application}!m\-Paused@{m\-Paused}}
+\index{m\-Paused@{m\-Paused}!Application@{Application}}
+\subsubsection[{m\-Paused}]{\setlength{\rightskip}{0pt plus 5cm}bool Application\-::m\-Paused\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a29fd44db5b424d85f0fd35eee2494d1e}
+
+
+Tells if the application is in pause or not. 
+
+\hypertarget{class_application_acde37e91150ea3a16e9e4849e08c7784}{\index{Application@{Application}!m\-Render\-Window@{m\-Render\-Window}}
+\index{m\-Render\-Window@{m\-Render\-Window}!Application@{Application}}
+\subsubsection[{m\-Render\-Window}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Render\-Window Application\-::m\-Render\-Window\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_acde37e91150ea3a16e9e4849e08c7784}
+
+
+S\-F\-M\-L window / render target. 
+
+\hypertarget{class_application_a74a68526ce8ee51762f6d3313355b918}{\index{Application@{Application}!m\-Simulation\-View@{m\-Simulation\-View}}
+\index{m\-Simulation\-View@{m\-Simulation\-View}!Application@{Application}}
+\subsubsection[{m\-Simulation\-View}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-View Application\-::m\-Simulation\-View\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a74a68526ce8ee51762f6d3313355b918}
+
+
+View for simulation area. 
+
+\hypertarget{class_application_a58c0745f95a42c636a1b914dac2e1ae6}{\index{Application@{Application}!m\-Stats@{m\-Stats}}
+\index{m\-Stats@{m\-Stats}!Application@{Application}}
+\subsubsection[{m\-Stats}]{\setlength{\rightskip}{0pt plus 5cm}Stats$\ast$ Application\-::m\-Stats\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a58c0745f95a42c636a1b914dac2e1ae6}
+
+
+Statistic manager. 
+
+\hypertarget{class_application_a823c6ca5d9d397554b397810c940355a}{\index{Application@{Application}!m\-Stats\-View@{m\-Stats\-View}}
+\index{m\-Stats\-View@{m\-Stats\-View}!Application@{Application}}
+\subsubsection[{m\-Stats\-View}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-View Application\-::m\-Stats\-View\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_a823c6ca5d9d397554b397810c940355a}
+
+
+View for the stats area. 
+
+\hypertarget{class_application_adee1221b74e94ac0fe94b3c99f52e03a}{\index{Application@{Application}!m\-Textures@{m\-Textures}}
+\index{m\-Textures@{m\-Textures}!Application@{Application}}
+\subsubsection[{m\-Textures}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Texture\-Pool} Application\-::m\-Textures\hspace{0.3cm}{\ttfamily [private]}}}\label{class_application_adee1221b74e94ac0fe94b3c99f52e03a}
+
+
+Pool of textures. 
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/jbesson/myfiles/cpp/svprog/partie1/src/\hyperlink{_application_8hpp}{Application.\-hpp}\item 
+/home/jbesson/myfiles/cpp/svprog/partie1/src/\hyperlink{_application_8cpp}{Application.\-cpp}\end{DoxyCompactItemize}

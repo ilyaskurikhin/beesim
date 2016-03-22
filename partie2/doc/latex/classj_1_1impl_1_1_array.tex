@@ -1,0 +1,157 @@
+\hypertarget{classj_1_1impl_1_1_array}{\section{j\-:\-:impl\-:\-:Array Class Reference}
+\label{classj_1_1impl_1_1_array}\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}}
+}
+
+
+{\ttfamily \#include $<$J\-S\-O\-N\-Impl.\-hpp$>$}
+
+Inheritance diagram for j\-:\-:impl\-:\-:Array\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classj_1_1impl_1_1_array}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classj_1_1impl_1_1_array_a8878b0cfe7cac5a0d91d9f98ecc97e96}{operator==} (\hyperlink{classj_1_1impl_1_1_array}{Array} const \&other) const 
+\item 
+\hyperlink{classj_1_1_value}{Value} \& \hyperlink{classj_1_1impl_1_1_array_ae097ea32c79bd892dadd5d8e56190906}{operator\mbox{[}$\,$\mbox{]}} (std\-::size\-\_\-t i)
+\item 
+\hyperlink{classj_1_1_value}{Value} const \& \hyperlink{classj_1_1impl_1_1_array_ac77cb712be4576f67560a71afeb120df}{operator\mbox{[}$\,$\mbox{]}} (std\-::size\-\_\-t i) const 
+\item 
+std\-::size\-\_\-t \hyperlink{classj_1_1impl_1_1_array_af1c23f03a9674fceb428b0f8255d4c98}{size} () const 
+\item 
+void \hyperlink{classj_1_1impl_1_1_array_a595fc651cf671593884893cc0635d586}{add} (\hyperlink{classj_1_1_value}{Value} const \&v)
+\item 
+void \hyperlink{classj_1_1impl_1_1_array_ac00ba23436b735aa2e29de69a86dd6fd}{remove} (std\-::size\-\_\-t i)
+\begin{DoxyCompactList}\small\item\em Remove the element at the given index. \end{DoxyCompactList}\item 
+bool \hyperlink{classj_1_1impl_1_1_array_af859820f212b3bb3bb93c6bc98e756c1}{is\-Array} () const overridefinal
+\item 
+\hyperlink{classj_1_1impl_1_1_array}{Array} \& \hyperlink{classj_1_1impl_1_1_array_afbbbbbd781af165452dedda0a7b1ce05}{as\-Array} () overridefinal
+\item 
+\hyperlink{classj_1_1impl_1_1_array}{Array} const \& \hyperlink{classj_1_1impl_1_1_array_ab4ad4d8cba1ccf25cb209b03fb50573a}{as\-Array} () const overridefinal
+\item 
+\hyperlink{classj_1_1impl_1_1_abstract_value}{Abstract\-Value} $\ast$ \hyperlink{classj_1_1impl_1_1_array_a94e77caeb46bfcfbbf138fa75076235f}{clone} () const overridefinal
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::vector$<$ std\-::unique\-\_\-ptr\\*
+$<$ \hyperlink{classj_1_1_value}{Value} $>$ $>$ \hyperlink{classj_1_1impl_1_1_array_a25b3f62f6ad82d84c3c4a12723dcc070}{m\-Data}
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classj_1_1impl_1_1_array_a595fc651cf671593884893cc0635d586}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!add@{add}}
+\index{add@{add}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{add}]{\setlength{\rightskip}{0pt plus 5cm}void j\-::impl\-::\-Array\-::add (
+\begin{DoxyParamCaption}
+\item[{{\bf Value} const \&}]{v}
+\end{DoxyParamCaption}
+)}}\label{classj_1_1impl_1_1_array_a595fc651cf671593884893cc0635d586}
+\hypertarget{classj_1_1impl_1_1_array_afbbbbbd781af165452dedda0a7b1ce05}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!as\-Array@{as\-Array}}
+\index{as\-Array@{as\-Array}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{as\-Array}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Array} \& j\-::impl\-::\-Array\-::as\-Array (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [override]}, {\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_array_afbbbbbd781af165452dedda0a7b1ce05}
+
+
+Reimplemented from \hyperlink{classj_1_1impl_1_1_abstract_value_afd41265b99a6e385f3d3cb9679d864ab}{j\-::impl\-::\-Abstract\-Value}.
+
+\hypertarget{classj_1_1impl_1_1_array_ab4ad4d8cba1ccf25cb209b03fb50573a}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!as\-Array@{as\-Array}}
+\index{as\-Array@{as\-Array}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{as\-Array}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Array} const \& j\-::impl\-::\-Array\-::as\-Array (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [override]}, {\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_array_ab4ad4d8cba1ccf25cb209b03fb50573a}
+
+
+Reimplemented from \hyperlink{classj_1_1impl_1_1_abstract_value_ab9a29818092145c446517dda40e52b46}{j\-::impl\-::\-Abstract\-Value}.
+
+\hypertarget{classj_1_1impl_1_1_array_a94e77caeb46bfcfbbf138fa75076235f}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!clone@{clone}}
+\index{clone@{clone}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{clone}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Abstract\-Value} $\ast$ j\-::impl\-::\-Array\-::clone (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [override]}, {\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_array_a94e77caeb46bfcfbbf138fa75076235f}
+
+
+Implements \hyperlink{classj_1_1impl_1_1_abstract_value_ac61a9aa4a4ecd3a309e8e274ac4b3dd2}{j\-::impl\-::\-Abstract\-Value}.
+
+\hypertarget{classj_1_1impl_1_1_array_af859820f212b3bb3bb93c6bc98e756c1}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!is\-Array@{is\-Array}}
+\index{is\-Array@{is\-Array}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{is\-Array}]{\setlength{\rightskip}{0pt plus 5cm}bool j\-::impl\-::\-Array\-::is\-Array (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [override]}, {\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_array_af859820f212b3bb3bb93c6bc98e756c1}
+
+
+Reimplemented from \hyperlink{classj_1_1impl_1_1_abstract_value_a28a367d6f2bfa668c420cc587b6daaf9}{j\-::impl\-::\-Abstract\-Value}.
+
+\hypertarget{classj_1_1impl_1_1_array_a8878b0cfe7cac5a0d91d9f98ecc97e96}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!operator==@{operator==}}
+\index{operator==@{operator==}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool j\-::impl\-::\-Array\-::operator== (
+\begin{DoxyParamCaption}
+\item[{{\bf Array} const \&}]{other}
+\end{DoxyParamCaption}
+) const}}\label{classj_1_1impl_1_1_array_a8878b0cfe7cac5a0d91d9f98ecc97e96}
+\hypertarget{classj_1_1impl_1_1_array_ae097ea32c79bd892dadd5d8e56190906}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Value} \& j\-::impl\-::\-Array\-::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{std\-::size\-\_\-t}]{i}
+\end{DoxyParamCaption}
+)}}\label{classj_1_1impl_1_1_array_ae097ea32c79bd892dadd5d8e56190906}
+\hypertarget{classj_1_1impl_1_1_array_ac77cb712be4576f67560a71afeb120df}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Value} const \& j\-::impl\-::\-Array\-::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{std\-::size\-\_\-t}]{i}
+\end{DoxyParamCaption}
+) const}}\label{classj_1_1impl_1_1_array_ac77cb712be4576f67560a71afeb120df}
+\hypertarget{classj_1_1impl_1_1_array_ac00ba23436b735aa2e29de69a86dd6fd}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!remove@{remove}}
+\index{remove@{remove}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{remove}]{\setlength{\rightskip}{0pt plus 5cm}void j\-::impl\-::\-Array\-::remove (
+\begin{DoxyParamCaption}
+\item[{std\-::size\-\_\-t}]{i}
+\end{DoxyParamCaption}
+)}}\label{classj_1_1impl_1_1_array_ac00ba23436b735aa2e29de69a86dd6fd}
+
+
+Remove the element at the given index. 
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classj_1_1_no_such_element}{No\-Such\-Element}} & when the array is empty or the index is to big\\
+\hline
+\end{DoxyExceptions}
+
+\begin{DoxyParams}{Parameters}
+{\em i} & an index \\
+\hline
+\end{DoxyParams}
+\hypertarget{classj_1_1impl_1_1_array_af1c23f03a9674fceb428b0f8255d4c98}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!size@{size}}
+\index{size@{size}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}std\-::size\-\_\-t j\-::impl\-::\-Array\-::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classj_1_1impl_1_1_array_af1c23f03a9674fceb428b0f8255d4c98}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classj_1_1impl_1_1_array_a25b3f62f6ad82d84c3c4a12723dcc070}{\index{j\-::impl\-::\-Array@{j\-::impl\-::\-Array}!m\-Data@{m\-Data}}
+\index{m\-Data@{m\-Data}!j::impl::Array@{j\-::impl\-::\-Array}}
+\subsubsection[{m\-Data}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$std\-::unique\-\_\-ptr$<${\bf Value}$>$ $>$ j\-::impl\-::\-Array\-::m\-Data\hspace{0.3cm}{\ttfamily [private]}}}\label{classj_1_1impl_1_1_array_a25b3f62f6ad82d84c3c4a12723dcc070}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/jbesson/myfiles/cpp/svprog/partie1/src/\-J\-S\-O\-N/\hyperlink{_j_s_o_n_impl_8hpp}{J\-S\-O\-N\-Impl.\-hpp}\item 
+/home/jbesson/myfiles/cpp/svprog/partie1/src/\-J\-S\-O\-N/\hyperlink{_j_s_o_n_impl_8cpp}{J\-S\-O\-N\-Impl.\-cpp}\end{DoxyCompactItemize}

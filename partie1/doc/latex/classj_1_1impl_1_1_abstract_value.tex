@@ -1,0 +1,305 @@
+\hypertarget{classj_1_1impl_1_1_abstract_value}{\section{j\-:\-:impl\-:\-:Abstract\-Value Class Reference}
+\label{classj_1_1impl_1_1_abstract_value}\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}}
+}
+
+
+{\ttfamily \#include $<$J\-S\-O\-N\-Impl.\-hpp$>$}
+
+Inheritance diagram for j\-:\-:impl\-:\-:Abstract\-Value\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.635036cm]{classj_1_1impl_1_1_abstract_value}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classj_1_1impl_1_1_abstract_value_afb1c372ec9e3d7bca148232bdded5f53}{Abstract\-Value} ()=default
+\item 
+\hyperlink{classj_1_1impl_1_1_abstract_value_abf71e5a1649fb665a962fd4233e0b2a1}{Abstract\-Value} (\hyperlink{classj_1_1impl_1_1_abstract_value}{Abstract\-Value} const \&)=delete
+\item 
+\hyperlink{classj_1_1impl_1_1_abstract_value}{Abstract\-Value} \& \hyperlink{classj_1_1impl_1_1_abstract_value_a17f2d4e648e692ff1990ef7094ed9c1f}{operator=} (\hyperlink{classj_1_1impl_1_1_abstract_value}{Abstract\-Value} const \&)=delete
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_abstract_value_a6980a016e15879d8b3eed45d0f1c10bb}{$\sim$\-Abstract\-Value} ()=default
+\item 
+virtual bool \hyperlink{classj_1_1impl_1_1_abstract_value_ac931756f6157e90b6f824fb4ae9e6ee2}{is\-String} () const 
+\item 
+virtual bool \hyperlink{classj_1_1impl_1_1_abstract_value_aab7be0e32dc9a488a9597d1fad5e84f5}{is\-Number} () const 
+\item 
+virtual bool \hyperlink{classj_1_1impl_1_1_abstract_value_a057ddc8b2d01c7a93b998cf1fab01cdd}{is\-Boolean} () const 
+\item 
+virtual bool \hyperlink{classj_1_1impl_1_1_abstract_value_a62b0b78a969ba3d8ea426e46c96c2517}{is\-Object} () const 
+\item 
+virtual bool \hyperlink{classj_1_1impl_1_1_abstract_value_a28a367d6f2bfa668c420cc587b6daaf9}{is\-Array} () const 
+\item 
+std\-::string \hyperlink{classj_1_1impl_1_1_abstract_value_a64dbe0d7a865b910d5baba01d88125ae}{get\-Type\-Name} () const 
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_string}{String} \& \hyperlink{classj_1_1impl_1_1_abstract_value_a7bbc123a13e953d51789f65d8e974aa1}{as\-String} ()
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_string}{String} const \& \hyperlink{classj_1_1impl_1_1_abstract_value_a93ea458da59b4a9cab2cc7c359792105}{as\-String} () const 
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_number}{Number} \& \hyperlink{classj_1_1impl_1_1_abstract_value_a12d6d18e7b575da29ba587865ba06a9c}{as\-Number} ()
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_number}{Number} const \& \hyperlink{classj_1_1impl_1_1_abstract_value_a7b6246ea9bae83667abdbd7f58ece885}{as\-Number} () const 
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_boolean}{Boolean} \& \hyperlink{classj_1_1impl_1_1_abstract_value_ae658e600ec0589f3a632a803fa390ad4}{as\-Boolean} ()
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_boolean}{Boolean} const \& \hyperlink{classj_1_1impl_1_1_abstract_value_a19f38830cc9b55aa22c5eb41868b56c2}{as\-Boolean} () const 
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_object}{Object} \& \hyperlink{classj_1_1impl_1_1_abstract_value_ab692a8f260c4f0cf45ef0b7cc13ade66}{as\-Object} ()
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_object}{Object} const \& \hyperlink{classj_1_1impl_1_1_abstract_value_a99b098127ffda123446643bef12f574b}{as\-Object} () const 
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_array}{Array} \& \hyperlink{classj_1_1impl_1_1_abstract_value_afd41265b99a6e385f3d3cb9679d864ab}{as\-Array} ()
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_array}{Array} const \& \hyperlink{classj_1_1impl_1_1_abstract_value_ab9a29818092145c446517dda40e52b46}{as\-Array} () const 
+\item 
+virtual \hyperlink{classj_1_1impl_1_1_abstract_value}{Abstract\-Value} $\ast$ \hyperlink{classj_1_1impl_1_1_abstract_value_ac61a9aa4a4ecd3a309e8e274ac4b3dd2}{clone} () const =0
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classj_1_1impl_1_1_abstract_value_a8844e3910ff499d9c8b96886beddbc53}{bad\-Conversion} (std\-::string const \&to) const 
+\begin{DoxyCompactList}\small\item\em Fire a \hyperlink{classj_1_1_bad_conversion}{Bad\-Conversion} exception. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classj_1_1impl_1_1_abstract_value_afb1c372ec9e3d7bca148232bdded5f53}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!Abstract\-Value@{Abstract\-Value}}
+\index{Abstract\-Value@{Abstract\-Value}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{Abstract\-Value}]{\setlength{\rightskip}{0pt plus 5cm}j\-::impl\-::\-Abstract\-Value\-::\-Abstract\-Value (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}}\label{classj_1_1impl_1_1_abstract_value_afb1c372ec9e3d7bca148232bdded5f53}
+\hypertarget{classj_1_1impl_1_1_abstract_value_abf71e5a1649fb665a962fd4233e0b2a1}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!Abstract\-Value@{Abstract\-Value}}
+\index{Abstract\-Value@{Abstract\-Value}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{Abstract\-Value}]{\setlength{\rightskip}{0pt plus 5cm}j\-::impl\-::\-Abstract\-Value\-::\-Abstract\-Value (
+\begin{DoxyParamCaption}
+\item[{{\bf Abstract\-Value} const \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}}\label{classj_1_1impl_1_1_abstract_value_abf71e5a1649fb665a962fd4233e0b2a1}
+\hypertarget{classj_1_1impl_1_1_abstract_value_a6980a016e15879d8b3eed45d0f1c10bb}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!$\sim$\-Abstract\-Value@{$\sim$\-Abstract\-Value}}
+\index{$\sim$\-Abstract\-Value@{$\sim$\-Abstract\-Value}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{$\sim$\-Abstract\-Value}]{\setlength{\rightskip}{0pt plus 5cm}virtual j\-::impl\-::\-Abstract\-Value\-::$\sim$\-Abstract\-Value (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}}\label{classj_1_1impl_1_1_abstract_value_a6980a016e15879d8b3eed45d0f1c10bb}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classj_1_1impl_1_1_abstract_value_afd41265b99a6e385f3d3cb9679d864ab}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!as\-Array@{as\-Array}}
+\index{as\-Array@{as\-Array}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{as\-Array}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Array} \& j\-::impl\-::\-Abstract\-Value\-::as\-Array (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_afd41265b99a6e385f3d3cb9679d864ab}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_array_afbbbbbd781af165452dedda0a7b1ce05}{j\-::impl\-::\-Array}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_ab9a29818092145c446517dda40e52b46}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!as\-Array@{as\-Array}}
+\index{as\-Array@{as\-Array}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{as\-Array}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Array} const \& j\-::impl\-::\-Abstract\-Value\-::as\-Array (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_ab9a29818092145c446517dda40e52b46}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_array_ab4ad4d8cba1ccf25cb209b03fb50573a}{j\-::impl\-::\-Array}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_ae658e600ec0589f3a632a803fa390ad4}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!as\-Boolean@{as\-Boolean}}
+\index{as\-Boolean@{as\-Boolean}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{as\-Boolean}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Boolean} \& j\-::impl\-::\-Abstract\-Value\-::as\-Boolean (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_ae658e600ec0589f3a632a803fa390ad4}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_boolean_a1f96b1193d7fbc41bd58fed33874f2ad}{j\-::impl\-::\-Boolean}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a19f38830cc9b55aa22c5eb41868b56c2}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!as\-Boolean@{as\-Boolean}}
+\index{as\-Boolean@{as\-Boolean}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{as\-Boolean}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Boolean} const \& j\-::impl\-::\-Abstract\-Value\-::as\-Boolean (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_a19f38830cc9b55aa22c5eb41868b56c2}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_boolean_a174f6cfb37900f17708bf4fb34d94aa6}{j\-::impl\-::\-Boolean}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a12d6d18e7b575da29ba587865ba06a9c}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!as\-Number@{as\-Number}}
+\index{as\-Number@{as\-Number}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{as\-Number}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Number} \& j\-::impl\-::\-Abstract\-Value\-::as\-Number (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_a12d6d18e7b575da29ba587865ba06a9c}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_number_a86cf66c468eb3b75072bd431d8637529}{j\-::impl\-::\-Number}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a7b6246ea9bae83667abdbd7f58ece885}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!as\-Number@{as\-Number}}
+\index{as\-Number@{as\-Number}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{as\-Number}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Number} const \& j\-::impl\-::\-Abstract\-Value\-::as\-Number (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_a7b6246ea9bae83667abdbd7f58ece885}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_number_af72a6b872008d58ecd80547c89d9d355}{j\-::impl\-::\-Number}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_ab692a8f260c4f0cf45ef0b7cc13ade66}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!as\-Object@{as\-Object}}
+\index{as\-Object@{as\-Object}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{as\-Object}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Object} \& j\-::impl\-::\-Abstract\-Value\-::as\-Object (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_ab692a8f260c4f0cf45ef0b7cc13ade66}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_object_aad1449adafdd83c980a03061ebf197c0}{j\-::impl\-::\-Object}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a99b098127ffda123446643bef12f574b}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!as\-Object@{as\-Object}}
+\index{as\-Object@{as\-Object}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{as\-Object}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Object} const \& j\-::impl\-::\-Abstract\-Value\-::as\-Object (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_a99b098127ffda123446643bef12f574b}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_object_a931f6aabe40406eb81106d0ec45ac1bd}{j\-::impl\-::\-Object}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a7bbc123a13e953d51789f65d8e974aa1}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!as\-String@{as\-String}}
+\index{as\-String@{as\-String}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{as\-String}]{\setlength{\rightskip}{0pt plus 5cm}{\bf String} \& j\-::impl\-::\-Abstract\-Value\-::as\-String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_a7bbc123a13e953d51789f65d8e974aa1}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_string_a0a9ce87a737e81d5a035fa756d7ecd60}{j\-::impl\-::\-String}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a93ea458da59b4a9cab2cc7c359792105}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!as\-String@{as\-String}}
+\index{as\-String@{as\-String}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{as\-String}]{\setlength{\rightskip}{0pt plus 5cm}{\bf String} const \& j\-::impl\-::\-Abstract\-Value\-::as\-String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_a93ea458da59b4a9cab2cc7c359792105}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_string_aaa33cceb60b66372afe727dba5621315}{j\-::impl\-::\-String}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a8844e3910ff499d9c8b96886beddbc53}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!bad\-Conversion@{bad\-Conversion}}
+\index{bad\-Conversion@{bad\-Conversion}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{bad\-Conversion}]{\setlength{\rightskip}{0pt plus 5cm}void j\-::impl\-::\-Abstract\-Value\-::bad\-Conversion (
+\begin{DoxyParamCaption}
+\item[{std\-::string const \&}]{to}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}}}\label{classj_1_1impl_1_1_abstract_value_a8844e3910ff499d9c8b96886beddbc53}
+
+
+Fire a \hyperlink{classj_1_1_bad_conversion}{Bad\-Conversion} exception. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em to} & another type\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+never returns 
+\end{DoxyReturn}
+\hypertarget{classj_1_1impl_1_1_abstract_value_ac61a9aa4a4ecd3a309e8e274ac4b3dd2}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!clone@{clone}}
+\index{clone@{clone}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{clone}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Abstract\-Value}$\ast$ j\-::impl\-::\-Abstract\-Value\-::clone (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classj_1_1impl_1_1_abstract_value_ac61a9aa4a4ecd3a309e8e274ac4b3dd2}
+
+
+Implemented in \hyperlink{classj_1_1impl_1_1_array_a94e77caeb46bfcfbbf138fa75076235f}{j\-::impl\-::\-Array}, \hyperlink{classj_1_1impl_1_1_object_a7485852de6358152ec02e2e4023e3600}{j\-::impl\-::\-Object}, \hyperlink{classj_1_1impl_1_1_boolean_a299b417212ed86a52b08e2bdbd6921f0}{j\-::impl\-::\-Boolean}, \hyperlink{classj_1_1impl_1_1_number_a4b48134b69e2fa6397477b1bd8334f68}{j\-::impl\-::\-Number}, and \hyperlink{classj_1_1impl_1_1_string_ac449f19ca6504c13249db0c035444179}{j\-::impl\-::\-String}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a64dbe0d7a865b910d5baba01d88125ae}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!get\-Type\-Name@{get\-Type\-Name}}
+\index{get\-Type\-Name@{get\-Type\-Name}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{get\-Type\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string j\-::impl\-::\-Abstract\-Value\-::get\-Type\-Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classj_1_1impl_1_1_abstract_value_a64dbe0d7a865b910d5baba01d88125ae}
+\hypertarget{classj_1_1impl_1_1_abstract_value_a28a367d6f2bfa668c420cc587b6daaf9}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!is\-Array@{is\-Array}}
+\index{is\-Array@{is\-Array}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{is\-Array}]{\setlength{\rightskip}{0pt plus 5cm}bool j\-::impl\-::\-Abstract\-Value\-::is\-Array (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_a28a367d6f2bfa668c420cc587b6daaf9}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_array_af859820f212b3bb3bb93c6bc98e756c1}{j\-::impl\-::\-Array}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a057ddc8b2d01c7a93b998cf1fab01cdd}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!is\-Boolean@{is\-Boolean}}
+\index{is\-Boolean@{is\-Boolean}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{is\-Boolean}]{\setlength{\rightskip}{0pt plus 5cm}bool j\-::impl\-::\-Abstract\-Value\-::is\-Boolean (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_a057ddc8b2d01c7a93b998cf1fab01cdd}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_boolean_ab27b415c6e0d08400ca53b5c5bcde6d2}{j\-::impl\-::\-Boolean}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_aab7be0e32dc9a488a9597d1fad5e84f5}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!is\-Number@{is\-Number}}
+\index{is\-Number@{is\-Number}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{is\-Number}]{\setlength{\rightskip}{0pt plus 5cm}bool j\-::impl\-::\-Abstract\-Value\-::is\-Number (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_aab7be0e32dc9a488a9597d1fad5e84f5}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_number_a90888fbf7797a69fae21d3f6ad68fc84}{j\-::impl\-::\-Number}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a62b0b78a969ba3d8ea426e46c96c2517}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!is\-Object@{is\-Object}}
+\index{is\-Object@{is\-Object}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{is\-Object}]{\setlength{\rightskip}{0pt plus 5cm}bool j\-::impl\-::\-Abstract\-Value\-::is\-Object (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_a62b0b78a969ba3d8ea426e46c96c2517}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_object_a1a4c68884081496e04f4a84684980871}{j\-::impl\-::\-Object}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_ac931756f6157e90b6f824fb4ae9e6ee2}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!is\-String@{is\-String}}
+\index{is\-String@{is\-String}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{is\-String}]{\setlength{\rightskip}{0pt plus 5cm}bool j\-::impl\-::\-Abstract\-Value\-::is\-String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classj_1_1impl_1_1_abstract_value_ac931756f6157e90b6f824fb4ae9e6ee2}
+
+
+Reimplemented in \hyperlink{classj_1_1impl_1_1_string_a6ca9214f2d17ebfd0375b4c24e233c89}{j\-::impl\-::\-String}.
+
+\hypertarget{classj_1_1impl_1_1_abstract_value_a17f2d4e648e692ff1990ef7094ed9c1f}{\index{j\-::impl\-::\-Abstract\-Value@{j\-::impl\-::\-Abstract\-Value}!operator=@{operator=}}
+\index{operator=@{operator=}!j::impl::AbstractValue@{j\-::impl\-::\-Abstract\-Value}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Abstract\-Value}\& j\-::impl\-::\-Abstract\-Value\-::operator= (
+\begin{DoxyParamCaption}
+\item[{{\bf Abstract\-Value} const \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}}\label{classj_1_1impl_1_1_abstract_value_a17f2d4e648e692ff1990ef7094ed9c1f}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/jbesson/myfiles/cpp/svprog/partie1/src/\-J\-S\-O\-N/\hyperlink{_j_s_o_n_impl_8hpp}{J\-S\-O\-N\-Impl.\-hpp}\item 
+/home/jbesson/myfiles/cpp/svprog/partie1/src/\-J\-S\-O\-N/\hyperlink{_j_s_o_n_impl_8cpp}{J\-S\-O\-N\-Impl.\-cpp}\end{DoxyCompactItemize}

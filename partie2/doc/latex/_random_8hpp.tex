@@ -1,0 +1,147 @@
+\hypertarget{_random_8hpp}{\section{/home/jbesson/myfiles/cpp/svprog/partie1/src/\-Random/\-Random.hpp File Reference}
+\label{_random_8hpp}\index{/home/jbesson/myfiles/cpp/svprog/partie1/src/\-Random/\-Random.\-hpp@{/home/jbesson/myfiles/cpp/svprog/partie1/src/\-Random/\-Random.\-hpp}}
+}
+{\ttfamily \#include $<$J\-S\-O\-N/\-J\-S\-O\-N.\-hpp$>$}\\*
+{\ttfamily \#include $<$Random/\-Random\-Generator.\-hpp$>$}\\*
+{\ttfamily \#include $<$Utility/\-Vec2d.\-hpp$>$}\\*
+{\ttfamily \#include $<$cassert$>$}\\*
+{\ttfamily \#include $<$type\-\_\-traits$>$}\\*
+{\ttfamily \#include $<$random$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{_random_8hpp_ac600354a5f722471da707069d9099bed}{uniform} (T min, T max)
+\begin{DoxyCompactList}\small\item\em Randomly generate a number from a uniform distribution. \end{DoxyCompactList}\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{class_vec2d}{Vec2d} \hyperlink{_random_8hpp_ac8813b65b0f67ac1cbed0b40cb3c4d70}{uniform$<$ Vec2d $>$} (\hyperlink{class_vec2d}{Vec2d} top\-Left, \hyperlink{class_vec2d}{Vec2d} bottom\-Right)
+\item 
+{\footnotesize template$<$class T $>$ }\\T const \& \hyperlink{_random_8hpp_a3932f894880c44b932adad7494f14d77}{uniform} (std\-::vector$<$ T $>$ const \&ts)
+\begin{DoxyCompactList}\small\item\em Select a random element of the given vector. \end{DoxyCompactList}\item 
+double \hyperlink{_random_8hpp_aaadf3a919b55cf6ee0682c236c42fd3b}{uniform} (\hyperlink{classj_1_1_value}{j\-::\-Value} const \&object)
+\begin{DoxyCompactList}\small\item\em Randomly generate a number from a uniform distribution. \end{DoxyCompactList}\item 
+bool \hyperlink{_random_8hpp_a2c6ef2234513f7ddd2c5dec0195a2d47}{bernoulli} (double p)
+\item 
+double \hyperlink{_random_8hpp_a79bf26cb7cb2cbd90ce802f7f4d33d50}{normal} (double mu, double sigma2)
+\begin{DoxyCompactList}\small\item\em Randomly generate a number from a normal distribution. \end{DoxyCompactList}\item 
+double \hyperlink{_random_8hpp_a9be49495ae188aba142f027c528bd293}{exponential} (double lambda)
+\begin{DoxyCompactList}\small\item\em Randomly generate a number from an exponential distribution. \end{DoxyCompactList}\item 
+double \hyperlink{_random_8hpp_a34a67056fb5049fe2820f28515404ee3}{gamma} (double alpha, double beta)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{_random_8hpp_a2c6ef2234513f7ddd2c5dec0195a2d47}{\index{Random.\-hpp@{Random.\-hpp}!bernoulli@{bernoulli}}
+\index{bernoulli@{bernoulli}!Random.hpp@{Random.\-hpp}}
+\subsubsection[{bernoulli}]{\setlength{\rightskip}{0pt plus 5cm}bool bernoulli (
+\begin{DoxyParamCaption}
+\item[{double}]{p}
+\end{DoxyParamCaption}
+)}}\label{_random_8hpp_a2c6ef2234513f7ddd2c5dec0195a2d47}
+\hypertarget{_random_8hpp_a9be49495ae188aba142f027c528bd293}{\index{Random.\-hpp@{Random.\-hpp}!exponential@{exponential}}
+\index{exponential@{exponential}!Random.hpp@{Random.\-hpp}}
+\subsubsection[{exponential}]{\setlength{\rightskip}{0pt plus 5cm}double exponential (
+\begin{DoxyParamCaption}
+\item[{double}]{lambda}
+\end{DoxyParamCaption}
+)}}\label{_random_8hpp_a9be49495ae188aba142f027c528bd293}
+
+
+Randomly generate a number from an exponential distribution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lambda} & rate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a random number fitting the exp(lambda) distribution 
+\end{DoxyReturn}
+\hypertarget{_random_8hpp_a34a67056fb5049fe2820f28515404ee3}{\index{Random.\-hpp@{Random.\-hpp}!gamma@{gamma}}
+\index{gamma@{gamma}!Random.hpp@{Random.\-hpp}}
+\subsubsection[{gamma}]{\setlength{\rightskip}{0pt plus 5cm}double gamma (
+\begin{DoxyParamCaption}
+\item[{double}]{alpha, }
+\item[{double}]{beta}
+\end{DoxyParamCaption}
+)}}\label{_random_8hpp_a34a67056fb5049fe2820f28515404ee3}
+\hypertarget{_random_8hpp_a79bf26cb7cb2cbd90ce802f7f4d33d50}{\index{Random.\-hpp@{Random.\-hpp}!normal@{normal}}
+\index{normal@{normal}!Random.hpp@{Random.\-hpp}}
+\subsubsection[{normal}]{\setlength{\rightskip}{0pt plus 5cm}double normal (
+\begin{DoxyParamCaption}
+\item[{double}]{mu, }
+\item[{double}]{sigma2}
+\end{DoxyParamCaption}
+)}}\label{_random_8hpp_a79bf26cb7cb2cbd90ce802f7f4d33d50}
+
+
+Randomly generate a number from a normal distribution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mu} & mean \\
+\hline
+{\em sigma2} & variance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a random number fitting the normal(mu, sigma2) distribution 
+\end{DoxyReturn}
+\hypertarget{_random_8hpp_ac600354a5f722471da707069d9099bed}{\index{Random.\-hpp@{Random.\-hpp}!uniform@{uniform}}
+\index{uniform@{uniform}!Random.hpp@{Random.\-hpp}}
+\subsubsection[{uniform}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T uniform (
+\begin{DoxyParamCaption}
+\item[{T}]{min, }
+\item[{T}]{max}
+\end{DoxyParamCaption}
+)}}\label{_random_8hpp_ac600354a5f722471da707069d9099bed}
+
+
+Randomly generate a number from a uniform distribution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em min} & lower bound \\
+\hline
+{\em max} & upper bound \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a random number fitting the uniform distribution 
+\end{DoxyReturn}
+\hypertarget{_random_8hpp_a3932f894880c44b932adad7494f14d77}{\index{Random.\-hpp@{Random.\-hpp}!uniform@{uniform}}
+\index{uniform@{uniform}!Random.hpp@{Random.\-hpp}}
+\subsubsection[{uniform}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ T const\& uniform (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ T $>$ const \&}]{ts}
+\end{DoxyParamCaption}
+)}}\label{_random_8hpp_a3932f894880c44b932adad7494f14d77}
+
+
+Select a random element of the given vector. 
+
+\hypertarget{_random_8hpp_aaadf3a919b55cf6ee0682c236c42fd3b}{\index{Random.\-hpp@{Random.\-hpp}!uniform@{uniform}}
+\index{uniform@{uniform}!Random.hpp@{Random.\-hpp}}
+\subsubsection[{uniform}]{\setlength{\rightskip}{0pt plus 5cm}double uniform (
+\begin{DoxyParamCaption}
+\item[{{\bf j\-::\-Value} const \&}]{object}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{_random_8hpp_aaadf3a919b55cf6ee0682c236c42fd3b}
+
+
+Randomly generate a number from a uniform distribution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & A J\-S\-O\-N object with 'min' and 'max' key associated with a number\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a random number 
+\end{DoxyReturn}
+\hypertarget{_random_8hpp_ac8813b65b0f67ac1cbed0b40cb3c4d70}{\index{Random.\-hpp@{Random.\-hpp}!uniform$<$ Vec2d $>$@{uniform$<$ Vec2d $>$}}
+\index{uniform$<$ Vec2d $>$@{uniform$<$ Vec2d $>$}!Random.hpp@{Random.\-hpp}}
+\subsubsection[{uniform$<$ Vec2d $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ {\bf Vec2d} {\bf uniform}$<$ {\bf Vec2d} $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vec2d}}]{top\-Left, }
+\item[{{\bf Vec2d}}]{bottom\-Right}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{_random_8hpp_ac8813b65b0f67ac1cbed0b40cb3c4d70}

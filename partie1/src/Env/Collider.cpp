@@ -86,7 +86,7 @@ Vec2d
 Collider::clamping() 
 {
                 
-        //permet d'obtenir largeur et hautueur du monde
+        //permet d'obtenir largeur et hauteur du monde
         auto worldSize = getApp().getWorldSize();
         auto width  = worldSize.x;
         auto height = worldSize.y;

@@ -1,0 +1,437 @@
+\hypertarget{_utility_8hpp}{\section{/home/jbesson/myfiles/cpp/svprog/partie1/src/\-Utility/\-Utility.hpp File Reference}
+\label{_utility_8hpp}\index{/home/jbesson/myfiles/cpp/svprog/partie1/src/\-Utility/\-Utility.\-hpp@{/home/jbesson/myfiles/cpp/svprog/partie1/src/\-Utility/\-Utility.\-hpp}}
+}
+{\ttfamily \#include $<$Utility/\-Vec2d.\-hpp$>$}\\*
+{\ttfamily \#include $<$S\-F\-M\-L/\-Graphics.\-hpp$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$utility$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include \char`\"{}Utility.\-tpp\char`\"{}}\\*
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{_utility_8hpp_a30b7893c76f259cc5f8a98f7ea13eae5}{Uid} = unsigned int
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_utility_8hpp_a30b7893c76f259cc5f8a98f7ea13eae5}{Uid} \hyperlink{_utility_8hpp_a5bf9168ae12661ae1a8508b73cabcfaa}{create\-Uid} ()
+\begin{DoxyCompactList}\small\item\em Create a new unique id. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{_utility_8hpp_a98d98f18bd6043e0a10a0cebbefbecb0}{to\-\_\-nice\-\_\-string} (double real)
+\begin{DoxyCompactList}\small\item\em Convert a floating point value to its string representation. \end{DoxyCompactList}\item 
+sf\-::\-Sprite \hyperlink{_utility_8hpp_a709eb3e3b66849d47468455b83f7ef90}{build\-Sprite} (\hyperlink{class_vec2d}{Vec2d} const \&position, double size, sf\-::\-Texture const \&texture)
+\begin{DoxyCompactList}\small\item\em Construct a sf\-::\-Sprite object fully set up. \end{DoxyCompactList}\item 
+sf\-::\-Text \hyperlink{_utility_8hpp_a011afc54750c26cc8f0df2bf628f6426}{build\-Text} (std\-::string const \&msg, \hyperlink{class_vec2d}{Vec2d} const \&position, sf\-::\-Font const \&font, unsigned int size, sf\-::\-Color color)
+\begin{DoxyCompactList}\small\item\em Construct a sf\-::\-Text object fully set up. \end{DoxyCompactList}\item 
+sf\-::\-Circle\-Shape \hyperlink{_utility_8hpp_a96884e7b97d6c02240d615c7ea99f557}{build\-Circle} (\hyperlink{class_vec2d}{Vec2d} const \&position, double radius, sf\-::\-Color color)
+\begin{DoxyCompactList}\small\item\em Construct a circle with a sf\-::\-Circle\-Shape. \end{DoxyCompactList}\item 
+sf\-::\-Circle\-Shape \hyperlink{_utility_8hpp_a2ac4fd67d27256472023026713010b73}{build\-Annulus} (\hyperlink{class_vec2d}{Vec2d} const \&position, double radius, sf\-::\-Color color, double thickness)
+\begin{DoxyCompactList}\small\item\em Construct an annulus with a sf\-::\-Circle\-Shape. \end{DoxyCompactList}\item 
+sf\-::\-Rectangle\-Shape \hyperlink{_utility_8hpp_a3ec6c4ea2ca936bad8ad9e2a2f73def2}{build\-Square} (\hyperlink{class_vec2d}{Vec2d} const \&position, double side, sf\-::\-Color color)
+\begin{DoxyCompactList}\small\item\em Construct a square with a sf\-::\-Rectangle\-Shape. \end{DoxyCompactList}\item 
+sf\-::\-Rectangle\-Shape \hyperlink{_utility_8hpp_a5f26910d335ee3d9c9f2bd8d5f339150}{build\-Rectangle} (\hyperlink{class_vec2d}{Vec2d} const \&top\-Left, \hyperlink{class_vec2d}{Vec2d} const \&bottom\-Right, sf\-::\-Color border\-Color, double border\-Thickness, sf\-::\-Color fill\-Color=sf\-::\-Color\-::\-Transparent)
+\begin{DoxyCompactList}\small\item\em Construct a rectable with a sf\-::\-Rectangle\-Shape. \end{DoxyCompactList}\item 
+sf\-::\-Rectangle\-Shape \hyperlink{_utility_8hpp_a936521d7ab6f9e8a3b88cdc9fd077b1b}{build\-Line} (\hyperlink{class_vec2d}{Vec2d} const \&start, \hyperlink{class_vec2d}{Vec2d} const \&end, sf\-::\-Color color, double thickness)
+\begin{DoxyCompactList}\small\item\em Construct. \end{DoxyCompactList}\item 
+bool \hyperlink{_utility_8hpp_ae910e376397f3f007c843d00732f84e4}{is\-Equal} (double x, double y)
+\begin{DoxyCompactList}\small\item\em Check if x is equal to y, with a predefined precision. \end{DoxyCompactList}\item 
+bool \hyperlink{_utility_8hpp_ae9c846cf340edf3d7f414ed01e715684}{is\-Equal} (double x, double y, double epsilon)
+\begin{DoxyCompactList}\small\item\em Check if x is equal to y with a precision of epsilon. \end{DoxyCompactList}\item 
+double \hyperlink{_utility_8hpp_ab562ec7bff4361162b7acc8fe85d9ca4}{angle\-Delta} (double a, double b)
+\begin{DoxyCompactList}\small\item\em Compute the delta between two angles in radians. \end{DoxyCompactList}\item 
+std\-::vector$<$ std\-::string $>$ \hyperlink{_utility_8hpp_a1f573fba4507b9fca83722ffd16aa300}{split} (std\-::string const \&str, char delim)
+\begin{DoxyCompactList}\small\item\em Split a string. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename C , typename D $>$ }\\void \hyperlink{_utility_8hpp_aa50fdb6551c45ec4c1528d882fe8e942}{append} (C const \&src, D \&dest)
+\begin{DoxyCompactList}\small\item\em Copy src at the end of dest. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename C , typename Input\-It $>$ }\\void \hyperlink{_utility_8hpp_ad9d996d4bee6d161a0dfde90a41330c7}{append} (Input\-It first, Input\-It last, C \&dest)
+\begin{DoxyCompactList}\small\item\em Copy \mbox{[}first, last) at the end of dest. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Map , typename F $>$ }\\void \hyperlink{_utility_8hpp_a2115da1fabaacc74dcb6c8b72e72d0e6}{map\-\_\-erase\-\_\-if} (Map \&m, F pred)
+\begin{DoxyCompactList}\small\item\em Implement erase + remove\-\_\-if equivalent for std\-::map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{_utility_8hpp_a30b7893c76f259cc5f8a98f7ea13eae5}{\index{Utility.\-hpp@{Utility.\-hpp}!Uid@{Uid}}
+\index{Uid@{Uid}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{Uid}]{\setlength{\rightskip}{0pt plus 5cm}using {\bf Uid} =  unsigned int}}\label{_utility_8hpp_a30b7893c76f259cc5f8a98f7ea13eae5}
+
+
+\subsection{Function Documentation}
+\hypertarget{_utility_8hpp_ab562ec7bff4361162b7acc8fe85d9ca4}{\index{Utility.\-hpp@{Utility.\-hpp}!angle\-Delta@{angle\-Delta}}
+\index{angle\-Delta@{angle\-Delta}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{angle\-Delta}]{\setlength{\rightskip}{0pt plus 5cm}double angle\-Delta (
+\begin{DoxyParamCaption}
+\item[{double}]{a, }
+\item[{double}]{b}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_ab562ec7bff4361162b7acc8fe85d9ca4}
+
+
+Compute the delta between two angles in radians. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & an angle (rad) \\
+\hline
+{\em b} & a second angle (rad)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+(a-\/b) in \mbox{[}-\/\-P\-I, P\-I\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_aa50fdb6551c45ec4c1528d882fe8e942}{\index{Utility.\-hpp@{Utility.\-hpp}!append@{append}}
+\index{append@{append}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{append}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename C , typename D $>$ void append (
+\begin{DoxyParamCaption}
+\item[{C const \&}]{src, }
+\item[{D \&}]{dest}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_aa50fdb6551c45ec4c1528d882fe8e942}
+
+
+Copy src at the end of dest. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & the data that should be copied \\
+\hline
+{\em dest} & the data is appended to this container\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em C} & a container like std\-::vector$<$\-T$>$ \\
+\hline
+{\em D} & another container of T. \\
+\hline
+\end{DoxyTemplParams}
+\hypertarget{_utility_8hpp_ad9d996d4bee6d161a0dfde90a41330c7}{\index{Utility.\-hpp@{Utility.\-hpp}!append@{append}}
+\index{append@{append}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{append}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename C , typename Input\-It $>$ void append (
+\begin{DoxyParamCaption}
+\item[{Input\-It}]{first, }
+\item[{Input\-It}]{last, }
+\item[{C \&}]{dest}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_ad9d996d4bee6d161a0dfde90a41330c7}
+
+
+Copy \mbox{[}first, last) at the end of dest. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em first} & start of the data \\
+\hline
+{\em last} & iterator after the last element to copy \\
+\hline
+{\em dest} & the data is appended to this container\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em C} & a container like std\-::vector$<$\-T$>$ \\
+\hline
+{\em Input\-It} & an input iterator with element type T \\
+\hline
+\end{DoxyTemplParams}
+\hypertarget{_utility_8hpp_a2ac4fd67d27256472023026713010b73}{\index{Utility.\-hpp@{Utility.\-hpp}!build\-Annulus@{build\-Annulus}}
+\index{build\-Annulus@{build\-Annulus}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{build\-Annulus}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Circle\-Shape build\-Annulus (
+\begin{DoxyParamCaption}
+\item[{{\bf Vec2d} const \&}]{position, }
+\item[{double}]{radius, }
+\item[{sf\-::\-Color}]{color, }
+\item[{double}]{thickness}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a2ac4fd67d27256472023026713010b73}
+
+
+Construct an annulus with a sf\-::\-Circle\-Shape. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & position of the centre of the ring \\
+\hline
+{\em radius} & inner radius of the ring \\
+\hline
+{\em color} & the color of the ring \\
+\hline
+{\em thickness} & width of the ring\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a shape with all these parameters set 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_a96884e7b97d6c02240d615c7ea99f557}{\index{Utility.\-hpp@{Utility.\-hpp}!build\-Circle@{build\-Circle}}
+\index{build\-Circle@{build\-Circle}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{build\-Circle}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Circle\-Shape build\-Circle (
+\begin{DoxyParamCaption}
+\item[{{\bf Vec2d} const \&}]{position, }
+\item[{double}]{radius, }
+\item[{sf\-::\-Color}]{color}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a96884e7b97d6c02240d615c7ea99f557}
+
+
+Construct a circle with a sf\-::\-Circle\-Shape. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & the position of the centre of the circle \\
+\hline
+{\em radius} & the radius of the circle \\
+\hline
+{\em color} & the color of the circle\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a shape with all these parameters set 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_a936521d7ab6f9e8a3b88cdc9fd077b1b}{\index{Utility.\-hpp@{Utility.\-hpp}!build\-Line@{build\-Line}}
+\index{build\-Line@{build\-Line}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{build\-Line}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Rectangle\-Shape build\-Line (
+\begin{DoxyParamCaption}
+\item[{{\bf Vec2d} const \&}]{start, }
+\item[{{\bf Vec2d} const \&}]{end, }
+\item[{sf\-::\-Color}]{color, }
+\item[{double}]{thickness}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a936521d7ab6f9e8a3b88cdc9fd077b1b}
+
+
+Construct. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start} & start point of the line \\
+\hline
+{\em end} & end point of the line \\
+\hline
+{\em color} & color of the line \\
+\hline
+{\em thickness} & thickness of the line\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a shape that represents a line 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_a5f26910d335ee3d9c9f2bd8d5f339150}{\index{Utility.\-hpp@{Utility.\-hpp}!build\-Rectangle@{build\-Rectangle}}
+\index{build\-Rectangle@{build\-Rectangle}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{build\-Rectangle}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Rectangle\-Shape build\-Rectangle (
+\begin{DoxyParamCaption}
+\item[{{\bf Vec2d} const \&}]{top\-Left, }
+\item[{{\bf Vec2d} const \&}]{bottom\-Right, }
+\item[{sf\-::\-Color}]{border\-Color, }
+\item[{double}]{border\-Thickness, }
+\item[{sf\-::\-Color}]{fill\-Color = {\ttfamily sf\-:\-:Color\-:\-:Transparent}}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a5f26910d335ee3d9c9f2bd8d5f339150}
+
+
+Construct a rectable with a sf\-::\-Rectangle\-Shape. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em top\-Left} & the top left corner \\
+\hline
+{\em bottom\-Right} & the bottom right corner \\
+\hline
+{\em border\-Color} & color for the border \\
+\hline
+{\em border\-Thickness} & thickness of the border \\
+\hline
+{\em fill\-Color} & the color of the inside of the rectangle\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a shape with all these parameters set 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_a709eb3e3b66849d47468455b83f7ef90}{\index{Utility.\-hpp@{Utility.\-hpp}!build\-Sprite@{build\-Sprite}}
+\index{build\-Sprite@{build\-Sprite}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{build\-Sprite}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Sprite build\-Sprite (
+\begin{DoxyParamCaption}
+\item[{{\bf Vec2d} const \&}]{position, }
+\item[{double}]{size, }
+\item[{sf\-::\-Texture const \&}]{texture}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a709eb3e3b66849d47468455b83f7ef90}
+
+
+Construct a sf\-::\-Sprite object fully set up. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & the position of the centre of the sprite \\
+\hline
+{\em size} & size of the side \\
+\hline
+{\em texture} & the texture\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a sprite with all these parameters set 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_a3ec6c4ea2ca936bad8ad9e2a2f73def2}{\index{Utility.\-hpp@{Utility.\-hpp}!build\-Square@{build\-Square}}
+\index{build\-Square@{build\-Square}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{build\-Square}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Rectangle\-Shape build\-Square (
+\begin{DoxyParamCaption}
+\item[{{\bf Vec2d} const \&}]{position, }
+\item[{double}]{side, }
+\item[{sf\-::\-Color}]{color}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a3ec6c4ea2ca936bad8ad9e2a2f73def2}
+
+
+Construct a square with a sf\-::\-Rectangle\-Shape. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & the centre of the square \\
+\hline
+{\em side} & size of a side of the square \\
+\hline
+{\em color} & the color of the square\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a shape with all these parameters set 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_a011afc54750c26cc8f0df2bf628f6426}{\index{Utility.\-hpp@{Utility.\-hpp}!build\-Text@{build\-Text}}
+\index{build\-Text@{build\-Text}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{build\-Text}]{\setlength{\rightskip}{0pt plus 5cm}sf\-::\-Text build\-Text (
+\begin{DoxyParamCaption}
+\item[{std\-::string const \&}]{msg, }
+\item[{{\bf Vec2d} const \&}]{position, }
+\item[{sf\-::\-Font const \&}]{font, }
+\item[{unsigned int}]{size, }
+\item[{sf\-::\-Color}]{color}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a011afc54750c26cc8f0df2bf628f6426}
+
+
+Construct a sf\-::\-Text object fully set up. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & text to display \\
+\hline
+{\em position} & centre position of the text \\
+\hline
+{\em font} & the font to use \\
+\hline
+{\em size} & the font size to use \\
+\hline
+{\em color} & the color of the text\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a text with all these parameters set 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_a5bf9168ae12661ae1a8508b73cabcfaa}{\index{Utility.\-hpp@{Utility.\-hpp}!create\-Uid@{create\-Uid}}
+\index{create\-Uid@{create\-Uid}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{create\-Uid}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Uid} create\-Uid (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a5bf9168ae12661ae1a8508b73cabcfaa}
+
+
+Create a new unique id. 
+
+\begin{DoxyReturn}{Returns}
+a new unique id. 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_ae910e376397f3f007c843d00732f84e4}{\index{Utility.\-hpp@{Utility.\-hpp}!is\-Equal@{is\-Equal}}
+\index{is\-Equal@{is\-Equal}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{is\-Equal}]{\setlength{\rightskip}{0pt plus 5cm}bool is\-Equal (
+\begin{DoxyParamCaption}
+\item[{double}]{x, }
+\item[{double}]{y}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_ae910e376397f3f007c843d00732f84e4}
+
+
+Check if x is equal to y, with a predefined precision. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & a real number \\
+\hline
+{\em y} & another real number\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true is the difference between x and y is less than a small epsilon 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_ae9c846cf340edf3d7f414ed01e715684}{\index{Utility.\-hpp@{Utility.\-hpp}!is\-Equal@{is\-Equal}}
+\index{is\-Equal@{is\-Equal}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{is\-Equal}]{\setlength{\rightskip}{0pt plus 5cm}bool is\-Equal (
+\begin{DoxyParamCaption}
+\item[{double}]{x, }
+\item[{double}]{y, }
+\item[{double}]{epsilon}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_ae9c846cf340edf3d7f414ed01e715684}
+
+
+Check if x is equal to y with a precision of epsilon. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & a real number \\
+\hline
+{\em y} & another real number \\
+\hline
+{\em epsilon} & precision of the equality test\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the difference between x and y is less than the given epsilon 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_a2115da1fabaacc74dcb6c8b72e72d0e6}{\index{Utility.\-hpp@{Utility.\-hpp}!map\-\_\-erase\-\_\-if@{map\-\_\-erase\-\_\-if}}
+\index{map\-\_\-erase\-\_\-if@{map\-\_\-erase\-\_\-if}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{map\-\_\-erase\-\_\-if}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Map , typename F $>$ void map\-\_\-erase\-\_\-if (
+\begin{DoxyParamCaption}
+\item[{Map \&}]{m, }
+\item[{F}]{pred}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a2115da1fabaacc74dcb6c8b72e72d0e6}
+
+
+Implement erase + remove\-\_\-if equivalent for std\-::map. 
+
+\hyperlink{}{http\-://stackoverflow.\-com/a/7008476}\hypertarget{_utility_8hpp_a1f573fba4507b9fca83722ffd16aa300}{\index{Utility.\-hpp@{Utility.\-hpp}!split@{split}}
+\index{split@{split}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{split}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$std\-::string$>$ split (
+\begin{DoxyParamCaption}
+\item[{std\-::string const \&}]{str, }
+\item[{char}]{delim}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a1f573fba4507b9fca83722ffd16aa300}
+
+
+Split a string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & string to split \\
+\hline
+{\em delim} & char delimiter\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an array of the tokens 
+\end{DoxyReturn}
+\hypertarget{_utility_8hpp_a98d98f18bd6043e0a10a0cebbefbecb0}{\index{Utility.\-hpp@{Utility.\-hpp}!to\-\_\-nice\-\_\-string@{to\-\_\-nice\-\_\-string}}
+\index{to\-\_\-nice\-\_\-string@{to\-\_\-nice\-\_\-string}!Utility.hpp@{Utility.\-hpp}}
+\subsubsection[{to\-\_\-nice\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string to\-\_\-nice\-\_\-string (
+\begin{DoxyParamCaption}
+\item[{double}]{real}
+\end{DoxyParamCaption}
+)}}\label{_utility_8hpp_a98d98f18bd6043e0a10a0cebbefbecb0}
+
+
+Convert a floating point value to its string representation. 
+
+\begin{DoxyNote}{Note}
+Unlike std\-::to\-\_\-string, this function produces a string in a nicer format; i.\-e. using std\-::defaultfloat. 
+\end{DoxyNote}

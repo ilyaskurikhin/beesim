@@ -1,0 +1,101 @@
+\hypertarget{class_world_test}{\section{World\-Test Class Reference}
+\label{class_world_test}\index{World\-Test@{World\-Test}}
+}
+Inheritance diagram for World\-Test\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_world_test}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_world_test_aef2eb702d4f558c90308f8cfc0abb128}{on\-Event} (sf\-::\-Event event, sf\-::\-Render\-Window \&window) overridefinal
+\begin{DoxyCompactList}\small\item\em Subclass can override this method to handle events. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_world_test_a2dbf8fe3f7de226b01cd284d8b44816e}{on\-Draw} (sf\-::\-Render\-Target \&target) overridefinal
+\begin{DoxyCompactList}\small\item\em Subclass can override this method to draw their data in the simulation view. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_world}{World} \hyperlink{class_world_test_aa61038592e5857eb9b71d458ccb62cc2}{m\-World}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Test world procedural generation.
+
+Initially the world is {\itshape not} initialised. One can load a world from a file, or reset the world to initialised the seed and then manually generate the world, or generate a new world using the application settings.
+
+Actions\-:
+
+
+\begin{DoxyItemize}
+\item I\-: load world from file
+\item O\-: save world to file
+\item R\-: reset world -- initialise seeds
+\item Shift+\-R\-: reset world -- generate a new world using cfg settings
+\item Space\-: after seeds are initialised, apply one step of the p.\-g. algorithm
+\item Shift+\-Space\-: idem, but apply 100 steps
+\item S\-: after seeds are initialised, apply one smoothing pass
+\item Shift+\-S\-: idem, but apply 10 smoothing passes 
+\end{DoxyItemize}
+
+\subsection{Member Function Documentation}
+\hypertarget{class_world_test_a2dbf8fe3f7de226b01cd284d8b44816e}{\index{World\-Test@{World\-Test}!on\-Draw@{on\-Draw}}
+\index{on\-Draw@{on\-Draw}!WorldTest@{World\-Test}}
+\subsubsection[{on\-Draw}]{\setlength{\rightskip}{0pt plus 5cm}void World\-Test\-::on\-Draw (
+\begin{DoxyParamCaption}
+\item[{sf\-::\-Render\-Target \&}]{target}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [override]}, {\ttfamily [virtual]}}}\label{class_world_test_a2dbf8fe3f7de226b01cd284d8b44816e}
+
+
+Subclass can override this method to draw their data in the simulation view. 
+
+The default implementation does nothing. However, the env is always displayed first.
+
+
+\begin{DoxyParams}{Parameters}
+{\em target} & a render target \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_application_ac35bfbd486eb47fdd2b5d731962c6724}{Application}.
+
+\hypertarget{class_world_test_aef2eb702d4f558c90308f8cfc0abb128}{\index{World\-Test@{World\-Test}!on\-Event@{on\-Event}}
+\index{on\-Event@{on\-Event}!WorldTest@{World\-Test}}
+\subsubsection[{on\-Event}]{\setlength{\rightskip}{0pt plus 5cm}void World\-Test\-::on\-Event (
+\begin{DoxyParamCaption}
+\item[{sf\-::\-Event}]{event, }
+\item[{sf\-::\-Render\-Window \&}]{window}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [override]}, {\ttfamily [virtual]}}}\label{class_world_test_aef2eb702d4f558c90308f8cfc0abb128}
+
+
+Subclass can override this method to handle events. 
+
+The default implementation does nothing.
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & an event \\
+\hline
+{\em window} & the window that emitted the event \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_application_ae6ea28bafe249f7005aa143f36651342}{Application}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_world_test_aa61038592e5857eb9b71d458ccb62cc2}{\index{World\-Test@{World\-Test}!m\-World@{m\-World}}
+\index{m\-World@{m\-World}!WorldTest@{World\-Test}}
+\subsubsection[{m\-World}]{\setlength{\rightskip}{0pt plus 5cm}{\bf World} World\-Test\-::m\-World\hspace{0.3cm}{\ttfamily [private]}}}\label{class_world_test_aa61038592e5857eb9b71d458ccb62cc2}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/home/jbesson/myfiles/cpp/svprog/partie1/src/\-Tests/\-Graphical\-Tests/\hyperlink{_world_test_8cpp}{World\-Test.\-cpp}\end{DoxyCompactItemize}
