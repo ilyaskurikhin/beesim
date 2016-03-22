@@ -1,7 +1,14 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include <vector>
+#include <SFML/Graphics.hpp>
+
+
+
 enum class Kind : short { Grass, Water, Rock };
+
+
 
 class World
 {
@@ -9,18 +16,19 @@ class World
         
         // 
         void
-        reloadCacheStructure()
-        {
+	reloadConfig();
+        
 
-        }
+
+	void
+        reloadCacheStructure();
 
 
 
         void
-        draw(sf::RenderTarget& target)
-        {
+        drawOn(sf::RenderTarget& target);
 
-        }
+
     private:
         int nbColumns_;
         float cellSize_;
