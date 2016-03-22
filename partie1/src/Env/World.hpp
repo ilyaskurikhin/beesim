@@ -14,33 +14,33 @@ class World
 {
     public:
         
+        void
+        reloadConfig();
         
-		void
-		reloadConfig();
-        
-		void
-		reloadCacheStructure();
+        void
+        reloadCacheStructure();
 
         void
         drawOn(sf::RenderTarget& target);
 
-		void 
-		updateCache();
-		
-		void 
-		reset();
-		
+        void 
+        updateCache();
+                
+        void 
+        reset(bool regenerate );
+                
 
     private:
+        
         int numberColumns_;
         float cellSize_;
         std::vector<Kind> cells_;
-        
+
         sf::RenderTexture renderingCache_;
         std::vector<sf::Vertex> grassVertexes_;
         std::vector<sf::Vertex> waterVertexes_;
         std::vector<sf::Vertex> rockVertexes_;
-        
+
         bool regenerate_;
 };
 #endif
