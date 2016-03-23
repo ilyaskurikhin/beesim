@@ -13,14 +13,12 @@ World::reloadConfig()
 {
 	
 	// numberbCulumns : number of cells in a row
-	numberColumns_= getAppConfig()["simulation"]["world"]["cells"].toDouble();
+	numberColumns_= getAppConfig()["simulation"]["world"]["cells"].toInt();
 	// cellSize : size of a cell in 'pixels'
 	cellSize_= getAppConfig()["simulation"]["world"]["size"].toDouble() / numberColumns_;
+
 	// make a vector representing a square grid of Rock
-        size_t numberCells(numberColumns_ * numberColumns_);
-	for (size_t i(0); i < numberCells; ++i) {
-		cells_.push_back(Kind::Rock);
-	}
+	cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Rock);
 }
 
 
