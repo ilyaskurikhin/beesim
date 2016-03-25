@@ -14,6 +14,9 @@ class World
 {
     public:
         
+        j::Value
+		simulationWorld();
+		
         void
         reloadConfig();
         
@@ -27,8 +30,10 @@ class World
         updateCache();
                 
         void 
-        reset(bool regenerate );
-                
+        reset(bool regenerate);
+        
+        void
+        loadFromFile();
 
     private:
         
@@ -43,4 +48,10 @@ class World
 
         bool regenerate_;
 };
+
+//surcharge de l'opérateur << permettant de retourner le std::runtime_error ayant été lancé
+
+
+
+
 #endif
