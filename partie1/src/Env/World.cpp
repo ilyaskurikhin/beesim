@@ -39,6 +39,7 @@ World::reloadConfig()
 	cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Rock);
 	
 	*/
+	cout << "working";
 	
 	loadFromFile();
 	
@@ -61,7 +62,7 @@ World::reloadCacheStructure()
 void
 World::updateCache() 
 {
-	
+
 	for (size_t i(0); i < numberColumns_; ++i) {
 		for (size_t j(0); j < numberColumns_; ++j) {
 			
@@ -72,6 +73,7 @@ World::updateCache()
 				waterVertexes_[Indexes[i]].color.a=0;
 				grassVertexes_[Indexes[i]].color.a=0;
 				rockVertexes_[Indexes[i]].color.a=255;
+
 				}
 			}
 			else if (cells_[j + i * numberColumns_] == Kind::Grass) {
@@ -139,19 +141,16 @@ World::drawOn(sf::RenderTarget& target)
 void
 World::loadFromFile()
 {	
+		cout << "Hello" <<endl;
+
 	string fileName(getApp().getResPath() + simulationWorld()["file"].toString());
 	ifstream entree(fileName.c_str());
 	ofstream sortie;
-	try 
+		
+	try
 	{
 	if (entree.fail()) throw std::runtime_error ("Pas de fichier correspondant");
-	}
-	
-	catch (std::runtime_error error) 
-	{
-	std::cerr << error;
-	}
-	
+
 	string numberColumns;
 	string cellSize;
 	short var;
@@ -160,7 +159,7 @@ World::loadFromFile()
 	//le nombre de colonnes vaut cette valeur convertie en entier
 	numberColumns_ = stoi(numberColumns);
 	entree >> std::ws;
-	
+
 	entree >> cellSize;
 	//la taille de la cellule vaut cette valeur convertie en Float
 	cellSize_= stof(cellSize);
@@ -169,14 +168,21 @@ World::loadFromFile()
 	for (size_t i(0); i <= numberColumns_; ++i) {
 	// var est de type short
 	entree >> var;
+	
 	//il faut convertir var en  Kind
 	Kind values = static_cast<Kind>(var);
-	cells_[i]= values;
+	cells_.push_back(values);
 	entree >> std::ws;
+	}
+	}
+	
+	catch (std::runtime_error error) 
+	{
+
+	std::cerr << error;
 	}
 	
 	entree.close();	
-	
 } 
 
 
