@@ -95,7 +95,7 @@ World::updateCache()
 	}
 	
 	renderingCache_.clear();
-	
+	cout <<"Hello2";
 	sf::RenderStates rs1;
 	rs1.texture = &getAppTexture(simulationWorld()["textures"]["rock"].toString()); // ici pour la texture liée à la roche
 	renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), sf::Quads, rs1);
@@ -105,14 +105,14 @@ World::updateCache()
 
 	sf::RenderStates rs2;
 	rs2.texture = &getAppTexture(simulationWorld()["textures"]["water"].toString()); // ici pour la texture liée à l'eau
-	renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), sf::Quads, rs2);
+	renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(), sf::Quads, rs2);
 	renderingCache_.display();
 	
 	renderingCache_.clear();
 
 	sf::RenderStates rs3;
 	rs3.texture = &getAppTexture(simulationWorld()["textures"]["grass"].toString()); // ici pour la texture liée à l'herbe
-	renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), sf::Quads, rs3);
+	renderingCache_.draw(grassVertexes_.data(), grassVertexes_.size(), sf::Quads, rs3);
 	renderingCache_.display();	
 	
 }
@@ -141,7 +141,7 @@ World::drawOn(sf::RenderTarget& target)
 void
 World::loadFromFile()
 {	
-		cout << "Hello" <<endl;
+	cout << "Hello" <<endl;
 
 	string fileName(getApp().getResPath() + simulationWorld()["file"].toString());
 	ifstream entree(fileName.c_str());
