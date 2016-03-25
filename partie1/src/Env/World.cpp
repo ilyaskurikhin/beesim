@@ -39,7 +39,6 @@ World::reloadConfig()
 	cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Rock);
 	
 	*/
-	cout << "working";
 	
 	loadFromFile();
 	
@@ -70,6 +69,8 @@ World::updateCache()
 			
 			if (cells_[j + i * numberColumns_] == Kind::Rock) {
 				for (size_t i(0); i<=Indexes.size(); ++i) {
+						cout <<"Hello2";
+
 				waterVertexes_[Indexes[i]].color.a=0;
 				grassVertexes_[Indexes[i]].color.a=0;
 				rockVertexes_[Indexes[i]].color.a=255;
@@ -95,21 +96,16 @@ World::updateCache()
 	}
 	
 	renderingCache_.clear();
-	cout <<"Hello2";
 	sf::RenderStates rs1;
 	rs1.texture = &getAppTexture(simulationWorld()["textures"]["rock"].toString()); // ici pour la texture liée à la roche
 	renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), sf::Quads, rs1);
 	renderingCache_.display();
 	
-	renderingCache_.clear();
-
 	sf::RenderStates rs2;
 	rs2.texture = &getAppTexture(simulationWorld()["textures"]["water"].toString()); // ici pour la texture liée à l'eau
 	renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(), sf::Quads, rs2);
 	renderingCache_.display();
 	
-	renderingCache_.clear();
-
 	sf::RenderStates rs3;
 	rs3.texture = &getAppTexture(simulationWorld()["textures"]["grass"].toString()); // ici pour la texture liée à l'herbe
 	renderingCache_.draw(grassVertexes_.data(), grassVertexes_.size(), sf::Quads, rs3);
@@ -141,7 +137,6 @@ World::drawOn(sf::RenderTarget& target)
 void
 World::loadFromFile()
 {	
-	cout << "Hello" <<endl;
 
 	string fileName(getApp().getResPath() + simulationWorld()["file"].toString());
 	ifstream entree(fileName.c_str());
