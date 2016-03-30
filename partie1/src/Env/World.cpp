@@ -13,12 +13,16 @@ using namespace std;
 
 
 std::ostream&
-operator<< (std::ostream& oss, const std::runtime_error& error);
+operator<< (std::ostream& oss, const std::runtime_error& error)
+{
+    oss << error.what();
+    return oss;
+}
 
 
 
 j::Value
-simulationWorld()
+World::simulationWorld()
 {
 	return getAppConfig()["simulation"]["world"];
 }
@@ -180,11 +184,4 @@ World::loadFromFile()
 	entree.close();	
 } 
 
-
-
-std::ostream&
-operator<< (std::ostream& oss, const std::runtime_error& error)
-{
-	oss << error;
-}
 

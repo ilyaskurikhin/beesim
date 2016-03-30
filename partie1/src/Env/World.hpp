@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <JSON/JSON.hpp>
 
 
 
@@ -15,7 +16,7 @@ class World
     public:
         
         j::Value
-		simulationWorld();
+        simulationWorld();
 		
         void
         reloadConfig();
@@ -37,7 +38,7 @@ class World
 
     private:
         
-        int numberColumns_;
+        size_t numberColumns_;
         float cellSize_;
         std::vector<Kind> cells_;
 
@@ -50,7 +51,8 @@ class World
 };
 
 //surcharge de l'opérateur << permettant de retourner le std::runtime_error ayant été lancé
-
+std::ostream&
+operator<< (std::ostream& oss, const std::runtime_error& error);
 
 
 
