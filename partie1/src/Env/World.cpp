@@ -15,8 +15,6 @@ using namespace std;
 std::ostream&
 operator<< (std::ostream& oss, const std::runtime_error& error);
 
-
-
 j::Value
 simulationWorld()
 {
@@ -28,7 +26,7 @@ simulationWorld()
 void
 World::reloadConfig() 
 {
-	/*
+	
 	// numberbCulumns : number of cells in a row
 	numberColumns_= simulationWorld()["cells"].toInt();
 	
@@ -38,9 +36,6 @@ World::reloadConfig()
 	// make a vector representing a square grid of Rock
 	cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Rock);
 	
-	*/
-	
-	loadFromFile();
 	
 }
 
@@ -65,30 +60,27 @@ World::updateCache()
 	for (size_t i(0); i < numberColumns_; ++i) {
 		for (size_t j(0); j < numberColumns_; ++j) {
 			
-			vector <long unsigned int> Indexes = indexesForCellVertexes(i, j, numberColumns_);
+			vector <size_t> indexes = indexesForCellVertexes(i, j, cellSize_);
 			
-			if (cells_[j + i * numberColumns_] == Kind::Rock) {
-				for (size_t i(0); i<=Indexes.size(); ++i) {
-						cout <<"Hello2";
-
-				waterVertexes_[Indexes[i]].color.a=0;
-				grassVertexes_[Indexes[i]].color.a=0;
-				rockVertexes_[Indexes[i]].color.a=255;
-
+			if (cells_[(i * numberColumns_) + j] == Kind::Rock) {
+				for (size_t k(0); k<=indexes.size(); ++k) {
+				waterVertexes_[indexes[k]].color.a=0;
+				grassVertexes_[indexes[k]].color.a=0;
+				rockVertexes_[indexes[k]].color.a=255;
 				}
 			}
-			else if (cells_[j + i * numberColumns_] == Kind::Grass) {
-				for (size_t i(0); i<=Indexes.size(); ++i) {
-				waterVertexes_[Indexes[i]].color.a=0;
-				grassVertexes_[Indexes[i]].color.a=255;
-				rockVertexes_[Indexes[i]].color.a=0;
+			else if (cells_[(i * numberColumns_) + j] == Kind::Grass) {
+				for (size_t k(0); k<=indexes.size(); ++k) {
+				waterVertexes_[indexes[k]].color.a=0;
+				grassVertexes_[indexes[k]].color.a=255;
+				rockVertexes_[indexes[k]].color.a=0;
 				}
 			} 
-			else if (cells_[j + i * numberColumns_] == Kind::Water) {
-				for (size_t i(0); i<=Indexes.size(); ++i) {
-				waterVertexes_[Indexes[i]].color.a=255;
-				grassVertexes_[Indexes[i]].color.a=0;
-				rockVertexes_[Indexes[i]].color.a=0;
+			else if (cells_[(i * numberColumns_) + j] == Kind::Water) {
+				for (size_t k(0); k<=indexes.size(); ++k) {
+				waterVertexes_[indexes[k]].color.a=255;
+				grassVertexes_[indexes[k]].color.a=0;
+				rockVertexes_[indexes[k]].color.a=0;
 				}
 			}
 			
@@ -99,12 +91,10 @@ World::updateCache()
 	sf::RenderStates rs1;
 	rs1.texture = &getAppTexture(simulationWorld()["textures"]["rock"].toString()); // ici pour la texture liée à la roche
 	renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), sf::Quads, rs1);
-	renderingCache_.display();
 	
 	sf::RenderStates rs2;
 	rs2.texture = &getAppTexture(simulationWorld()["textures"]["water"].toString()); // ici pour la texture liée à l'eau
 	renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(), sf::Quads, rs2);
-	renderingCache_.display();
 	
 	sf::RenderStates rs3;
 	rs3.texture = &getAppTexture(simulationWorld()["textures"]["grass"].toString()); // ici pour la texture liée à l'herbe
@@ -137,7 +127,9 @@ World::drawOn(sf::RenderTarget& target)
 void
 World::loadFromFile()
 {	
-
+	
+	reloadConfig();
+	
 	string fileName(getApp().getResPath() + simulationWorld()["file"].toString());
 	ifstream entree(fileName.c_str());
 	ofstream sortie;
@@ -159,26 +151,40 @@ World::loadFromFile()
 	//la taille de la cellule vaut cette valeur convertie en Float
 	cellSize_= stof(cellSize);
 	entree >> std::ws;
+
+	double j(0);
 	
 	for (size_t i(0); i <= numberColumns_; ++i) {
-	// var est de type short
-	entree >> var;
+
+		do {
+			// var est de type short
+			entree >> var;
 	
-	//il faut convertir var en  Kind
-	Kind values = static_cast<Kind>(var);
-	cells_.push_back(values);
-	entree >> std::ws;
+			//il faut convertir var en  Kind
+			Kind value = static_cast<Kind>(var);
+			cells_[j]= value;
+			
+			entree >> std::ws;
+			++j;
+	
+		} while (j!= cellSize_);
+	
 	}
-	}
+	
+	} //fin du try
 	
 	catch (std::runtime_error error) 
 	{
-
 	std::cerr << error;
 	}
 	
 	entree.close();	
-} 
+	
+	reloadCacheStructure();
+	
+	updateCache();
+	
+	} 
 
 
 
@@ -187,4 +193,6 @@ operator<< (std::ostream& oss, const std::runtime_error& error)
 {
 	oss << error;
 }
+
+
 
