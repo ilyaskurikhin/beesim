@@ -7,6 +7,8 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+#include <Random/Random.hpp>
+#include <string>
 
 using namespace std;
 
@@ -32,6 +34,10 @@ World::reloadConfig()
 
 	// make a vector representing a square grid of Rock
 	cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Water);
+	
+        nbWaterSeeds_ = simulationWorld()["seeds"]["water"];
+	nbGrassSeeds_ = simulationWorld()["seeds"]["grass"];
+	seeds_ = vector<Seed>tmp(nbGrassSeeds_*nbWaterSeeds_);
 }
 
 
@@ -108,6 +114,18 @@ World::reset(bool regenerate)
 {
 	reloadConfig();
 	reloadCacheStructure();
+	for (size_t i(0); i<seeds_.size(); ++i) {
+	seeds_[i].coords_(uniform(0, numberColumns_-1, uniform(0, numberColumns_ -1);
+	}
+	
+	for (size_t j(0); j<numberColumns_; ++j) {
+		for (size_t k(0); k<numberColumns_; ++k) {
+			if (cells_[(j * numberColumns_) + k] != Kind::Water) {
+				 cells_[(j * numberColumns_) + k] = seeds_[(j * numberColumns_) + k].Seedtexture_();
+			}
+		}
+	}
+	
 	updateCache();
 }	
 
