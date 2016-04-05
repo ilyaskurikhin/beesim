@@ -50,10 +50,18 @@ class World
         bool regenerate_;
 };
 
+<<<<<<< HEAD
 //surcharge de l'opérateur << permettant de retourner le std::runtime_error ayant été lancé
 std::ostream&
 operator<< (std::ostream& oss, const std::runtime_error& error);
 
 
+||||||| merged common ancestors
+//surcharge de l'opérateur << permettant de retourner le std::runtime_error ayant été lancé
+
+
+
+=======
+>>>>>>> juliadev
 
 #endif

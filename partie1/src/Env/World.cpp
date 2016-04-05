@@ -12,15 +12,6 @@ using namespace std;
 
 
 
-std::ostream&
-operator<< (std::ostream& oss, const std::runtime_error& error)
-{
-    oss << error.what();
-    return oss;
-}
-
-
-
 j::Value
 World::simulationWorld()
 {
@@ -32,7 +23,7 @@ World::simulationWorld()
 void
 World::reloadConfig() 
 {
-	/*
+	
 	// numberbCulumns : number of cells in a row
 	numberColumns_= simulationWorld()["cells"].toInt();
 	
@@ -42,9 +33,6 @@ World::reloadConfig()
 	// make a vector representing a square grid of Rock
 	cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Rock);
 	
-	*/
-	
-	loadFromFile();
 	
 }
 
@@ -57,7 +45,7 @@ World::reloadCacheStructure()
 	waterVertexes_ = grassVertexes_;
 	rockVertexes_ = grassVertexes_;
 	
-    renderingCache_.create(numberColumns_* cellSize_, numberColumns_ * cellSize_);
+        renderingCache_.create(numberColumns_* cellSize_, numberColumns_ * cellSize_);
 }
 
 
@@ -65,56 +53,54 @@ World::reloadCacheStructure()
 void
 World::updateCache() 
 {
-
+	sf::RenderStates rs1;
+	rs1.texture = &getAppTexture(simulationWorld()["textures"]["rock"].toString()); 
+	sf::RenderStates rs3;
+	rs3.texture = &getAppTexture(simulationWorld()["textures"]["grass"].toString()); 
+	sf::RenderStates rs2;
+	rs2.texture = &getAppTexture(simulationWorld()["textures"]["water"].toString());
+	
 	for (size_t i(0); i < numberColumns_; ++i) {
 		for (size_t j(0); j < numberColumns_; ++j) {
 			
-			vector <long unsigned int> Indexes = indexesForCellVertexes(i, j, numberColumns_);
+			vector <size_t> indexes = indexesForCellVertexes(i, j, cellSize_);
 			
-			if (cells_[j + i * numberColumns_] == Kind::Rock) {
-				for (size_t i(0); i<=Indexes.size(); ++i) {
-						cout <<"Hello2";
-
-				waterVertexes_[Indexes[i]].color.a=0;
-				grassVertexes_[Indexes[i]].color.a=0;
-				rockVertexes_[Indexes[i]].color.a=255;
-
+			if (cells_[(i * numberColumns_) + j] == Kind::Rock) {
+				for (size_t k(0); k<4; ++k) {
+				waterVertexes_[indexes[k]].color.a=0;
+				grassVertexes_[indexes[k]].color.a=0;
+				rockVertexes_[indexes[k]].color.a=255;
 				}
 			}
-			else if (cells_[j + i * numberColumns_] == Kind::Grass) {
-				for (size_t i(0); i<=Indexes.size(); ++i) {
-				waterVertexes_[Indexes[i]].color.a=0;
-				grassVertexes_[Indexes[i]].color.a=255;
-				rockVertexes_[Indexes[i]].color.a=0;
+			else if (cells_[(i * numberColumns_) + j] == Kind::Grass) {
+				for (size_t k(0); k<4; ++k) {
+				waterVertexes_[indexes[k]].color.a=0;
+				grassVertexes_[indexes[k]].color.a=255;
+				rockVertexes_[indexes[k]].color.a=0;
 				}
 			} 
-			else if (cells_[j + i * numberColumns_] == Kind::Water) {
-				for (size_t i(0); i<=Indexes.size(); ++i) {
-				waterVertexes_[Indexes[i]].color.a=255;
-				grassVertexes_[Indexes[i]].color.a=0;
-				rockVertexes_[Indexes[i]].color.a=0;
+			else if (cells_[(i * numberColumns_) + j] == Kind::Water) {
+				for (size_t k(0); k<4; ++k) {
+				waterVertexes_[indexes[k]].color.a=255;
+				grassVertexes_[indexes[k]].color.a=0;
+				rockVertexes_[indexes[k]].color.a=0;
 				}
 			}
-			
 		}
 	}
 	
 	renderingCache_.clear();
-	sf::RenderStates rs1;
-	rs1.texture = &getAppTexture(simulationWorld()["textures"]["rock"].toString()); // ici pour la texture liée à la roche
+	// ici pour la texture liée à la roche
 	renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), sf::Quads, rs1);
-	renderingCache_.display();
 	
-	sf::RenderStates rs2;
-	rs2.texture = &getAppTexture(simulationWorld()["textures"]["water"].toString()); // ici pour la texture liée à l'eau
-	renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(), sf::Quads, rs2);
-	renderingCache_.display();
-	
-	sf::RenderStates rs3;
-	rs3.texture = &getAppTexture(simulationWorld()["textures"]["grass"].toString()); // ici pour la texture liée à l'herbe
+	// ici pour la texture liée à l'herbe
 	renderingCache_.draw(grassVertexes_.data(), grassVertexes_.size(), sf::Quads, rs3);
-	renderingCache_.display();	
 	
+	 // ici pour la texture liée à l'eau
+	renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(), sf::Quads, rs2);
+	
+	renderingCache_.display();	
+
 }
 
 
@@ -141,47 +127,49 @@ World::drawOn(sf::RenderTarget& target)
 void
 World::loadFromFile()
 {	
-
+	
+	reloadConfig();
+	
 	string fileName(getApp().getResPath() + simulationWorld()["file"].toString());
 	ifstream entree(fileName.c_str());
-	ofstream sortie;
+	
+	if (entree.fail()) {
+		 throw std::runtime_error ("Pas de fichier correspondant");
+	}
+	
+	else {
 		
-	try
-	{
-	if (entree.fail()) throw std::runtime_error ("Pas de fichier correspondant");
+		string numberColumns;
+		string cellSize;
 
-	string numberColumns;
-	string cellSize;
-	short var;
-	
-	entree >> numberColumns;
-	//le nombre de colonnes vaut cette valeur convertie en entier
-	numberColumns_ = stoi(numberColumns);
-	entree >> std::ws;
+		entree >> numberColumns;
+		//le nombre de colonnes vaut cette valeur convertie en entier
+		numberColumns_ = stoi(numberColumns);
+		entree >> std::ws;
 
-	entree >> cellSize;
-	//la taille de la cellule vaut cette valeur convertie en Float
-	cellSize_= stof(cellSize);
-	entree >> std::ws;
+		entree >> cellSize;
+		//la taille de la cellule vaut cette valeur convertie en Float
+		cellSize_= stof(cellSize);
+		entree >> std::ws;
 	
-	for (size_t i(0); i <= numberColumns_; ++i) {
-	// var est de type short
-	entree >> var;
-	
-	//il faut convertir var en  Kind
-	Kind values = static_cast<Kind>(var);
-	cells_.push_back(values);
-	entree >> std::ws;
-	}
+		for (size_t i(0); i <= cells_.size() ; ++i) {
+			
+			entree >> std::ws;
+			short var;
+			entree >> var;
+			//il faut convertir var en  Kind
+			Kind value = static_cast<Kind>(var);
+			cells_[i]= value;
+			
+		}
 	}
 	
-	catch (std::runtime_error error) 
-	{
-
-	std::cerr << error;
-	}
 	
 	entree.close();	
+	
+	reloadCacheStructure();
+	
+	updateCache();
+	
 } 
-
 
