@@ -29,6 +29,8 @@ class World
         void 
         reset(bool regenerate );
                 
+        void
+        loadFromFile();
 
     private:
         

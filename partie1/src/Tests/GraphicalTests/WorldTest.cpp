@@ -55,7 +55,7 @@ void WorldTest::onEvent(sf::Event event, sf::RenderWindow&)
         default: break;
 
         case sf::Keyboard::I:
-            //mWorld.loadFromFile();
+            mWorld.loadFromFile();
             break;
 
         case sf::Keyboard::O:
