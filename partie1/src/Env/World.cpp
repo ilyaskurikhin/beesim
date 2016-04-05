@@ -46,7 +46,7 @@ World::reloadCacheStructure()
 	waterVertexes_ = grassVertexes_;
 	rockVertexes_ = grassVertexes_;
 	
-    renderingCache_.create(numberColumns_* cellSize_, numberColumns_ * cellSize_);
+        renderingCache_.create(numberColumns_* cellSize_, numberColumns_ * cellSize_);
 }
 
 
@@ -87,7 +87,6 @@ World::updateCache()
 				rockVertexes_[indexes[k]].color.a=0;
 				}
 			}
-			
 		}
 	}
 	
