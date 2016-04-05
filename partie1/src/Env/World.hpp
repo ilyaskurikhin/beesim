@@ -49,9 +49,5 @@ class World
         bool regenerate_;
 };
 
-//surcharge de l'opérateur << permettant de retourner le std::runtime_error ayant été lancé
-
-
-
 
 #endif
