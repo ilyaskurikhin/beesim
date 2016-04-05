@@ -3,7 +3,7 @@
 #include <Application.hpp>
 #include <SFML/Graphics.hpp> 
 #include <vector>
-#include <string>
+#include <JSON/JSON.hpp>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -13,7 +13,7 @@ using namespace std;
 
 
 j::Value
-World::simulationWorld()
+simulationWorld()
 {
 	return getAppConfig()["simulation"]["world"];
 }
@@ -26,14 +26,12 @@ World::reloadConfig()
 	
 	// numberbCulumns : number of cells in a row
 	numberColumns_= simulationWorld()["cells"].toInt();
-	
+
 	// cellSize : size of a cell in 'pixels'
 	cellSize_= simulationWorld()["size"].toDouble() / numberColumns_;
-	
+
 	// make a vector representing a square grid of Rock
-	cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Rock);
-	
-	
+	cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Water);
 }
 
 
@@ -53,54 +51,54 @@ World::reloadCacheStructure()
 void
 World::updateCache() 
 {
-	sf::RenderStates rs1;
-	rs1.texture = &getAppTexture(simulationWorld()["textures"]["rock"].toString()); 
-	sf::RenderStates rs3;
-	rs3.texture = &getAppTexture(simulationWorld()["textures"]["grass"].toString()); 
-	sf::RenderStates rs2;
-	rs2.texture = &getAppTexture(simulationWorld()["textures"]["water"].toString());
-	
-	for (size_t i(0); i < numberColumns_; ++i) {
-		for (size_t j(0); j < numberColumns_; ++j) {
-			
-			vector <size_t> indexes = indexesForCellVertexes(i, j, cellSize_);
-			
-			if (cells_[(i * numberColumns_) + j] == Kind::Rock) {
-				for (size_t k(0); k<4; ++k) {
-				waterVertexes_[indexes[k]].color.a=0;
-				grassVertexes_[indexes[k]].color.a=0;
-				rockVertexes_[indexes[k]].color.a=255;
-				}
-			}
-			else if (cells_[(i * numberColumns_) + j] == Kind::Grass) {
-				for (size_t k(0); k<4; ++k) {
-				waterVertexes_[indexes[k]].color.a=0;
-				grassVertexes_[indexes[k]].color.a=255;
-				rockVertexes_[indexes[k]].color.a=0;
-				}
-			} 
-			else if (cells_[(i * numberColumns_) + j] == Kind::Water) {
-				for (size_t k(0); k<4; ++k) {
-				waterVertexes_[indexes[k]].color.a=255;
-				grassVertexes_[indexes[k]].color.a=0;
-				rockVertexes_[indexes[k]].color.a=0;
-				}
-			}
-		}
-	}
-	
-	renderingCache_.clear();
-	// ici pour la texture liée à la roche
-	renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), sf::Quads, rs1);
-	
-	// ici pour la texture liée à l'herbe
-	renderingCache_.draw(grassVertexes_.data(), grassVertexes_.size(), sf::Quads, rs3);
-	
-	 // ici pour la texture liée à l'eau
-	renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(), sf::Quads, rs2);
-	
-	renderingCache_.display();	
+	sf::RenderStates rsGrass;
+	rsGrass.texture = &getAppTexture(simulationWorld()["textures"]["grass"].toString()); 
+	sf::RenderStates rsWater;
+	rsWater.texture = &getAppTexture(simulationWorld()["textures"]["water"].toString());
+	sf::RenderStates rsRock;
+	rsRock.texture = &getAppTexture(simulationWorld()["textures"]["rock"].toString()); 
 
+        size_t size(cells_.size());
+        for (size_t i(0); i < size; ++i) {
+            
+            // use mod to get column number
+            size_t x(i % numberColumns_);
+            // use integer division to get line number
+            size_t y(i / numberColumns_);
+           
+            vector<size_t> positionIndexes = indexesForCellVertexes(x, y, numberColumns_);
+            
+            vector<int> aValues;
+
+            switch (cells_[i]) {
+                case Kind::Grass :
+                    aValues = {255,0,0};
+                    break;
+                case Kind::Water :
+                    aValues = {0,255,0};
+                    break;
+                case Kind::Rock :
+                    aValues = {0,0,255};
+                    break;
+                default :
+                    aValues = {0,0,0};
+                    break;
+            }
+
+                    for (size_t j(0); j < 4; ++j) {
+                        grassVertexes_[positionIndexes[j]].color.a = aValues[0];
+                        waterVertexes_[positionIndexes[j]].color.a = aValues[1];
+                        rockVertexes_[positionIndexes[j]].color.a = aValues[2];
+                    };
+        }
+
+        renderingCache_.clear();
+
+        renderingCache_.draw(grassVertexes_.data(), grassVertexes_.size(), sf::Quads, rsGrass);
+        renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(), sf::Quads, rsWater);
+        renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), sf::Quads, rsRock);
+
+        renderingCache_.display();
 }
 
 
@@ -123,7 +121,7 @@ World::drawOn(sf::RenderTarget& target)
 }
 	
 	
-	
+
 void
 World::loadFromFile()
 {	
@@ -151,16 +149,16 @@ World::loadFromFile()
 		//la taille de la cellule vaut cette valeur convertie en Float
 		cellSize_= stof(cellSize);
 		entree >> std::ws;
-	
-		for (size_t i(0); i <= cells_.size() ; ++i) {
-			
-			entree >> std::ws;
+                
+                cells_.clear();
+
+                size_t size(numberColumns_ * numberColumns_);
+		for (size_t i(0); i < size; ++i) {
 			short var;
 			entree >> var;
 			//il faut convertir var en  Kind
 			Kind value = static_cast<Kind>(var);
-			cells_[i]= value;
-			
+			cells_.push_back(value);
 		}
 	}
 	
@@ -172,4 +170,3 @@ World::loadFromFile()
 	updateCache();
 	
 } 
-

@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include <JSON/JSON.hpp>
 
 
 
@@ -15,9 +14,6 @@ class World
 {
     public:
         
-        j::Value
-        simulationWorld();
-		
         void
         reloadConfig();
         
@@ -31,14 +27,14 @@ class World
         updateCache();
                 
         void 
-        reset(bool regenerate);
-        
+        reset(bool regenerate );
+                
         void
         loadFromFile();
 
     private:
         
-        size_t numberColumns_;
+        int numberColumns_;
         float cellSize_;
         std::vector<Kind> cells_;
 
@@ -49,19 +45,4 @@ class World
 
         bool regenerate_;
 };
-
-<<<<<<< HEAD
-//surcharge de l'opérateur << permettant de retourner le std::runtime_error ayant été lancé
-std::ostream&
-operator<< (std::ostream& oss, const std::runtime_error& error);
-
-
-||||||| merged common ancestors
-//surcharge de l'opérateur << permettant de retourner le std::runtime_error ayant été lancé
-
-
-
-=======
->>>>>>> juliadev
-
 #endif
