@@ -92,7 +92,7 @@
                 "water teleport probability" : 0.0001
             },
             "generation" : {
-                "steps" : 20000,
+                "steps" : 200,
                 "smoothness" : {
                     "level" : 10,
                     "grass neighbourhood ratio" : 0.5,

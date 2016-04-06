@@ -14,14 +14,15 @@ std::vector<sf::Vertex> generateVertexes(j::Value const& textures, int nbCell, f
 {
     auto vertexes = std::vector<sf::Vertex>(nbCell * nbCell * 4); // RVO
 
+	(void)textures;
     // Load the textures
-    auto const& grassTexture = getAppTexture(textures["grass"].toString());
-    auto const& rockTexture  = getAppTexture(textures["rock"].toString());
-    auto const& waterTexture = getAppTexture(textures["water"].toString());
+    //auto const& grassTexture = getAppTexture(textures["grass"].toString());
+    //auto const& rockTexture  = getAppTexture(textures["rock"].toString());
+    //auto const& waterTexture = getAppTexture(textures["water"].toString());
 
     // Determine which is the smallest dimension
-    auto texWidth  = std::min({ grassTexture.getSize().x, rockTexture.getSize().x, waterTexture.getSize().x });
-    auto texHeight = std::min({ grassTexture.getSize().y, rockTexture.getSize().y, waterTexture.getSize().y });
+    //auto texWidth  = std::min({ grassTexture.getSize().x, rockTexture.getSize().x, waterTexture.getSize().x });
+    //auto texHeight = std::min({ grassTexture.getSize().y, rockTexture.getSize().y, waterTexture.getSize().y });
 
     // Generate the vertexes (caches)
     for (int x = 0; x < nbCell; ++x) {
@@ -36,13 +37,18 @@ std::vector<sf::Vertex> generateVertexes(j::Value const& textures, int nbCell, f
             // Wrap texture around
             auto size  = static_cast<int>(std::ceil(cellSize));
             auto color = sf::Color::White; // White means not texture recoloring
-            auto tex   = std::vector<sf::Vector2f>{
-                { static_cast<float>((x+0) * size % texWidth), static_cast<float>((y+0) * size % texHeight) },
-                { static_cast<float>((x+1) * size % texWidth), static_cast<float>((y+0) * size % texHeight) },
-                { static_cast<float>((x+1) * size % texWidth), static_cast<float>((y+1) * size % texHeight) },
-                { static_cast<float>((x+0) * size % texWidth), static_cast<float>((y+1) * size % texHeight) }
-            };
-
+            // auto tex   = std::vector<sf::Vector2f>{
+            //     { static_cast<float>((x+0) * size % texWidth), static_cast<float>((y+0) * size % texHeight) },
+            //     { static_cast<float>((x+1) * size % texWidth), static_cast<float>((y+0) * size % texHeight) },
+            //     { static_cast<float>((x+1) * size % texWidth), static_cast<float>((y+1) * size % texHeight) },
+            //     { static_cast<float>((x+0) * size % texWidth), static_cast<float>((y+1) * size % texHeight) }
+            // };
+			auto tex   = std::vector<sf::Vector2f>{
+				{ static_cast<float>((x+0) * size), static_cast<float>((y+0) * size) },
+				{ static_cast<float>((x+1) * size), static_cast<float>((y+0) * size) },
+				{ static_cast<float>((x+1) * size), static_cast<float>((y+1) * size) },
+				{ static_cast<float>((x+0) * size), static_cast<float>((y+1) * size) }
+};
             // Update NW, NE, SE, SW vertexes for the current cell
             auto idx = startIndexForCellVertexes(x, y, nbCell);
             for (auto offset : { 0, 1, 2, 3 }) {

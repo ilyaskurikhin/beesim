@@ -6,7 +6,7 @@
 
 #include <Application.hpp>
 #include <Config.hpp>
-// #include <Env/Env.hpp> TODO step3 uncomment me
+#include <Env/Env.hpp>
 #include <JSON/JSONSerialiser.hpp>
 // #include <Stats/Stats.hpp> TODO step5 uncomment me
 #include <Utility/Constants.hpp>
@@ -134,7 +134,7 @@ Application::~Application()
 {
     // Destroy lab and stats, in reverse order
     //delete mStats; TODO step5 uncomment me
-    //delete mEnv;   TODO step3 uncomment me
+    delete mEnv;
 
     // Release textures
     for (auto& kv : mTextures) {
@@ -150,7 +150,7 @@ Application::~Application()
 void Application::run()
 {
     // Load lab and stats
-    //mEnv   = new Env;    TODO step3 uncomment me
+    mEnv   = new Env;
     //mStats = new Stats;  TODO step5 uncomment me
 
     // Set up subclasses
@@ -210,7 +210,7 @@ void Application::run()
                 auto dt = std::min(elapsedTime, maxDt);
                 elapsedTime -= dt;
 
-                //getEnv().update(dt);    TODO step3 uncomment me
+                getEnv().update(dt);
                 //getStats().update(dt);  TODO step5 uncomment me
                 onUpdate(dt);
             }
@@ -283,6 +283,7 @@ sf::Texture& Application::getTexture(std::string const& name)
         sf::Texture* newTexture = new sf::Texture;
         if (newTexture->loadFromFile(getResPath() + name)) {
             // The texture was correctly loaded so we save it
+			newTexture->setRepeated(true);
             mTextures[name] = newTexture;
             // And return the texture
             return *newTexture;
@@ -417,47 +418,38 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
             window.close();
             break;
 
-/*
- *      TODO step3 uncomment me
- *        // Load the world
- *        case sf::Keyboard::I:
- *            mIsResetting = true;
- *            getEnv().loadWorldFromFile();
- *            //getStats().reset();            TODO step5 uncomment me
- *            onSimulationStart();
- *            createViews();
- *            break;
- */
+        // Load the world
+        case sf::Keyboard::I:
+            mIsResetting = true;
+            getEnv().loadWorldFromFile();
+            //getStats().reset();            TODO step5 uncomment me
+            onSimulationStart();
+            createViews();
+            break;
 
         // Reload config file
         case sf::Keyboard::L:
             mConfig = j::readFromFile(mAppDirectory + mCfgFile);
             break;
 
-/*
- *      TODO step3 uncomment me
- *        // Save the world
- *        case sf::Keyboard::O:
- *            getEnv().saveWorldToFile();
- *            break;
- */
+        // Save the world
+        case sf::Keyboard::O:
+            //getEnv().saveWorldToFile(); //uncomment if World::saveToFile is coded
+            break;
 
         // Toggle pause for simulation
         case sf::Keyboard::Space:
             mPaused = !mPaused;
             break;
 
-/*
- *      TODO step3 uncomment me
- *        // Reset the simulation
- *        case sf::Keyboard::R:
- *            mIsResetting = true;
- *            getEnv().reset();
- *            //getStats().reset();            TODO step5 uncomment me
- *            onSimulationStart();
- *            createViews();
- *            break;
- */
+        // Reset the simulation
+        case sf::Keyboard::R:
+            mIsResetting = true;
+            getEnv().reset();
+            //getStats().reset();            TODO step5 uncomment me
+            onSimulationStart();
+            createViews();
+            break;
 
         // Toggle humidity level visualisation
         case sf::Keyboard::W: {
@@ -560,7 +552,7 @@ void Application::render(sf::Drawable const& simulationBackground, sf::Drawable 
     mRenderWindow.setView(mSimulationView);
     mRenderWindow.draw(simulationBackground);
 
-    //getEnv().drawOn(mRenderWindow);  TODO step3 uncomment me
+    getEnv().drawOn(mRenderWindow);
 
     onDraw(mRenderWindow);
 

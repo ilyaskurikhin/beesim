@@ -17,6 +17,9 @@ public:
     virtual void onRun() override final;
     virtual void onEvent(sf::Event event, sf::RenderWindow& window) override final;
     virtual void onDraw(sf::RenderTarget& target) override final;
+
+private:
+    bool mShowFlowerZone = false; ///< Enable/disable flower zone visualisation
 };
 
 #endif // INFOSV_FINAL_APPLICATION_HPP

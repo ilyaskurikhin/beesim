@@ -1,25 +1,35 @@
 /*
- * prjsv 2016
- * 2013, 2014, 2016
+ * prjsv 2015
+ * 2014
  * Marco Antognini
  */
 
-#include <Config.hpp>
+#include <Application.hpp>
 #include <Env/Env.hpp>
-#include <FinalApplication.hpp>
 
-#include <cassert>
-
-IMPLEMENT_MAIN(FinalApplication);
-
-void FinalApplication::onRun()
+class FlowerTest : public Application
 {
-    // Setup stats
-    // TODO step5 uncomment me
-    //addGraph(s::GENERAL, { s::FLOWERS, s::HIVES, s::SCOUTS, s::WORKERS, }, 0, 300);
+public:
+    using Application::Application;
+
+    // Override a few methods
+    virtual void onRun() override final;
+    virtual void onEvent(sf::Event event, sf::RenderWindow& window) override final;
+    virtual void onDraw(sf::RenderTarget& target) override final;
+
+private:
+    bool mShowFlowerZone = false; ///< Enable/disable flower zone visualisation
+};
+
+IMPLEMENT_MAIN(FlowerTest);
+
+void FlowerTest::onRun()
+{
+    // Disable flower generator
+    getConfig()["simulation"]["flower generator"]["active"] = j::boolean(false);
 }
 
-void FinalApplication::onEvent(sf::Event event, sf::RenderWindow&)
+void FlowerTest::onEvent(sf::Event event, sf::RenderWindow&)
 {
     if (event.type == sf::Event::KeyPressed) {
         switch (event.key.code) {
@@ -36,22 +46,24 @@ void FinalApplication::onEvent(sf::Event event, sf::RenderWindow&)
 
         // Add flower: try to create a new one and disable visualisation zone
         case sf::Keyboard::F:
+
             mShowFlowerZone = false;
+			/*
             if (getEnv().addFlowerAt(getCursorPositionInView())) {
                 std::cout << "New flower created\n";
             } else {
                 std::cout << "Couldn't create new flower\n";
             }
+			*/
             break;
         }
     }
 }
 
-void FinalApplication::onDraw(sf::RenderTarget& target)
+void FlowerTest::onDraw(sf::RenderTarget& target)
 {
     if (mShowFlowerZone) {
         auto pos = getCursorPositionInView();
-        getEnv().drawFlowerZone(target, pos);
+        //getEnv().drawFlowerZone(target, pos);
     }
 }
-
