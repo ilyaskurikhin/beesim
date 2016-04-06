@@ -59,7 +59,7 @@ void WorldTest::onEvent(sf::Event event, sf::RenderWindow&)
             break;
 
         case sf::Keyboard::O:
-            //mWorld.saveToFile();
+            mWorld.saveToFile();
             break;
 
         case sf::Keyboard::R:
@@ -67,11 +67,11 @@ void WorldTest::onEvent(sf::Event event, sf::RenderWindow&)
             break;
 
         case sf::Keyboard::S:
-			// mWorld.smooths(event.key.shift ? 10 : 1, true);
+            mWorld.smooths(event.key.shift ? 10 : 1, true);
             break;
 
         case sf::Keyboard::Space:
-            //mWorld.steps(event.key.shift ? 100 : 1, true);
+            mWorld.steps(event.key.shift ? 100 : 1, true);
             break;
         }
     }
