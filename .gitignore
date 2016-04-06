@@ -2,6 +2,9 @@ build/*
 doc/html/*
 doc/latex/*
 
+partie1/doc/html/*
+partie1/doc/latex/*
+
 # Compiled Object files
 *.slo
 *.lo
