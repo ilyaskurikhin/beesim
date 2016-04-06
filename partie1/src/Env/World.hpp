@@ -27,30 +27,14 @@ class World
         updateCache();
                 
         void 
-        reset(bool regenerate);
-        
+        reset(bool regenerate );
+                
         void
         loadFromFile();
 
-        void
-        step();
-        
-        void
-        steps(int repeats, bool b=false);
-        
-        void 
-        moveSeeds(Kind texture);
-        
-        void
-        smooth ();
-        
-        void 
-        smooths();
-		
-		
     private:
         
-        size_t numberColumns_;
+        int numberColumns_;
         float cellSize_;
         std::vector<Kind> cells_;
 
@@ -59,16 +43,6 @@ class World
         std::vector<sf::Vertex> waterVertexes_;
         std::vector<sf::Vertex> rockVertexes_;
 
-	
-        struct Seed {
-            sf::Vector2i coords_;
-            Kind Seedtexture_;
-        }
-        
-        vector <Seed> seeds_;
-        nbWaterSeeds_;
-        nbGrassSeeds_;
-       
         bool regenerate_;
 };
 #endif
