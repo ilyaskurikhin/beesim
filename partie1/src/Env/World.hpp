@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include <JSON/JSON.hpp>
 
 
 
@@ -15,9 +14,6 @@ class World
 {
     public:
         
-        j::Value
-        simulationWorld();
-		
         void
         reloadConfig();
         
@@ -36,6 +32,22 @@ class World
         void
         loadFromFile();
 
+        void
+        step();
+        
+        void
+        steps(int repeats, bool b=false);
+        
+        void 
+        moveSeeds(Kind texture);
+        
+        void
+        smooth ();
+        
+        void 
+        smooths();
+		
+		
     private:
         
         size_t numberColumns_;
@@ -47,13 +59,16 @@ class World
         std::vector<sf::Vertex> waterVertexes_;
         std::vector<sf::Vertex> rockVertexes_;
 
+	
+        struct Seed {
+            sf::Vector2i coords_;
+            Kind Seedtexture_;
+        }
+        
+        vector <Seed> seeds_;
+        nbWaterSeeds_;
+        nbGrassSeeds_;
+       
         bool regenerate_;
 };
-
-//surcharge de l'opérateur << permettant de retourner le std::runtime_error ayant été lancé
-std::ostream&
-operator<< (std::ostream& oss, const std::runtime_error& error);
-
-
-
 #endif
