@@ -61,13 +61,13 @@ class World
 
 	
         struct Seed {
-            sf::Vector2i coords_;
-            Kind Seedtexture_;
+            sf::Vector2i position;
+            Kind texture;
         };
         
         std::vector<Seed> seeds_;
-        int nbWaterSeeds_;
-        int nbGrassSeeds_;
+        unsigned int nbWaterSeeds_;
+        unsigned int nbGrassSeeds_;
        
         bool regenerate_;
 };

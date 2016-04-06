@@ -1,4 +1,4 @@
-#include "World.hpp"
+#include <Env/World.hpp>
 #include <Utility/Vertex.hpp>
 #include <Application.hpp>
 #include <SFML/Graphics.hpp> 
@@ -32,11 +32,12 @@ World::reloadConfig()
     cellSize_= simulationWorld()["size"].toDouble() / numberColumns_;
 
     // make a vector representing a square grid of Rock
-    cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Water);
+    cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Rock);
 
+    // make the seed
     nbWaterSeeds_ = simulationWorld()["seeds"]["water"].toInt();
     nbGrassSeeds_ = simulationWorld()["seeds"]["grass"].toInt();
-    vector<Seed> tmp(nbGrassSeeds_*nbWaterSeeds_);
+    vector<Seed> tmp(nbGrassSeeds_ + nbWaterSeeds_);
     seeds_ = tmp; 
 }
 
@@ -114,18 +115,26 @@ World::reset(bool regenerate)
 {
     reloadConfig();
     reloadCacheStructure();
-   
-    int max(numberColumns_ -1);
-    for (size_t i(0); i<seeds_.size(); ++i) {
-        seeds_[i].coords_.x = uniform(0, max);
-        seeds_[i].coords_.y = uniform(0, max);
+  
+    for (size_t i(0); i < nbGrassSeeds_; ++i) {
+        seeds_[i].texture = Kind::Grass;
     }
 
-    for (size_t j(0); j<numberColumns_; ++j) {
-        for (size_t k(0); k<numberColumns_; ++k) {
-            if (cells_[ (j * numberColumns_) + k] != Kind::Water) {
-                cells_[ (j * numberColumns_) + k] = seeds_[ (j * numberColumns_) + k].Seedtexture_;
-            }
+    for (size_t i(nbGrassSeeds_); i < seeds_.size(); ++i) {
+        seeds_[i].texture = Kind::Water;
+    }
+
+    size_t min(0);
+    size_t max(numberColumns_ -1);
+        for (size_t i(0); i < seeds_.size(); ++i) {
+        seeds_[i].position.x = uniform(min, max);
+        seeds_[i].position.y = uniform(min, max);
+    }
+
+    for (size_t i(0); i < seeds_.size(); ++i) {
+        size_t index(seeds_[i].position.y * numberColumns_ + seeds_[i].position.x);
+        if (cells_[index] != Kind::Water) {
+            cells_[index] = seeds_[i].texture;
         }
     }
 
