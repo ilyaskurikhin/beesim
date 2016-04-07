@@ -1,17 +1,16 @@
 #include <Env/World.hpp>
 #include <Utility/Vertex.hpp>
 #include <Application.hpp>
+#include <Random/Random.hpp>
+#include <JSON/JSON.hpp>
 #include <SFML/Graphics.hpp> 
 #include <vector>
-#include <JSON/JSON.hpp>
+#include <array>
 #include <fstream>
 #include <ostream>
 #include <iostream>
 #include <stdexcept>
-#include <Random/Random.hpp>
 #include <string>
-
-using namespace std;
 
 
 
@@ -33,14 +32,14 @@ World::reloadConfig()
     cellSize_= simulationWorld()["size"].toDouble() / numberColumns_;
 
     // make a vector representing a square grid of Kind::Rock
-    cells_ = vector<Kind> (numberColumns_ * numberColumns_, Kind::Rock);
+    cells_ = std::vector<Kind> (numberColumns_ * numberColumns_, Kind::Rock);
 
     // get the number of seeds from configd
     nbWaterSeeds_ = simulationWorld()["seeds"]["water"].toInt();
     nbGrassSeeds_ = simulationWorld()["seeds"]["grass"].toInt();
 
     // make an empty vector of Seed
-    vector<Seed> tmp(nbGrassSeeds_ + nbWaterSeeds_);
+    std::vector<Seed> tmp(nbGrassSeeds_ + nbWaterSeeds_);
     seeds_ = tmp; 
 }
 
@@ -83,11 +82,11 @@ World::updateCache()
         size_t y(i / numberColumns_);
 
         // get the indexes of the vertixes of current cell
-        vector<size_t> positionIndexes = indexesForCellVertexes(x, y, 
+        std::vector<size_t> positionIndexes = indexesForCellVertexes(x, y, 
                                                             numberColumns_);
         
         // get the right alpha values of the three layers
-        vector<int> aValues;
+        std::array<int,3> aValues;
         switch (cells_[i]) {
             case Kind::Grass :
                 aValues = {255,0,0};
@@ -186,16 +185,16 @@ World::loadFromFile()
     reloadConfig();
 
     // open config .map file
-    string fileName(getApp().getResPath() 
+    std::string fileName(getApp().getResPath() 
                             + simulationWorld()["file"].toString());
-    ifstream input(fileName.c_str());
+    std::ifstream input(fileName.c_str());
 
     // check existance of file
     if (input.fail()) {
         throw std::runtime_error ("Input map file not found.");
     } else {
-        string numberColumns;
-        string cellSize;
+        std::string numberColumns;
+        std::string cellSize;
 
         // read the file header
         input >> numberColumns;
@@ -232,9 +231,9 @@ void
 World::saveToFile() const
 {
     // open config .map file
-    string fileName(getApp().getResPath() 
+    std::string fileName(getApp().getResPath() 
                             + simulationWorld()["file"].toString());
-    ofstream output(fileName.c_str());
+    std::ofstream output(fileName.c_str());
 
     // check if output can be made
     if (output.fail()) {
@@ -242,8 +241,8 @@ World::saveToFile() const
     } else {
 
         // write the file header
-        output << numberColumns_ << endl;
-        output << cellSize_ << endl;
+        output << numberColumns_ << std::endl;
+        output << cellSize_ << std::endl;
 
         // write the map contents
         size_t size(numberColumns_ * numberColumns_);
@@ -346,7 +345,7 @@ World::smooth()
 {
     // copy cells_ so as to not have directional bias
     // decisions are made on original, written in copy
-    vector<Kind> localCells = cells_;
+    std::vector<Kind> localCells = cells_;
 
     for (size_t i(0); i < cells_.size(); ++i) {
 
