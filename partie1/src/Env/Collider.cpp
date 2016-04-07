@@ -1,11 +1,10 @@
-#include "Collider.hpp"
-#include <iostream>
-#include "../Utility/Vec2d.hpp"
+#include <Env/Collider.hpp>
 #include <Application.hpp>
+#include <Utility/Vec2d.hpp>
+#include <iostream>
 #include <cassert>
 #include <vector>
 
-using namespace std;
 
 
 Collider::Collider (const Vec2d& position, double radius)
@@ -164,7 +163,7 @@ Collider::directionTo(const Vec2d& to) const
 	auto height = worldSize.y;
 	
 	// create vector of possible positions of to 
-	vector<vector<double>> multipliers; 
+        std::vector<std::vector<double>> multipliers; 
 	multipliers.push_back({0,0});
 	multipliers.push_back({0,1});
 	multipliers.push_back({0,-1});
