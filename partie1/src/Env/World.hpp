@@ -2,6 +2,7 @@
 #define WORLD_H
 
 #include <vector>
+#include <array>
 #include <SFML/Graphics.hpp>
 
 
@@ -130,7 +131,17 @@ class World
         void 
         smooths(unsigned int n, bool update = false);
 		
-		
+        
+
+        void
+        humidify();
+
+
+
+        void
+        humidify(size_t i);
+
+        
     private:
        
         /// number of cells in a row
@@ -151,5 +162,22 @@ class World
         std::vector<Seed> seeds_;
         unsigned int nbWaterSeeds_;
         unsigned int nbGrassSeeds_;
+
+        /// vector of humidity values
+        std::vector<double> humidityLevels_;
+        std::vector<sf::Vertex> humidityVertexes_;
+        double humidityRange_;
+        double humidityThreshold_;
+        double humidityInitialLevel_;
+        double humidityDecayRate_;
+
+
+
+        /**
+         * Find the cells to scan for given radius.
+         * Make sure that we do not go over boundaries.
+         */
+        sf::Rect<size_t>
+        calculateScanRange(size_t x, size_t y, unsigned int radius);
 };
 #endif
