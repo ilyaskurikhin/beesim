@@ -1,17 +1,4 @@
 #include <Env/World.hpp>
-#include <Utility/Vertex.hpp>
-#include <Application.hpp>
-#include <Random/Random.hpp>
-#include <JSON/JSON.hpp>
-#include <SFML/Graphics.hpp> 
-#include <vector>
-#include <array>
-#include <fstream>
-#include <ostream>
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <algorithm>
 
 
 
