@@ -1,6 +1,12 @@
 #ifndef COLLIDER_H
 #define COLLIDER_H
-#include "../Utility/Vec2d.hpp"
+
+#include <Utility/Vec2d.hpp>
+#include <Application.hpp>
+#include <Utility/Vec2d.hpp>
+#include <iostream>
+#include <cassert>
+#include <vector>
 
 /**
  * Allows checking for object collisions.
