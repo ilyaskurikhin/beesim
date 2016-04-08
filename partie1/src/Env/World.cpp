@@ -23,6 +23,14 @@ simulationWorld()
 
 
 
+World::World()
+{
+    reloadConfig();
+    reloadCacheStructure();
+}
+
+
+
 void
 World::reloadConfig() 
 {

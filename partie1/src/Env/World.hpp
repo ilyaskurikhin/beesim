@@ -17,6 +17,9 @@ struct Seed {
 class World
 {
     public:
+        
+        World();
+
        
         /**
          * Load the app configuration from the config file.
@@ -49,6 +52,7 @@ class World
          * Set the layer to show in each cell.
          * Load the textures for each layer, set the alpha values of each layer
          * and load them into the cache.
+         * Set the blue levels for each cell based on humidity.
          */
         void 
         updateCache();
