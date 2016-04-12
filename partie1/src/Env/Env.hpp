@@ -35,6 +35,7 @@ class Env
     private :
 
         World world_;
-        
+        vector<Flower*> flowers_;
+		double numberFlowers_;
 };
 #endif

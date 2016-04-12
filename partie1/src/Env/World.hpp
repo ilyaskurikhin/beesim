@@ -155,6 +155,16 @@ class World
 
         void
         humidify(size_t i);
+        
+        
+        
+        bool
+        isGrowable(const Vec2d& position);
+        
+        //permet de convertir une position graphique en indice de tableau
+        
+        double
+        positionInTab(const Vec2d& graphicPosition);
 
         
     private:

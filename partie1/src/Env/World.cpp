@@ -556,3 +556,16 @@ World::calculateScanRange(size_t x, size_t y, unsigned int radius)
 
     return scanRange;
 }
+
+bool
+World::isGrowable(const Vec2d& position)
+{
+    if (positionInTab(position) == Kind:Grass) {
+	    return true;
+    }
+}
+
+double positionInTab(const Vec2d& graphicPosition) 
+{
+return ((position.x / cellSize_()) * numberColumns_  + position.y / cellSize_());
+}
