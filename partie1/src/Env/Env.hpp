@@ -1,0 +1,40 @@
+#ifndef ENV_H
+#define ENV_H
+
+#include <Env/World.hpp>
+#include <Utility/Vec2d.hpp>
+#include <SFML/Graphics.hpp>
+
+class Env
+{
+    public :
+        
+        Env();
+
+        void
+        update(sf::Time dt);
+
+        void
+        drawOn(sf::RenderTarget& target);
+
+        void
+        reset();
+
+        void
+        loadWorldFromFile();
+
+        void
+        saveWorldToFile();
+
+        bool
+        addFlowerAt(const Vec2d& position);
+
+        void
+        drawFlowerZone(sf::RenderTarget& target, Vec2d& position);
+
+    private :
+
+        World world;
+        
+};
+#endif
