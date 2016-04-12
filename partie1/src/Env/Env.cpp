@@ -3,8 +3,10 @@
 
 
 Env::Env()
+: world_()
 {
-
+   world_.loadFromFile();
+   world_.updateCache();
 }
 
 
@@ -12,13 +14,13 @@ Env::Env()
 void
 Env::update(sf::Time dt)
 {
-
+    world_.updateCache();
 }
 
 void
 Env::drawOn(sf::RenderTarget& target)
 {
-
+    world_.drawOn(target);
 }
 
 
@@ -26,13 +28,13 @@ Env::drawOn(sf::RenderTarget& target)
 void
 Env::reset()
 {
-
+    world_.reset(true);
 }
 
 void
 Env::loadWorldFromFile()
 {
-
+    world_.loadFromFile();
 }
 
 
@@ -40,5 +42,5 @@ Env::loadWorldFromFile()
 void
 Env::saveWorldToFile()
 {
-
+    world_.saveToFile();
 }

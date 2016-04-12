@@ -34,7 +34,7 @@ class Env
 
     private :
 
-        World world;
+        World world_;
         
 };
 #endif

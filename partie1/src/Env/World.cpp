@@ -142,17 +142,12 @@ World::updateCache()
 
     renderingCache_.clear();
     
-    if (simulationWorld()["show humidity"] == 1) {
-        renderingCache_.draw(humidityVertexes_.data(), humidityVertexes_.size(),
-                             sf::Quads);
-    } else {
-        renderingCache_.draw(grassVertexes_.data(), grassVertexes_.size(), 
-                             sf::Quads, rsGrass);
-        renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(), 
-                             sf::Quads, rsWater);
-        renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), 
-                             sf::Quads, rsRock);
-    }   
+    renderingCache_.draw(grassVertexes_.data(), grassVertexes_.size(), 
+                         sf::Quads, rsGrass);
+    renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(), 
+                         sf::Quads, rsWater);
+    renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), 
+                         sf::Quads, rsRock);
 
     renderingCache_.display();
 }
@@ -193,6 +188,7 @@ World::reset(bool regenerate)
     }
     
     if (regenerate) {
+        std::cout << "regenerating" << std::endl;
         steps(simulationWorld()["generation"]
                                     ["steps"].toInt());
         smooths(simulationWorld()["generation"]
@@ -207,7 +203,12 @@ World::reset(bool regenerate)
 void
 World::drawOn(sf::RenderTarget& target) 
 {
+    if (simulationWorld()["show humidity"] == 1) {
+        renderingCache_.draw(humidityVertexes_.data(), humidityVertexes_.size(),
+                             sf::Quads);
 
+    }
+    
     sf::Sprite cache(renderingCache_.getTexture());
     target.draw(cache);
 }
@@ -513,7 +514,7 @@ World::humidify(size_t i)
         for (size_t dy(scanRange.top); dy <= bottom; ++dx) {
             humidityLevels_[dy*numberColumns_ + dx] 
                         += humidityInitialLevel_ 
-                        * exp(std::hypot(x - dx, y - dy) / humidityDecayRate_);
+                        * exp( - std::hypot(x - dx, y - dy) / humidityDecayRate_);
         }           
     }
 }
