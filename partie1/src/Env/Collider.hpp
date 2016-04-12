@@ -201,7 +201,7 @@ class Collider
         double 
         getRadius() const;
 	
-    private:
+    protected:
 
         double radius_; /** radius of this Collider. */
         Vec2d position_; /** position of this Collider. */

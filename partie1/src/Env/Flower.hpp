@@ -2,21 +2,25 @@
 #define FLOWER_H
 #include <SFML/Graphics.hpp>
 #include <Random/Random.hpp>
+#include <Env/Collider.hpp>
+#include <Utility/Utility.hpp>
 
 class Flower : public Collider {
 
 public: 
-    Flower ();
+    Flower();
+
+    Flower(const Vec2d& position, double radius, double pollen);
     
-	pollen_ 
-	takePollen();
-	
-	void
-	drawOn(sf::RenderTarget& target) const;
-	
+    double
+    takePollen();
+    
+    void
+    drawOn(sf::RenderTarget& target) const;
+    
 private:
-	
-	double pollen_;
+    
+    double pollen_;
 };
 
 

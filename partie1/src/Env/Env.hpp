@@ -4,6 +4,8 @@
 #include <Env/World.hpp>
 #include <Utility/Vec2d.hpp>
 #include <SFML/Graphics.hpp>
+#include <Env/Flower.hpp>
+#include <Utility/Utility.hpp>
 
 class Env
 {
@@ -30,12 +32,12 @@ class Env
         addFlowerAt(const Vec2d& position);
 
         void
-        drawFlowerZone(sf::RenderTarget& target, Vec2d& position);
+        drawFlowerZone(sf::RenderTarget& target, const Vec2d& position);
 
     private :
 
         World world_;
-        vector<Flower*> flowers_;
+        std::vector<Flower*> flowers_;
 		double numberFlowers_;
 };
 #endif

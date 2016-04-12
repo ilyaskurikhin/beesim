@@ -1,21 +1,23 @@
-#include <Flower.hpp>
+#include <Env/Flower.hpp>
 
-Flower::Flower (const vec2d& position, double radius, double pollen) 
+Flower::Flower (const Vec2d& position, double radius, double pollen) 
 : Collider(position, radius), pollen_(pollen)
 {}
 
 
-pollen_
+double
 Flower::takePollen() 
 {
-	
+    double pollen(0);
+    return pollen;
 }
 		
 void
-drawOn(sf::RenderTarget& target) const
+Flower::drawOn(sf::RenderTarget& target) const
 {
-    auto const& texture = getAppTexture(textures[random(0,textures.size()-1].toString());
-    auto flowerSprite = buildSprite(position_, radius_, texture);
+    auto textures = 
+    auto const& texture = getAppTexture([uniform(0,textures.size()-1)].toString());
+    auto flowerSprite = buildSprite(this->position_, this->radius_, texture);
     target.draw(flowerSprite);
 	
 }
