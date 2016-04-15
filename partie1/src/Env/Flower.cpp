@@ -15,8 +15,10 @@ Flower::takePollen()
 void
 Flower::drawOn(sf::RenderTarget& target) const
 {
-    auto textures = 
-    auto const& texture = getAppTexture([uniform(0,textures.size()-1)].toString());
+    auto const& textures = ["simulation"]["flower"]["textures"];
+    size_t min(0);
+    size_t max(textures.size());
+    const sf::Texture& texture = getAppTexture(textures[uniform(min,max)]);
     auto flowerSprite = buildSprite(this->position_, this->radius_, texture);
     target.draw(flowerSprite);
 	
