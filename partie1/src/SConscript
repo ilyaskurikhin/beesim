@@ -14,17 +14,32 @@ if env['PLATFORM'] == 'darwin':
     env['CXX'] = 'clang++'
     env['CCFLAGS'] = '-stdlib=libc++ '
     env['LINKFLAGS'] = '-stdlib=libc++ '
+    includeFlags = '-I{sfmlcosun}/include/ -I{catch} -I/usr/local/include/'.format(
+					sfmlcosun = "/usr/local/softs/SFML/",
+  					catch = "extlib/Catch/include/")
 elif env['PLATFORM'] == 'posix':
     env['CXX'] = 'g++'
+    includeFlags = '-I{sfmlcosun}/include/ -I{catch} -I/usr/local/include/'.format(
+  					sfmlcosun = "/usr/local/softs/SFML/",
+  					catch = "extlib/Catch/include/")
+elif env['PLATFORM'] == 'win32':
+	env['CXX'] = 'g++'
+	env = Environment(tools = ['mingw'])
+	includeFlags = '-I{sfmlcosun}/include/ -I{catch} -I/usr/local/include/'.format(
+  					sfmlcosun = "/Users/ilya/Source/Libraries/SFML-2.3.2-GCC",
+  					catch = "extlib/Catch/include/")
 
-includeFlags = '-I{sfmlcosun}/include/ -I{catch} -I/usr/local/include/'.format(
-  sfmlcosun = "/usr/local/softs/SFML/",
-  catch = "extlib/Catch/include/"
-)
+
 
 env.Append(CCFLAGS = '-std=c++11 -Wall -Wextra -g ' + includeFlags)
-env.Append(LIBS = ['sfml-system', 'sfml-window', 'sfml-graphics'])
-env.Append(LINKFLAGS = '-L/usr/local/softs/SFML/lib')
+
+if env['PLATFORM'] == 'darwin' or env['PLATFORM'] == 'posix':
+	env.Append(LIBS = ['sfml-system', 'sfml-window', 'sfml-graphics'])
+	env.Append(LINKFLAGS = '-L/usr/local/softs/SFML/lib')
+elif env['PLATFORM'] == 'win32':
+	env.Append(LIBS = ['sfml-system', 'sfml-window', 'sfml-graphics'])
+	env.Append(LINKFLAGS = '-L/Users/ilya/Sourse/Libraries/SFML-2.3.2-GCC')
+	
 env.Decider('content')
 
 # Use CPPPATH to automatically detect changes in header files and rebuild cpp files that need those headers.
@@ -70,7 +85,6 @@ def DefineProgram(name, additional_src):
 DefineProgram('application', Glob('FinalApplication.cpp'))
 DefineProgram('UnitTests', Glob('Tests/UnitTests/*.cpp'))
 DefineProgram('WorldTest', Glob('Tests/GraphicalTests/WorldTest.cpp'))
-DefineProgram('FlowerTest', Glob('Tests/GraphicalTests/FlowerTest.cpp'))
 
 
 if env['CXX'] == 'clang++':
