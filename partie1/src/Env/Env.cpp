@@ -3,8 +3,8 @@
 Env::Env () :
     world_ (), numberFlowers_ (0)
 {
-  flowerHead_.flower (nullptr);
-  flowerHead_.next (nullptr);
+  flowerHead_.flower = nullptr;
+  flowerHead_.next = nullptr;
   try
     {
       world_.loadFromFile ();
@@ -26,7 +26,7 @@ void
 Env::drawOn (sf::RenderTarget& target)
 {
   world_.drawOn (target);
-  flowerNode* node (*flowerHead_);
+  flowerNode* node (&flowerHead_);
   while ((*node).next != nullptr)
     {
       (*(*node).flower).drawOn (target);
