@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <Utility/Vertex.hpp>
 #include <Utility/Utility.hpp>
+#include <Utility/Vec2d.hpp>
 #include <Application.hpp>
 #include <Random/Random.hpp>
 #include <JSON/JSON.hpp>
@@ -143,10 +144,13 @@ public:
   bool
   isGrowable (const Vec2d& position);
 
+  Vec2d
+  positionInWorld (const Vec2d& position);
+
   /**
    * @brief Get cell number for current position.
    */
-  double
+  size_t
   positionInTab (const Vec2d& position);
 
 private:

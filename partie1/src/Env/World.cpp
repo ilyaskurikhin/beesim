@@ -603,9 +603,18 @@ World::isGrowable (const Vec2d& position)
     }
 }
 
-double
+Vec2d
+World::positionInWorld (const Vec2d& position)
+{
+  Vec2d p;
+  p.x = position.x / (int) cellSize_;
+  p.y = position.y / (int) cellSize_;
+  return p;
+}
+
+size_t
 World::positionInTab (const Vec2d& position)
 {
-  return (( (double) position.x / (size_t) cells_.size ()) * numberColumns_
-      + ( (double) position.y / (size_t) cells_.size ()));
+  Vec2d p = positionInWorld(position);
+  return (size_t) p.y * numberColumns_ + (size_t) p.x;
 }

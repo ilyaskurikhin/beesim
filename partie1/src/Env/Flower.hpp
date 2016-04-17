@@ -15,14 +15,18 @@ public:
   Flower (const Vec2d& position, double radius, double pollen);
 
   double
-  takePollen ();
+  takePollen (const double& pollen);
 
   void
   drawOn (sf::RenderTarget& target) const;
 
+  void
+  loadTexture ();
+
 private:
 
   double pollen_;
+  sf::Texture texture_;
 };
 
 #endif

@@ -7,6 +7,11 @@
 #include <Env/Flower.hpp>
 #include <Utility/Utility.hpp>
 
+struct flowerNode {
+  Flower* flower;
+  flowerNode* next;
+};
+
 class Env
 {
 public:
@@ -44,7 +49,7 @@ public:
 private:
 
   World world_;
-  std::vector<Flower*> flowers_;
+  flowerNode flowerHead_;
   double numberFlowers_;
 };
 #endif
