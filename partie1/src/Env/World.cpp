@@ -51,7 +51,7 @@ World::reloadConfig()
     double humidity;
     while (humidity > humidityThreshold_) {
         humidity = humidityInitialLevel_ 
-                    * exp(-humidityRange_ / humidityDecayRate_);
+                    * std::exp((float) -humidityRange_ / (float) humidityDecayRate_);
         ++humidityRange_;
     }
 }
@@ -560,12 +560,15 @@ World::calculateScanRange(size_t x, size_t y, unsigned int radius)
 bool
 World::isGrowable(const Vec2d& position)
 {
-    if (positionInTab(position) == Kind:Grass) {
-	    return true;
+    if (cells_[positionInTab(position)] == Kind::Grass) {
+	return true;
+    } else {
+	return false;
     }
 }
 
-double positionInTab(const Vec2d& graphicPosition) 
+double
+World::positionInTab(const Vec2d& position)
 {
-return ((position.x / cellSize_()) * numberColumns_  + position.y / cellSize_());
+    return ((position.x / cells_.size()) * numberColumns_  + position.y / cells_.size());
 }
