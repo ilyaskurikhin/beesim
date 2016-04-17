@@ -6,24 +6,23 @@
 #include <Utility/Utility.hpp>
 #include <Application.hpp>
 
-class Flower : public Collider {
+class Flower : public Collider
+{
 
-public: 
-    Flower();
+public:
+    Flower ();
 
-    Flower(const Vec2d& position, double radius, double pollen);
-    
+    Flower (const Vec2d& position, double radius, double pollen);
+
     double
-    takePollen();
-    
+    takePollen ();
+
     void
-    drawOn(sf::RenderTarget& target) const;
-    
+    drawOn (sf::RenderTarget& target) const;
+
 private:
-    
+
     double pollen_;
 };
-
-
 
 #endif
