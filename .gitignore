@@ -33,3 +33,4 @@ partie1/doc/latex/*
 *.exe
 *.out
 *.app
+/Default/

@@ -10,40 +10,41 @@
 class Env
 {
 public:
-    /**
-     * @brief Default class constructor.
-     *
-     * Construct a World in world_ from file in configuration.
-     * Draw the world_ to cache.
-     * Initialize numberFlowers_ to 0.
-     */
-    Env ();
+  /**
+   * @brief Default class constructor.
+   *
+   * Construct a World in world_ from file in configuration.
+   * If file cannot be loaded, generate World.
+   * Draw the world_ to cache.
+   * Initialize numberFlowers_ to 0.
+   */
+  Env ();
 
-    void
-    update (sf::Time dt);
+  void
+  update (sf::Time dt);
 
-    void
-    drawOn (sf::RenderTarget& target);
+  void
+  drawOn (sf::RenderTarget& target);
 
-    void
-    reset ();
+  void
+  reset ();
 
-    void
-    loadWorldFromFile ();
+  void
+  loadWorldFromFile ();
 
-    void
-    saveWorldToFile ();
+  void
+  saveWorldToFile ();
 
-    bool
-    addFlowerAt (const Vec2d& position);
+  bool
+  addFlowerAt (const Vec2d& position);
 
-    void
-    drawFlowerZone (sf::RenderTarget& target, const Vec2d& position);
+  void
+  drawFlowerZone (sf::RenderTarget& target, const Vec2d& position);
 
 private:
 
-    World world_;
-    std::vector<Flower*> flowers_;
-    double numberFlowers_;
+  World world_;
+  std::vector<Flower*> flowers_;
+  double numberFlowers_;
 };
 #endif

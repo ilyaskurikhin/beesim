@@ -10,19 +10,19 @@ class Flower : public Collider
 {
 
 public:
-    Flower ();
+  Flower ();
 
-    Flower (const Vec2d& position, double radius, double pollen);
+  Flower (const Vec2d& position, double radius, double pollen);
 
-    double
-    takePollen ();
+  double
+  takePollen ();
 
-    void
-    drawOn (sf::RenderTarget& target) const;
+  void
+  drawOn (sf::RenderTarget& target) const;
 
 private:
 
-    double pollen_;
+  double pollen_;
 };
 
 #endif
