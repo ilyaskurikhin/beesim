@@ -23,6 +23,12 @@ public:
   void
   loadTexture ();
 
+  void
+  update (sf::Time dt, double humidity);
+
+  double
+  getPollen();
+
 private:
 
   double pollen_;

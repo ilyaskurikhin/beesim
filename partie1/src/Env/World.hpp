@@ -153,6 +153,15 @@ public:
   size_t
   positionInTab (const Vec2d& position);
 
+  size_t
+  getIndex (const Vec2d& position);
+
+  double
+  getHumidity (const Vec2d& position);
+
+  bool
+  isInWorld (const Vec2d& position);
+
 private:
 
   /// number of cells in a row

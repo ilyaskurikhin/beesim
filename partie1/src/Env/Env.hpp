@@ -6,9 +6,11 @@
 #include <SFML/Graphics.hpp>
 #include <Env/Flower.hpp>
 #include <Utility/Utility.hpp>
+#include <Random/Random.hpp>
 
 struct flowerNode {
   Flower* flower;
+  flowerNode* previous;
   flowerNode* next;
 };
 
@@ -50,6 +52,6 @@ private:
 
   World world_;
   flowerNode flowerHead_;
-  double numberFlowers_;
+  unsigned int numberFlowers_;
 };
 #endif

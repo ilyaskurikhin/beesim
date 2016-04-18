@@ -615,6 +615,35 @@ World::positionInWorld (const Vec2d& position)
 size_t
 World::positionInTab (const Vec2d& position)
 {
-  Vec2d p = positionInWorld(position);
-  return (size_t) p.y * numberColumns_ + (size_t) p.x;
+  Vec2d p = positionInWorld (position);
+  return getIndex (p);
+}
+
+size_t
+World::getIndex (const Vec2d& position)
+{
+  if (!isInWorld(position))
+    {
+      throw std::runtime_error ("Position not in world. (World::getIndex)");
+    }
+  return (size_t) position.y * numberColumns_ + (size_t) position.x;
+}
+
+double
+World::getHumidity (const Vec2d& position)
+{
+  return humidityLevels_[getIndex (position)];
+}
+
+bool
+World::isInWorld (const Vec2d& position)
+{
+  if ((position.x > numberColumns_) || (position.y > numberColumns_))
+    {
+      return false;
+    }
+  else
+    {
+      return true;
+    }
 }

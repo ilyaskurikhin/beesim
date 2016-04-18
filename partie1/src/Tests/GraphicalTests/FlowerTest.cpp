@@ -48,13 +48,13 @@ void FlowerTest::onEvent(sf::Event event, sf::RenderWindow&)
         case sf::Keyboard::F:
 
             mShowFlowerZone = false;
-			/*
+
             if (getEnv().addFlowerAt(getCursorPositionInView())) {
                 std::cout << "New flower created\n";
             } else {
                 std::cout << "Couldn't create new flower\n";
             }
-			*/
+
             break;
         }
     }
@@ -64,6 +64,6 @@ void FlowerTest::onDraw(sf::RenderTarget& target)
 {
     if (mShowFlowerZone) {
         auto pos = getCursorPositionInView();
-        //getEnv().drawFlowerZone(target, pos);
+        getEnv().drawFlowerZone(target, pos);
     }
 }

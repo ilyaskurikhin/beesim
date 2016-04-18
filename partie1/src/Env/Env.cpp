@@ -4,6 +4,7 @@ Env::Env () :
     world_ (), numberFlowers_ (0)
 {
   flowerHead_.flower = nullptr;
+  flowerHead_.previous = nullptr;
   flowerHead_.next = nullptr;
   try
     {
@@ -19,17 +20,74 @@ Env::Env () :
 void
 Env::update (sf::Time dt)
 {
-  world_.updateCache ();
+  unsigned int i (0);
+  // get number of flowers before update
+  unsigned int oldFlowers (numberFlowers_);
+  flowerNode* currentNode (&flowerHead_);
+
+  // cycle through linked list
+  while ((*currentNode).next != nullptr)
+    {
+      // update if flower is old
+      if (i <= oldFlowers)
+        {
+          double humidity (
+              world_.getHumidity (currentNode->flower->getPosition ()));
+          currentNode->flower->update (dt, humidity);
+          // TODO : make sure that new flowers get drawn
+
+          double split (
+              getAppConfig ()["simulation"]["flower"]["growth"]["split"].toDouble ());
+          if (currentNode->flower->getPollen () > split)
+            {
+              bool placed (false);
+              while (!placed)
+                {
+                  // set a random distance
+                  double radius (currentNode->flower->getRadius ());
+                  double distance (uniform (0.5 * radius, 2 * radius));
+                  Vec2d position = currentNode->flower->getPosition ()
+                      + Vec2d::fromRandomAngle () * distance;
+                  if (world_.isGrowable (position))
+                    {
+                      addFlowerAt (position);
+                      placed = true;
+                    }
+                }
+            }
+          // check if flower is dead
+          if (currentNode->flower->getPollen () <= 0)
+            {
+              // remove dead flower
+              delete (*currentNode).flower;
+
+              // remove node from list
+              currentNode->next->previous = currentNode->previous;
+              currentNode->previous->next = currentNode->next;
+
+              // delete node and move to the next one
+              flowerNode* oldNode (currentNode);
+              currentNode = oldNode->next;
+              delete oldNode;
+            }
+          else
+            {
+              // move to next node
+              currentNode = (*currentNode).next;
+            }
+        }
+      ++i;
+    }
 }
 
 void
 Env::drawOn (sf::RenderTarget& target)
 {
   world_.drawOn (target);
-  flowerNode* node (&flowerHead_);
-  while ((*node).next != nullptr)
+  flowerNode* currentNode (&flowerHead_);
+  while ((*currentNode).next != nullptr)
     {
-      (*(*node).flower).drawOn (target);
+      (*(*currentNode).flower).drawOn (target);
     }
 }
 
@@ -95,6 +153,8 @@ Env::addFlowerAt (const Vec2d& position)
               pollen);
       // set this as the last element
       (*(*currentNode).next).next = nullptr;
+      // set the previous element
+      (*(*currentNode).next).previous = (*currentNode).next;
       return true;
     }
   else
@@ -126,4 +186,3 @@ Env::drawFlowerZone (sf::RenderTarget& target, const Vec2d& position)
       target.draw (shape);
     }
 }
-
