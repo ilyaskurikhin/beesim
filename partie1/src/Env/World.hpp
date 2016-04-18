@@ -1,8 +1,6 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include <vector>
-#include <array>
 #include <SFML/Graphics.hpp>
 #include <Utility/Vertex.hpp>
 #include <Utility/Utility.hpp>
@@ -10,6 +8,9 @@
 #include <Application.hpp>
 #include <Random/Random.hpp>
 #include <JSON/JSON.hpp>
+
+#include <Interface/Drawable.hpp>
+
 #include <vector>
 #include <array>
 #include <fstream>
@@ -30,7 +31,7 @@ struct Seed
   Kind texture;
 };
 
-class World
+class World : public Drawable
 {
 public:
 
@@ -60,8 +61,8 @@ public:
    * Draw the current world on a target
    * @param target where to draw this world
    */
-  void
-  drawOn (sf::RenderTarget& target);
+  virtual void
+  drawOn (sf::RenderTarget& target) const;
 
   /**
    * Set the layer to show in each cell.

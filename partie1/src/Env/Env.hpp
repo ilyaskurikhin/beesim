@@ -8,12 +8,6 @@
 #include <Utility/Utility.hpp>
 #include <Random/Random.hpp>
 
-struct flowerNode {
-  Flower* flower;
-  flowerNode* previous;
-  flowerNode* next;
-};
-
 class Env
 {
 public:
@@ -51,7 +45,6 @@ public:
 private:
 
   World world_;
-  flowerNode flowerHead_;
-  unsigned int numberFlowers_;
+  std::vector<Flower*> flowers_;
 };
 #endif

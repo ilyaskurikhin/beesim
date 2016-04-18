@@ -201,18 +201,17 @@ World::reset (bool regenerate)
 }
 
 void
-World::drawOn (sf::RenderTarget& target)
+World::drawOn (sf::RenderTarget& target) const
 {
   if (simulationWorld ()["show humidity"] == 1)
     {
       renderingCache_.draw (humidityVertexes_.data (),
                             humidityVertexes_.size (), sf::Quads);
-
     }
   if (isDebugOn ())
     {
-      const Vec2d position (getApp ().getCursorPositionInView ());
-      size_t cell(positionInTab(position));
+      Vec2d position = getApp ().getCursorPositionInView ();
+      size_t cell (positionInTab (position));
       std::string valueString(std::to_string(humidityLevels_[cell]));
       sf::Text text = buildText(valueString, position, getAppFont(), 30, sf::Color::Red);
       target.draw(text);

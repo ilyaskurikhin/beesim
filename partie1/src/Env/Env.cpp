@@ -1,11 +1,8 @@
 #include <Env/Env.hpp>
 
 Env::Env () :
-    world_ (), numberFlowers_ (0)
+    world_ ()
 {
-  flowerHead_.flower = nullptr;
-  flowerHead_.previous = nullptr;
-  flowerHead_.next = nullptr;
   try
     {
       world_.loadFromFile ();
@@ -20,74 +17,55 @@ Env::Env () :
 void
 Env::update (sf::Time dt)
 {
-  unsigned int i (0);
-  // get number of flowers before update
-  unsigned int oldFlowers (numberFlowers_);
-  flowerNode* currentNode (&flowerHead_);
-
-  // cycle through linked list
-  while ((*currentNode).next != nullptr)
+  // iterate through flowers
+  size_t numberFlowers (flowers_.size());
+  for (size_t i = 0; i <= numberFlowers; ++i)
     {
-      // update if flower is old
-      if (i <= oldFlowers)
-        {
-          double humidity (
-              world_.getHumidity (currentNode->flower->getPosition ()));
-          currentNode->flower->update (dt, humidity);
-          // TODO : make sure that new flowers get drawn
+      double humidity (world_.getHumidity (flowers_[i]->getPosition ()));
+      flowers_[i]->update (dt, humidity);
+      // TODO : make sure that new flowers get drawn
 
-          double split (
-              getAppConfig ()["simulation"]["flower"]["growth"]["split"].toDouble ());
-          if (currentNode->flower->getPollen () > split)
+      double split (
+          getAppConfig ()["simulation"]["flower"]["growth"]["split"].toDouble ());
+      // split flower is has enough pollen
+      if (flowers_[i]->getPollen () > split)
+        {
+          bool placed (false);
+          while (!placed)
             {
-              bool placed (false);
-              while (!placed)
+              // set a random distance
+              double radius (flowers_[i]->getRadius ());
+              double distance (uniform (0.5 * radius, 2 * radius));
+              Vec2d position = flowers_[i]->getPosition ()
+                  + Vec2d::fromRandomAngle () * distance;
+              if (world_.isGrowable (position))
                 {
-                  // set a random distance
-                  double radius (currentNode->flower->getRadius ());
-                  double distance (uniform (0.5 * radius, 2 * radius));
-                  Vec2d position = currentNode->flower->getPosition ()
-                      + Vec2d::fromRandomAngle () * distance;
-                  if (world_.isGrowable (position))
-                    {
-                      addFlowerAt (position);
-                      placed = true;
-                    }
+                  addFlowerAt (position);
+                  placed = true;
                 }
             }
-          // check if flower is dead
-          if (currentNode->flower->getPollen () <= 0)
-            {
-              // remove dead flower
-              delete (*currentNode).flower;
-
-              // remove node from list
-              currentNode->next->previous = currentNode->previous;
-              currentNode->previous->next = currentNode->next;
-
-              // delete node and move to the next one
-              flowerNode* oldNode (currentNode);
-              currentNode = oldNode->next;
-              delete oldNode;
-            }
-          else
-            {
-              // move to next node
-              currentNode = (*currentNode).next;
-            }
         }
-      ++i;
+
+      // check if flower is dead
+      if (flowers_[i]->getPollen () <= 0)
+        {
+          // remove dead flower
+          delete flowers_[i];
+          flowers_[i] = nullptr;
+        }
     }
+  // remove empty locations
+  flowers_.erase (std::remove (flowers_.begin (), flowers_.end (), nullptr),
+                  flowers_.end ());
 }
 
 void
 Env::drawOn (sf::RenderTarget& target)
 {
   world_.drawOn (target);
-  flowerNode* currentNode (&flowerHead_);
-  while ((*currentNode).next != nullptr)
+  for (size_t i = 0; i < flowers_.size (); ++i)
     {
-      (*(*currentNode).flower).drawOn (target);
+      flowers_[i]->drawOn (target);
     }
 }
 
@@ -95,16 +73,11 @@ void
 Env::reset ()
 {
   world_.reset (true);
-  flowerNode* currentNode (&flowerHead_);
-  while ((*currentNode).next != nullptr)
+  for (size_t i = 0; i < flowers_.size (); ++i)
     {
-      delete (*currentNode).flower;
-      flowerNode* oldNode = currentNode;
-      flowerNode* newNode = (*currentNode).next;
-      delete oldNode;
-      currentNode = newNode;
+      delete flowers_[i];
     }
-  numberFlowers_ = 0;
+  flowers_.clear ();
 }
 
 void
@@ -127,7 +100,7 @@ Env::addFlowerAt (const Vec2d& position)
       getAppConfig ()["simulation"]["env"]["max flowers"].toInt ();
 
   // check if flower can be made at position
-  if (world_.isGrowable (position) && (numberFlowers_ < maxFlowers))
+  if (world_.isGrowable (position) && (flowers_.size() < maxFlowers))
     {
       // set a random number of pollen
       double pollen =
@@ -135,26 +108,12 @@ Env::addFlowerAt (const Vec2d& position)
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["min"].toDouble (),
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["max"].toDouble ());
 
-      // find the current tail of the Flower linked list
-      flowerNode* currentNode (&flowerHead_);
-      while ((*currentNode).next != nullptr)
-        {
-          currentNode = (*currentNode).next;
-        }
-      // create a new linked list element
-      (*currentNode).next = new flowerNode;
-
-      // create a flower at the element
-      (*(*currentNode).next).flower =
+      flowers_.push_back (
           new Flower (
               position,
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["size"]["manual"].toDouble ()
                   / 2.0,
-              pollen);
-      // set this as the last element
-      (*(*currentNode).next).next = nullptr;
-      // set the previous element
-      (*(*currentNode).next).previous = (*currentNode).next;
+              pollen));
       return true;
     }
   else

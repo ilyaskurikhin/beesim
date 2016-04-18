@@ -5,10 +5,13 @@ Collider::Collider (const Vec2d& position, double radius)
 :
     radius_ (radius), position_ (position)
 {
-  // si le rayon<0 envoie un message d'erreur "assertion failed"
-  assert(radius_ >= 0);
+  // PRECODITIONS for constructor
+  if (radius_ <= 0)
+    {
+      throw std::runtime_error ("Collider with negative radius created. (Collider::Collider)");
+    }
 
-  // fait appelle a la méthode clamping pour corriger la position entrée
+  // puts Collider into map
   clamping ();
 }
 
