@@ -17,12 +17,15 @@ Env::Env () :
 void
 Env::update (sf::Time dt)
 {
+  //update du generateur
+  generator_.update(dt);
+  
   // iterate through flowers
   size_t numberFlowers (flowers_.size());
   for (size_t i = 0; i <= numberFlowers; ++i)
     {
       double humidity (world_.getHumidity (flowers_[i]->getPosition ()));
-      flowers_[i]->update (dt, humidity);
+      flowers_[i]->update(dt, humidity);
       // TODO : make sure that new flowers get drawn
 
       double split (
@@ -30,8 +33,9 @@ Env::update (sf::Time dt)
       // split flower is has enough pollen
       if (flowers_[i]->getPollen () > split)
         {
+		  int i(0);
           bool placed (false);
-          while (!placed)
+          while ((!placed) && (i<100)) //
             {
               // set a random distance
               double radius (flowers_[i]->getRadius ());
@@ -43,6 +47,7 @@ Env::update (sf::Time dt)
                   addFlowerAt (position);
                   placed = true;
                 }
+            ++ i;
             }
         }
 
@@ -78,6 +83,7 @@ Env::reset ()
       delete flowers_[i];
     }
   flowers_.clear ();
+  generator_.reset();
 }
 
 void

@@ -57,6 +57,9 @@ Flower::update (sf::Time dt, double humidity)
 
   // set the new pollen value
   pollen_ = pollen_ + dt.asSeconds() * std::log(humidity/threshold);
+  
+  //c'est update de flower qui doit faire appel à celui de l'envt? (getAppEnv()).update(dt);
+  
 }
 
 double

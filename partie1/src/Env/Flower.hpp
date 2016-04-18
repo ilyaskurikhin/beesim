@@ -25,7 +25,7 @@ public:
   loadTexture ();
 
   void
-  update (sf::Time dt, double humidity);
+  update (sf::Time dt);
 
   double
   getPollen();

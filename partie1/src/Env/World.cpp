@@ -631,7 +631,7 @@ World::getIndex (const Vec2d& position)
 double
 World::getHumidity (const Vec2d& position)
 {
-  return humidityLevels_[getIndex (position)];
+  return humidityLevels_[getIndex(position)];
 }
 
 bool
