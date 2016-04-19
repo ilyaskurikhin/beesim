@@ -146,16 +146,10 @@ public:
   isGrowable (const Vec2d& position) const;
 
   Vec2d
-  positionInWorld (const Vec2d& position) const;
-
-  /**
-   * @brief Get cell number for current position.
-   */
-  size_t
-  positionInTab (const Vec2d& position) const;
+  getCellPosition (const Vec2d& position) const;
 
   size_t
-  getIndex (const Vec2d& position) const;
+  getCellIndex (const Vec2d& position) const;
 
   double
   getHumidity (const Vec2d& position) const;

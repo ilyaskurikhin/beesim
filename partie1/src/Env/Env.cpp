@@ -128,12 +128,11 @@ Env::addFlowerAt (const Vec2d& position)
 void
 Env::drawFlowerZone (sf::RenderTarget& target, const Vec2d& position)
 {
-  Vec2d worldPosition = world_->positionInWorld (position);
-  if (world_->isGrowable (worldPosition))
+  if (world_->isGrowable (position))
     {
       auto shape =
           buildAnnulus (
-              worldPosition,
+              position,
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["size"]["manual"].toDouble (),
               sf::Color::Green, 5.0);
       target.draw (shape);
@@ -142,7 +141,7 @@ Env::drawFlowerZone (sf::RenderTarget& target, const Vec2d& position)
     {
       auto shape =
           buildAnnulus (
-              worldPosition,
+              position,
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["size"]["manual"].toDouble (),
               sf::Color::Red, 5.0);
       target.draw (shape);

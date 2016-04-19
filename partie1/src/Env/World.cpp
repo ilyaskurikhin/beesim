@@ -602,7 +602,7 @@ World::calculateScanRange (size_t x, size_t y, unsigned int radius)
 bool
 World::isGrowable (const Vec2d& position) const
 {
-  if (cells_[positionInTab (position)] == Kind::Grass)
+  if (cells_[getCellIndex (position)] == Kind::Grass)
     {
       return true;
     }
@@ -613,41 +613,36 @@ World::isGrowable (const Vec2d& position) const
 }
 
 Vec2d
-World::positionInWorld (const Vec2d& position) const
+World::getCellPosition (const Vec2d& position) const
 {
-  Vec2d p;
-  p.x = position.x / (int) cellSize_;
-  p.y = position.y / (int) cellSize_;
-  return p;
+  Vec2d cellPosition;
+  cellPosition.x = position.x / (int) cellSize_;
+  cellPosition.y = position.y / (int) cellSize_;
+  return cellPosition;
 }
 
 size_t
-World::positionInTab (const Vec2d& position) const
-{
-  Vec2d p = positionInWorld (position);
-  return getIndex (p);
-}
-
-size_t
-World::getIndex (const Vec2d& position) const 
+World::getCellIndex (const Vec2d& position) const 
 {
   if (!isInWorld (position))
     {
       throw std::runtime_error ("Position not in world. (World::getIndex)");
     }
-  return (size_t) position.y * numberColumns_ + (size_t) position.x;
+  Vec2d cellPosition;
+  cellPosition = getCellPosition(position);
+  return (size_t) cellPosition.y * numberColumns_ + (size_t) cellPosition.x;
 }
 
 double
 World::getHumidity (const Vec2d& position) const
 {
-  return humidityLevels_[getIndex (position)];
+  return humidityLevels_[getCellIndex (position)];
 }
 
 bool
 World::isInWorld (const Vec2d& position) const 
 {
-  if ((position.x > numberColumns_) || (position.y > numberColumns_))
+  if ((position.x > numberColumns_* cellSize_) || (position.y > numberColumns_* cellSize_))
     {
       return false;
     }

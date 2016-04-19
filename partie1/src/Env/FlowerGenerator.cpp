@@ -13,7 +13,7 @@ FlowerGenerator::update (sf::Time dt)
   if ((counter_
       > sf::seconds (
           (float) getAppConfig ()["simulation"]["flower generator"]["delay"].toDouble ()))
-      && (getAppConfig ()["simulation"]["flower"]["active"].toBool ()))
+      && (getAppConfig ()["simulation"]["flower generator"]["active"].toBool ()))
     {
       counter_ = sf::Time::Zero;
       Vec2d position;
