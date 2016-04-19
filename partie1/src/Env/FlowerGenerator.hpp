@@ -11,13 +11,13 @@ void
 update(sf::Time dt);
 
 void 
-reset()
+reset();
 
 private: 
 
 sf::Time
 counter_;
-}
+};
 
 
 

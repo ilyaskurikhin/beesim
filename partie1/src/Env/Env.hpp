@@ -7,7 +7,7 @@
 #include <Env/Flower.hpp>
 #include <Utility/Utility.hpp>
 #include <Random/Random.hpp>
-
+#include <Env/FlowerGenerator.hpp>
 class Env
 {
 public:
@@ -47,7 +47,6 @@ private:
   World world_;
   std::vector<Flower*> flowers_;
   
-  FlowerGenerator
-  generator_;
+  FlowerGenerator generator_;
 };
 #endif
