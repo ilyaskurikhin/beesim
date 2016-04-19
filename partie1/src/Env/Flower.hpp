@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <Random/Random.hpp>
 #include <Env/Collider.hpp>
+#include <Env/Env.hpp>
 #include <Utility/Utility.hpp>
 #include <Application.hpp>
 
@@ -26,6 +27,9 @@ public:
 
   void
   update (sf::Time dt);
+
+  void
+  drawOn (sf::RenderTarget& target) const;
 
   double
   getPollen ();

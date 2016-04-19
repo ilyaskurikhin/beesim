@@ -6,8 +6,10 @@
 
 #include <Application.hpp>
 #include <Random/Random.hpp>
+#include <Interface/Updatable.hpp>
+#include <Env/Env.hpp>
 
-class FlowerGenerator
+class FlowerGenerator : public Updatable
 {
 public:
 

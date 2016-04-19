@@ -1,15 +1,22 @@
 #ifndef ENV_H
 #define ENV_H
 
+#include <SFML/Graphics.hpp>
+
 #include <Env/World.hpp>
 #include <Utility/Vec2d.hpp>
-#include <SFML/Graphics.hpp>
-#include <Env/Flower.hpp>
 #include <Utility/Utility.hpp>
 #include <Random/Random.hpp>
-#include <Env/FlowerGenerator.hpp>
+#include <Interface/Drawable.hpp>
+#include <Interface/Updatable.hpp>
 
-class Env
+#include <memory>
+
+
+class Flower;
+class FlowerGenerator;
+
+class Env : public Drawable, public Updatable
 {
 public:
   /**
@@ -22,11 +29,13 @@ public:
    */
   Env ();
 
+  ~Env ();
+
   void
   update (sf::Time dt);
 
   void
-  drawOn (sf::RenderTarget& target);
+  drawOn (sf::RenderTarget& target) const;
 
   void
   reset ();
@@ -37,6 +46,12 @@ public:
   void
   saveWorldToFile ();
 
+  double
+  getHumidity (const Vec2d& position);
+
+  bool
+  isGrowable (const Vec2d& position);
+
   bool
   addFlowerAt (const Vec2d& position);
 
@@ -45,8 +60,8 @@ public:
 
 private:
 
-  World world_;
+  World* world_;
   std::vector<Flower*> flowers_;
-  FlowerGenerator generator_;
+  FlowerGenerator* generator_;
 };
 #endif

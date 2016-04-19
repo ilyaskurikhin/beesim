@@ -205,18 +205,19 @@ World::drawOn (sf::RenderTarget& target) const
 {
   if (simulationWorld ()["show humidity"] == 1)
     {
+      sf::RenderStates rsHumidity;
       renderingCache_.draw (humidityVertexes_.data (),
-                            humidityVertexes_.size (), sf::Quads);
+                            humidityVertexes_.size (), sf::Quads, rsHumidity);
     }
-  if (isDebugOn ())
-    {
-      Vec2d position = getApp ().getCursorPositionInView ();
-      size_t cell (positionInTab (position));
-      std::string valueString (std::to_string (humidityLevels_[cell]));
-      sf::Text text = buildText (valueString, position, getAppFont (), 30,
-                                 sf::Color::Red);
-      target.draw (text);
-    }
+	//  if (isDebugOn ())
+	//    {
+	//      Vec2d position = getApp ().getCursorPositionInView ();
+	//      size_t cell (this->positionInTab (position));
+	//      std::string valueString (std::to_string (humidityLevels_[cell]));
+	//      sf::Text text = buildText (valueString, position, getAppFont (), 30,
+	//				 sf::Color::Red);
+	//      target.draw (text);
+	//    }
 
   sf::Sprite cache (renderingCache_.getTexture ());
   target.draw (cache);
@@ -591,7 +592,7 @@ World::calculateScanRange (size_t x, size_t y, unsigned int radius)
 }
 
 bool
-World::isGrowable (const Vec2d& position)
+World::isGrowable (const Vec2d& position) const
 {
   if (cells_[positionInTab (position)] == Kind::Grass)
     {
@@ -604,7 +605,7 @@ World::isGrowable (const Vec2d& position)
 }
 
 Vec2d
-World::positionInWorld (const Vec2d& position)
+World::positionInWorld (const Vec2d& position) const
 {
   Vec2d p;
   p.x = position.x / (int) cellSize_;
@@ -613,14 +614,14 @@ World::positionInWorld (const Vec2d& position)
 }
 
 size_t
-World::positionInTab (const Vec2d& position)
+World::positionInTab (const Vec2d& position) const
 {
   Vec2d p = positionInWorld (position);
   return getIndex (p);
 }
 
 size_t
-World::getIndex (const Vec2d& position)
+World::getIndex (const Vec2d& position) const 
 {
   if (!isInWorld (position))
     {
@@ -630,13 +631,13 @@ World::getIndex (const Vec2d& position)
 }
 
 double
-World::getHumidity (const Vec2d& position)
+World::getHumidity (const Vec2d& position) const
 {
   return humidityLevels_[getIndex (position)];
 }
 
 bool
-World::isInWorld (const Vec2d& position)
+World::isInWorld (const Vec2d& position) const 
 {
   if ((position.x > numberColumns_) || (position.y > numberColumns_))
     {

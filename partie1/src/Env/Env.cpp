@@ -1,55 +1,39 @@
 #include <Env/Env.hpp>
 
+#include <Env/Flower.hpp>
+#include <Env/FlowerGenerator.hpp>
+
 Env::Env () :
-    world_ ()
+    world_ (new World())
 {
   try
     {
-      world_.loadFromFile ();
+      world_->loadFromFile ();
     }
   catch (const std::runtime_error& e)
     {
-      world_.reset (true);
+      world_->reset (true);
     }
-  world_.updateCache ();
+  world_->updateCache ();
+}
+
+Env::~Env()
+{
+  delete world_;
 }
 
 void
 Env::update (sf::Time dt)
 {
   //update du generateur
-  generator_.update (dt);
+  generator_->update (dt);
 
   // iterate through flowers
   size_t numberFlowers (flowers_.size ());
   for (size_t i = 0; i <= numberFlowers; ++i)
     {
-      double humidity (world_.getHumidity (flowers_[i]->getPosition ()));
-      flowers_[i]->update (dt, humidity);
+      flowers_[i]->update (dt);
       // TODO : make sure that new flowers get drawn
-
-      double split (
-          getAppConfig ()["simulation"]["flower"]["growth"]["split"].toDouble ());
-      // split flower is has enough pollen
-      if (flowers_[i]->getPollen () > split)
-        {
-          int i (0);
-          bool placed (false);
-          while ((!placed) && (i < 100)) //
-            {
-              // set a random distance
-              double radius (flowers_[i]->getRadius ());
-              double distance (uniform (0.5 * radius, 2 * radius));
-              Vec2d position = flowers_[i]->getPosition ()
-                  + Vec2d::fromRandomAngle () * distance;
-              if (world_.isGrowable (position))
-                {
-                  addFlowerAt (position);
-                  placed = true;
-                }
-              ++i;
-            }
-        }
 
       // check if flower is dead
       if (flowers_[i]->getPollen () <= 0)
@@ -65,9 +49,9 @@ Env::update (sf::Time dt)
 }
 
 void
-Env::drawOn (sf::RenderTarget& target)
+Env::drawOn (sf::RenderTarget& target) const
 {
-  world_.drawOn (target);
+  world_->drawOn (target);
   for (size_t i = 0; i < flowers_.size (); ++i)
     {
       flowers_[i]->drawOn (target);
@@ -77,25 +61,37 @@ Env::drawOn (sf::RenderTarget& target)
 void
 Env::reset ()
 {
-  world_.reset (true);
+  world_->reset (true);
   for (size_t i = 0; i < flowers_.size (); ++i)
     {
       delete flowers_[i];
     }
   flowers_.clear ();
-  generator_.reset ();
+  generator_->reset ();
 }
 
 void
 Env::loadWorldFromFile ()
 {
-  world_.loadFromFile ();
+  world_->loadFromFile ();
 }
 
 void
 Env::saveWorldToFile ()
 {
-  world_.saveToFile ();
+  world_->saveToFile ();
+}
+
+double
+Env::getHumidity (const Vec2d& position)
+{
+  return world_->getHumidity (position);
+}
+
+bool
+Env::isGrowable (const Vec2d& position)
+{
+  return world_->isGrowable (position);
 }
 
 bool
@@ -106,14 +102,14 @@ Env::addFlowerAt (const Vec2d& position)
       getAppConfig ()["simulation"]["env"]["max flowers"].toInt ();
 
   // check if flower can be made at position
-  if (world_.isGrowable (position) && (flowers_.size () < maxFlowers))
+  if (world_->isGrowable (position) && (flowers_.size () < maxFlowers))
     {
       // set a random number of pollen
       double pollen =
           uniform (
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["min"].toDouble (),
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["max"].toDouble ());
-
+      
       flowers_.push_back (
           new Flower (
               position,
@@ -131,8 +127,8 @@ Env::addFlowerAt (const Vec2d& position)
 void
 Env::drawFlowerZone (sf::RenderTarget& target, const Vec2d& position)
 {
-  Vec2d worldPosition = world_.positionInWorld (position);
-  if (world_.isGrowable (worldPosition))
+  Vec2d worldPosition = world_->positionInWorld (position);
+  if (world_->isGrowable (worldPosition))
     {
       auto shape =
           buildAnnulus (

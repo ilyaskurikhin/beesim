@@ -50,17 +50,37 @@ Flower::loadTexture ()
 }
 
 void
-Flower::update (sf::Time dt, double humidity)
+Flower::update (sf::Time dt)
 {
   // get variables from configuration
   double threshold (
       getAppConfig ()["simulation"]["flower"]["growth"]["threshold"].toDouble ());
+  double humidity (getAppEnv ().getHumidity(position_));
 
   // set the new pollen value
   pollen_ = pollen_ + dt.asSeconds () * std::log (humidity / threshold);
 
-  //c'est update de flower qui doit faire appel à celui de l'envt? (getAppEnv()).update(dt);
+      double split (
+          getAppConfig ()["simulation"]["flower"]["growth"]["split"].toDouble ());
 
+      // split flower is has enough pollen
+      if (pollen_ > split)
+        {
+          int i (0);
+          bool placed (false);
+          while ((!placed) && (i < 100)) //
+            {
+              // set a random distance
+              double distance (uniform (0.5 * radius_, 2 * radius_));
+              Vec2d position = position_ + Vec2d::fromRandomAngle () * distance;
+              if (getAppEnv ().isGrowable (position))
+                {
+                  getAppEnv ().addFlowerAt (position);
+                  placed = true;
+                }
+              ++i;
+            }
+        }
 }
 
 double

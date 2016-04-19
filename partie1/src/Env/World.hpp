@@ -61,7 +61,7 @@ public:
    * Draw the current world on a target
    * @param target where to draw this world
    */
-  virtual void
+  void
   drawOn (sf::RenderTarget& target) const;
 
   /**
@@ -143,25 +143,25 @@ public:
   humidify (size_t i);
 
   bool
-  isGrowable (const Vec2d& position);
+  isGrowable (const Vec2d& position) const;
 
   Vec2d
-  positionInWorld (const Vec2d& position);
+  positionInWorld (const Vec2d& position) const;
 
   /**
    * @brief Get cell number for current position.
    */
   size_t
-  positionInTab (const Vec2d& position);
+  positionInTab (const Vec2d& position) const;
 
   size_t
-  getIndex (const Vec2d& position);
+  getIndex (const Vec2d& position) const;
 
   double
-  getHumidity (const Vec2d& position);
+  getHumidity (const Vec2d& position) const;
 
   bool
-  isInWorld (const Vec2d& position);
+  isInWorld (const Vec2d& position) const;
 
 private:
 
