@@ -55,32 +55,36 @@ Flower::update (sf::Time dt)
   // get variables from configuration
   double threshold (
       getAppConfig ()["simulation"]["flower"]["growth"]["threshold"].toDouble ());
-  double humidity (getAppEnv ().getHumidity(position_));
+  double humidity (getAppEnv ().getHumidity (position_));
 
   // set the new pollen value
   pollen_ = pollen_ + dt.asSeconds () * std::log (humidity / threshold);
 
-      double split (
-          getAppConfig ()["simulation"]["flower"]["growth"]["split"].toDouble ());
+  double split (
+      getAppConfig ()["simulation"]["flower"]["growth"]["split"].toDouble ());
 
-      // split flower is has enough pollen
-      if (pollen_ > split)
+  // split flower if has enough pollen
+  if (pollen_ > split)
+    {
+      int i (0);
+      bool placed (false);
+      while ((!placed) && (i < 100)) //
         {
-          int i (0);
-          bool placed (false);
-          while ((!placed) && (i < 100)) //
+          // set a random distance
+          double distance (uniform (0.5 * radius_, 2 * radius_));
+
+          // calculate a new position and clamp it
+          Vec2d position = position_ + Vec2d::fromRandomAngle () * distance;
+          Collider protoFlower(position, radius_);
+          protoFlower.clamping();
+
+          if (getAppEnv ().addFlowerAt (protoFlower.getPosition()))
             {
-              // set a random distance
-              double distance (uniform (0.5 * radius_, 2 * radius_));
-              Vec2d position = position_ + Vec2d::fromRandomAngle () * distance;
-              if (getAppEnv ().isGrowable (position))
-                {
-                  getAppEnv ().addFlowerAt (position);
-                  placed = true;
-                }
-              ++i;
+              placed = true;
             }
+          ++i;
         }
+    }
 }
 
 double

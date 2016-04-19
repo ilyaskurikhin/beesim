@@ -46,7 +46,7 @@ World::reloadConfig ()
   while (humidity > humidityThreshold_)
     {
       humidity = humidityInitialLevel_
-          * std::exp ((float) -humidityRange_ / (float) humidityDecayRate_);
+          * std::exp ((double) -humidityRange_ / (double) humidityDecayRate_);
       ++humidityRange_;
     }
 }
@@ -64,7 +64,8 @@ World::reloadCacheStructure ()
   // create a cache of all the pixels to display
   renderingCache_.create (numberColumns_ * cellSize_,
                           numberColumns_ * cellSize_);
-  humidityCache_.create (numberColumns_ * cellSize_, numberColumns_ * cellSize_);
+  humidityCache_.create (numberColumns_ * cellSize_,
+                         numberColumns_ * cellSize_);
 }
 
 void
@@ -151,7 +152,9 @@ World::updateCache ()
   renderingCache_.draw (rockVertexes_.data (), rockVertexes_.size (), sf::Quads,
                         rsRock);
   // draw the humidity on a new cache
-  humidityCache_.draw (humidityVertexes_.data (), humidityVertexes_.size (), sf::Quads, rsHumidity);
+  humidityCache_.draw (humidityVertexes_.data (), humidityVertexes_.size (),
+                       sf::Quads, rsHumidity);
+  humidityCache_.display ();
 
   renderingCache_.display ();
 }
@@ -196,7 +199,7 @@ World::reset (bool regenerate)
 
   if (regenerate)
     {
-      std::cout << "regenerating" << std::endl;
+      std::cout << "regenerating world..." << std::endl;
       steps (simulationWorld ()["generation"]["steps"].toInt ());
       smooths (
           simulationWorld ()["generation"]["smoothness"]["level"].toInt ());
@@ -213,21 +216,21 @@ World::drawOn (sf::RenderTarget& target) const
       sf::Sprite cache (humidityCache_.getTexture ());
       target.draw (cache);
     }
-  else 
+  else
     {
       sf::Sprite cache (renderingCache_.getTexture ());
       target.draw (cache);
     }
 
-	//  if (isDebugOn ())
-	//    {
-	//      Vec2d position = getApp ().getCursorPositionInView ();
-	//      size_t cell (this->positionInTab (position));
-	//      std::string valueString (std::to_string (humidityLevels_[cell]));
-	//      sf::Text text = buildText (valueString, position, getAppFont (), 30,
-	//				 sf::Color::Red);
-	//      target.draw (text);
-	//    }
+  //  if (isDebugOn ())
+  //    {
+  //      Vec2d position = getApp ().getCursorPositionInView ();
+  //      size_t cell (this->positionInTab (position));
+  //      std::string valueString (std::to_string (humidityLevels_[cell]));
+  //      sf::Text text = buildText (valueString, position, getAppFont (), 30,
+  //				 sf::Color::Red);
+  //      target.draw (text);
+  //    }
 
 }
 
@@ -622,14 +625,14 @@ World::getCellPosition (const Vec2d& position) const
 }
 
 size_t
-World::getCellIndex (const Vec2d& position) const 
+World::getCellIndex (const Vec2d& position) const
 {
   if (!isInWorld (position))
     {
       throw std::runtime_error ("Position not in world. (World::getIndex)");
     }
   Vec2d cellPosition;
-  cellPosition = getCellPosition(position);
+  cellPosition = getCellPosition (position);
   return (size_t) cellPosition.y * numberColumns_ + (size_t) cellPosition.x;
 }
 
@@ -640,9 +643,10 @@ World::getHumidity (const Vec2d& position) const
 }
 
 bool
-World::isInWorld (const Vec2d& position) const 
+World::isInWorld (const Vec2d& position) const
 {
-  if ((position.x > numberColumns_* cellSize_) || (position.y > numberColumns_* cellSize_))
+  if ((position.x > numberColumns_ * cellSize_)
+      || (position.y > numberColumns_ * cellSize_))
     {
       return false;
     }

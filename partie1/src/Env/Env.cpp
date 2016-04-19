@@ -4,8 +4,7 @@
 #include <Env/FlowerGenerator.hpp>
 
 Env::Env () :
-    world_ (new World()), 
-    flowerGenerator_ (new FlowerGenerator) 
+    world_ (new World ()), flowerGenerator_ (new FlowerGenerator)
 {
   try
     {
@@ -18,7 +17,7 @@ Env::Env () :
   world_->updateCache ();
 }
 
-Env::~Env()
+Env::~Env ()
 {
   delete world_;
 }
@@ -26,7 +25,7 @@ Env::~Env()
 void
 Env::update (sf::Time dt)
 {
-  //update du generateur
+  // update du generateur
   flowerGenerator_->update (dt);
 
   // iterate through flowers
@@ -110,7 +109,7 @@ Env::addFlowerAt (const Vec2d& position)
           uniform (
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["min"].toDouble (),
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["max"].toDouble ());
-      
+
       flowers_.push_back (
           new Flower (
               position,

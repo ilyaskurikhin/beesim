@@ -10,11 +10,15 @@ FlowerGenerator::update (sf::Time dt)
 {
 
   counter_ += dt;
-  if ((counter_
-      > sf::seconds (
-          (float) getAppConfig ()["simulation"]["flower generator"]["delay"].toDouble ()))
-      && (getAppConfig ()["simulation"]["flower generator"]["active"].toBool ()))
+
+  // if generation is active and a delay has passed
+  // generate flowers at random locations
+  if ((getAppConfig ()["simulation"]["flower generator"]["active"].toBool ())
+      && (counter_
+          > sf::seconds (
+              (float) getAppConfig ()["simulation"]["flower generator"]["delay"].toDouble ())))
     {
+      // reset the counter
       counter_ = sf::Time::Zero;
       Vec2d position;
       position.x = uniform ((float) 0, (float) getApp ().getWorldSize ().x);
