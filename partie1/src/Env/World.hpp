@@ -16,6 +16,8 @@
 #include <fstream>
 #include <ostream>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <stdexcept>
 #include <string>
 #include <cmath>
