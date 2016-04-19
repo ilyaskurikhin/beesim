@@ -144,6 +144,7 @@ World::updateCache ()
     }
 
   renderingCache_.clear ();
+  humidityCache_.clear ();
 
   renderingCache_.draw (grassVertexes_.data (), grassVertexes_.size (),
                         sf::Quads, rsGrass);
@@ -211,7 +212,7 @@ World::reset (bool regenerate)
 void
 World::drawOn (sf::RenderTarget& target) const
 {
-  if (simulationWorld ()["show humidity"] == 1)
+  if (simulationWorld ()["show humidity"].toBool() || getAppConfig()["debug"].toBool())
     {
       sf::Sprite cache (humidityCache_.getTexture ());
       target.draw (cache);
@@ -544,7 +545,7 @@ World::humidify (size_t i)
 
   for (size_t dx (scanRange.left); dx <= right; ++dx)
     {
-      for (size_t dy (scanRange.top); dy <= bottom; ++dx)
+      for (size_t dy (scanRange.top); dy <= bottom; ++dy)
         {
           double currentLevel (
               humidityInitialLevel_
