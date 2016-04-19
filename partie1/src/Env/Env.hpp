@@ -62,6 +62,6 @@ private:
 
   World* world_;
   std::vector<Flower*> flowers_;
-  FlowerGenerator* generator_;
+  FlowerGenerator* flowerGenerator_;
 };
 #endif

@@ -4,7 +4,8 @@
 #include <Env/FlowerGenerator.hpp>
 
 Env::Env () :
-    world_ (new World())
+    world_ (new World()), 
+    flowerGenerator_ (new FlowerGenerator) 
 {
   try
     {
@@ -26,11 +27,11 @@ void
 Env::update (sf::Time dt)
 {
   //update du generateur
-  generator_->update (dt);
+  flowerGenerator_->update (dt);
 
   // iterate through flowers
   size_t numberFlowers (flowers_.size ());
-  for (size_t i = 0; i <= numberFlowers; ++i)
+  for (size_t i = 0; i < numberFlowers; ++i)
     {
       flowers_[i]->update (dt);
       // TODO : make sure that new flowers get drawn
@@ -67,7 +68,7 @@ Env::reset ()
       delete flowers_[i];
     }
   flowers_.clear ();
-  generator_->reset ();
+  flowerGenerator_->reset ();
 }
 
 void

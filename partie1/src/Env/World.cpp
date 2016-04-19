@@ -64,6 +64,7 @@ World::reloadCacheStructure ()
   // create a cache of all the pixels to display
   renderingCache_.create (numberColumns_ * cellSize_,
                           numberColumns_ * cellSize_);
+  humidityCache_.create (numberColumns_ * cellSize_, numberColumns_ * cellSize_);
 }
 
 void
@@ -78,6 +79,8 @@ World::updateCache ()
   sf::RenderStates rsRock;
   rsRock.texture = &getAppTexture (
       simulationWorld ()["textures"]["rock"].toString ());
+
+  sf::RenderStates rsHumidity;
 
   // get and set max and min humidity levels
   auto minmax (
@@ -147,6 +150,8 @@ World::updateCache ()
                         sf::Quads, rsWater);
   renderingCache_.draw (rockVertexes_.data (), rockVertexes_.size (), sf::Quads,
                         rsRock);
+  // draw the humidity on a new cache
+  humidityCache_.draw (humidityVertexes_.data (), humidityVertexes_.size (), sf::Quads, rsHumidity);
 
   renderingCache_.display ();
 }
@@ -205,10 +210,15 @@ World::drawOn (sf::RenderTarget& target) const
 {
   if (simulationWorld ()["show humidity"] == 1)
     {
-      sf::RenderStates rsHumidity;
-      renderingCache_.draw (humidityVertexes_.data (),
-                            humidityVertexes_.size (), sf::Quads, rsHumidity);
+      sf::Sprite cache (humidityCache_.getTexture ());
+      target.draw (cache);
     }
+  else 
+    {
+      sf::Sprite cache (renderingCache_.getTexture ());
+      target.draw (cache);
+    }
+
 	//  if (isDebugOn ())
 	//    {
 	//      Vec2d position = getApp ().getCursorPositionInView ();
@@ -219,8 +229,6 @@ World::drawOn (sf::RenderTarget& target) const
 	//      target.draw (text);
 	//    }
 
-  sf::Sprite cache (renderingCache_.getTexture ());
-  target.draw (cache);
 }
 
 void

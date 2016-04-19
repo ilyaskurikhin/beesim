@@ -174,6 +174,7 @@ private:
 
   /// cache of all pixels
   sf::RenderTexture renderingCache_;
+  sf::RenderTexture humidityCache_;
 
   std::vector<sf::Vertex> grassVertexes_;
   std::vector<sf::Vertex> waterVertexes_;
