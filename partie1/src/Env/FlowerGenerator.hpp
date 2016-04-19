@@ -1,24 +1,27 @@
 #ifndef FLOWERGENERATOR_H
 #define FLOWERGENERATOR_H
 
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+
+#include <Application.hpp>
+#include <Random/Random.hpp>
+
 class FlowerGenerator
 {
 public:
 
-FlowerGenerator();    
+  FlowerGenerator ();
 
-void
-update(sf::Time dt);
+  void
+  update (sf::Time dt);
 
-void 
-reset()
+  void
+  reset ();
 
-private: 
+private:
 
-sf::Time
-counter_;
-}
-
-
+  sf::Time counter_;
+};
 
 #endif

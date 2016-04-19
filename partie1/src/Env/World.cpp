@@ -212,9 +212,10 @@ World::drawOn (sf::RenderTarget& target) const
     {
       Vec2d position = getApp ().getCursorPositionInView ();
       size_t cell (positionInTab (position));
-      std::string valueString(std::to_string(humidityLevels_[cell]));
-      sf::Text text = buildText(valueString, position, getAppFont(), 30, sf::Color::Red);
-      target.draw(text);
+      std::string valueString (std::to_string (humidityLevels_[cell]));
+      sf::Text text = buildText (valueString, position, getAppFont (), 30,
+                                 sf::Color::Red);
+      target.draw (text);
     }
 
   sf::Sprite cache (renderingCache_.getTexture ());
@@ -621,7 +622,7 @@ World::positionInTab (const Vec2d& position)
 size_t
 World::getIndex (const Vec2d& position)
 {
-  if (!isInWorld(position))
+  if (!isInWorld (position))
     {
       throw std::runtime_error ("Position not in world. (World::getIndex)");
     }
@@ -631,7 +632,7 @@ World::getIndex (const Vec2d& position)
 double
 World::getHumidity (const Vec2d& position)
 {
-  return humidityLevels_[getIndex(position)];
+  return humidityLevels_[getIndex (position)];
 }
 
 bool

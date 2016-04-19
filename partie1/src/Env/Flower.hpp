@@ -28,7 +28,7 @@ public:
   update (sf::Time dt);
 
   double
-  getPollen();
+  getPollen ();
 
 private:
 

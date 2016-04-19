@@ -53,17 +53,18 @@ void
 Flower::update (sf::Time dt, double humidity)
 {
   // get variables from configuration
-  double threshold(getAppConfig ()["simulation"]["flower"]["growth"]["threshold"].toDouble());
+  double threshold (
+      getAppConfig ()["simulation"]["flower"]["growth"]["threshold"].toDouble ());
 
   // set the new pollen value
-  pollen_ = pollen_ + dt.asSeconds() * std::log(humidity/threshold);
-  
+  pollen_ = pollen_ + dt.asSeconds () * std::log (humidity / threshold);
+
   //c'est update de flower qui doit faire appel à celui de l'envt? (getAppEnv()).update(dt);
-  
+
 }
 
 double
-Flower::getPollen()
+Flower::getPollen ()
 {
   return pollen_;
 }

@@ -8,7 +8,8 @@ Collider::Collider (const Vec2d& position, double radius)
   // PRECODITIONS for constructor
   if (radius_ <= 0)
     {
-      throw std::runtime_error ("Collider with negative radius created. (Collider::Collider)");
+      throw std::runtime_error (
+          "Collider with negative radius created. (Collider::Collider)");
     }
 
   // puts Collider into map
