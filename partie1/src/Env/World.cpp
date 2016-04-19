@@ -481,11 +481,17 @@ World::smooth ()
       switch (cells_[i])
         {
         case Kind::Rock:
-          if (grassRatio
-              > simulationWorld ()["generation"]["smoothness"]["grass neighbourhood ratio"].toInt ())
-            {
-              localCells[i] = Kind::Grass;
-            }
+          if (waterRatio
+                        > simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toInt ())
+                      {
+                        localCells[i] = Kind::Water;
+                        humidify (i);
+                      }
+          else if (grassRatio
+                        > simulationWorld ()["generation"]["smoothness"]["grass neighbourhood ratio"].toInt ())
+                      {
+                        localCells[i] = Kind::Grass;
+                      }
         case Kind::Grass:
           if (waterRatio
               > simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toInt ())
