@@ -81,6 +81,7 @@ Flower::update (sf::Time dt)
           if (getAppEnv ().addFlowerAt (protoFlower.getPosition()))
             {
               placed = true;
+              pollen_ = 0.5 * pollen_;
             }
           ++i;
         }
