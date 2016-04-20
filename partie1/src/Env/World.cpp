@@ -413,8 +413,8 @@ World::step ()
         {
 
       size_t index(uniform(0,3));
-      seeds_[i].position.x =+ directions[index][0];
-      seeds_[i].position.y =+ directions[index][1];
+      seeds_[i].position.x += directions[index][0];
+      seeds_[i].position.y += directions[index][1];
       seeds_[i].position.x = std::max((int)0,(int)seeds_[i].position.x);
       seeds_[i].position.x = std::min((int)numberColumns_ -1, (int)seeds_[i].position.x);
       seeds_[i].position.y = std::max((int)0,(int)seeds_[i].position.y);
