@@ -517,6 +517,7 @@ World::smooth ()
             {
               localCells[i] = Kind::Grass;
             }
+            break;
         case Kind::Grass:
           if (waterRatio
               > simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toInt ())
