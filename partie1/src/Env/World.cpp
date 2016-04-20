@@ -517,7 +517,7 @@ World::smooth ()
             {
               localCells[i] = Kind::Grass;
             }
-            break;
+          break;
         case Kind::Grass:
           if (waterRatio
               > simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toInt ())
@@ -679,7 +679,8 @@ bool
 World::isInWorld (const Vec2d& position) const
 {
   if ((position.x > numberColumns_ * cellSize_)
-      || (position.y > numberColumns_ * cellSize_))
+      || (position.y > numberColumns_ * cellSize_) || (position.x < 0)
+      || (position.y < 0))
     {
       return false;
     }
