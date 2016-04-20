@@ -9,7 +9,7 @@ simulationWorld ()
 
 World::World ()
 {
-  logEvent("World","building new world");
+  logEvent("World","building\tnew world");
 
   reloadConfig ();
   reloadCacheStructure ();
@@ -28,7 +28,7 @@ World::World ()
 void
 World::reloadConfig ()
 {
-  logEvent("World","loading config");
+  logEvent("World","loading\tconfig");
 
   // numberbColumns : number of cells in a row
   numberColumns_ = simulationWorld ()["cells"].toInt ();
@@ -60,20 +60,20 @@ World::reloadConfig ()
 
   // set the humidityRange_
   humidityRange_ = 0;
-  double humidity;
+  double humidity(humidityThreshold_ + 1);
   while (humidity > humidityThreshold_)
     {
       humidity = humidityInitialLevel_
           * std::exp ((double) -humidityRange_ / (double) humidityDecayRate_);
       ++humidityRange_;
     }
-  logEvent("World","humidityRange_ set at " + std::to_string(humidityRange_));
+  appendLog("World\tset\thumidityRange_ = " + std::to_string(humidityRange_));
 }
 
 void
 World::reloadCacheStructure ()
 {
-  logEvent("World", "loading cache structure");
+  logEvent("World", "loading\tcache structure");
 
   grassVertexes_ = generateVertexes (simulationWorld ()["textures"],
                                      numberColumns_, cellSize_);
@@ -92,7 +92,7 @@ World::reloadCacheStructure ()
 void
 World::updateCache ()
 {
-  logEvent("World", "updating cache");
+  logEvent("World", "updating\tcache");
 
   sf::RenderStates rsGrass;
   rsGrass.texture = &getAppTexture (
@@ -187,7 +187,7 @@ World::updateCache ()
 void
 World::reset (bool regenerate)
 {
-  logEvent("World","resetting world");
+  logEvent("World","resetting\tworld");
 
   reloadConfig ();
   reloadCacheStructure ();
@@ -226,7 +226,7 @@ World::reset (bool regenerate)
 
   if (regenerate)
     {
-      logEvent("World","regenerating world");
+      logEvent("World","generating\tworld");
 
       steps (simulationWorld ()["generation"]["steps"].toInt ());
       smooths (
@@ -269,7 +269,7 @@ World::drawOn (sf::RenderTarget& target) const
 void
 World::loadFromFile ()
 {
-  logEvent("World","loading world from file");
+  logEvent("World","loading\tworld from file");
   
   // get app values for current config
   reloadConfig ();
@@ -329,7 +329,7 @@ World::loadFromFile ()
 void
 World::saveToFile () const
 {
-  logEvent("World","saving world to file");
+  logEvent("World","saving\tworld to file");
 
   // open config .map file
   std::string fileName (
@@ -383,11 +383,11 @@ World::saveToFile () const
 }
 
 void
-World::moveSeed (Seed& seed, int min, int max)
+World::moveSeed (Seed& seed, size_t xmin, size_t xmax, size_t ymin, size_t ymax)
 {
   // move the seed by a random amount in range [min:max]
-  seed.position.x = seed.position.x + uniform (min, max);
-  seed.position.y = seed.position.y + uniform (min, max);
+  seed.position.x = uniform (xmin, xmax);
+  seed.position.y = uniform (ymin, ymax);
 
   // make sure the new position is in range
   int worldMax (numberColumns_ - 1);
@@ -427,29 +427,36 @@ World::step ()
     {
       //logEvent("World", "moving seed " + std::to_string(i));
       
-      int min (-1);
-      int max (1);
+      size_t  radius(1);
+      size_t  xmin (seeds_[i].position.x - radius);
+      size_t  xmax (seeds_[i].position.x + radius);
+      size_t  ymin (seeds_[i].position.y - radius);
+      size_t  ymax (seeds_[i].position.y + radius);
 
-      // set the move distance
+      // choose to move or teleport
       double teleport (
           simulationWorld ()["seeds"]["water teleport probability"].toDouble ());
-      if ((seeds_[i].texture == Kind::Water) && ((bernoulli (teleport)) == 0))
+      if ((seeds_[i].texture == Kind::Water) && ((bernoulli (teleport)) == 1))
         {
-          min = 0;
-          max = numberColumns_ - 1;
+          // 0 means teleport within world, not radius
+          xmin = 0;
+          xmax = numberColumns_ -1;
+          ymin = 0;
+          ymax = numberColumns_ -1;
         }
 
-      moveSeed (seeds_[i], min, max);
+      moveSeed (seeds_[i], xmin, xmax, ymin, ymax);
     }
 }
 
 void
 World::steps (unsigned int n, bool update)
 {
-  logEvent("World", "moving seeds");
+  logEvent("World", "moving seeds (0/" + std::to_string(n) + ")");
 
   for (unsigned int i (0); i < n; ++i)
     {
+      logEvent("World", "moving seeds (" + std::to_string(i) + "/" + std::to_string(n) + ")", false);
       step ();
     }
 
@@ -568,6 +575,7 @@ World::smooths (unsigned int n, bool update)
 
   for (unsigned int i (0); i < n; ++i)
     {
+      logEvent("World", "smoothing (" + std::to_string(i) + "/" + std::to_string(n) + ")", false);
       smooth ();
     }
 
@@ -580,7 +588,7 @@ World::smooths (unsigned int n, bool update)
 void
 World::humidify ()
 {
-  logEvent("World","calculating global humidity");
+  logEvent("World","calculating\tglobal humidity");
 
   size_t size (numberColumns_ * numberColumns_);
   for (size_t i (0); i < size; ++i)

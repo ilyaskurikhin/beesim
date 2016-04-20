@@ -7,9 +7,10 @@
 #include <sstream>
 #include <ostream>
 #include <fstream>
+#include <ctime>
 
 void
-logEvent(std::string module, std::string event);
+logEvent(std::string module, std::string event, bool append = true);
 
 void
 printConsole(std::string);

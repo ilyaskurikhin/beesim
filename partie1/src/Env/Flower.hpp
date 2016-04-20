@@ -7,6 +7,7 @@
 #include <Env/Env.hpp>
 #include <Utility/Utility.hpp>
 #include <Application.hpp>
+#include <Utility/Logging.hpp>
 
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>

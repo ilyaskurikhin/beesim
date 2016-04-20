@@ -108,7 +108,7 @@ public:
    * @param max the right and top distance
    */
   void
-  moveSeed (Seed& seed, int min, int max);
+  moveSeed (Seed& seed, size_t xmin, size_t xmax, size_t ymin, size_t ymax);
 
   /**
    * Move all the seeds_, teleport water.
