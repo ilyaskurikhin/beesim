@@ -10,12 +10,12 @@
 #include <ctime>
 
 void
-logEvent(std::string module, std::string event, bool append = true);
+logEvent (std::string module, std::string event, bool append = true);
 
 void
-printConsole(std::string);
+printConsole (std::string);
 
 void
-appendLog(std::string);
+appendLog (std::string);
 
 #endif
