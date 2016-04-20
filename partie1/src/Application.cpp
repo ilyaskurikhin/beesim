@@ -228,7 +228,7 @@ void Application::run()
             auto dt = fpsClk.restart().asSeconds();
 
             auto fps = frameCount / dt;
-            std::cout << "FPS: " << fps << "\r" << std::flush;
+            std::cout << std::setw(80) << "\rFPS: " << fps << "\r" << std::flush;
 
             frameCount = 0;
         }
@@ -434,7 +434,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 
         // Save the world
         case sf::Keyboard::O:
-            //getEnv().saveWorldToFile(); //uncomment if World::saveToFile is coded
+            getEnv().saveWorldToFile(); //uncomment if World::saveToFile is coded
             break;
 
         // Toggle pause for simulation

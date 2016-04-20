@@ -3,22 +3,17 @@
 #include <Env/Flower.hpp>
 #include <Env/FlowerGenerator.hpp>
 
+bool ENV_VERBOSE(true);
+
 Env::Env () :
-    world_ (new World ()), flowerGenerator_ (new FlowerGenerator)
+    world_ (new World()), flowerGenerator_ (new FlowerGenerator)
 {
-  try
-    {
-      world_->loadFromFile ();
-    }
-  catch (const std::runtime_error& e)
-    {
-      world_->reset (true);
-    }
-  world_->updateCache ();
+  logEvent("Env","genetrating environment");
 }
 
 Env::~Env ()
 {
+  logEvent("Env","destroying environment");
   delete world_;
 }
 
@@ -61,6 +56,8 @@ Env::drawOn (sf::RenderTarget& target) const
 void
 Env::reset ()
 {
+  logEvent("Env","resetting environment");
+
   world_->reset (true);
   for (size_t i = 0; i < flowers_.size (); ++i)
     {

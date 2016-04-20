@@ -1,5 +1,6 @@
 #include <Env/World.hpp>
 
+
 j::Value
 simulationWorld ()
 {
@@ -8,13 +9,27 @@ simulationWorld ()
 
 World::World ()
 {
+  logEvent("World","building new world");
+
   reloadConfig ();
   reloadCacheStructure ();
+
+  // try to load a new world from file
+  try
+    {
+      loadFromFile ();
+    }
+  catch (const std::runtime_error& e)
+    {
+      reset (true);
+    }
 }
 
 void
 World::reloadConfig ()
 {
+  logEvent("World","loading config");
+
   // numberbColumns : number of cells in a row
   numberColumns_ = simulationWorld ()["cells"].toInt ();
 
@@ -29,8 +44,11 @@ World::reloadConfig ()
   nbGrassSeeds_ = simulationWorld ()["seeds"]["grass"].toInt ();
 
   // make an empty vector of Seed
-  std::vector<Seed> tmp (nbGrassSeeds_ + nbWaterSeeds_);
-  seeds_ = tmp;
+  std::vector<Seed> tmpSeeds (nbGrassSeeds_ + nbWaterSeeds_);
+  seeds_ = tmpSeeds;
+
+  std::vector<double> tmpHumidityLevels (numberColumns_ * numberColumns_);
+  humidityLevels_ = tmpHumidityLevels;
 
   // set the humidity data from file
   humidityThreshold_ =
@@ -49,11 +67,14 @@ World::reloadConfig ()
           * std::exp ((double) -humidityRange_ / (double) humidityDecayRate_);
       ++humidityRange_;
     }
+  logEvent("World","humidityRange_ set at " + std::to_string(humidityRange_));
 }
 
 void
 World::reloadCacheStructure ()
 {
+  logEvent("World", "loading cache structure");
+
   grassVertexes_ = generateVertexes (simulationWorld ()["textures"],
                                      numberColumns_, cellSize_);
   waterVertexes_ = grassVertexes_;
@@ -71,6 +92,8 @@ World::reloadCacheStructure ()
 void
 World::updateCache ()
 {
+  logEvent("World", "updating cache");
+
   sf::RenderStates rsGrass;
   rsGrass.texture = &getAppTexture (
       simulationWorld ()["textures"]["grass"].toString ());
@@ -164,6 +187,8 @@ World::updateCache ()
 void
 World::reset (bool regenerate)
 {
+  logEvent("World","resetting world");
+
   reloadConfig ();
   reloadCacheStructure ();
 
@@ -193,7 +218,7 @@ World::reset (bool regenerate)
     {
       size_t index (
           seeds_[i].position.y * numberColumns_ + seeds_[i].position.x);
-      if ((seeds_[i].texture == Kind::Water) || (cells_[index] != Kind::Water))
+      if (cells_[index] != Kind::Water)
         {
           cells_[index] = seeds_[i].texture;
         }
@@ -201,7 +226,8 @@ World::reset (bool regenerate)
 
   if (regenerate)
     {
-      std::cout << "regenerating world..." << std::endl;
+      logEvent("World","regenerating world");
+
       steps (simulationWorld ()["generation"]["steps"].toInt ());
       smooths (
           simulationWorld ()["generation"]["smoothness"]["level"].toInt ());
@@ -232,10 +258,7 @@ World::drawOn (sf::RenderTarget& target) const
       if (isInWorld (position))
         {
           size_t cell (getCellIndex (position));
-          std::stringstream valueStream;
-          valueStream << std::fixed << std::setprecision (0)
-              << humidityLevels_[cell];
-          sf::Text text = buildText (valueStream.str (), position,
+          sf::Text text = buildText (to_nice_string(humidityLevels_[cell]), position,
                                      getAppFont (), 30, sf::Color::Red);
           target.draw (text);
         }
@@ -246,6 +269,8 @@ World::drawOn (sf::RenderTarget& target) const
 void
 World::loadFromFile ()
 {
+  logEvent("World","loading world from file");
+  
   // get app values for current config
   reloadConfig ();
 
@@ -291,7 +316,7 @@ World::loadFromFile ()
         {
           double humidity;
           input >> humidity;
-          humidityLevels_.push_back (humidity);
+          humidityLevels_[i] = humidity;
         }
     }
 
@@ -304,6 +329,8 @@ World::loadFromFile ()
 void
 World::saveToFile () const
 {
+  logEvent("World","saving world to file");
+
   // open config .map file
   std::string fileName (
       getApp ().getResPath () + simulationWorld ()["file"].toString ());
@@ -398,9 +425,10 @@ World::step ()
   // loop through seeds_ to move them
   for (size_t i (0); i < seeds_.size (); ++i)
     {
-
-      int min (0);
-      int max (0);
+      //logEvent("World", "moving seed " + std::to_string(i));
+      
+      int min (-1);
+      int max (1);
 
       // set the move distance
       double teleport (
@@ -410,11 +438,6 @@ World::step ()
           min = 0;
           max = numberColumns_ - 1;
         }
-      else
-        {
-          min = -1;
-          max = 1;
-        }
 
       moveSeed (seeds_[i], min, max);
     }
@@ -423,6 +446,8 @@ World::step ()
 void
 World::steps (unsigned int n, bool update)
 {
+  logEvent("World", "moving seeds");
+
   for (unsigned int i (0); i < n; ++i)
     {
       step ();
@@ -539,6 +564,8 @@ World::smooth ()
 void
 World::smooths (unsigned int n, bool update)
 {
+  logEvent("World","smoothing world");
+
   for (unsigned int i (0); i < n; ++i)
     {
       smooth ();
@@ -553,6 +580,8 @@ World::smooths (unsigned int n, bool update)
 void
 World::humidify ()
 {
+  logEvent("World","calculating global humidity");
+
   size_t size (numberColumns_ * numberColumns_);
   for (size_t i (0); i < size; ++i)
     {
@@ -666,7 +695,12 @@ World::getCellIndex (const Vec2d& position) const
     }
   Vec2d cellPosition;
   cellPosition = getCellPosition (position);
-  return (size_t) cellPosition.y * numberColumns_ + (size_t) cellPosition.x;
+  size_t index ((size_t) cellPosition.y * numberColumns_ + (size_t) cellPosition.x);
+  if (index > numberColumns_ * numberColumns_)
+    {
+      throw std::runtime_error ("Index not in world. (World::getIndex)");
+    }
+  return index;
 }
 
 double

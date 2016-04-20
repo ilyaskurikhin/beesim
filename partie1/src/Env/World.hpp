@@ -5,6 +5,7 @@
 #include <Utility/Vertex.hpp>
 #include <Utility/Utility.hpp>
 #include <Utility/Vec2d.hpp>
+#include <Utility/Logging.hpp>
 #include <Application.hpp>
 #include <Random/Random.hpp>
 #include <JSON/JSON.hpp>

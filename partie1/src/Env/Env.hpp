@@ -6,6 +6,7 @@
 #include <Env/World.hpp>
 #include <Utility/Vec2d.hpp>
 #include <Utility/Utility.hpp>
+#include <Utility/Logging.hpp>
 #include <Random/Random.hpp>
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
