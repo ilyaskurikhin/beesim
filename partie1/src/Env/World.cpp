@@ -389,7 +389,10 @@ World::saveToFile () const
 void
 World::step ()
 {
+  // declare here to save time later
   bool teleport;
+
+  // array of directions to choose from
   std::array<std::array<int, 2>, 4> directions;
   directions[0] =
     { 1,0};
@@ -403,21 +406,26 @@ World::step ()
   // loop through seeds_ to move them
   for (size_t i (0); i < seeds_.size (); ++i)
     {
-      // logEvent("World", "moving seed " + std::to_string(i));
+      /* logEvent("World", "moving seed " + std::to_string(i));*/
 
+      // get the teleport bool
       teleport = bernoulli (teleportProbability_);
 
       // choose to move or teleport
       if ((seeds_[i].texture == Kind::Water) && teleport)
         {
+          // teleport to random location
           seeds_[i].position.x = uniform ((size_t) 0, numberColumns_ - 1);
           seeds_[i].position.y = uniform ((size_t) 0, numberColumns_ - 1);
         }
       else
         {
+          // pick a random direction
           size_t index (uniform (0, 3));
           seeds_[i].position.x += directions[index][0];
           seeds_[i].position.y += directions[index][1];
+
+          // clamp the seed to the board
           seeds_[i].position.x = std::max ((int) 0, (int) seeds_[i].position.x);
           seeds_[i].position.x = std::min ((int) numberColumns_ - 1,
                                            (int) seeds_[i].position.x);
@@ -426,6 +434,7 @@ World::step ()
                                            (int) seeds_[i].position.y);
         }
 
+      // set the texture of the seed to cells
       cells_[(seeds_[i].position.y * numberColumns_) + seeds_[i].position.x] =
           seeds_[i].texture;
     }
@@ -487,9 +496,9 @@ World::smooth ()
        {
        */
       size_t left (std::max ((int) x - 1, 0));
-      size_t right (std::min ((int) x + 2, (int) numberColumns_));
+      size_t right (std::min ((int) x + 2, (int) numberColumns_ -1));
       size_t top (std::max ((int) y - 1, 0));
-      size_t bottom (std::min ((int) y + 2, (int) numberColumns_));
+      size_t bottom (std::min ((int) y + 2, (int) numberColumns_-1));
 
       for (size_t column (left); column < right; ++column)
         {
@@ -592,20 +601,19 @@ World::humidify (size_t i)
   size_t x (i % numberColumns_);
   size_t y (i / numberColumns_);
 
-  // get the area to calculate humidity for
-  sf::Rect<size_t> scanRange = calculateScanRange (x, y, humidityRange_);
+  size_t left (std::max(0, x - humidityRange_));
+  size_t right (std::min(numberColumns_, x + humidityRange_));
+  size_t top (std::max(0,y-humidityRange_));
+  size_t bottom (std::min(numberColumns_, x +humidityRange_));
 
-  size_t right (scanRange.left + scanRange.width);
-  size_t bottom (scanRange.top + scanRange.height);
-
-  for (size_t dx (scanRange.left); dx <= right; ++dx)
+  for (size_t column (left); column < right; ++column)
     {
-      for (size_t dy (scanRange.top); dy <= bottom; ++dy)
+      for (size_t row (top); row < bottom; ++row)
         {
           double currentLevel (
               humidityInitialLevel_
-                  * exp (-std::hypot (x - dx, y - dy) / humidityDecayRate_));
-          humidityLevels_[dy * numberColumns_ + dx] += currentLevel;
+                  * exp (-std::hypot (x - column, y - row) / humidityDecayRate_x));
+          humidityLevels_[row * numberColumns_ + column] += currentLevel;
         }
     }
 }
