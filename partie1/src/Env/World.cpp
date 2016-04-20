@@ -127,8 +127,8 @@ World::updateCache ()
 
       // get the right blue level for the humidity layer
       int blueLevel (
-          ((humidityLevels_[i] - minHumidity)
-            / (maxHumidity - minHumidity)) * 255);
+          ((humidityLevels_[i] - minHumidity) / (maxHumidity - minHumidity))
+              * 255);
 
       // set the right color values for the layers
       for (size_t j (0); j < 4; ++j)
@@ -139,7 +139,8 @@ World::updateCache ()
           rockVertexes_[positionIndexes[j]].color.a = aValues[2];
 
           // set humidity levels
-          humidityVertexes_[positionIndexes[j]].color = sf::Color(0,0,blueLevel);
+          humidityVertexes_[positionIndexes[j]].color = sf::Color (0, 0,
+                                                                   blueLevel);
         }
     }
 
@@ -212,7 +213,8 @@ World::reset (bool regenerate)
 void
 World::drawOn (sf::RenderTarget& target) const
 {
-  if (simulationWorld ()["show humidity"].toBool() || getAppConfig()["debug"].toBool())
+  if (simulationWorld ()["show humidity"].toBool ()
+      || getAppConfig ()["debug"].toBool ())
     {
       sf::Sprite cache (humidityCache_.getTexture ());
       target.draw (cache);
@@ -226,16 +228,17 @@ World::drawOn (sf::RenderTarget& target) const
   // if debug is on, show individual levels   
   if (isDebugOn ())
     {
-        Vec2d position = getApp ().getCursorPositionInView ();
-        if (isInWorld(position))
-          {
-            size_t cell (getCellIndex (position));
-            std::stringstream valueStream;
-            valueStream << std::fixed << std::setprecision(0) << humidityLevels_[cell];
-            sf::Text text = buildText (valueStream.str(), position, getAppFont (), 30,
-  				 sf::Color::Red);
-            target.draw (text);
-          }  
+      Vec2d position = getApp ().getCursorPositionInView ();
+      if (isInWorld (position))
+        {
+          size_t cell (getCellIndex (position));
+          std::stringstream valueStream;
+          valueStream << std::fixed << std::setprecision (0)
+              << humidityLevels_[cell];
+          sf::Text text = buildText (valueStream.str (), position,
+                                     getAppFont (), 30, sf::Color::Red);
+          target.draw (text);
+        }
     }
 
 }
@@ -449,30 +452,30 @@ World::smooth ()
       // get the indexes for the cell
       size_t x (i % numberColumns_);
       size_t y (i / numberColumns_);
-/*
-      // set the radius of neighborhood
-      unsigned int radius (1);
+      /*
+       // set the radius of neighborhood
+       unsigned int radius (1);
 
-      // set the start and end of neighborhood
-      // possibility of adjusting to toric here
-      sf::Rect<size_t> scanRange = calculateScanRange (x, y, radius);
+       // set the start and end of neighborhood
+       // possibility of adjusting to toric here
+       sf::Rect<size_t> scanRange = calculateScanRange (x, y, radius);
 
-      // list through the neighbors
-      for (size_t dx (scanRange.left); dx <= scanRange.left + scanRange.width;
-          ++dx)
+       // list through the neighbors
+       for (size_t dx (scanRange.left); dx <= scanRange.left + scanRange.width;
+       ++dx)
+       {
+       for (size_t dy (scanRange.top);
+       dy <= scanRange.top + scanRange.height; ++dy)
+       {
+       */
+      size_t left (std::max ((int) x - 1, 0));
+      size_t right (std::min ((int) x + 2, (int) numberColumns_));
+      size_t top (std::max ((int) y - 1, 0));
+      size_t bottom (std::min ((int) y + 2, (int) numberColumns_));
+
+      for (size_t column (left); column < right; ++column)
         {
-          for (size_t dy (scanRange.top);
-              dy <= scanRange.top + scanRange.height; ++dy)
-            {
-*/
-      size_t left(std::max((int) x - 1, 0));
-      size_t right(std::min((int) x + 2, (int) numberColumns_));
-      size_t top(std::max((int) y - 1, 0));
-      size_t bottom(std::min((int) y + 2, (int) numberColumns_));
-
-      for (size_t column(left); column < right; ++column)
-        {
-          for (size_t row(top); row < bottom; ++row)
+          for (size_t row (top); row < bottom; ++row)
             {
               // check that we are not on original cell 
               if (!((column == x) && (row == y)))
@@ -504,16 +507,16 @@ World::smooth ()
         {
         case Kind::Rock:
           if (waterRatio
-                        > simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toInt ())
-                      {
-                        localCells[i] = Kind::Water;
-                        humidify (i);
-                      }
+              > simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toInt ())
+            {
+              localCells[i] = Kind::Water;
+              humidify (i);
+            }
           else if (grassRatio
-                        > simulationWorld ()["generation"]["smoothness"]["grass neighbourhood ratio"].toInt ())
-                      {
-                        localCells[i] = Kind::Grass;
-                      }
+              > simulationWorld ()["generation"]["smoothness"]["grass neighbourhood ratio"].toInt ())
+            {
+              localCells[i] = Kind::Grass;
+            }
         case Kind::Grass:
           if (waterRatio
               > simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toInt ())

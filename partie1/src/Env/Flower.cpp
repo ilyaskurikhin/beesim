@@ -75,10 +75,10 @@ Flower::update (sf::Time dt)
 
           // calculate a new position and clamp it
           Vec2d position = position_ + Vec2d::fromRandomAngle () * distance;
-          Collider protoFlower(position, radius_);
-          protoFlower.clamping();
+          Collider protoFlower (position, radius_);
+          protoFlower.clamping ();
 
-          if (getAppEnv ().addFlowerAt (protoFlower.getPosition()))
+          if (getAppEnv ().addFlowerAt (protoFlower.getPosition ()))
             {
               placed = true;
               pollen_ = 0.5 * pollen_;
