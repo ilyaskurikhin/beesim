@@ -43,6 +43,9 @@ World::reloadConfig ()
   nbWaterSeeds_ = simulationWorld ()["seeds"]["water"].toInt ();
   nbGrassSeeds_ = simulationWorld ()["seeds"]["grass"].toInt ();
 
+
+  teleportProbability_ = simulationWorld ()["seeds"]["water teleport probability"].toDouble ();
+
   // make an empty vector of Seed
   std::vector<Seed> tmpSeeds (nbGrassSeeds_ + nbWaterSeeds_);
   seeds_ = tmpSeeds;
@@ -231,6 +234,7 @@ World::reset (bool regenerate)
       steps (simulationWorld ()["generation"]["steps"].toInt ());
       smooths (
           simulationWorld ()["generation"]["smoothness"]["level"].toInt ());
+      humidify();
     }
 
   updateCache ();
@@ -383,85 +387,60 @@ World::saveToFile () const
 }
 
 void
-World::moveSeed (Seed& seed, size_t xmin, size_t xmax, size_t ymin, size_t ymax)
-{
-  // move the seed by a random amount in range [min:max]
-  seed.position.x = uniform (xmin, xmax);
-  seed.position.y = uniform (ymin, ymax);
-
-  // make sure the new position is in range
-  int worldMax (numberColumns_ - 1);
-  if (seed.position.x > worldMax)
-    {
-      seed.position.x = numberColumns_ - 1;
-    }
-  if (seed.position.y > worldMax)
-    {
-      seed.position.y = numberColumns_ - 1;
-    }
-
-  if (seed.position.x < 0)
-    {
-      seed.position.x = 0;
-    }
-  if (seed.position.y < 0)
-    {
-      seed.position.y = 0;
-    }
-
-  // set the texture of the seed's cell
-  cells_[(seed.position.x * numberColumns_) + seed.position.y] = seed.texture;
-
-  // if water seed, humidify for new position
-  if (seed.texture == Kind::Water)
-    {
-      humidify (seed.position.y * numberColumns_ + seed.position.x);
-    }
-}
-
-void
 World::step ()
 {
+    bool teleport;
+    std::array<std::array<int,2>,4> directions;
+    directions[0] = {1,0};
+    directions[1] = {-1,0};
+    directions[2] = {0,1};
+    directions[3] = {0,-1};
+
   // loop through seeds_ to move them
   for (size_t i (0); i < seeds_.size (); ++i)
     {
-      //logEvent("World", "moving seed " + std::to_string(i));
+      // logEvent("World", "moving seed " + std::to_string(i));
       
-      size_t  radius(1);
-      size_t  xmin (seeds_[i].position.x - radius);
-      size_t  xmax (seeds_[i].position.x + radius);
-      size_t  ymin (seeds_[i].position.y - radius);
-      size_t  ymax (seeds_[i].position.y + radius);
+      teleport = bernoulli(teleportProbability_);
 
       // choose to move or teleport
-      double teleport (
-          simulationWorld ()["seeds"]["water teleport probability"].toDouble ());
-      if ((seeds_[i].texture == Kind::Water) && ((bernoulli (teleport)) == 1))
+      if ((seeds_[i].texture == Kind::Water) && teleport)
         {
-          // 0 means teleport within world, not radius
-          xmin = 0;
-          xmax = numberColumns_ -1;
-          ymin = 0;
-          ymax = numberColumns_ -1;
+            seeds_[i].position.x = uniform((size_t)0,numberColumns_ -1);
+            seeds_[i].position.y = uniform((size_t)0,numberColumns_ -1);
+        }
+      else
+        {
+
+      size_t index(uniform(0,3));
+      seeds_[i].position.x =+ directions[index][0];
+      seeds_[i].position.y =+ directions[index][1];
+      seeds_[i].position.x = std::max((int)0,(int)seeds_[i].position.x);
+      seeds_[i].position.x = std::min((int)numberColumns_ -1, (int)seeds_[i].position.x);
+      seeds_[i].position.y = std::max((int)0,(int)seeds_[i].position.y);
+      seeds_[i].position.y = std::min((int)numberColumns_ -1, (int)seeds_[i].position.y);
+
         }
 
-      moveSeed (seeds_[i], xmin, xmax, ymin, ymax);
+
+  cells_[(seeds_[i].position.y * numberColumns_) + seeds_[i].position.x] = seeds_[i].texture;
     }
 }
 
 void
 World::steps (unsigned int n, bool update)
 {
-  logEvent("World", "moving seeds (0/" + std::to_string(n) + ")");
+  logEvent("World", "moving seeds");
 
   for (unsigned int i (0); i < n; ++i)
     {
-      logEvent("World", "moving seeds (" + std::to_string(i) + "/" + std::to_string(n) + ")", false);
+      //logEvent("World", "moving seeds (" + std::to_string(i) + "/" + std::to_string(n) + ")", false);
       step ();
     }
 
   if (update)
     {
+      humidify();
       updateCache ();
     }
 }
@@ -472,14 +451,16 @@ World::smooth ()
   // copy cells_ so as to not have directional bias
   // decisions are made on original, written in copy
   std::vector<Kind> localCells = cells_;
-
-  for (size_t i (0); i < cells_.size (); ++i)
-    {
-
+  double sWaterRatio(simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toDouble ());
+  double sGrassRatio(simulationWorld ()["generation"]["smoothness"]["grass neighbourhood ratio"].toDouble ());
       // Initialize counters for neighbors
       double nbGrass (0);
       double nbWater (0);
       double nbRock (0);
+
+  for (size_t i (0); i < cells_.size (); ++i)
+    {
+
 
       // get the indexes for the cell
       size_t x (i % numberColumns_);
@@ -538,24 +519,20 @@ World::smooth ()
       switch (cells_[i])
         {
         case Kind::Rock:
-          if (waterRatio
-              > simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toInt ())
+          if (waterRatio > sWaterRatio)
             {
               localCells[i] = Kind::Water;
               humidify (i);
             }
-          else if (grassRatio
-              > simulationWorld ()["generation"]["smoothness"]["grass neighbourhood ratio"].toInt ())
+          else if (grassRatio > sGrassRatio)
             {
               localCells[i] = Kind::Grass;
             }
           break;
         case Kind::Grass:
-          if (waterRatio
-              > simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toInt ())
+          if (waterRatio > sWaterRatio)
             {
               localCells[i] = Kind::Water;
-              humidify (i);
             }
           break;
         case Kind::Water:
@@ -582,6 +559,7 @@ World::smooths (unsigned int n, bool update)
   if (update)
     {
       updateCache ();
+      humidify ();
     }
 }
 

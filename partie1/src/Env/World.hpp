@@ -101,16 +101,6 @@ public:
   saveToFile () const;
 
   /**
-   * Move a seed.
-   * Move a seed within a given range.
-   * @param seed the seed to move
-   * @param min the left and bottom distance
-   * @param max the right and top distance
-   */
-  void
-  moveSeed (Seed& seed, size_t xmin, size_t xmax, size_t ymin, size_t ymax);
-
-  /**
    * Move all the seeds_, teleport water.
    */
   void
@@ -181,6 +171,8 @@ private:
   std::vector<Seed> seeds_;
   unsigned int nbWaterSeeds_;
   unsigned int nbGrassSeeds_;
+  
+  double teleportProbability_;
 
   /// vector of humidity values
   std::vector<double> humidityLevels_;
