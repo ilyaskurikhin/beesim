@@ -1,6 +1,5 @@
 #include <Env/World.hpp>
 
-
 j::Value
 simulationWorld ()
 {
@@ -9,7 +8,7 @@ simulationWorld ()
 
 World::World ()
 {
-  logEvent("World","building\tnew world");
+  logEvent ("World", "building\tnew world");
 
   reloadConfig ();
   reloadCacheStructure ();
@@ -28,7 +27,7 @@ World::World ()
 void
 World::reloadConfig ()
 {
-  logEvent("World","loading\tconfig");
+  logEvent ("World", "loading\tconfig");
 
   // numberbColumns : number of cells in a row
   numberColumns_ = simulationWorld ()["cells"].toInt ();
@@ -43,8 +42,8 @@ World::reloadConfig ()
   nbWaterSeeds_ = simulationWorld ()["seeds"]["water"].toInt ();
   nbGrassSeeds_ = simulationWorld ()["seeds"]["grass"].toInt ();
 
-
-  teleportProbability_ = simulationWorld ()["seeds"]["water teleport probability"].toDouble ();
+  teleportProbability_ =
+      simulationWorld ()["seeds"]["water teleport probability"].toDouble ();
 
   // make an empty vector of Seed
   std::vector<Seed> tmpSeeds (nbGrassSeeds_ + nbWaterSeeds_);
@@ -63,20 +62,20 @@ World::reloadConfig ()
 
   // set the humidityRange_
   humidityRange_ = 0;
-  double humidity(humidityThreshold_ + 1);
+  double humidity (humidityThreshold_ + 1);
   while (humidity > humidityThreshold_)
     {
       humidity = humidityInitialLevel_
           * std::exp ((double) -humidityRange_ / (double) humidityDecayRate_);
       ++humidityRange_;
     }
-  appendLog("World\tset\thumidityRange_ = " + std::to_string(humidityRange_));
+  appendLog ("World\tset\thumidityRange_ = " + std::to_string (humidityRange_));
 }
 
 void
 World::reloadCacheStructure ()
 {
-  logEvent("World", "loading\tcache structure");
+  logEvent ("World", "loading\tcache structure");
 
   grassVertexes_ = generateVertexes (simulationWorld ()["textures"],
                                      numberColumns_, cellSize_);
@@ -95,7 +94,7 @@ World::reloadCacheStructure ()
 void
 World::updateCache ()
 {
-  logEvent("World", "updating\tcache");
+  logEvent ("World", "updating\tcache");
 
   sf::RenderStates rsGrass;
   rsGrass.texture = &getAppTexture (
@@ -190,7 +189,7 @@ World::updateCache ()
 void
 World::reset (bool regenerate)
 {
-  logEvent("World","resetting\tworld");
+  logEvent ("World", "resetting\tworld");
 
   reloadConfig ();
   reloadCacheStructure ();
@@ -229,12 +228,12 @@ World::reset (bool regenerate)
 
   if (regenerate)
     {
-      logEvent("World","generating\tworld");
+      logEvent ("World", "generating\tworld");
 
       steps (simulationWorld ()["generation"]["steps"].toInt ());
       smooths (
           simulationWorld ()["generation"]["smoothness"]["level"].toInt ());
-      humidify();
+      humidify ();
     }
 
   updateCache ();
@@ -262,8 +261,9 @@ World::drawOn (sf::RenderTarget& target) const
       if (isInWorld (position))
         {
           size_t cell (getCellIndex (position));
-          sf::Text text = buildText (to_nice_string(humidityLevels_[cell]), position,
-                                     getAppFont (), 30, sf::Color::Red);
+          sf::Text text = buildText (to_nice_string (humidityLevels_[cell]),
+                                     position, getAppFont (), 30,
+                                     sf::Color::Red);
           target.draw (text);
         }
     }
@@ -273,8 +273,8 @@ World::drawOn (sf::RenderTarget& target) const
 void
 World::loadFromFile ()
 {
-  logEvent("World","loading\tworld from file");
-  
+  logEvent ("World", "loading\tworld from file");
+
   // get app values for current config
   reloadConfig ();
 
@@ -333,7 +333,7 @@ World::loadFromFile ()
 void
 World::saveToFile () const
 {
-  logEvent("World","saving\tworld to file");
+  logEvent ("World", "saving\tworld to file");
 
   // open config .map file
   std::string fileName (
@@ -389,48 +389,54 @@ World::saveToFile () const
 void
 World::step ()
 {
-    bool teleport;
-    std::array<std::array<int,2>,4> directions;
-    directions[0] = {1,0};
-    directions[1] = {-1,0};
-    directions[2] = {0,1};
-    directions[3] = {0,-1};
+  bool teleport;
+  std::array<std::array<int, 2>, 4> directions;
+  directions[0] =
+    { 1,0};
+  directions[1] =
+    { -1,0};
+  directions[2] =
+    { 0,1};
+  directions[3] =
+    { 0,-1};
 
   // loop through seeds_ to move them
   for (size_t i (0); i < seeds_.size (); ++i)
     {
       // logEvent("World", "moving seed " + std::to_string(i));
-      
-      teleport = bernoulli(teleportProbability_);
+
+      teleport = bernoulli (teleportProbability_);
 
       // choose to move or teleport
       if ((seeds_[i].texture == Kind::Water) && teleport)
         {
-            seeds_[i].position.x = uniform((size_t)0,numberColumns_ -1);
-            seeds_[i].position.y = uniform((size_t)0,numberColumns_ -1);
+          seeds_[i].position.x = uniform ((size_t) 0, numberColumns_ - 1);
+          seeds_[i].position.y = uniform ((size_t) 0, numberColumns_ - 1);
         }
       else
         {
 
-      size_t index(uniform(0,3));
-      seeds_[i].position.x =+ directions[index][0];
-      seeds_[i].position.y =+ directions[index][1];
-      seeds_[i].position.x = std::max((int)0,(int)seeds_[i].position.x);
-      seeds_[i].position.x = std::min((int)numberColumns_ -1, (int)seeds_[i].position.x);
-      seeds_[i].position.y = std::max((int)0,(int)seeds_[i].position.y);
-      seeds_[i].position.y = std::min((int)numberColumns_ -1, (int)seeds_[i].position.y);
+          size_t index (uniform (0, 3));
+          seeds_[i].position.x = +directions[index][0];
+          seeds_[i].position.y = +directions[index][1];
+          seeds_[i].position.x = std::max ((int) 0, (int) seeds_[i].position.x);
+          seeds_[i].position.x = std::min ((int) numberColumns_ - 1,
+                                           (int) seeds_[i].position.x);
+          seeds_[i].position.y = std::max ((int) 0, (int) seeds_[i].position.y);
+          seeds_[i].position.y = std::min ((int) numberColumns_ - 1,
+                                           (int) seeds_[i].position.y);
 
         }
 
-
-  cells_[(seeds_[i].position.y * numberColumns_) + seeds_[i].position.x] = seeds_[i].texture;
+      cells_[(seeds_[i].position.y * numberColumns_) + seeds_[i].position.x] =
+          seeds_[i].texture;
     }
 }
 
 void
 World::steps (unsigned int n, bool update)
 {
-  logEvent("World", "moving seeds");
+  logEvent ("World", "moving seeds");
 
   for (unsigned int i (0); i < n; ++i)
     {
@@ -440,7 +446,7 @@ World::steps (unsigned int n, bool update)
 
   if (update)
     {
-      humidify();
+      humidify ();
       updateCache ();
     }
 }
@@ -451,16 +457,17 @@ World::smooth ()
   // copy cells_ so as to not have directional bias
   // decisions are made on original, written in copy
   std::vector<Kind> localCells = cells_;
-  double sWaterRatio(simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toDouble ());
-  double sGrassRatio(simulationWorld ()["generation"]["smoothness"]["grass neighbourhood ratio"].toDouble ());
-      // Initialize counters for neighbors
-      double nbGrass (0);
-      double nbWater (0);
-      double nbRock (0);
+  double sWaterRatio (
+      simulationWorld ()["generation"]["smoothness"]["water neighbourhood ratio"].toDouble ());
+  double sGrassRatio (
+      simulationWorld ()["generation"]["smoothness"]["grass neighbourhood ratio"].toDouble ());
+  // Initialize counters for neighbors
+  double nbGrass (0);
+  double nbWater (0);
+  double nbRock (0);
 
   for (size_t i (0); i < cells_.size (); ++i)
     {
-
 
       // get the indexes for the cell
       size_t x (i % numberColumns_);
@@ -548,11 +555,14 @@ World::smooth ()
 void
 World::smooths (unsigned int n, bool update)
 {
-  logEvent("World","smoothing world");
+  logEvent ("World", "smoothing world");
 
   for (unsigned int i (0); i < n; ++i)
     {
-      logEvent("World", "smoothing (" + std::to_string(i) + "/" + std::to_string(n) + ")", false);
+      logEvent (
+          "World",
+          "smoothing (" + std::to_string (i) + "/" + std::to_string (n) + ")",
+          false);
       smooth ();
     }
 
@@ -566,7 +576,7 @@ World::smooths (unsigned int n, bool update)
 void
 World::humidify ()
 {
-  logEvent("World","calculating\tglobal humidity");
+  logEvent ("World", "calculating\tglobal humidity");
 
   size_t size (numberColumns_ * numberColumns_);
   for (size_t i (0); i < size; ++i)
@@ -681,7 +691,8 @@ World::getCellIndex (const Vec2d& position) const
     }
   Vec2d cellPosition;
   cellPosition = getCellPosition (position);
-  size_t index ((size_t) cellPosition.y * numberColumns_ + (size_t) cellPosition.x);
+  size_t index (
+      (size_t) cellPosition.y * numberColumns_ + (size_t) cellPosition.x);
   if (index > numberColumns_ * numberColumns_)
     {
       throw std::runtime_error ("Index not in world. (World::getIndex)");

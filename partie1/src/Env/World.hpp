@@ -171,7 +171,7 @@ private:
   std::vector<Seed> seeds_;
   unsigned int nbWaterSeeds_;
   unsigned int nbGrassSeeds_;
-  
+
   double teleportProbability_;
 
   /// vector of humidity values
