@@ -194,6 +194,9 @@ World::reset (bool regenerate)
   reloadConfig ();
   reloadCacheStructure ();
 
+  // clear the world texture
+  clear();
+
   // set the first part of seeds_ as grass
   for (size_t i (0); i < nbGrassSeeds_; ++i)
     {
@@ -473,36 +476,32 @@ World::smooth ()
   double nbWater (0);
   double nbRock (0);
 
-  for (size_t i (0); i < cells_.size (); ++i)
+  for (size_t i=0; i < cells_.size (); ++i)
     {
 
       // get the indexes for the cell
       size_t x (i % numberColumns_);
       size_t y (i / numberColumns_);
+
+      // set the radius of neighborhood
+      unsigned int radius (1);
+
+      // set the start and end of neighborhood
+      // possibility of adjusting to toric here
+      std::array<size_t,4> scanRange = calculateScanRange (x, y, radius);
+
       /*
-       // set the radius of neighborhood
-       unsigned int radius (1);
-
-       // set the start and end of neighborhood
-       // possibility of adjusting to toric here
-       sf::Rect<size_t> scanRange = calculateScanRange (x, y, radius);
-
-       // list through the neighbors
-       for (size_t dx (scanRange.left); dx <= scanRange.left + scanRange.width;
-       ++dx)
-       {
-       for (size_t dy (scanRange.top);
-       dy <= scanRange.top + scanRange.height; ++dy)
-       {
-       */
       size_t left (std::max ((int) x - 1, 0));
       size_t right (std::min ((int) x + 2, (int) numberColumns_ - 1));
       size_t top (std::max ((int) y - 1, 0));
       size_t bottom (std::min ((int) y + 2, (int) numberColumns_ - 1));
+      */
+      assert(scanRange[0] < scanRange[1]);
+      assert(scanRange[2] < scanRange[3]);
 
-      for (size_t column (left); column < right; ++column)
+      for (size_t column (scanRange[0]); column < scanRange[1]; ++column)
         {
-          for (size_t row (top); row < bottom; ++row)
+          for (size_t row (scanRange[2]); row < scanRange[3]; ++row)
             {
               // check that we are not on original cell 
               if (!((column == x) && (row == y)))
@@ -530,13 +529,13 @@ World::smooth ()
       // define the water and grass ratios
       double waterRatio (nbWater / (nbRock + nbGrass + nbWater));
       double grassRatio (nbGrass / (nbRock + nbGrass + nbWater));
+
       switch (cells_[i])
         {
         case Kind::Rock:
           if (waterRatio > sWaterRatio)
             {
               localCells[i] = Kind::Water;
-              humidify (i);
             }
           else if (grassRatio > sGrassRatio)
             {
@@ -566,17 +565,23 @@ World::smooths (unsigned int n, bool update)
 
   for (unsigned int i (0); i < n; ++i)
     {
-      logEvent (
-          "World",
-          "smoothing (" + std::to_string (i) + "/" + std::to_string (n) + ")",
-          false);
       smooth ();
     }
 
   if (update)
     {
-      updateCache ();
       humidify ();
+      updateCache ();
+    }
+}
+
+void
+World::clear ()
+{
+  size_t size(numberColumns_ * numberColumns_);
+  for (size_t i(0); i < size; ++i)
+    {
+      cells_[i] = Kind::Rock;
     }
 }
 
@@ -612,56 +617,59 @@ World::humidify (size_t i)
         {
           double currentLevel (
               humidityInitialLevel_
-                  * exp (
-                      -std::hypot (x - column, y - row) / humidityDecayRate_));
-          humidityLevels_[row * numberColumns_ + column] += currentLevel;
+                  * std::exp (
+                      -std::hypot ((double)x - (double)column, (double)y - (double)row) / humidityDecayRate_));
+          if (currentLevel > humidityThreshold_)
+            {
+              humidityLevels_[row * numberColumns_ + column] += currentLevel;
+            }
         }
     }
 }
 
-sf::Rect<size_t>
+std::array<size_t,4>
 World::calculateScanRange (size_t x, size_t y, unsigned int radius)
 {
-  sf::Rect<size_t> scanRange;
+  std::array<size_t,4> scanRange;
 
   // find start x
   if (x >= radius)
     {
-      scanRange.left = x - radius;
+      scanRange[0] = x - radius;
     }
   else
     {
-      scanRange.left = 0;
+      scanRange[0] = 0;
     }
 
   // find start y
   if (y >= radius)
     {
-      scanRange.top = y - radius;
+      scanRange[2] = y - radius;
     }
   else
     {
-      scanRange.top = 0;
+      scanRange[2] = 0;
     }
 
   // find width
-  if ((x + radius) <= numberColumns_)
+  if ((x + radius) < numberColumns_)
     {
-      scanRange.width = radius;
+      scanRange[1] = x + radius;
     }
   else
     {
-      scanRange.width = numberColumns_ - x;
+      scanRange[1] = numberColumns_ - 1;
     }
 
   // find height
-  if ((y + radius) <= numberColumns_)
+  if ((y + radius) < numberColumns_)
     {
-      scanRange.height = radius;
+      scanRange[3] = y + radius + 1;
     }
   else
     {
-      scanRange.height = numberColumns_ - y;
+      scanRange[3] = numberColumns_ - 1;
     }
 
   return scanRange;

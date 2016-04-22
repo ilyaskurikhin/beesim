@@ -130,6 +130,9 @@ public:
   smooths (unsigned int n, bool update = false);
 
   void
+  clear ();
+
+  void
   humidify ();
 
   void
@@ -186,7 +189,7 @@ private:
    * Find the cells to scan for given radius.
    * Make sure that we do not go over boundaries.
    */
-  sf::Rect<size_t>
+  std::array<size_t,4>
   calculateScanRange (size_t x, size_t y, unsigned int radius);
 };
 #endif

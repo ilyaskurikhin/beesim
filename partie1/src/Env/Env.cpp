@@ -27,8 +27,9 @@ Env::update (sf::Time dt)
   size_t numberFlowers (flowers_.size ());
   for (size_t i = 0; i < numberFlowers; ++i)
     {
+      // flowers are updates
+      // new flowers are drawn in next draw cycle
       flowers_[i]->update (dt);
-      // TODO : make sure that new flowers get drawn
 
       // check if flower is dead
       if (flowers_[i]->getPollen () <= 0)
