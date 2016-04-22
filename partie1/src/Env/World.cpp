@@ -601,10 +601,10 @@ World::humidify (size_t i)
   size_t x (i % numberColumns_);
   size_t y (i / numberColumns_);
 
-  size_t left (std::max (x - humidityRange_, 0));
-  size_t right (std::min (x + humidityRange_, numberColumns_));
-  size_t top (std::max (y - humidityRange_, 0));
-  size_t bottom (std::min (y + humidityRange_, numberColumns_));
+  size_t left (std::max (x - (size_t) humidityRange_, (size_t) 0));
+  size_t right (std::min (x + (size_t) humidityRange_, numberColumns_));
+  size_t top (std::max (y - (size_t) humidityRange_, (size_t) 0));
+  size_t bottom (std::min (y + (size_t) humidityRange_, numberColumns_));
 
   for (size_t column (left); column < right; ++column)
     {
@@ -613,7 +613,7 @@ World::humidify (size_t i)
           double currentLevel (
               humidityInitialLevel_
                   * exp (
-                      -std::hypot (x - column, y - row) / humidityDecayRate_x));
+                      -std::hypot (x - column, y - row) / humidityDecayRate_));
           humidityLevels_[row * numberColumns_ + column] += currentLevel;
         }
     }

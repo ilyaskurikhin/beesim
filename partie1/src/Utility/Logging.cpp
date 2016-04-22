@@ -25,6 +25,7 @@ printConsole (std::string string)
 void
 appendLog (std::string string)
 {
+  bool APPEND (true);
   time_t time;
   struct tm* timeinfo;
 
@@ -34,8 +35,11 @@ appendLog (std::string string)
   char displayTime[80];
   strftime (displayTime, 80, "%F %T %Z", timeinfo);
 
-  std::ofstream output;
-  output.open ("build/execution.log", std::ios::app);
-  output << displayTime << "\t" << string << "\n";
-  output.close ();
+  if (APPEND)
+    {
+      std::ofstream output;
+      output.open ("build/execution.log", std::ios::app);
+      output << displayTime << "\t" << string << "\n";
+      output.close ();
+    }
 }
