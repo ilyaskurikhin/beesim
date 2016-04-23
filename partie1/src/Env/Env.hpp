@@ -59,16 +59,16 @@ public:
 
   void
   drawFlowerZone (sf::RenderTarget& target, const Vec2d& position);
-  
+
   bool
-  addHiveAt(const Vec2d& position);
-  
-  Hive* 
-  getCollidingHive(const Collider& body);
-  
+  addHiveAt (const Vec2d& position);
+
+  Hive*
+  getCollidingHive (const Collider& body);
+
   Flower*
-  getCollidingFlower(const Collider& body);
-  
+  getCollidingFlower (const Collider& body);
+
 private:
 
   World* world_;

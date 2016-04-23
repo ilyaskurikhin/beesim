@@ -15,7 +15,7 @@ Env::~Env ()
 {
   logEvent ("Env", "destroying environment");
   delete world_;
-  
+
   for (size_t i = 0; i < flowers_.size (); ++i)
     {
       delete flowers_[i];
@@ -65,13 +65,13 @@ Env::drawOn (sf::RenderTarget& target) const
     {
       flowers_[i]->drawOn (target);
     }
-    
+
   for (size_t i = 0; i < hives_.size (); ++i)
     {
       hives_[i]->drawOn (target);
-      
+
     }
-   
+
 }
 
 void
@@ -86,7 +86,7 @@ Env::reset ()
     }
   flowers_.clear ();
   flowerGenerator_->reset ();
-  
+
   for (size_t i = 0; i < hives_.size (); ++i)
     {
       delete hives_[i];
@@ -124,15 +124,16 @@ Env::addFlowerAt (const Vec2d& position)
   // get max number of Flower from configuration
   size_t maxFlowers =
       getAppConfig ()["simulation"]["env"]["max flowers"].toInt ();
-      
-  double radius (getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ()
-                  / 2.0);
-               
-  Collider newFlower(position, radius);
-  
+
+  double radius (
+      getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ()
+          / 2.0);
+
+  Collider newFlower (position, radius);
+
   // check if flower can be made at position
   if (world_->isGrowable (position) && (flowers_.size () < maxFlowers)
-	  && (getCollidingFlower(newFlower)==nullptr))
+      && (getCollidingFlower (newFlower) == nullptr))
     {
       // set a random number of pollen
       double pollen =
@@ -140,9 +141,7 @@ Env::addFlowerAt (const Vec2d& position)
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["min"].toDouble (),
               getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["max"].toDouble ());
 
-      flowers_.push_back (
-          new Flower (
-              position, radius, pollen));
+      flowers_.push_back (new Flower (position, radius, pollen));
       return true;
     }
   else
@@ -175,56 +174,67 @@ Env::drawFlowerZone (sf::RenderTarget& target, const Vec2d& position)
 }
 
 bool
-Env::addHiveAt(const Vec2d& position)
+Env::addHiveAt (const Vec2d& position)
 {
-	double radius (getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ()
-                  / 2.0);
-                  
-	Collider colNewHive(position, radius);
-	if (getCollidingHive(colNewHive)==nullptr && getCollidingFlower(colNewHive)==nullptr) {
-	      hives_.push_back (
-          new Hive (position, radius));
-		
-		return true;
-	}
-	
-	else {
-		return false;
-	}
+  double radius (
+      getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ()
+          / 2.0);
+
+  Collider colNewHive (position, radius);
+  if (getCollidingHive (colNewHive) == nullptr
+      && getCollidingFlower (colNewHive) == nullptr)
+    {
+      hives_.push_back (new Hive (position, radius));
+
+      return true;
+    }
+
+  else
+    {
+      return false;
+    }
 }
-  
-Hive* 
-Env::getCollidingHive(const Collider& body)
+
+Hive*
+Env::getCollidingHive (const Collider& body)
 {
-	double size(getAppConfig() ["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble());
-	double factor(getAppConfig() ["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble());
-	for (size_t i(0); i < hives_.size(); ++i) {
-		Collider collidingHive(hives_[i]->getPosition(),  
-		(size*factor));
-		
-		if (collidingHive.isColliding(body)) {
-			return hives_[i];
-		}
-		
-		else {
-			return nullptr;
-		}
-	}
+  double size (
+      getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ());
+  double factor (
+      getAppConfig ()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble ());
+  for (size_t i (0); i < hives_.size (); ++i)
+    {
+      Collider collidingHive (hives_[i]->getPosition (), (size * factor));
+
+      if (collidingHive.isColliding (body))
+        {
+          return hives_[i];
+        }
+
+      else
+        {
+          return nullptr;
+        }
+    }
 }
-	
+
 Flower*
-Env::getCollidingFlower(const Collider& body)
+Env::getCollidingFlower (const Collider& body)
 {
-	for (size_t i(0); i< flowers_.size(); ++i) {
-		Collider collidingFlower(flowers_[i]->getPosition(),flowers_[i]->getRadius());
-		
-		if (collidingFlower.isColliding(body)) {
-			return flowers_[i];
-		}
-		
-		else {
-			return nullptr;
-		}
-	}
-	
+  for (size_t i (0); i < flowers_.size (); ++i)
+    {
+      Collider collidingFlower (flowers_[i]->getPosition (),
+                                flowers_[i]->getRadius ());
+
+      if (collidingFlower.isColliding (body))
+        {
+          return flowers_[i];
+        }
+
+      else
+        {
+          return nullptr;
+        }
+    }
+
 }

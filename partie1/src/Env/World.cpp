@@ -195,7 +195,7 @@ World::reset (bool regenerate)
   reloadCacheStructure ();
 
   // clear the world texture
-  clear();
+  clear ();
 
   // set the first part of seeds_ as grass
   for (size_t i (0); i < nbGrassSeeds_; ++i)
@@ -268,7 +268,7 @@ World::drawOn (sf::RenderTarget& target) const
                                      position, getAppFont (), 30,
                                      sf::Color::Red);
           target.draw (text);
-          
+
         }
     }
 
@@ -473,13 +473,12 @@ World::smooth ()
   double sGrassRatio (
       simulationWorld ()["generation"]["smoothness"]["grass neighbourhood ratio"].toDouble ());
 
-
-  for (size_t i=0; i < numberColumns_ * numberColumns_; ++i)
+  for (size_t i = 0; i < numberColumns_ * numberColumns_; ++i)
     {
-	  // Initialize counters for neighbors
-	  int nbGrass (0);
-	  int nbWater (0);
-	  int nbRock (0);
+      // Initialize counters for neighbors
+      int nbGrass (0);
+      int nbWater (0);
+      int nbRock (0);
 
       // get the indexes for the cell
       size_t x (i % numberColumns_);
@@ -488,18 +487,16 @@ World::smooth ()
       // set the radius of neighborhood
       unsigned int radius (1);
 
-
-
       /*
-      size_t left (std::max ((int) x - 1, 0));
-      size_t right (std::min ((int) x + 2, (int) numberColumns_ - 1));
-      size_t top (std::max ((int) y - 1, 0));
-      size_t bottom (std::min ((int) y + 2, (int) numberColumns_ - 1));
-      */
+       size_t left (std::max ((int) x - 1, 0));
+       size_t right (std::min ((int) x + 2, (int) numberColumns_ - 1));
+       size_t top (std::max ((int) y - 1, 0));
+       size_t bottom (std::min ((int) y + 2, (int) numberColumns_ - 1));
+       */
 
       // SET THE START AND END OF NEIGHBORHOOD
       // POSSIBILITY OF ADJUSTING TO TORIC HERE
-      std::array<size_t,4> scanRange = calculateScanRange (x, y, radius);
+      std::array<size_t, 4> scanRange = calculateScanRange (x, y, radius);
 
       assert(scanRange[0] < scanRange[1]);
       assert(scanRange[2] < scanRange[3]);
@@ -531,10 +528,11 @@ World::smooth ()
             }
         }
 
-
       // define the water and grass ratios
-      double waterRatio ((double) nbWater / (double) (nbRock + nbGrass + nbWater));
-      double grassRatio ((double) nbGrass / (double) (nbRock + nbGrass + nbWater));
+      double waterRatio (
+          (double) nbWater / (double) (nbRock + nbGrass + nbWater));
+      double grassRatio (
+          (double) nbGrass / (double) (nbRock + nbGrass + nbWater));
 
       switch (cells_[i])
         {
@@ -584,8 +582,8 @@ World::smooths (unsigned int n, bool update)
 void
 World::clear ()
 {
-  size_t size(numberColumns_ * numberColumns_);
-  for (size_t i(0); i < size; ++i)
+  size_t size (numberColumns_ * numberColumns_);
+  for (size_t i (0); i < size; ++i)
     {
       cells_[i] = Kind::Rock;
     }
@@ -611,15 +609,14 @@ World::humidify (size_t i)
 {
   size_t x (i % numberColumns_);
   size_t y (i / numberColumns_);
-/*
-  size_t left (std::max (x - (size_t) humidityRange_, (size_t) 0));
-  size_t right (std::min (x + (size_t) humidityRange_, numberColumns_));
-  size_t top (std::max (y - (size_t) humidityRange_, (size_t) 0));
-  size_t bottom (std::min (y + (size_t) humidityRange_, numberColumns_));
-  */
+  /*
+   size_t left (std::max (x - (size_t) humidityRange_, (size_t) 0));
+   size_t right (std::min (x + (size_t) humidityRange_, numberColumns_));
+   size_t top (std::max (y - (size_t) humidityRange_, (size_t) 0));
+   size_t bottom (std::min (y + (size_t) humidityRange_, numberColumns_));
+   */
 
-  std::array<size_t,4> scanRange = calculateScanRange (x, y, humidityRange_);
-
+  std::array<size_t, 4> scanRange = calculateScanRange (x, y, humidityRange_);
 
   for (size_t column (scanRange[0]); column < scanRange[1]; ++column)
     {
@@ -628,7 +625,9 @@ World::humidify (size_t i)
           double currentLevel (
               humidityInitialLevel_
                   * std::exp (
-                      -std::hypot ((double)x - (double)column, (double)y - (double)row) / humidityDecayRate_));
+                      -std::hypot ((double) x - (double) column,
+                                   (double) y - (double) row)
+                          / humidityDecayRate_));
           if (currentLevel > humidityThreshold_)
             {
               humidityLevels_[row * numberColumns_ + column] += currentLevel;
@@ -637,19 +636,24 @@ World::humidify (size_t i)
     }
 }
 
-std::array<size_t,4>
+std::array<size_t, 4>
 World::calculateScanRange (size_t x, size_t y, unsigned int radius)
 {
-  std::array<size_t,4> scanRange = {0,numberColumns_-1,0,numberColumns_-1};
+  std::array<size_t, 4> scanRange =
+    { 0, numberColumns_ - 1, 0, numberColumns_ - 1 };
 
   // find start x
-  if (x >= radius) scanRange[0] = x - radius;
+  if (x >= radius)
+    scanRange[0] = x - radius;
   // find start y
-  if (y >= radius) scanRange[2] = y - radius;
+  if (y >= radius)
+    scanRange[2] = y - radius;
   // find end x
-  if ((x + radius) < numberColumns_) scanRange[1] = x + radius + 1;
+  if ((x + radius) < numberColumns_)
+    scanRange[1] = x + radius + 1;
   // find end y
-  if ((y + radius) < numberColumns_) scanRange[3] = y + radius + 1;
+  if ((y + radius) < numberColumns_)
+    scanRange[3] = y + radius + 1;
 
   return scanRange;
 }
@@ -716,8 +720,9 @@ World::isInWorld (const Vec2d& position) const
 }
 
 bool
-World::isHiveable(const Vec2d& position, double radius){
-	
-	//do not place a hive if its position is on a water or rock cell
-	  return true;
+World::isHiveable (const Vec2d& position, double radius)
+{
+
+  //do not place a hive if its position is on a water or rock cell
+  return true;
 }

@@ -151,10 +151,9 @@ public:
 
   bool
   isInWorld (const Vec2d& position) const;
-  
-  bool
-  isHiveable(const Vec2d& position, double radius);
 
+  bool
+  isHiveable (const Vec2d& position, double radius);
 
 private:
 
@@ -192,7 +191,7 @@ private:
    * Find the cells to scan for given radius.
    * Make sure that we do not go over boundaries.
    */
-  std::array<size_t,4>
+  std::array<size_t, 4>
   calculateScanRange (size_t x, size_t y, unsigned int radius);
 };
 #endif

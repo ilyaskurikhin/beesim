@@ -1,8 +1,9 @@
 #ifndef BEE_H
 #define BEE_H
 
-class Bee {
-  
+class Bee
+{
+
 };
 
 #endif
