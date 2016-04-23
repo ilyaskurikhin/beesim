@@ -228,7 +228,7 @@ void Application::run()
             auto dt = fpsClk.restart().asSeconds();
 
             auto fps = frameCount / dt;
-            std::cout << std::setw(80) << "\rFPS: " << fps << "\r" << std::flush;
+            std::cout << "FPS: " << fps << "\r" << std::flush;
 
             frameCount = 0;
         }
@@ -244,19 +244,6 @@ Env const& Application::getEnv() const
 {
     return *mEnv;
 }
-
-/*
- * TODO step4 uncomment me
- *BeeTracker& Application::getBeeTracker()
- *{
- *    return mBeeTracker;
- *}
- *
- *BeeTracker const& Application::getBeeTracker() const
- *{
- *    return mBeeTracker;
- *}
- */
 
 j::Value& Application::getConfig()
 {
@@ -434,7 +421,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 
         // Save the world
         case sf::Keyboard::O:
-            getEnv().saveWorldToFile(); //uncomment if World::saveToFile is coded
+            getEnv().saveWorldToFile();
             break;
 
         // Toggle pause for simulation
@@ -503,18 +490,15 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
             mIsDragging = true;
             mLastCursorPosition = { event.mouseButton.x, event.mouseButton.y };
         } else if (event.mouseButton.button == sf::Mouse::Right) {
-            /*
-             * TODO step4 uncomment me
-             *auto pos = getCursorPositionInView();
-             *auto* bee = getEnv().getBeeAt(pos);
-             *if (bee == nullptr) {
-             *    // Stop tracking bee
-             *    getBeeTracker().stopTrackingBee();
-             *} else {
-             *    // Track the bee
-             *    getBeeTracker().startTrackingBee(bee);
-             *}
-             */
+            auto pos  = getCursorPositionInView();
+            auto* bee = getEnv().getBeeAt(pos);
+            if (bee == nullptr) {
+                // Stop tracking bee
+                //getBeeTracker().stopTrackingBee();
+            } else {
+                // Track the bee
+                //getBeeTracker().startTrackingBee(bee);
+            }
         }
         break;
 
@@ -534,7 +518,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
             mLastCursorPosition = newCurosrPosition;
 
             // Stop tracking bee
-            //getBeeTracker().stopTrackingBee(); TODO step4 uncomment me
+            //getBeeTracker().stopTrackingBee();
         }
         break;
     } // event.type switch
@@ -594,16 +578,14 @@ void Application::zoomViewAt(sf::Vector2i const& pixel, float zoomFactor)
     view.zoom(zoomFactor);
     mRenderWindow.setView(view);
 
-    // TODO step4 uncomment me
-    /* if (!getBeeTracker().isTrackingBee()) */ {
-        // If no bee is selected, center on the cursor position
-        auto afterCoord = mRenderWindow.mapPixelToCoords(pixel);
-        auto offsetCoords = beforeCoord - afterCoord;
-
-        view.move(offsetCoords);
-        mRenderWindow.setView(view);
-    }
+    
+	auto afterCoord = mRenderWindow.mapPixelToCoords(pixel);
+	auto offsetCoords = beforeCoord - afterCoord;
+	
+	view.move(offsetCoords);
+	mRenderWindow.setView(view);
 }
+
 
 void Application::dragView(sf::Vector2i const& srcPixel, sf::Vector2i const& destPixel)
 {
@@ -620,13 +602,10 @@ void Application::dragView(sf::Vector2i const& srcPixel, sf::Vector2i const& des
 
 void Application::updateSimulationView()
 {
-    /*
-     * TODO step4 uncomment me
-     *if (getBeeTracker().isTrackingBee()) {
-     *    auto pos = getBeeTracker().getTrackedBeePosition();
-     *    mSimulationView.setCenter(pos);
-     *}
-     */
+    // if (getBeeTracker().isTrackingBee()) {
+    //     auto pos = getBeeTracker().getTrackedBeePosition();
+    //     mSimulationView.setCenter(pos);
+    // }
 }
 
 Application& getApp()
@@ -640,14 +619,6 @@ Env& getAppEnv()
 {
     return getApp().getEnv();
 }
-
-/*
- * TODO step4 uncomment me
- *BeeTracker& getAppBeeTracker()
- *{
- *    return getApp().getBeeTracker();
- *}
- */
 
 j::Value& getAppConfig()
 {

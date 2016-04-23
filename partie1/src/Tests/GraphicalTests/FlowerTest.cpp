@@ -46,15 +46,12 @@ void FlowerTest::onEvent(sf::Event event, sf::RenderWindow&)
 
         // Add flower: try to create a new one and disable visualisation zone
         case sf::Keyboard::F:
-
             mShowFlowerZone = false;
-
             if (getEnv().addFlowerAt(getCursorPositionInView())) {
                 std::cout << "New flower created\n";
             } else {
                 std::cout << "Couldn't create new flower\n";
             }
-
             break;
         }
     }

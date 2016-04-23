@@ -19,7 +19,8 @@ public:
     virtual void onDraw(sf::RenderTarget& target) override final;
 
 private:
-    bool mShowFlowerZone = false; ///< Enable/disable flower zone visualisation
+    bool mShowFlowerZone   = false; ///< Enable/disable flower zone visualisation
+    bool mShowHiveableZone = false; ///< Enable/disable hiveable zone visualisation
 };
 
 #endif // INFOSV_FINAL_APPLICATION_HPP
