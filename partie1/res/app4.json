@@ -70,7 +70,7 @@
         },
         "flower generator" : {
             "active" : true,
-            "delay" : 5.0
+            "delay" : 1.0
         },
         "hive" : {
             "initial" : {
@@ -92,11 +92,11 @@
                 "water teleport probability" : 0.0001
             },
             "generation" : {
-                "steps" : 20000,
+                "steps" : 200,
                 "smoothness" : {
                     "level" : 10,
                     "grass neighbourhood ratio" : 0.5,
-                    "water neighbourhood ratio" : 0.95
+                    "water neighbourhood ratio" : 0.7
                 },
                 "humidity" : {
                     "decay rate" : 20,
