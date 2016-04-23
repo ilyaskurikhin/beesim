@@ -485,7 +485,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
     // Drag view: initiate drag
     //  - or -
     // Select a bee to follow
-    case sf::Event::MouseButtonPressed:
+    /*case sf::Event::MouseButtonPressed:
         if (event.mouseButton.button == sf::Mouse::Left) {
             mIsDragging = true;
             mLastCursorPosition = { event.mouseButton.x, event.mouseButton.y };
@@ -501,7 +501,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
             }
         }
         break;
-
+    */
     // Drag view: end drag
     case sf::Event::MouseButtonReleased:
         if (event.mouseButton.button == sf::Mouse::Left)

@@ -10,6 +10,8 @@
 #include <Random/Random.hpp>
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
+#include <Env/Hive.hpp>
+#include <Env/Collider.hpp>
 
 #include <memory>
 
@@ -57,11 +59,21 @@ public:
 
   void
   drawFlowerZone (sf::RenderTarget& target, const Vec2d& position);
-
+  
+  bool
+  addHiveAt(const Vec2d& position);
+  
+  Hive* 
+  getCollidingHive(const Collider& body);
+  
+  Flower*
+  getCollidingFlower(const Collider& body);
+  
 private:
 
   World* world_;
   std::vector<Flower*> flowers_;
   FlowerGenerator* flowerGenerator_;
+  std::vector<Hive*> hives_;
 };
 #endif

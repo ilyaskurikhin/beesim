@@ -63,6 +63,7 @@ Flower::update (sf::Time dt)
   double split (
       getAppConfig ()["simulation"]["flower"]["growth"]["split"].toDouble ());
 
+
   // split flower if has enough pollen
   if (pollen_ > split)
     {

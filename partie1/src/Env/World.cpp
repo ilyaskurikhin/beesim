@@ -268,6 +268,7 @@ World::drawOn (sf::RenderTarget& target) const
                                      position, getAppFont (), 30,
                                      sf::Color::Red);
           target.draw (text);
+          
         }
     }
 
@@ -712,4 +713,11 @@ World::isInWorld (const Vec2d& position) const
     {
       return true;
     }
+}
+
+bool
+World::isHiveable(const Vec2d& position, double radius){
+	
+	//do not place a hive if its position is on a water or rock cell
+	  return true;
 }

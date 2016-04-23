@@ -9,7 +9,6 @@
 #include <Application.hpp>
 #include <Random/Random.hpp>
 #include <JSON/JSON.hpp>
-
 #include <Interface/Drawable.hpp>
 
 #include <vector>
@@ -152,6 +151,10 @@ public:
 
   bool
   isInWorld (const Vec2d& position) const;
+  
+  bool
+  isHiveable(const Vec2d& position, double radius);
+
 
 private:
 
