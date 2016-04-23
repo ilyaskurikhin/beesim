@@ -32,10 +32,10 @@ public:
   ~Env ();
 
   void
-  update (sf::Time dt);
+  update (sf::Time dt) override;
 
   void
-  drawOn (sf::RenderTarget& target) const;
+  drawOn (sf::RenderTarget& target) const override;
 
   void
   reset ();

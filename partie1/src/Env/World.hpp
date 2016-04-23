@@ -65,7 +65,7 @@ public:
    * @param target where to draw this world
    */
   void
-  drawOn (sf::RenderTarget& target) const;
+  drawOn (sf::RenderTarget& target) const override;
 
   /**
    * Set the layer to show in each cell.
