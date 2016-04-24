@@ -246,7 +246,7 @@ void
 World::drawOn (sf::RenderTarget& target) const
 {
   if (simulationWorld ()["show humidity"].toBool ()
-      || getAppConfig ()["debug"].toBool ())
+      || isDebugOn ())
     {
       sf::Sprite cache (humidityCache_.getTexture ());
       target.draw (cache);
@@ -256,22 +256,6 @@ World::drawOn (sf::RenderTarget& target) const
       sf::Sprite cache (renderingCache_.getTexture ());
       target.draw (cache);
     }
-
-  // if debug is on, show individual levels   
-  if (isDebugOn ())
-    {
-      Vec2d position = getApp ().getCursorPositionInView ();
-      if (isInWorld (position))
-        {
-          size_t cell (getCellIndex (position));
-          sf::Text text = buildText (to_nice_string (humidityLevels_[cell]),
-                                     position, getAppFont (), 30,
-                                     sf::Color::Red);
-          target.draw (text);
-
-        }
-    }
-
 }
 
 void
@@ -722,7 +706,15 @@ World::isInWorld (const Vec2d& position) const
 bool
 World::isHiveable (const Vec2d& position, double radius)
 {
-
+  // TODO implement method isHiveable
+  Vec2d left;
+  Vec2d right;
+  Vec2d top;
+  Vec2d bottom;
+  if (cells_[getCellIndex(position)] != Kind::Grass)
+    {
+      return false;
+    }
   //do not place a hive if its position is on a water or rock cell
   return true;
 }

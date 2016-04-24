@@ -8,7 +8,7 @@ bool ENV_VERBOSE (true);
 Env::Env () :
     world_ (new World ()), flowerGenerator_ (new FlowerGenerator)
 {
-  logEvent ("Env", "genetrating environment");
+  logEvent ("Env", "generating environment");
 }
 
 Env::~Env ()
@@ -69,7 +69,47 @@ Env::drawOn (sf::RenderTarget& target) const
   for (size_t i = 0; i < hives_.size (); ++i)
     {
       hives_[i]->drawOn (target);
+    }
 
+  // if debug is on, show values
+  if (isDebugOn ())
+    {
+      // get cursor position
+      Vec2d position = getApp ().getCursorPositionInView ();
+      if (world_->isInWorld (position))
+        {
+          bool isHive (false);
+          std::string valueString ("empty");
+          sf::Color color (sf::Color::White);
+
+          // check for hives
+          for (size_t i = 0; i < hives_.size (); ++i)
+            {
+              if (position > *hives_[i])
+                {
+                  isHive = true;
+                  valueString = to_nice_string (hives_[i]->getNectar ());
+                  color = sf::Color::Green;
+                }
+            }
+
+          // otherwise show ambient humidity
+          if (!isHive)
+            {
+              valueString = to_nice_string (world_->getHumidity (position));
+              color = sf::Color::Red;
+            }
+
+          // calculate appropriate text size
+          int textSize (
+              10
+                  * (getAppConfig ()["simulation"]["world"]["size"].toDouble ()
+                      / getAppConfig ()["simulation"]["world"]["cells"].toDouble ()));
+          sf::Text text = buildText (valueString, position, getAppFont (),
+                                     textSize, color);
+          target.draw (text);
+
+        }
     }
 
 }
@@ -188,7 +228,6 @@ Env::addHiveAt (const Vec2d& position)
 
       return true;
     }
-
   else
     {
       return false;
@@ -210,12 +249,8 @@ Env::getCollidingHive (const Collider& body)
         {
           return hives_[i];
         }
-
-      else
-        {
-          return nullptr;
-        }
     }
+  return nullptr;
 }
 
 Flower*
@@ -230,11 +265,7 @@ Env::getCollidingFlower (const Collider& body)
         {
           return flowers_[i];
         }
-
-      else
-        {
-          return nullptr;
-        }
     }
+  return nullptr;
 
 }

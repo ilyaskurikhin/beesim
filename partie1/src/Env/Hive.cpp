@@ -1,8 +1,10 @@
 #include <Env/Hive.hpp>
 
 Hive::Hive (const Vec2d& position, double radius) :
-    Collider (position, radius), nectar_ (
-        getAppConfig ()["simulation"]["hive"]["initial"]["nectar"].toDouble ()), hiveTexture_ (
+    Collider (position, radius),
+    nectar_ (
+        getAppConfig ()["simulation"]["hive"]["initial"]["nectar"].toDouble ()),
+    hiveTexture_ (
         getAppTexture (
             getAppConfig ()["simulation"]["hive"]["texture"].toString ()))
 {
@@ -20,11 +22,13 @@ Hive::~Hive ()
 void
 Hive::addBee ()
 {
+  // TODO implement addBee method
 }
 
 void
 Hive::update (sf::Time dt)
 {
+  // TODO implement update method
 }
 
 void
@@ -32,30 +36,25 @@ Hive::drawOn (sf::RenderTarget& target) const
 {
   auto hiveSprite = buildSprite (this->position_, this->radius_, hiveTexture_);
   target.draw (hiveSprite);
-
-  /*if (isDebugOn ())
-   {
-   Vec2d position = getApp ().getCursorPositionInView ();
-   {
-   std::stringstream valueStream;
-   valueStream << std::fixed << std::setprecision(0) << nectar_;
-   sf::Text text = buildText (valueStream.str(), position, getAppFont (), 30,
-   sf::Color::Green);
-   target.draw (text);
-   }  
-   }
-   */
 }
 
 double
-Hive::dropPollen (double amount)
+Hive::dropPollen (double nectar)
 {
+  if (nectar > 0)
+    {
+      nectar_ = nectar_ + nectar;
+    }
   return nectar_;
 }
 
 double
-Hive::takeNectar (double amount)
+Hive::takeNectar (double nectar)
 {
+  if ((nectar > 0) && (nectar_ - nectar > 0))
+    {
+      nectar_ = nectar_ - nectar;
+    }
   return nectar_;
 }
 

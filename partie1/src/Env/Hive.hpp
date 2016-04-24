@@ -1,5 +1,6 @@
 #ifndef HIVE_H
 #define HIVE_H
+
 #include <Env/World.hpp>
 #include <Env/Bee.hpp>
 #include <Env/Collider.hpp>
@@ -17,6 +18,9 @@ public:
 
   Hive (const Vec2d& position, double radius);
 
+  Hive (const Hive&) = delete;
+  Hive operator=(const Hive&) = delete;
+
   ~Hive ();
 
   void
@@ -26,7 +30,7 @@ public:
   update (sf::Time dt) override;
 
   void
-  drawOn (sf::RenderTarget& targetWindow) const;
+  drawOn (sf::RenderTarget& targetWindow) const override;
 
   double
   dropPollen (double amount);
@@ -41,9 +45,6 @@ private:
 
   double nectar_;
   std::vector<Bee*> bees_;
-  Hive (const Hive& other); // disables copy constructor
-  Hive&
-  operator= (const Hive&); // disables ables default affectation operator
   sf::Texture hiveTexture_;
 
 };

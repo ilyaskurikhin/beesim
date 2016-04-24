@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <Env/World.hpp>
 #include <Utility/Vec2d.hpp>
 #include <Utility/Utility.hpp>
 #include <Utility/Logging.hpp>
@@ -12,6 +11,7 @@
 #include <Interface/Updatable.hpp>
 #include <Env/Hive.hpp>
 #include <Env/Collider.hpp>
+#include <Env/World.hpp>
 
 #include <memory>
 
