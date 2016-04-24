@@ -245,8 +245,7 @@ World::reset (bool regenerate)
 void
 World::drawOn (sf::RenderTarget& target) const
 {
-  if (simulationWorld ()["show humidity"].toBool ()
-      || isDebugOn ())
+  if (simulationWorld ()["show humidity"].toBool () || isDebugOn ())
     {
       sf::Sprite cache (humidityCache_.getTexture ());
       target.draw (cache);
@@ -711,7 +710,7 @@ World::isHiveable (const Vec2d& position, double radius)
   Vec2d right;
   Vec2d top;
   Vec2d bottom;
-  if (cells_[getCellIndex(position)] != Kind::Grass)
+  if (cells_[getCellIndex (position)] != Kind::Grass)
     {
       return false;
     }

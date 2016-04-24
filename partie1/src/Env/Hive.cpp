@@ -1,10 +1,8 @@
 #include <Env/Hive.hpp>
 
 Hive::Hive (const Vec2d& position, double radius) :
-    Collider (position, radius),
-    nectar_ (
-        getAppConfig ()["simulation"]["hive"]["initial"]["nectar"].toDouble ()),
-    hiveTexture_ (
+    Collider (position, radius), nectar_ (
+        getAppConfig ()["simulation"]["hive"]["initial"]["nectar"].toDouble ()), hiveTexture_ (
         getAppTexture (
             getAppConfig ()["simulation"]["hive"]["texture"].toString ()))
 {

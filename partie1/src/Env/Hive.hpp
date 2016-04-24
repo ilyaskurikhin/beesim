@@ -19,7 +19,8 @@ public:
   Hive (const Vec2d& position, double radius);
 
   Hive (const Hive&) = delete;
-  Hive operator=(const Hive&) = delete;
+  Hive
+  operator= (const Hive&) = delete;
 
   ~Hive ();
 

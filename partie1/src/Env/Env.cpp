@@ -9,6 +9,7 @@ Env::Env () :
     world_ (new World ()), flowerGenerator_ (new FlowerGenerator)
 {
   logEvent ("Env", "generating environment");
+  reloadConfig ();
 }
 
 Env::~Env ()
@@ -34,11 +35,14 @@ void
 Env::update (sf::Time dt)
 {
   // update du generateur
-  flowerGenerator_->update (dt);
+  if ((getAppConfig ()["simulation"]["flower generator"]["active"].toBool ())
+      && (flowers_.size () < maxFlowers_))
+    {
+      flowerGenerator_->update (dt);
+    }
 
   // iterate through flowers
-  size_t numberFlowers (flowers_.size ());
-  for (size_t i = 0; i < numberFlowers; ++i)
+  for (size_t i = 0; i < flowers_.size (); ++i)
     {
       // flowers are updates
       // new flowers are drawn in next draw cycle
@@ -79,13 +83,14 @@ Env::drawOn (sf::RenderTarget& target) const
       if (world_->isInWorld (position))
         {
           bool isHive (false);
+          bool isFlower (false);
           std::string valueString ("empty");
           sf::Color color (sf::Color::White);
 
           // check for hives
           for (size_t i = 0; i < hives_.size (); ++i)
             {
-              if (position > *hives_[i])
+              if (*(hives_[i]) > position)
                 {
                   isHive = true;
                   valueString = to_nice_string (hives_[i]->getNectar ());
@@ -93,8 +98,22 @@ Env::drawOn (sf::RenderTarget& target) const
                 }
             }
 
-          // otherwise show ambient humidity
+          // check for flowers
           if (!isHive)
+            {
+              for (size_t i = 0; i < flowers_.size (); ++i)
+                {
+                  if (*(flowers_[i]) > position)
+                    {
+                      isFlower = true;
+                      valueString = to_nice_string (flowers_[i]->getPollen ());
+                      color = sf::Color::Yellow;
+                    }
+                }
+            }
+
+          // otherwise show ambient humidity
+          if (!isHive && !isFlower)
             {
               valueString = to_nice_string (world_->getHumidity (position));
               color = sf::Color::Red;
@@ -135,6 +154,24 @@ Env::reset ()
 }
 
 void
+Env::reloadConfig ()
+{
+  // get variables from configuration
+  flowerManualRadius_ =
+      getAppConfig ()["simulation"]["env"]["initial"]["flower"]["size"]["manual"].toDouble ();
+  flowerMaxNectar_ =
+      getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["max"].toDouble ();
+  flowerMinNectar_ =
+      getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["min"].toDouble ();
+
+  // get max number of Flower from configuration
+  maxFlowers_ = getAppConfig ()["simulation"]["env"]["max flowers"].toInt ();
+
+  hiveManualRadius_ =
+      getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ();
+}
+
+void
 Env::loadWorldFromFile ()
 {
   world_->loadFromFile ();
@@ -159,29 +196,33 @@ Env::isGrowable (const Vec2d& position)
 }
 
 bool
+Env::isPlaceable (const Vec2d& position, double radius)
+{
+  if (world_->isGrowable (position))
+    {
+      Collider object (position, radius);
+
+      // check if object can be made at position
+      if ((getCollidingFlower (object) == nullptr)
+          && (getCollidingHive (object) == nullptr))
+        {
+          return true;
+        }
+    }
+  return false;
+}
+
+bool
 Env::addFlowerAt (const Vec2d& position)
 {
-  // get max number of Flower from configuration
-  size_t maxFlowers =
-      getAppConfig ()["simulation"]["env"]["max flowers"].toInt ();
-
-  double radius (
-      getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ()
-          / 2.0);
-
-  Collider newFlower (position, radius);
-
   // check if flower can be made at position
-  if (world_->isGrowable (position) && (flowers_.size () < maxFlowers)
-      && (getCollidingFlower (newFlower) == nullptr))
+  if ((flowers_.size () < maxFlowers_)
+      && (isPlaceable (position, flowerManualRadius_)))
     {
       // set a random number of pollen
-      double pollen =
-          uniform (
-              getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["min"].toDouble (),
-              getAppConfig ()["simulation"]["env"]["initial"]["flower"]["nectar"]["max"].toDouble ());
+      double pollen = uniform (flowerMinNectar_, flowerMaxNectar_);
 
-      flowers_.push_back (new Flower (position, radius, pollen));
+      flowers_.push_back (new Flower (position, flowerManualRadius_, pollen));
       return true;
     }
   else
@@ -216,16 +257,11 @@ Env::drawFlowerZone (sf::RenderTarget& target, const Vec2d& position)
 bool
 Env::addHiveAt (const Vec2d& position)
 {
-  double radius (
-      getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ()
-          / 2.0);
 
-  Collider colNewHive (position, radius);
-  if (getCollidingHive (colNewHive) == nullptr
-      && getCollidingFlower (colNewHive) == nullptr)
+  if (world_->isGrowable (position)
+      && (isPlaceable (position, hiveManualRadius_)))
     {
-      hives_.push_back (new Hive (position, radius));
-
+      hives_.push_back (new Hive (position, hiveManualRadius_));
       return true;
     }
   else

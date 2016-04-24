@@ -8,15 +8,13 @@ FlowerGenerator::FlowerGenerator () :
 void
 FlowerGenerator::update (sf::Time dt)
 {
-
   counter_ += dt;
 
   // if generation is active and a delay has passed
   // generate flowers at random locations
-  if ((getAppConfig ()["simulation"]["flower generator"]["active"].toBool ())
-      && (counter_
-          > sf::seconds (
-              (float) getAppConfig ()["simulation"]["flower generator"]["delay"].toDouble ())))
+  if (counter_
+      > sf::seconds (
+          (float) getAppConfig ()["simulation"]["flower generator"]["delay"].toDouble ()))
     {
       // reset the counter
       counter_ = sf::Time::Zero;

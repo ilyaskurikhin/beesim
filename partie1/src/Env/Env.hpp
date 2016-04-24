@@ -43,6 +43,9 @@ public:
   reset ();
 
   void
+  reloadConfig ();
+
+  void
   loadWorldFromFile ();
 
   void
@@ -53,6 +56,9 @@ public:
 
   bool
   isGrowable (const Vec2d& position);
+
+  bool
+  isPlaceable (const Vec2d& position, double radius);
 
   bool
   addFlowerAt (const Vec2d& position);
@@ -73,7 +79,16 @@ private:
 
   World* world_;
   std::vector<Flower*> flowers_;
+  std::vector<Flower*> newFlowers_;
   FlowerGenerator* flowerGenerator_;
   std::vector<Hive*> hives_;
+  std::vector<Hive*> newHives_;
+
+  double flowerMinNectar_;
+  double flowerMaxNectar_;
+  double flowerManualRadius_;
+  size_t maxFlowers_;
+
+  double hiveManualRadius_;
 };
 #endif

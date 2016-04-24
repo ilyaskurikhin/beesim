@@ -18,7 +18,7 @@ logEvent (std::string module, std::string event, bool append)
 void
 printConsole (std::string string)
 {
-  std::cerr << std::setw (80) << std::setprecision (3) << "\r" << string << "\r"
+  std::clog << std::setw (80) << std::setprecision (3) << "\r" << string << "\r"
       << std::flush;
 }
 

@@ -62,7 +62,7 @@ void HiveTest::onEvent(sf::Event event, sf::RenderWindow&)
             // Add hive: try to create a new one and disable "hiveable" zone
             mShowHiveableZone = false;
             auto position = getCursorPositionInView();
-			/*
+
 			  // uncomment me when addHiveAt is coded
             if (getEnv().addHiveAt(position)) {
                 auto dummyRadius = 1;
@@ -72,7 +72,7 @@ void HiveTest::onEvent(sf::Event event, sf::RenderWindow&)
             } else {
                 std::cout << "Couldn't create new hive\n";
             }
-			*/
+
             break;
         }
 		
