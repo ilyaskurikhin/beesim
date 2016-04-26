@@ -671,7 +671,7 @@ World::isHiveable (const Vec2d& position, double radius)
 }
 
 bool
-World::isFlyable(Vec2d const& position) const
+World::isFlyable (Vec2d const& position) const
 {
   if (cells_[getCellIndex (position)] != Kind::Rock)
     {
@@ -731,5 +731,3 @@ World::isInWorld (const Vec2d& position) const
     }
 }
 
-
-	

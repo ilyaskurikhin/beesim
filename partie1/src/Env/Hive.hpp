@@ -10,7 +10,6 @@
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
 
-
 class Bee;
 
 class Hive : public Collider, public Drawable, public Updatable
@@ -21,7 +20,7 @@ public:
   Hive (const Vec2d& position, double radius);
 
   Hive (const Hive&) = delete;
-  
+
   Hive
   operator= (const Hive&) = delete;
 

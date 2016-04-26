@@ -59,12 +59,12 @@ Env::update (sf::Time dt)
   // remove empty locations
   flowers_.erase (std::remove (flowers_.begin (), flowers_.end (), nullptr),
                   flowers_.end ());
-                  
-   for (size_t i=0; i < hives_.size(); ++i)
-   {
-		hives_[i]->update(dt);
-     }
-     
+
+  for (size_t i = 0; i < hives_.size (); ++i)
+    {
+      hives_[i]->update (dt);
+    }
+
 }
 
 void
@@ -79,7 +79,7 @@ Env::drawOn (sf::RenderTarget& target) const
   for (size_t i = 0; i < hives_.size (); ++i)
     {
       hives_[i]->drawOn (target);
-     
+
     }
 
   // if debug is on, show values

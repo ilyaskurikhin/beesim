@@ -59,7 +59,7 @@ public:
 
   bool
   isPlaceable (const Vec2d& position, double radius) const;
-  
+
   bool
   isFlyable (const Vec2d& position) const;
 
