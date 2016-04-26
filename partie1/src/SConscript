@@ -86,6 +86,7 @@ DefineProgram('application', Glob('FinalApplication.cpp'))
 DefineProgram('UnitTests', Glob('Tests/UnitTests/*.cpp'))
 DefineProgram('WorldTest', Glob('Tests/GraphicalTests/WorldTest.cpp'))
 DefineProgram('FlowerTest', Glob('Tests/GraphicalTests/FlowerTest.cpp'))
+DefineProgram('HiveTest', Glob('Tests/GraphicalTests/HiveTest.cpp'))
 
 
 if env['CXX'] == 'clang++':

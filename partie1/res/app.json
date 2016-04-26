@@ -6,6 +6,15 @@
             "max dt" : 0.05
         },
         "bees" : {
+            "generic" : {
+                "moving behaviour" : {
+                    "random" : {
+                        "rotation probability" : 0.02,
+                        "rotation angle max" : 0.785398163
+                    }
+                },
+                "texture" : "scout1.png"
+            },
             "scout" : {
                 "visibility range" : 50,
                 "moving behaviour" : {

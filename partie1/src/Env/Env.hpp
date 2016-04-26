@@ -3,13 +3,15 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <Env/World.hpp>
 #include <Utility/Vec2d.hpp>
 #include <Utility/Utility.hpp>
 #include <Utility/Logging.hpp>
 #include <Random/Random.hpp>
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
+#include <Env/Hive.hpp>
+#include <Env/Collider.hpp>
+#include <Env/World.hpp>
 
 #include <memory>
 
@@ -41,16 +43,25 @@ public:
   reset ();
 
   void
+  reloadConfig ();
+
+  void
   loadWorldFromFile ();
 
   void
-  saveWorldToFile ();
+  saveWorldToFile () const;
 
   double
-  getHumidity (const Vec2d& position);
+  getHumidity (const Vec2d& position) const;
 
   bool
-  isGrowable (const Vec2d& position);
+  isGrowable (const Vec2d& position) const;
+
+  bool
+  isPlaceable (const Vec2d& position, double radius) const;
+
+  bool
+  isFlyable (const Vec2d& position) const;
 
   bool
   addFlowerAt (const Vec2d& position);
@@ -58,10 +69,27 @@ public:
   void
   drawFlowerZone (sf::RenderTarget& target, const Vec2d& position);
 
+  bool
+  addHiveAt (const Vec2d& position);
+
+  Hive*
+  getCollidingHive (const Collider& body) const;
+
+  Flower*
+  getCollidingFlower (const Collider& body) const;
+
 private:
 
   World* world_;
   std::vector<Flower*> flowers_;
   FlowerGenerator* flowerGenerator_;
+  std::vector<Hive*> hives_;
+
+  double flowerMinNectar_;
+  double flowerMaxNectar_;
+  double flowerManualRadius_;
+  size_t maxFlowers_;
+
+  double hiveManualRadius_;
 };
 #endif

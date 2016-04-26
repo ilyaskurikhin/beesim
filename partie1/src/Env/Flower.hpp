@@ -39,6 +39,11 @@ private:
 
   double pollen_;
   sf::Texture texture_;
+
+  double humidityFactor_;
+  double splitThreshold_;
+  double humidityThreshold_;
+  double humidity_;
 };
 
 #endif
