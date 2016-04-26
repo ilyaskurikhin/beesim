@@ -45,7 +45,7 @@ void HiveTest::onEvent(sf::Event event, sf::RenderWindow&)
 
         case sf::Keyboard::B:
             if (mLastHive != nullptr) {
-                //mLastHive->addBee(); // uncomment me when addBee coded
+                mLastHive->addBee(); // uncomment me when addBee coded
             }
             break;
 

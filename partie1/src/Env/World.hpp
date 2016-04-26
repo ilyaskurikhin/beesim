@@ -139,6 +139,9 @@ public:
 
   bool
   isGrowable (const Vec2d& position) const;
+	
+  bool
+  isFlyable(Vec2d const& position) const;
 
   Vec2d
   getCellPosition (const Vec2d& position) const;

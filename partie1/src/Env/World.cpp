@@ -654,6 +654,35 @@ World::isGrowable (const Vec2d& position) const
     }
 }
 
+bool
+World::isHiveable (const Vec2d& position, double radius)
+{
+  // TODO implement method isHiveable
+  Vec2d left;
+  Vec2d right;
+  Vec2d top;
+  Vec2d bottom;
+  if (cells_[getCellIndex (position)] != Kind::Grass)
+    {
+      return false;
+    }
+  //do not place a hive if its position is on a water or rock cell
+  return true;
+}
+
+bool
+World::isFlyable(Vec2d const& position) const
+{
+  if (cells_[getCellIndex (position)] != Kind::Rock)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
 Vec2d
 World::getCellPosition (const Vec2d& position) const
 {
@@ -702,18 +731,5 @@ World::isInWorld (const Vec2d& position) const
     }
 }
 
-bool
-World::isHiveable (const Vec2d& position, double radius)
-{
-  // TODO implement method isHiveable
-  Vec2d left;
-  Vec2d right;
-  Vec2d top;
-  Vec2d bottom;
-  if (cells_[getCellIndex (position)] != Kind::Grass)
-    {
-      return false;
-    }
-  //do not place a hive if its position is on a water or rock cell
-  return true;
-}
+
+	

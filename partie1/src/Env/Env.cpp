@@ -59,6 +59,12 @@ Env::update (sf::Time dt)
   // remove empty locations
   flowers_.erase (std::remove (flowers_.begin (), flowers_.end (), nullptr),
                   flowers_.end ());
+                  
+   for (size_t i=0; i < hives_.size(); ++i)
+   {
+		hives_[i]->update(dt);
+     }
+     
 }
 
 void
@@ -73,6 +79,7 @@ Env::drawOn (sf::RenderTarget& target) const
   for (size_t i = 0; i < hives_.size (); ++i)
     {
       hives_[i]->drawOn (target);
+     
     }
 
   // if debug is on, show values
@@ -178,25 +185,31 @@ Env::loadWorldFromFile ()
 }
 
 void
-Env::saveWorldToFile ()
+Env::saveWorldToFile () const
 {
   world_->saveToFile ();
 }
 
 double
-Env::getHumidity (const Vec2d& position)
+Env::getHumidity (const Vec2d& position) const
 {
   return world_->getHumidity (position);
 }
 
 bool
-Env::isGrowable (const Vec2d& position)
+Env::isGrowable (const Vec2d& position) const
 {
   return world_->isGrowable (position);
 }
 
 bool
-Env::isPlaceable (const Vec2d& position, double radius)
+Env::isFlyable (const Vec2d& position) const
+{
+  return world_->isFlyable (position);
+}
+
+bool
+Env::isPlaceable (const Vec2d& position, double radius) const
 {
   if (world_->isGrowable (position))
     {
@@ -271,7 +284,7 @@ Env::addHiveAt (const Vec2d& position)
 }
 
 Hive*
-Env::getCollidingHive (const Collider& body)
+Env::getCollidingHive (const Collider& body) const
 {
   double size (
       getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ());
@@ -290,7 +303,7 @@ Env::getCollidingHive (const Collider& body)
 }
 
 Flower*
-Env::getCollidingFlower (const Collider& body)
+Env::getCollidingFlower (const Collider& body) const
 {
   for (size_t i (0); i < flowers_.size (); ++i)
     {

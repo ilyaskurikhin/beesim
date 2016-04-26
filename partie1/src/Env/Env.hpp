@@ -49,16 +49,19 @@ public:
   loadWorldFromFile ();
 
   void
-  saveWorldToFile ();
+  saveWorldToFile () const;
 
   double
-  getHumidity (const Vec2d& position);
+  getHumidity (const Vec2d& position) const;
 
   bool
-  isGrowable (const Vec2d& position);
+  isGrowable (const Vec2d& position) const;
 
   bool
-  isPlaceable (const Vec2d& position, double radius);
+  isPlaceable (const Vec2d& position, double radius) const;
+  
+  bool
+  isFlyable (const Vec2d& position) const;
 
   bool
   addFlowerAt (const Vec2d& position);
@@ -70,19 +73,17 @@ public:
   addHiveAt (const Vec2d& position);
 
   Hive*
-  getCollidingHive (const Collider& body);
+  getCollidingHive (const Collider& body) const;
 
   Flower*
-  getCollidingFlower (const Collider& body);
+  getCollidingFlower (const Collider& body) const;
 
 private:
 
   World* world_;
   std::vector<Flower*> flowers_;
-  std::vector<Flower*> newFlowers_;
   FlowerGenerator* flowerGenerator_;
   std::vector<Hive*> hives_;
-  std::vector<Hive*> newHives_;
 
   double flowerMinNectar_;
   double flowerMaxNectar_;

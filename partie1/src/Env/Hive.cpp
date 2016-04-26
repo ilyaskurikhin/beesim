@@ -22,13 +22,26 @@ Hive::~Hive ()
 void
 Hive::addBee ()
 {
-  bees_.pushback_(New Bee(this,this->getPosition(),10, 10, 10);
+  bees_.push_back(new Bee(this,this->getPosition(),10, 10, 10));
 }
 
 void
 Hive::update (sf::Time dt)
 {
-  // TODO implement update method
+  		 for (size_t i=0; i < bees_.size(); ++i)
+		 {
+			 bees_[i]->update(dt);
+			 
+			 if (bees_[i]->getEnergy()==0) 
+			 {
+				delete bees_[i];
+				bees_[i] = nullptr;
+			 }
+		   
+       bees_.erase (std::remove (bees_.begin (), bees_.end (), nullptr),
+                  bees_.end ());
+       
+		  }
 }
 
 void
@@ -36,6 +49,12 @@ Hive::drawOn (sf::RenderTarget& target) const
 {
   auto hiveSprite = buildSprite (this->position_, this->radius_, hiveTexture_);
   target.draw (hiveSprite);
+  
+        
+      for (size_t i = 0; i <  bees_.size(); ++i) 
+      {
+		  bees_[i]->drawOn (target);
+	  }
 }
 
 double
