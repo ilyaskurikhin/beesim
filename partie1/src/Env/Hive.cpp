@@ -1,4 +1,6 @@
 #include <Env/Hive.hpp>
+#include <Env/Bee.hpp>
+
 
 Hive::Hive (const Vec2d& position, double radius) :
     Collider (position, radius), nectar_ (
@@ -20,7 +22,7 @@ Hive::~Hive ()
 void
 Hive::addBee ()
 {
-  // TODO implement addBee method
+  bees_.pushback_(New Bee(this,this->getPosition(),10, 10, 10);
 }
 
 void

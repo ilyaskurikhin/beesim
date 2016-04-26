@@ -2,7 +2,6 @@
 #define HIVE_H
 
 #include <Env/World.hpp>
-#include <Env/Bee.hpp>
 #include <Env/Collider.hpp>
 #include <Utility/Utility.hpp>
 #include <Application.hpp>
@@ -10,6 +9,9 @@
 
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
+
+
+class Bee;
 
 class Hive : public Collider, public Drawable, public Updatable
 {
