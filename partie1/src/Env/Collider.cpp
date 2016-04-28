@@ -16,6 +16,10 @@ Collider::Collider (const Vec2d& position, double radius)
   clamping ();
 }
 
+Collider::Collider (const Vec2d& position)
+: Collider (position, 0)
+{}
+
 Collider::Collider (const Collider& collider)
 {
   radius_ = collider.getRadius ();

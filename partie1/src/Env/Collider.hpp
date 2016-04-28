@@ -28,6 +28,11 @@ public:
   Collider (const Vec2d& position, double radius);
 
   /**
+   * Constructor for only a position, 0 radius
+   */
+  Collider (const Vec2d& position);
+
+  /**
    * Copy constructor.
    * Copy all the atttributes from another Collider.
    */
