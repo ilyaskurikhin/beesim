@@ -8,11 +8,14 @@
 #ifndef WORKERBEE_HPP
 #define WORKERBEE_HPP
 
+#include <Env/Bee.hpp>
+#include <JSON/JSON.hpp>
+
 class WorkerBee : public Bee
 {
 public:
 
-  WorkerBee (Hive* hive, Vec2d& position);
+  WorkerBee (Hive* hive, const Vec2d& position);
 
   ~WorkerBee ();
 
@@ -20,7 +23,7 @@ public:
   reloadConfig ();
 
   j::Value const&
-  getConfig () const override;
+  getConfig () override;
 
 private:
 

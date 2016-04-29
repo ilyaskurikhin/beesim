@@ -3,9 +3,7 @@
 
 #include <Random/Random.hpp>
 #include <Utility/Vec2d.hpp>
-#include <cmath>
 #include <Utility/Utility.hpp>
-#include <Application.hpp>
 #include <Utility/Logging.hpp>
 #include <Env/World.hpp>
 #include <Env/Collider.hpp>
@@ -13,6 +11,11 @@
 #include <Env/Env.hpp>
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
+#include <Application.hpp>
+
+#include <cmath>
+
+class Hive;
 
 class Bee : public Collider, public Drawable, public Updatable
 {
@@ -37,9 +40,6 @@ public:
   update (sf::Time dt) override;
 
   void
-  moveRandom (sf::Time dt);
-
-  void
   drawOn (sf::RenderTarget& target) const override;
 
   double
@@ -47,7 +47,7 @@ public:
 
   virtual j::Value
   const&
-  getConfig () = 0;
+  getConfig ();
 
   virtual void
   loadTexture ();

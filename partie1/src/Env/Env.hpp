@@ -9,6 +9,7 @@
 #include <Random/Random.hpp>
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
+#include <Env/Bee.hpp>
 #include <Env/Hive.hpp>
 #include <Env/Collider.hpp>
 #include <Env/World.hpp>
@@ -17,6 +18,8 @@
 
 class Flower;
 class FlowerGenerator;
+class Hive;
+class Bee;
 
 class Env : public Drawable, public Updatable
 {
@@ -72,11 +75,17 @@ public:
   bool
   addHiveAt (const Vec2d& position);
 
+  void
+  drawHiveableZone (sf::RenderTarget& target, const Vec2d& position);
+
   Hive*
   getCollidingHive (const Collider& body) const;
 
   Flower*
   getCollidingFlower (const Collider& body) const;
+
+  Bee*
+  getBeeAt (const Vec2d& position) const;
 
 private:
 

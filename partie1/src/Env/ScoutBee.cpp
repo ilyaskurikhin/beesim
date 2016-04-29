@@ -7,7 +7,7 @@
 
 #include <Env/ScoutBee.hpp>
 
-ScoutBee::ScoutBee(Hive* hive, Vec2d& position)
+ScoutBee::ScoutBee(Hive* hive, const Vec2d& position)
 : Bee (hive, position)
 {
   reloadConfig();
@@ -36,7 +36,7 @@ void
 ScoutBee::moveRandom (sf::Time dt)
 {
   Vec2d position (position_);
-  if (bernoulli (rotationProbability_))
+  if (bernoulli (rotation_probability_))
     {
       double angleA (uniform (- max_angle_, max_angle_));
       move_vec_.rotate (angleA);
@@ -72,7 +72,7 @@ ScoutBee::moveRandom (sf::Time dt)
 }
 
 j::Value const&
-getConfig ()
+ScoutBee::getConfig ()
 {
   // TODO make this refer to superclass method
   return getAppConfig ()["simulation"]["bees"]["scout"];

@@ -283,6 +283,12 @@ Env::addHiveAt (const Vec2d& position)
     }
 }
 
+void
+Env::drawHiveableZone (sf::RenderTarget& target, const Vec2d& position)
+{
+  // TODO implement
+}
+
 Hive*
 Env::getCollidingHive (const Collider& body) const
 {
@@ -317,4 +323,10 @@ Env::getCollidingFlower (const Collider& body) const
     }
   return nullptr;
 
+}
+
+Bee*
+Env::getBeeAt (const Vec2d& position) const
+{
+  // TODO implement
 }

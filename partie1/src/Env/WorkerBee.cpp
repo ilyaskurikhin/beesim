@@ -7,7 +7,7 @@
 
 #include <Env/WorkerBee.hpp>
 
-WorkerBee::WorkerBee (Hive* hive, Vec2d& position)
+WorkerBee::WorkerBee (Hive* hive, const Vec2d& position)
 : Bee (hive, position)
   {
     reloadConfig();
@@ -26,7 +26,7 @@ WorkerBee::reloadConfig ()
 }
 
 j::Value const&
-WorkerBee::getConfig() const
+WorkerBee::getConfig()
 {
   // TODO make this refer to superclass method
   return getAppConfig ()["simulation"]["bees"]["worker"];

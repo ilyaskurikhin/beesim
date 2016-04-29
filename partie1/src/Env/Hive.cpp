@@ -1,5 +1,7 @@
 #include <Env/Hive.hpp>
 #include <Env/Bee.hpp>
+#include <Env/WorkerBee.hpp>
+#include <Env/ScoutBee.hpp>
 
 Hive::Hive (const Vec2d& position, double radius) :
     Collider (position, radius), nectar_ (
@@ -19,9 +21,15 @@ Hive::~Hive ()
 }
 
 void
-Hive::addBee ()
+Hive::addScout ()
 {
-  bees_.push_back (new Bee (this, this->getPosition (), 10, 10, 10));
+  bees_.push_back (new ScoutBee (this, this->getPosition ()));
+}
+
+void
+Hive::addWorker ()
+{
+  bees_.push_back(new WorkerBee (this, this->getPosition ()));
 }
 
 void

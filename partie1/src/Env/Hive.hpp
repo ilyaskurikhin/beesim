@@ -3,6 +3,7 @@
 
 #include <Env/World.hpp>
 #include <Env/Collider.hpp>
+
 #include <Utility/Utility.hpp>
 #include <Application.hpp>
 #include <Utility/Logging.hpp>
@@ -11,6 +12,8 @@
 #include <Interface/Updatable.hpp>
 
 class Bee;
+class WorkerBee;
+class ScoutBee;
 
 class Hive : public Collider, public Drawable, public Updatable
 {
@@ -27,7 +30,10 @@ public:
   ~Hive ();
 
   void
-  addBee ();
+  addScout ();
+
+  void
+  addWorker ();
 
   void
   update (sf::Time dt) override;

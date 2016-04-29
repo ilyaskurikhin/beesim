@@ -9,12 +9,13 @@
 #define SCOUTBEE_HPP
 
 #include <Env/Bee.hpp>
+#include <JSON/JSON.hpp>
 
 class ScoutBee : public Bee
 {
 public:
 
-  ScoutBee(Hive* hive, Vec2d& position);
+  ScoutBee(Hive* hive, const Vec2d& position);
 
   ~ScoutBee();
 
@@ -25,7 +26,7 @@ public:
   moveRandom (sf::Time dt);
 
   j::Value const&
-  getConfig () const override;
+  getConfig () override;
 
 private:
   double energy_seek_flowers_;
