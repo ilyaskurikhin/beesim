@@ -100,5 +100,8 @@ private:
   size_t maxFlowers_;
 
   double hiveManualRadius_;
+  double hiveableFactor_;
+
+  double debug_text_size_;
 };
 #endif

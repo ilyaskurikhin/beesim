@@ -126,13 +126,8 @@ Env::drawOn (sf::RenderTarget& target) const
               color = sf::Color::Red;
             }
 
-          // calculate appropriate text size
-          int textSize (
-              10
-                  * (getAppConfig ()["simulation"]["world"]["size"].toDouble ()
-                      / getAppConfig ()["simulation"]["world"]["cells"].toDouble ()));
           sf::Text text = buildText (valueString, position, getAppFont (),
-                                     textSize, color);
+                                     debug_text_size_, color);
           target.draw (text);
 
         }
@@ -176,6 +171,12 @@ Env::reloadConfig ()
 
   hiveManualRadius_ =
       getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ();
+
+  debug_text_size_ = 10
+                    * (getAppConfig ()["simulation"]["world"]["size"].toDouble ()
+                        / getAppConfig ()["simulation"]["world"]["cells"].toDouble ());
+
+  hiveableFactor_ = getAppConfig ()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble ();
 }
 
 void
@@ -249,19 +250,19 @@ Env::drawFlowerZone (sf::RenderTarget& target, const Vec2d& position)
 {
   if (world_->isGrowable (position))
     {
-      auto shape =
+      sf::CircleShape shape =
           buildAnnulus (
               position,
-              getAppConfig ()["simulation"]["env"]["initial"]["flower"]["size"]["manual"].toDouble (),
+              flowerManualRadius_,
               sf::Color::Green, 5.0);
       target.draw (shape);
     }
   else
     {
-      auto shape =
+      sf::CircleShape shape =
           buildAnnulus (
               position,
-              getAppConfig ()["simulation"]["env"]["initial"]["flower"]["size"]["manual"].toDouble (),
+              flowerManualRadius_,
               sf::Color::Red, 5.0);
       target.draw (shape);
     }
@@ -292,13 +293,9 @@ Env::drawHiveableZone (sf::RenderTarget& target, const Vec2d& position)
 Hive*
 Env::getCollidingHive (const Collider& body) const
 {
-  double size (
-      getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ());
-  double factor (
-      getAppConfig ()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble ());
   for (size_t i (0); i < hives_.size (); ++i)
     {
-      Collider collidingHive (hives_[i]->getPosition (), (size * factor));
+      Collider collidingHive (hives_[i]->getPosition (), (hiveManualRadius_ * hiveableFactor_));
 
       if (collidingHive.isColliding (body))
         {

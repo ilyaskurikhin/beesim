@@ -25,7 +25,12 @@ public:
   j::Value const&
   getConfig () override;
 
+  void
+  onState (State state, sf::Time dt) override;
+
 private:
+
+  State static const COLLECT_POLLEN;
 
 };
 

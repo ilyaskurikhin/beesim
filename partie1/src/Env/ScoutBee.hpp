@@ -23,10 +23,13 @@ public:
   reloadConfig ();
 
   void
-  moveRandom (sf::Time dt);
+  randomMove (sf::Time dt) override;
 
   j::Value const&
   getConfig () override;
+
+  void
+  onState (State state, sf::Time dt) override;
 
 private:
   double energy_seek_flowers_;
@@ -35,6 +38,9 @@ private:
 
   double rotation_probability_;
   double max_angle_;
+
+  State static const SEARCH_FLOWER;
+  State static const RETURN_HIVE;
 
 };
 

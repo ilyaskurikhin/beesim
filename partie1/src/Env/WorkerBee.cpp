@@ -33,3 +33,12 @@ WorkerBee::getConfig ()
   // TODO make this refer to superclass method
   return getAppConfig ()["simulation"]["bees"]["worker"];
 }
+
+void
+onState (State state, sf::Time dt)
+{
+  // TODO implement for states
+}
+
+State const
+WorkerBee::COLLECT_POLLEN = createUid();

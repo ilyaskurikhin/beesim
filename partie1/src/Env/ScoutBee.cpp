@@ -36,7 +36,7 @@ ScoutBee::reloadConfig ()
 }
 
 void
-ScoutBee::moveRandom (sf::Time dt)
+ScoutBee::randomMove (sf::Time dt)
 {
   Vec2d position (position_);
   if (bernoulli (rotation_probability_))
@@ -69,9 +69,6 @@ ScoutBee::moveRandom (sf::Time dt)
     {
       this->position_ = protoBee.getPosition ();
     }
-
-  energy_ -= 0.1 * dt.asSeconds ();
-
 }
 
 j::Value const&
@@ -80,4 +77,16 @@ ScoutBee::getConfig ()
   // TODO make this refer to superclass method
   return getAppConfig ()["simulation"]["bees"]["scout"];
 }
+
+void
+onState (State state, sf::Time dt)
+{
+  // TODO implement for states
+}
+
+State const
+ScoutBee::SEARCH_FLOWER = createUid ();
+
+State const
+ScoutBee::RETURN_HIVE = createUid ();
 
