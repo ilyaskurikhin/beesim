@@ -115,6 +115,7 @@ void WorkerTest::onEvent(sf::Event event, sf::RenderWindow&)
         }
     }
 }
+}
 
 void WorkerTest::onDraw(sf::RenderTarget& target)
 {

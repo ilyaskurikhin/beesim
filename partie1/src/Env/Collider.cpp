@@ -6,7 +6,7 @@ Collider::Collider (const Vec2d& position, double radius)
     radius_ (radius), position_ (position)
 {
   // PRECODITIONS for constructor
-  if (radius_ <= 0)
+  if (radius_ < 0)
     {
       throw std::runtime_error (
           "Collider with negative radius created. (Collider::Collider)");
@@ -16,9 +16,10 @@ Collider::Collider (const Vec2d& position, double radius)
   clamping ();
 }
 
-Collider::Collider (const Vec2d& position)
-: Collider (position, 0)
-{}
+Collider::Collider (const Vec2d& position) :
+    Collider (position, 0)
+{
+}
 
 Collider::Collider (const Collider& collider)
 {

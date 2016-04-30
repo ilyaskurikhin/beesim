@@ -1,16 +1,13 @@
 #include <Env/Bee.hpp>
 
-
-Bee::Bee (Hive* hive, const Vec2d& position)
-: Collider(position), hive_(hive)
+Bee::Bee (Hive* hive, const Vec2d& position) :
+    Collider (position), hive_ (hive)
 {
-  radius_ = this->getConfig ()["size"].toDouble();
+  // This constructor can not take care of its members
+  // since it does not know what kind of bee it is
 
-  energy_ = this->getConfig ()["energy"]["initial"].toDouble();
-  speed_ = this->getConfig ()["speed"].toDouble();
-
-  move_vec_ = Vec2d::fromRandomAngle () * speed_;
-  loadTexture();
+  // Initialization is done downstream
+  // by calling the reloadConfig function
 }
 
 Bee::Bee (Hive* hive, const Vec2d& position, double radius, double speedAmpl,
@@ -18,9 +15,6 @@ Bee::Bee (Hive* hive, const Vec2d& position, double radius, double speedAmpl,
     Collider (position, radius), hive_ (hive), speed_ (speedAmpl), energy_ (
         energy)
 {
-  reloadConfig ();
-  move_vec_ = Vec2d::fromRandomAngle () * speed_;
-  loadTexture ();
 }
 /*
  void 
@@ -33,7 +27,10 @@ Bee::Bee (Hive* hive, const Vec2d& position, double radius, double speedAmpl,
 void
 Bee::reloadConfig ()
 {
+  radius_ = this->getConfig ()["size"].toDouble ();
 
+  energy_ = this->getConfig ()["energy"]["initial"].toDouble ();
+  speed_ = this->getConfig ()["speed"].toDouble ();
 }
 
 bool
@@ -50,11 +47,10 @@ Bee::isDead ()
 }
 
 void
-update (sf::Time dt)
+Bee::update (sf::Time dt)
 {
   // TODO implement update
 }
-
 
 double
 Bee::getEnergy () const

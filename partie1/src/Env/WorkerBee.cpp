@@ -7,11 +7,13 @@
 
 #include <Env/WorkerBee.hpp>
 
-WorkerBee::WorkerBee (Hive* hive, const Vec2d& position)
-: Bee (hive, position)
-  {
-    reloadConfig();
-  }
+WorkerBee::WorkerBee (Hive* hive, const Vec2d& position) :
+    Bee (hive, position)
+{
+  logEvent ("WorkerBee", "new constructed");
+  reloadConfig ();
+  loadTexture ();
+}
 
 WorkerBee::~WorkerBee ()
 {
@@ -21,12 +23,12 @@ WorkerBee::~WorkerBee ()
 void
 WorkerBee::reloadConfig ()
 {
-  Bee::reloadConfig();
+  Bee::reloadConfig ();
   // TODO load class attributes here
 }
 
 j::Value const&
-WorkerBee::getConfig()
+WorkerBee::getConfig ()
 {
   // TODO make this refer to superclass method
   return getAppConfig ()["simulation"]["bees"]["worker"];

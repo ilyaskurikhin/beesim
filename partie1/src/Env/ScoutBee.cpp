@@ -7,30 +7,33 @@
 
 #include <Env/ScoutBee.hpp>
 
-ScoutBee::ScoutBee(Hive* hive, const Vec2d& position)
-: Bee (hive, position)
+ScoutBee::ScoutBee (Hive* hive, const Vec2d& position) :
+    Bee (hive, position)
 {
-  reloadConfig();
+  logEvent ("ScoutBee", "new constructed");
+  reloadConfig ();
+  loadTexture ();
 }
 
-ScoutBee::~ScoutBee()
+ScoutBee::~ScoutBee ()
 {
 
 }
 
 void
-ScoutBee::reloadConfig()
+ScoutBee::reloadConfig ()
 {
-  Bee::reloadConfig();
+  Bee::reloadConfig ();
 
   // TODO load class attributes here
-  rotation_probability_ = getConfig ()["moving behaviour"]["random"]["rotation probability"].toDouble();
-  max_angle_ = getConfig ()["moving behaviour"]["random"]["rotation angle max"].toDouble();
+  rotation_probability_ =
+      getConfig ()["moving behaviour"]["random"]["rotation probability"].toDouble ();
+  max_angle_ =
+      getConfig ()["moving behaviour"]["random"]["rotation angle max"].toDouble ();
 
-  energy_seek_flowers_ = getConfig ()["energy"]["to seek flowers"].toDouble();
-  max_sharing_ = getConfig ()["sharing"]["max"].toDouble();
+  energy_seek_flowers_ = getConfig ()["energy"]["to seek flowers"].toDouble ();
+  max_sharing_ = getConfig ()["sharing"]["max"].toDouble ();
 }
-
 
 void
 ScoutBee::moveRandom (sf::Time dt)
@@ -38,7 +41,7 @@ ScoutBee::moveRandom (sf::Time dt)
   Vec2d position (position_);
   if (bernoulli (rotation_probability_))
     {
-      double angleA (uniform (- max_angle_, max_angle_));
+      double angleA (uniform (-max_angle_, max_angle_));
       move_vec_.rotate (angleA);
     }
 

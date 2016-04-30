@@ -29,10 +29,10 @@ public:
 
   ~Hive ();
 
-  void
+  ScoutBee*
   addScout ();
 
-  void
+  WorkerBee*
   addWorker ();
 
   void

@@ -20,16 +20,22 @@ Hive::~Hive ()
   bees_.clear ();
 }
 
-void
+ScoutBee*
 Hive::addScout ()
 {
-  bees_.push_back (new ScoutBee (this, this->getPosition ()));
+  ScoutBee* scout (new ScoutBee (this, this->getPosition ()));
+  scout->reloadConfig ();
+  bees_.push_back (scout);
+  return scout;
 }
 
-void
+WorkerBee*
 Hive::addWorker ()
 {
-  bees_.push_back(new WorkerBee (this, this->getPosition ()));
+  WorkerBee* worker (new WorkerBee (this, this->getPosition ()));
+  worker->reloadConfig ();
+  bees_.push_back (worker);
+  return worker;
 }
 
 void

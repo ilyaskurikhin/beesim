@@ -15,9 +15,9 @@ class ScoutBee : public Bee
 {
 public:
 
-  ScoutBee(Hive* hive, const Vec2d& position);
+  ScoutBee (Hive* hive, const Vec2d& position);
 
-  ~ScoutBee();
+  ~ScoutBee ();
 
   void
   reloadConfig ();

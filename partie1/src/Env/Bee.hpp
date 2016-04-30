@@ -26,7 +26,7 @@ public:
   Bee (Hive* hive, const Vec2d& position, double radius, double speedAmpl,
        double energy);
 
-  virtual void
+  void
   reloadConfig ();
 
   /*
@@ -47,9 +47,9 @@ public:
 
   virtual j::Value
   const&
-  getConfig ();
+  getConfig () =0;
 
-  virtual void
+  void
   loadTexture ();
 
 protected:
