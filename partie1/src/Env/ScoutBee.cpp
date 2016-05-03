@@ -7,8 +7,8 @@
 
 #include <Env/ScoutBee.hpp>
 
-ScoutBee::ScoutBee (Hive* hive, const Vec2d& position) :
-    Bee (hive, position)
+ScoutBee::ScoutBee (Hive* hive, const Vec2d& position, std::vector<State> states) :
+    Bee (hive, position, states)
 {
   logEvent ("ScoutBee", "new constructed");
   reloadConfig ();
@@ -79,10 +79,13 @@ ScoutBee::getConfig ()
 }
 
 void
-onState (State state, sf::Time dt)
+ScoutBee::onState (State state, sf::Time dt)
 {
   // TODO implement for states
 }
+
+State const
+ScoutBee::IN_HIVE = createUid ();
 
 State const
 ScoutBee::SEARCH_FLOWER = createUid ();

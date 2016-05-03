@@ -9,7 +9,6 @@
 
 #include <Env/World.hpp>
 #include <Env/Collider.hpp>
-#include <Env/Hive.hpp>
 #include <Env/Env.hpp>
 #include <Env/CFSM.hpp>
 
@@ -26,7 +25,7 @@ class Bee : public Collider, public Drawable, public Updatable, public CFSM
 {
 public:
 
-  Bee (Hive* hive, const Vec2d& position);
+  Bee (Hive* hive, const Vec2d& position, std::vector<State> states);
 
   void
   reloadConfig ();
@@ -72,14 +71,12 @@ protected:
   double debug_thickness_random_;
   double debug_thickness_target_;
 
+  // memory of flower location
   Vec2d flower_location_;
 
-  // TODO make move states static
-  State static const IN_HIVE = createUid ();
-
-  State static AT_REST;
-  State static RANDOM;
-  State static TARGET;
+  State const AT_REST = 0;
+  State const RANDOM = 1;
+  State const TARGET = 2;
   State move_state_;
 
 };

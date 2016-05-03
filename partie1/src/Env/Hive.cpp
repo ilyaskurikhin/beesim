@@ -23,7 +23,8 @@ Hive::~Hive ()
 ScoutBee*
 Hive::addScout ()
 {
-  ScoutBee* scout (new ScoutBee (this, this->getPosition ()));
+  std::vector<State> states = {ScoutBee::IN_HIVE};
+  ScoutBee* scout (new ScoutBee (this, this->getPosition (), states));
   scout->reloadConfig ();
   bees_.push_back (scout);
   return scout;
@@ -32,7 +33,8 @@ Hive::addScout ()
 WorkerBee*
 Hive::addWorker ()
 {
-  WorkerBee* worker (new WorkerBee (this, this->getPosition ()));
+  std::vector<State> states = {WorkerBee::IN_HIVE};
+  WorkerBee* worker (new WorkerBee (this, this->getPosition (), states));
   worker->reloadConfig ();
   bees_.push_back (worker);
   return worker;

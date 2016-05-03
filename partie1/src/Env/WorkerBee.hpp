@@ -15,7 +15,7 @@ class WorkerBee : public Bee
 {
 public:
 
-  WorkerBee (Hive* hive, const Vec2d& position);
+  WorkerBee (Hive* hive, const Vec2d& position, std::vector<State> states);
 
   ~WorkerBee ();
 
@@ -28,9 +28,16 @@ public:
   void
   onState (State state, sf::Time dt) override;
 
+  static std::vector<State>
+  getStates ();
+
+
+  // TODO make private
+  State static const IN_HIVE;
+  State static const COLLECT_POLLEN;
+
 private:
 
-  State static const COLLECT_POLLEN;
 
 };
 

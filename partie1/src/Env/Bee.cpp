@@ -1,13 +1,13 @@
 #include <Env/Bee.hpp>
 
-Bee::Bee (Hive* hive, const Vec2d& position) :
-    Collider (position), CFSM({IN_HIVE}),
+#include <Env/Hive.hpp>
+
+Bee::Bee (Hive* hive, const Vec2d& position, std::vector<State> states) :
+    Collider (position), CFSM (states),
         hive_ (hive), move_vec_ (0, 0), speed_ (0),
         energy_ (0), energy_rate_idle_(0), energy_rate_moving_(0),
         debug_thickness_random_(5), debug_thickness_target_(3),
-        flower_location_ (0, 0),
-        IN_HIVE (createUid ()), AT_REST(createUid ()), RANDOM (createUid ()), TARGET (createUid ()),
-        move_state_(AT_REST)
+        flower_location_ (0, 0), move_state_(0)
 {
   // This constructor can not take care of its members
   // since it does not know what kind of bee it is
@@ -21,13 +21,14 @@ Bee::Bee (Hive* hive, const Vec2d& position) :
 void
 Bee::reloadConfig ()
 {
-  radius_ = this->getConfig ()["size"].toDouble ();
+  // TODO resolve function calls to subclass
+  radius_ = getConfig ()["size"].toDouble ();
 
-  energy_ = this->getConfig ()["energy"]["initial"].toDouble ();
-  energy_rate_idle_ = this->getConfig()["energy"]["consumption rates"]["idle"].toDouble ();
-  energy_rate_moving_ = this->getConfig()["energy"]["consumption rates"]["moving"].toDouble ();
+  energy_ = getConfig ()["energy"]["initial"].toDouble ();
+  energy_rate_idle_ = getConfig()["energy"]["consumption rates"]["idle"].toDouble ();
+  energy_rate_moving_ = getConfig()["energy"]["consumption rates"]["moving"].toDouble ();
 
-  speed_ = this->getConfig ()["speed"].toDouble ();
+  speed_ = getConfig ()["speed"].toDouble ();
 }
 
 void

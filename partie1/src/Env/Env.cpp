@@ -217,8 +217,7 @@ Env::isPlaceable (const Vec2d& position, double radius) const
       Collider object (position, radius);
 
       // check if object can be made at position
-      if ((getCollidingFlower (object) == nullptr)
-          && (getCollidingHive (object) == nullptr))
+      if (getCollidingHive (object) == nullptr)
         {
           return true;
         }

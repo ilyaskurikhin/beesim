@@ -27,6 +27,7 @@ void
 CFSM::nextState ()
 {
   size_t stateNumber(0);
+  // get state number
   for (size_t i=0; i < states_.size(); ++i)
     {
       if (states_[i] == state_) {
@@ -34,6 +35,7 @@ CFSM::nextState ()
       }
     }
 
+  // cycle to next state
   if (stateNumber < states_.size() -1)
     {
       state_ = states_[stateNumber +1];
@@ -47,13 +49,13 @@ CFSM::nextState ()
 }
 
 void
-onEnterState (State state)
+CFSM::onEnterState (State state)
 {
   // TODO implement
 }
 
 void
-action (sf::Time dt)
+CFSM::action (sf::Time dt)
 {
   // TODO implement
 }

@@ -7,8 +7,8 @@
 
 #include <Env/WorkerBee.hpp>
 
-WorkerBee::WorkerBee (Hive* hive, const Vec2d& position) :
-    Bee (hive, position)
+WorkerBee::WorkerBee (Hive* hive, const Vec2d& position, std::vector<State> states) :
+    Bee (hive, position, states)
 {
   logEvent ("WorkerBee", "new constructed");
   reloadConfig ();
@@ -39,6 +39,9 @@ onState (State state, sf::Time dt)
 {
   // TODO implement for states
 }
+
+State const
+WorkerBee::IN_HIVE = createUid ();
 
 State const
 WorkerBee::COLLECT_POLLEN = createUid();

@@ -15,7 +15,7 @@ class ScoutBee : public Bee
 {
 public:
 
-  ScoutBee (Hive* hive, const Vec2d& position);
+  ScoutBee (Hive* hive, const Vec2d& position, std::vector<State> states);
 
   ~ScoutBee ();
 
@@ -31,6 +31,13 @@ public:
   void
   onState (State state, sf::Time dt) override;
 
+
+  // TODO make private
+  State static const IN_HIVE;
+  State static const SEARCH_FLOWER;
+  State static const RETURN_HIVE;
+
+
 private:
   double energy_seek_flowers_;
 
@@ -38,9 +45,6 @@ private:
 
   double rotation_probability_;
   double max_angle_;
-
-  State static const SEARCH_FLOWER;
-  State static const RETURN_HIVE;
 
 };
 

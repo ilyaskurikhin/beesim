@@ -3,6 +3,7 @@
 
 #include <Env/World.hpp>
 #include <Env/Collider.hpp>
+#include <Env/CFSM.hpp>
 
 #include <Utility/Utility.hpp>
 #include <Application.hpp>
