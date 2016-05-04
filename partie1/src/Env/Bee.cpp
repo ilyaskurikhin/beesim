@@ -51,6 +51,12 @@ Bee::move (sf::Time dt)
 }
 
 void
+Bee::randomMove (sf::Time dt)
+{
+  // TODO implement
+}
+
+void
 Bee::targetMove (sf::Time dt)
 {
   // TODO implement

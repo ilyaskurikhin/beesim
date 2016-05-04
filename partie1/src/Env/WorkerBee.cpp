@@ -35,7 +35,7 @@ WorkerBee::getConfig ()
 }
 
 void
-onState (State state, sf::Time dt)
+WorkerBee::onState (State state, sf::Time dt)
 {
   // TODO implement for states
 }
