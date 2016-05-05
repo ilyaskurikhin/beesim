@@ -26,12 +26,16 @@ public:
   CFSM (std::vector<State> states);
 
   /**
+   * @brief Destructor.
+   *
    * Destructor that does nothing.
    * It's here because c++ guidelines say so
    */
   virtual ~CFSM ();
 
   /**
+   * @brief Get current state.
+   *
    * @return current state
    */
   State
@@ -47,6 +51,7 @@ public:
 
   /**
    * @brief Change behavior to new state.
+   *
    * @param new state
    */
   void
@@ -54,14 +59,16 @@ public:
 
   /**
    * @brief Things to do while in the state
-   * @param current state
-   * @param time for counter
+   *
+   * @param state current state
+   * @param dt    time for counter
    */
   virtual void
   onState (State state, sf::Time dt) =0;
 
   /**
    * @brief Action to take in current state.
+   *
    * @param time for counter
    */
   void

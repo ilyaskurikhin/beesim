@@ -1,3 +1,11 @@
+/**
+ * @file World.hpp
+ * @brief 
+ * @author Ilya Skurikhin
+ * @author Julia Besson
+ * @version p5.1
+ * @date 2016-05-05
+ */
 #ifndef WORLD_H
 #define WORLD_H
 
@@ -54,20 +62,24 @@ public:
   reloadConfig ();
 
   /**
+   * @brief Generate the texture cache.
+   *
    * Generate the Grass, Water and Rock layers and store them to cache.
    */
   void
   reloadCacheStructure ();
 
   /**
-   * Draw the current world on a target
+   * @brief Draw the current world on a target.
+   *
    * @param target where to draw this world
    */
   void
   drawOn (sf::RenderTarget& target) const override;
 
   /**
-   * Set the layer to show in each cell.
+   * @brief Set the texture to show in each cell.
+   *
    * Load the textures for each layer, set the alpha values of each layer
    * and load them into the cache.
    * Set the blue levels for each cell based on humidity.
@@ -76,9 +88,11 @@ public:
   updateCache ();
 
   /**
-   * Reload the config and generate a new world.
+   * @brief Reload the config and generate a new world.a
+   *
    * Use the seeds to generate a new world according to the app config
    * files.
+   * 
    * @param regenerate use seeds to generate terrain, then smooth.
    */
   void
@@ -86,6 +100,7 @@ public:
 
   /**
    * @brief Load a map from file.
+   *
    * Load a map from the file specified in the config.
    * Throw an error if not possible.
    */
@@ -93,20 +108,22 @@ public:
   loadFromFile ();
 
   /**
-   * Save a map to file.
+   * @brief Save a map to file.
+   *
    * Save a map to teh file specified in the config.
    */
   void
   saveToFile () const;
 
   /**
-   * Move all the seeds_, teleport water.
+   * @brief Move all the seeds_, teleport water.
    */
   void
   step ();
 
   /**
-   * Move all the seeds_ n times.
+   * @brief Move all the seeds_ n times.
+   *
    * @param n number of times to move
    * @param update update cache after moving
    */
@@ -114,47 +131,116 @@ public:
   steps (unsigned int n, bool update = false);
 
   /**
-   * Smoothen the map.
+   * @brief Smoothen the map.
+   *
    * Flood cells near water and grow grass on rock.
    */
   void
   smooth ();
 
   /**
-   * Smoothen the map n times.
+   * @brief Smoothen the map n times.
+   *
    * @param n number of times to smoothen
    * @param update update cache after smoothening
    */
   void
   smooths (unsigned int n, bool update = false);
 
+  /**
+   * @brief Reset texture of World to Kind::Rock.
+   */
   void
   clear ();
 
+  /**
+   * @brief Calculate humidity for whole World.
+   */
   void
   humidify ();
 
+  /**
+   * @brief Calculate humidity contribution of a cell.
+   *
+   * @param i cell to calculate for.
+   */
   void
   humidify (size_t i);
 
+  /**
+   * @brief Check if a FLower can be grown.
+   *
+   * Check for Rocks, Water.
+   *
+   * @param position
+   *
+   * @return true is can be grown.  
+   * */ 
   bool
   isGrowable (const Vec2d& position) const;
 
+  /**
+   * @brief Check if Bee can be flown.
+   *
+   * Check for presence of Rock.
+   *
+   * @param position
+   *
+   * @return true if can fly.
+   */
   bool
   isFlyable (Vec2d const& position) const;
 
+  /**
+   * @brief Get grid coordinates from graphic coordinates. 
+   *
+   * @param position graphic position.
+   *
+   * @return grid coordinates in world vector.
+   */
   Vec2d
   getCellPosition (const Vec2d& position) const;
 
+  /**
+   * @brief Get vector table index from graphic position.
+   *
+   * @param position graphix position.
+   *
+   * @return Index of corresponding cell.
+   */
   size_t
   getCellIndex (const Vec2d& position) const;
 
+  /**
+   * @brief Get humidity for a graphic position. 
+   *
+   * @param position graphic position.
+   *
+   * @return humidity
+   */
   double
   getHumidity (const Vec2d& position) const;
 
+  /**
+   * @brief Check if position is in World bounds.
+   *
+   * @param position graphic position to check.
+   *
+   * @return true if is in bounds of World.
+   */
   bool
   isInWorld (const Vec2d& position) const;
 
+  /**
+   * @brief Check if Hive can be build.
+   *
+   * Check for Rock, Water and other Hives.
+   *
+   * @param position graphic position to check for.
+   * @param radius radius to check.
+   *
+   * @return true is can be placed.
+   */
   bool
   isHiveable (const Vec2d& position, double radius);
 
