@@ -31,6 +31,11 @@ public:
   void
   onState (State state, sf::Time dt) override;
 
+  void
+  onEnterState () override;
+  
+  void 
+  targetMove () override;
 
   // TODO make private
   State static const IN_HIVE;

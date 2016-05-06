@@ -27,7 +27,8 @@ Bee::reloadConfig ()
   energy_ = getConfig ()["energy"]["initial"].toDouble ();
   energy_rate_idle_ = getConfig()["energy"]["consumption rates"]["idle"].toDouble ();
   energy_rate_moving_ = getConfig()["energy"]["consumption rates"]["moving"].toDouble ();
-
+  energy_leave_hive_ = getConfig()["energy"]["to leave hive"].toDouble();
+  
   speed_ = getConfig ()["speed"].toDouble ();
 }
 

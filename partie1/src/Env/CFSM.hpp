@@ -54,7 +54,7 @@ public:
    *
    * @param new state
    */
-  void
+  virtual void
   onEnterState (State state);
 
   /**

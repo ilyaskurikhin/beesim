@@ -65,7 +65,7 @@ public:
    *
    * @param dt Time for the counter.
    */
-  void
+  virtual void
   targetMove (sf::Time dt);
 
   /**
@@ -137,7 +137,8 @@ protected:
   double energy_;
   double energy_rate_idle_;
   double energy_rate_moving_;
-
+  double energy_leave_hive_;
+  
   sf::Texture texture_;
   double debug_thickness_random_;
   double debug_thickness_target_;

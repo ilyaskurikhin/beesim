@@ -17,7 +17,7 @@ ScoutBee::ScoutBee (Hive* hive, const Vec2d& position, std::vector<State> states
 
 ScoutBee::~ScoutBee ()
 {
-
+  
 }
 
 void
@@ -81,7 +81,42 @@ ScoutBee::getConfig ()
 void
 ScoutBee::onState (State state, sf::Time dt)
 {
-  // TODO implement for states
+  if (energy_ > energy_leave_hive)
+  {
+    state_ = SEARCH_FLOWER;
+    onEnterState();
+    
+  }
+}
+
+void 
+ScoutBee::onEnterState ()
+{
+  switch (state_)
+  case IN_HIVE: 
+  {
+    state_ = AT_REST;
+  }
+  break;
+  case SEARCH_FLOWER : 
+  {
+    state_ = RANDOM;
+  }
+  break;
+  case RETURN_HIVE: 
+  {
+    state_ = TARGET;
+    flower_location_.clear();
+    //il faut fixer la ruche comme cible à avoir
+  }
+  break;
+}
+
+void 
+ScoutBee::targetMove()
+{
+  
+  
 }
 
 State const
