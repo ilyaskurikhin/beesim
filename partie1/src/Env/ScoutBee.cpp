@@ -27,7 +27,9 @@ ScoutBee::drawOn(sf::RenderTarget& target) const
 {
 std::string valueString ("Scout: ");
   sf::Color color (sf::Color::Yellow);
-  Vec2d position(this->getPosition().x, this->getPosition().y - debug_text_size_);
+  Vec2d position;
+  position.x = this->getPosition().x;
+  position.y = this->getPosition().y - debug_text_size_;
 
 
   valueString =+ "energy " + std::to_string(this->getEnergy());
@@ -101,15 +103,19 @@ ScoutBee::getConfig ()
 void
 ScoutBee::onState (State state, sf::Time dt)
 {
+  // create vector to compare to for empty status
+  Vec2d empty(-1.0, -1.0);
+
+  // first state
   if (state == IN_HIVE)
   {
-    if (flower_location_ != Vec2d(-1, 1))
+    if (flower_location_ != empty)
     {
       WorkerBee* worker = this->getHive()->getWorker();
       if (worker)
       {
         worker->setFlower(flower_location_);
-        flower_location_ = Vec2d(-1,-1);
+        flower_location_ = empty;
         debug_status_ = "in_hive_shating";
         debug_status_ = debug_status_ + std::to_string(number_times_shared_);
         number_times_shared_ = -1;
@@ -121,12 +127,14 @@ ScoutBee::onState (State state, sf::Time dt)
         debug_status_ = "in_hive_eat";
         this->eatFromHive(dt);
       }
-    else if (flower_location_ == Vec2d(-1,-1))    
+    else if (flower_location_ == empty)    
       {
         debug_status_ = "in_hive_leaving";
         this->nextState();
       }
   } 
+
+  // second state
   else if (state == SEARCH_FLOWER) 
   {
     Flower* flower  = this->findVisibleFlower();
@@ -137,6 +145,8 @@ ScoutBee::onState (State state, sf::Time dt)
       this->nextState();
     }
   }
+
+  // third state
   else if (state == RETURN_HIVE)
   {
     this->setMoveTarget(this->getHive()->getPosition());
