@@ -104,7 +104,9 @@ void
 ScoutBee::onState (State state, sf::Time dt)
 {
   // create vector to compare to for empty status
-  Vec2d empty(-1.0, -1.0);
+  Vec2d empty;
+  empty.x = -1.0;
+  empty.y = -1.0;
 
   // first state
   if (state == IN_HIVE)

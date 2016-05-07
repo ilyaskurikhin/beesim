@@ -49,18 +49,3 @@ CFSM::nextState ()
 
   onEnterState(state_);
 }
-
-void
-CFSM::onEnterState (State state)
-{
-  // TODO implement
-}
-
-void
-CFSM::action (sf::Time dt)
-{
-  // TODO implement
-}
-
-
-
