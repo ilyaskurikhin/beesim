@@ -71,6 +71,14 @@ public:
   setMoveTarget (const Vec2d& position);
 
   /**
+   * @brief Get the current move target
+   *
+   * @return graphic position of target.
+   */
+  const Vec2d&
+  getMoveTarget () const;
+
+  /**
    * @brief Move the bee towards a target defined by the type of bee.
    *
    * @param dt Time for the counter.
@@ -113,6 +121,14 @@ public:
    */
   void
   drawOn (sf::RenderTarget& target) const override;
+
+  /**
+   * @brief Get current speed.
+   *
+   * @return seed
+   */
+  double
+  getSpeed () const;
 
   /**
    * @brief Get the energy of the Bee.

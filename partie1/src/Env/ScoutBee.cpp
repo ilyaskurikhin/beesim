@@ -177,7 +177,34 @@ ScoutBee::onEnterState (State state)
 void 
 ScoutBee::targetMove(sf::Time dt)
 {
-  // TODO implement for states
+  Vec2d target = this->getMoveTarget();
+  Vec2d direction = this->directionTo(target);
+  
+  direction = direction.normalised();
+
+  Vec2d position;
+  position += dt.asSeconds () * direction * this->getSpeed();
+
+  Collider protoBee (position, this->getRadius());
+  protoBee.clamping ();
+  if (!getAppEnv ().isFlyable (protoBee.getPosition ()))
+    {
+      double angleB;
+      if (bernoulli (0.5))
+        {
+          angleB = PI / 4;
+        }
+      else
+        {
+          angleB = -PI / 4;
+        }
+      move_vec_.rotate (angleB);
+
+    }
+  else
+    {
+      this->position_ = protoBee.getPosition ();
+    }
 }
 
 State const
