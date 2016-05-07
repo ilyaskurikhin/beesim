@@ -25,7 +25,10 @@ ScoutBee::~ScoutBee ()
 void
 ScoutBee::drawOn(sf::RenderTarget& target) const
 {
-std::string valueString ("Scout: ");
+  Bee::drawOn(target);
+  if (isDebugOn()) 
+  {
+  std::string valueString ("Scout: ");
   sf::Color color (sf::Color::Yellow);
   Vec2d position;
   position.x = this->getPosition().x;
@@ -36,7 +39,7 @@ std::string valueString ("Scout: ");
   valueString =+ "\n" + debug_status_;
   sf::Text text = buildText (valueString, position, getAppFont(), debug_text_size_, color);
   target.draw (text);
-
+  }
 }
 
 void
@@ -140,7 +143,7 @@ ScoutBee::onState (State state, sf::Time dt)
   else if (state == SEARCH_FLOWER) 
   {
     Flower* flower  = this->findVisibleFlower();
-    if (flower != nullptr)
+    if ((flower != nullptr) and (this->getEnergy() > energy_seek_flowers_))
     {
       flower_location_ = flower->getPosition();
       number_times_shared_ = 0;
@@ -153,6 +156,7 @@ ScoutBee::onState (State state, sf::Time dt)
   {
     this->setMoveTarget(this->getHive()->getPosition());
     if (getAppEnv().getCollidingHive(this->getPosition()) == this->getHive())
+    //why are you not using isCollidinginside
     {
       this->nextState();
     }

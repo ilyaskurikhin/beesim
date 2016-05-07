@@ -49,3 +49,11 @@ CFSM::nextState ()
 
   onEnterState(state_);
 }
+
+void
+CFSM::action (sf::Time dt)
+{
+  onState(state_, dt);
+}
+
+

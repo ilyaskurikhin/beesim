@@ -27,7 +27,7 @@ Bee::reloadConfig ()
   energy_ = getConfig ()["energy"]["initial"].toDouble ();
   energy_rate_idle_ = getConfig()["energy"]["consumption rates"]["idle"].toDouble ();
   energy_rate_moving_ = getConfig()["energy"]["consumption rates"]["moving"].toDouble ();
-  energy_rate_eating_ = getConfig()["consumption rates"]["eating"].toDouble ();
+  energy_rate_eating_ = getConfig()["energy"]["consumption rates"]["eating"].toDouble ();
 
   visibility_ = getConfig()["visibility range"].toDouble ();
   vision_range_.setRadius(visibility_);
@@ -65,6 +65,19 @@ Bee::setMoveTarget (const Vec2d& position)
 {
   move_target_ = position;
 }
+
+const Vec2d&
+Bee::getMoveTarget () const 
+{
+  return move_target_;
+}
+
+double
+Bee::getSpeed () const
+{
+  return speed_;
+}
+
 
 void
 Bee::targetMove (sf::Time dt)
@@ -153,5 +166,11 @@ Bee::loadTexture ()
 Flower*
 Bee::findVisibleFlower() const
 {
+  //what if two flowers are colliding?
   return getAppEnv().getCollidingFlower(vision_range_);
+}
+
+void
+Bee::onEnterState (State state) 
+{
 }

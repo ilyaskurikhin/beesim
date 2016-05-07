@@ -55,7 +55,7 @@ public:
    * @param new state
    */
   virtual void
-  onEnterState (State state);
+  onEnterState (State state) =0;
 
   /**
    * @brief Things to do while in the state

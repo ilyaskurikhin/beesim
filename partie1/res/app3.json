@@ -30,7 +30,7 @@
                 "energy" : {
                     "initial" : 10,
                     "to leave hive" : 3,
-                    "to seek flowers" : 2,
+                    "to seek flowers" : 9,
                     "consumption rates" : {
                        "idle" :  0.01,
                        "moving": 0.05,

@@ -125,7 +125,7 @@ public:
   /**
    * @brief Get current speed.
    *
-   * @return seed
+   * @return speed
    */
   double
   getSpeed () const;
@@ -177,6 +177,11 @@ public:
   Flower*
   findVisibleFlower () const;
 
+  
+virtual void
+onEnterState (State state) override;
+  
+  
 protected:
 
   Hive* hive_;
