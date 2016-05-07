@@ -24,15 +24,17 @@ ScoutBee::~ScoutBee ()
 
 void
 ScoutBee::drawOn(sf::RenderTarget& target) const
-{a
-  std::string valueString ("Scout: ");
+{
+std::string valueString ("Scout: ");
   sf::Color color (sf::Color::Yellow);
+  Vec2d position(this->getPosition().x, this->getPosition().y - debug_text_size_);
+
 
   valueString =+ "energy " + std::to_string(this->getEnergy());
   valueString =+ "\n" + debug_status_;
-
-  sf::Text text = buildText (valueString, position - debug_text_size_, color);
+  sf::Text text = buildText (valueString, position, getAppFont(), debug_text_size_, color);
   target.draw (text);
+
 }
 
 void
@@ -51,7 +53,7 @@ ScoutBee::reloadConfig ()
 
   max_sharing_ = getConfig ()["sharing"]["max"].toDouble ();
 
-  debug_text_size_ = getAppEnv()->getTextSize();
+  debug_text_size_ = getAppEnv().getTextSize();
 }
 
 void
@@ -101,34 +103,34 @@ ScoutBee::onState (State state, sf::Time dt)
 {
   if (state == IN_HIVE)
   {
-    if (flower_location_ != {-1, 1})
+    if (flower_location_ != Vec2d(-1, 1))
     {
       WorkerBee* worker = this->getHive()->getWorker();
       if (worker)
       {
         worker->setFlower(flower_location_);
-        flower_location_ = {-1,-1};a
+        flower_location_ = Vec2d(-1,-1);
         debug_status_ = "in_hive_shating";
-        dubug_status_ =+ std::to_string(number_times_shared_);
+        debug_status_ = debug_status_ + std::to_string(number_times_shared_);
         number_times_shared_ = -1;
       }
     }
 
     if (this->getEnergy() < energy_leave_hive_)
       {
-        debug_status = "in_hive_eat";
+        debug_status_ = "in_hive_eat";
         this->eatFromHive(dt);
       }
-    else if (flower_location_ == {-1,-1});
+    else if (flower_location_ == Vec2d(-1,-1))    
       {
-        debug_status = "in_hive_leaving";
-        this->nextState;
+        debug_status_ = "in_hive_leaving";
+        this->nextState();
       }
   } 
   else if (state == SEARCH_FLOWER) 
   {
     Flower* flower  = this->findVisibleFlower();
-    if (flower)
+    if (flower != nullptr)
     {
       flower_location_ = flower->getPosition();
       number_times_shared_ = 0;
@@ -138,7 +140,7 @@ ScoutBee::onState (State state, sf::Time dt)
   else if (state == RETURN_HIVE)
   {
     this->setMoveTarget(this->getHive()->getPosition());
-    if (getAppEnv()->getCollidingHive() == this->getHive())
+    if (getAppEnv().getCollidingHive(this->getPosition()) == this->getHive())
     {
       this->nextState();
     }

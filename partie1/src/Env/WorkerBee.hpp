@@ -31,6 +31,9 @@ public:
   void
   setFlower(const Vec2d& position);
 
+  Vec2d
+  getFlower() const;
+
   // TODO make private
   State static const IN_HIVE;
   State static const COLLECT_POLLEN;

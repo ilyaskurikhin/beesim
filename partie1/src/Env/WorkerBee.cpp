@@ -46,6 +46,12 @@ WorkerBee::setFlower(const Vec2d& position)
   flower_location_ = position;
 }
 
+Vec2d
+WorkerBee::getFlower() const
+{
+  return flower_location_;
+}
+
 State const
 WorkerBee::IN_HIVE = createUid ();
 

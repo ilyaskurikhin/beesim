@@ -29,6 +29,7 @@ Hive::addScout ()
   ScoutBee* scout (new ScoutBee (this, this->getPosition (), states));
   scout->reloadConfig ();
   bees_.push_back (scout);
+  scouts_.push_back (scout);
   return scout;
 }
 
@@ -39,7 +40,22 @@ Hive::addWorker ()
   WorkerBee* worker (new WorkerBee (this, this->getPosition (), states));
   worker->reloadConfig ();
   bees_.push_back (worker);
+  workers_.push_back (worker);
   return worker;
+}
+
+WorkerBee*
+Hive::getWorker() const
+{
+  for (size_t i=0; i < workers_.size(); ++i)
+  {
+    if (workers_[i]->getState() == WorkerBee::IN_HIVE
+        && workers_[i]->getFlower() == Vec2d(-1,-1))
+    {
+      return workers_[i];
+    }
+  }
+  return nullptr;
 }
 
 Bee*

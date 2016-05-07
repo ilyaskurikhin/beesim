@@ -9,6 +9,10 @@
 #define SCOUTBEE_HPP
 
 #include <Env/Bee.hpp>
+#include <Env/Flower.hpp>
+#include <Env/WorkerBee.hpp>
+#include <Env/Env.hpp>
+
 #include <JSON/JSON.hpp>
 #include <Application.hpp>
 
