@@ -29,6 +29,7 @@
 #include <cmath>
 
 class Hive;
+class Flower;
 
 
 /**
@@ -60,6 +61,14 @@ public:
    */
   void
   move (sf::Time dt);
+
+  /**
+   * @brief Set a target to move towards
+   *
+   * @param position graphic position.
+   */
+  void
+  setMoveTarget (const Vec2d& position);
 
   /**
    * @brief Move the bee towards a target defined by the type of bee.
@@ -114,6 +123,20 @@ public:
   getEnergy () const;
 
   /**
+   * @brief Eat some nectar.
+   */
+  void
+  eatFromHive (sf::Time dt);
+
+  /**
+   * @brief Get Bee Hive.
+   *
+   * @return pointer to current Bee Hive.
+   */
+  Hive*
+  getHive () const;
+
+  /**
    * @brief Get Bee configuration by type.
    *
    * @return Configuration values.
@@ -130,22 +153,31 @@ public:
   void
   loadTexture ();
 
+  /**
+   * @brief Find Flower in visible range.
+   *
+   * @return pointer to Flower.
+   */
+  Flower*
+  findVisibleFlower () const;
+
 protected:
 
   Hive* hive_;
   Vec2d move_vec_;
+  Vec2d move_target_;
   double speed_;
   double energy_;
   double energy_rate_idle_;
   double energy_rate_moving_;
-  double energy_leave_hive_;
+  double energy_rate_eating_;
 
   sf::Texture texture_;
   double debug_thickness_random_;
   double debug_thickness_target_;
 
-  // memory of flower location
-  Flower* flower_;
+  Collider vision_range_;
+  double visibility_;
 
   State const AT_REST = 0;
   State const RANDOM = 1; 

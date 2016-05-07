@@ -42,6 +42,19 @@ Hive::addWorker ()
   return worker;
 }
 
+Bee*
+Hive::getBeeAt (const Vec2d& position)
+{
+  for (size_t i=0; i < bees_.size(); ++i)
+  {
+    if (bees_[i]->isPointInside(position))
+    {
+      return bees_[i];
+    }
+  }
+  return nullptr;
+}
+
 void
 Hive::update (sf::Time dt)
 {

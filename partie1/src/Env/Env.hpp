@@ -212,6 +212,14 @@ public:
   Bee*
   getBeeAt (const Vec2d& position) const;
 
+  /**
+   * @brief Get text size for env.
+   *
+   * @return text size
+   */
+  double
+  getTextSize();
+
 private:
 
   World* world_;

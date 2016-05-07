@@ -28,16 +28,15 @@ public:
   void
   onState (State state, sf::Time dt) override;
 
-  static std::vector<State>
-  getStates ();
-
+  void
+  setFlower(const Vec2d& position);
 
   // TODO make private
   State static const IN_HIVE;
   State static const COLLECT_POLLEN;
 
 private:
-
+  Vec2d flower_location_;
 
 };
 

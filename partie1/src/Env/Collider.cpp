@@ -235,8 +235,30 @@ Collider::getPosition () const
   return position_;
 }
 
+void
+Collider::setPosition (const Vec2d& position)
+{
+  position_ = position;
+  clamping();
+}
+
 double
 Collider::getRadius () const
 {
   return radius_;
+}
+
+void
+Collider::setRadius (double radius)
+{
+  try 
+  {
+    radius_ = radius;
+    if (radius_ < 0)
+    {
+      throw std::runtime_error("ERROR: Negative radius set (Collider)");
+    }
+  } catch (std::string e) {
+    radius_ = 0;
+  }
 }

@@ -219,12 +219,28 @@ public:
   getPosition () const;
 
   /**
+   * @brief Set position.
+   *
+   * @param position graphic position.
+   */
+  void
+  setPosition (const Vec2d& position);
+
+  /**
    * @brief Get the radius.
    *
    * @return radius of this Collider.
    */
   double
   getRadius () const;
+
+  /**
+   * @brief Set radius
+   *
+   * @param radius graphic radius.
+   */
+  void
+  setRadius (double radius);
 
 protected:
 

@@ -40,6 +40,12 @@ WorkerBee::onState (State state, sf::Time dt)
   // TODO implement for states
 }
 
+void
+WorkerBee::setFlower(const Vec2d& position)
+{
+  flower_location_ = position;
+}
+
 State const
 WorkerBee::IN_HIVE = createUid ();
 

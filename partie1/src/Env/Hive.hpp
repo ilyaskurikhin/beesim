@@ -64,6 +64,16 @@ public:
   addWorker ();
 
   /**
+   * @brief Check is there is a Bee with such position.
+   *
+   * @param position graphic position
+   *
+   * @return poiter to existing Bee.
+   */
+  Bee*
+  getBeeAt (const Vec2d& position);
+
+  /**
    * @brief Evolve Hive.
    *
    * @param dt

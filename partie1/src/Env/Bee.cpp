@@ -1,13 +1,13 @@
 #include <Env/Bee.hpp>
 
 #include <Env/Hive.hpp>
+#include <Env/Flower.hpp>
 
 Bee::Bee (Hive* hive, const Vec2d& position, std::vector<State> states) :
     Collider (position), CFSM (states),
-        hive_ (hive), move_vec_ (0, 0), speed_ (0),
-        energy_ (0), energy_rate_idle_(0), energy_rate_moving_(0),
+        hive_ (hive),
         debug_thickness_random_(5), debug_thickness_target_(3),
-        flower_ (nullptr), move_state_(0)
+        vision_range_(position)
 {
   // This constructor can not take care of its members
   // since it does not know what kind of bee it is
@@ -27,7 +27,10 @@ Bee::reloadConfig ()
   energy_ = getConfig ()["energy"]["initial"].toDouble ();
   energy_rate_idle_ = getConfig()["energy"]["consumption rates"]["idle"].toDouble ();
   energy_rate_moving_ = getConfig()["energy"]["consumption rates"]["moving"].toDouble ();
-  energy_leave_hive_ = getConfig()["energy"]["to leave hive"].toDouble();
+  energy_rate_eating_ = getConfig()["consumption rates"]["eating"].toDouble ();
+
+  visibility_ = getConfig()["visibility range"].toDouble ();
+  vision_range_.setRadius(visibility_);
 
   speed_ = getConfig ()["speed"].toDouble ();
 }
@@ -55,6 +58,12 @@ void
 Bee::randomMove (sf::Time dt)
 {
   // TODO implement
+}
+
+void
+Bee::setMoveTarget (const Vec2d& position)
+{
+  move_target_ = position;
 }
 
 void
@@ -88,6 +97,18 @@ double
 Bee::getEnergy () const
 {
   return energy_;
+}
+
+void
+Bee::eatFromHive (sf::Time dt)
+{
+  energy_ =+ hive_->takeNectar(energy_rate_eating_ * dt.asSeconds());
+}
+
+Hive*
+Bee::getHive () const
+{
+  return hive_;
 }
 
 void
@@ -127,4 +148,10 @@ void
 Bee::loadTexture ()
 {
   texture_ = getAppTexture (this->getConfig ()["texture"].toString ());
+}
+
+Flower*
+Bee::findVisibleFlower() const
+{
+  return getAppEnv().getCollidingFlower(vision_range_);
 }

@@ -89,38 +89,23 @@ Env::drawOn (sf::RenderTarget& target) const
       Vec2d position = getApp ().getCursorPositionInView ();
       if (world_->isInWorld (position))
         {
-          bool isHive (false);
           bool isFlower (false);
           std::string valueString ("empty");
           sf::Color color (sf::Color::White);
 
-          // check for hives
-          for (size_t i = 0; i < hives_.size (); ++i)
-            {
-              if (*(hives_[i]) > position)
-                {
-                  isHive = true;
-                  valueString = to_nice_string (hives_[i]->getNectar ());
-                  color = sf::Color::Green;
-                }
-            }
-
           // check for flowers
-          if (!isHive)
+          for (size_t i = 0; i < flowers_.size (); ++i)
             {
-              for (size_t i = 0; i < flowers_.size (); ++i)
+              if (*(flowers_[i]) > position)
                 {
-                  if (*(flowers_[i]) > position)
-                    {
-                      isFlower = true;
-                      valueString = to_nice_string (flowers_[i]->getPollen ());
-                      color = sf::Color::Yellow;
-                    }
+                  isFlower = true;
+                  valueString = to_nice_string (flowers_[i]->getPollen ());
+                  color = sf::Color::Yellow;
                 }
             }
 
           // otherwise show ambient humidity
-          if (!isHive && !isFlower)
+          if (!isFlower)
             {
               valueString = to_nice_string (world_->getHumidity (position));
               color = sf::Color::Red;
@@ -324,5 +309,19 @@ Env::getCollidingFlower (const Collider& body) const
 Bee*
 Env::getBeeAt (const Vec2d& position) const
 {
-  // TODO implement
+  for (size_t i=0; i < hives_.size(); ++i)
+  {
+    Bee* bee = hives_[i]->getBeeAt(position);
+    if (bee)
+    {
+      return bee;
+    }
+  }
+  return nullptr;
+}
+
+double
+Env::getTextSize()
+{
+  return debug_text_size_;
 }
