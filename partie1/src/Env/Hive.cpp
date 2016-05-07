@@ -3,15 +3,15 @@
 #include <Env/WorkerBee.hpp>
 #include <Env/ScoutBee.hpp>
 
-Hive::Hive (const Vec2d& position, double radius) :
+Hive::Hive(const Vec2d& position, double radius) :
     Collider (position, radius), nectar_ (
-        getAppConfig ()["simulation"]["hive"]["initial"]["nectar"].toDouble ()), hiveTexture_ (
-        getAppTexture (
-            getAppConfig ()["simulation"]["hive"]["texture"].toString ()))
+	getAppConfig ()["simulation"]["hive"]["initial"]["nectar"].toDouble ()), hiveTexture_ (
+	getAppTexture (
+	    getAppConfig ()["simulation"]["hive"]["texture"].toString ()))
 {
 }
 
-Hive::~Hive ()
+Hive::~Hive()
 {
   for (size_t i = 0; i < bees_.size (); ++i)
     {
@@ -21,11 +21,10 @@ Hive::~Hive ()
 }
 
 ScoutBee*
-Hive::addScout ()
+Hive::addScout()
 {
-  std::vector<State> states = {ScoutBee::IN_HIVE,
-                               ScoutBee::SEARCH_FLOWER,
-                               ScoutBee::RETURN_HIVE};
+  std::vector<State> states =
+    { ScoutBee::IN_HIVE, ScoutBee::SEARCH_FLOWER, ScoutBee::RETURN_HIVE };
   ScoutBee* scout (new ScoutBee (this, this->getPosition (), states));
   scout->reloadConfig ();
   bees_.push_back (scout);
@@ -34,9 +33,10 @@ Hive::addScout ()
 }
 
 WorkerBee*
-Hive::addWorker ()
+Hive::addWorker()
 {
-  std::vector<State> states = {WorkerBee::IN_HIVE};
+  std::vector<State> states =
+    { WorkerBee::IN_HIVE };
   WorkerBee* worker (new WorkerBee (this, this->getPosition (), states));
   worker->reloadConfig ();
   bees_.push_back (worker);
@@ -47,51 +47,51 @@ Hive::addWorker ()
 WorkerBee*
 Hive::getWorker() const
 {
-  for (size_t i=0; i < workers_.size(); ++i)
-  {
-    if (workers_[i]->getState() == WorkerBee::IN_HIVE
-        && workers_[i]->getFlower() == Vec2d(-1,-1))
+  for (size_t i = 0; i < workers_.size (); ++i)
     {
-      return workers_[i];
+      if (workers_[i]->getState () == WorkerBee::IN_HIVE
+	  && workers_[i]->getFlower () == Vec2d (-1, -1))
+	{
+	  return workers_[i];
+	}
     }
-  }
   return nullptr;
 }
 
 Bee*
-Hive::getBeeAt (const Vec2d& position)
+Hive::getBeeAt(const Vec2d& position)
 {
-  for (size_t i=0; i < bees_.size(); ++i)
-  {
-    if (bees_[i]->isPointInside(position))
+  for (size_t i = 0; i < bees_.size (); ++i)
     {
-      return bees_[i];
+      if (bees_[i]->isPointInside (position))
+	{
+	  return bees_[i];
+	}
     }
-  }
   return nullptr;
 }
 
 void
-Hive::update (sf::Time dt)
+Hive::update(sf::Time dt)
 {
   for (size_t i = 0; i < bees_.size (); ++i)
     {
       bees_[i]->update (dt);
 
       if (bees_[i]->getEnergy () == 0)
-        {
-          delete bees_[i];
-          bees_[i] = nullptr;
-        }
+	{
+	  delete bees_[i];
+	  bees_[i] = nullptr;
+	}
 
       bees_.erase (std::remove (bees_.begin (), bees_.end (), nullptr),
-                   bees_.end ());
+		   bees_.end ());
 
     }
 }
 
 void
-Hive::drawOn (sf::RenderTarget& target) const
+Hive::drawOn(sf::RenderTarget& target) const
 {
   auto hiveSprite = buildSprite (this->position_, this->radius_, hiveTexture_);
   target.draw (hiveSprite);
@@ -103,7 +103,7 @@ Hive::drawOn (sf::RenderTarget& target) const
 }
 
 double
-Hive::dropPollen (double nectar)
+Hive::dropPollen(double nectar)
 {
   if (nectar > 0)
     {
@@ -113,7 +113,7 @@ Hive::dropPollen (double nectar)
 }
 
 double
-Hive::takeNectar (double nectar)
+Hive::takeNectar(double nectar)
 {
   if ((nectar > 0) && (nectar_ - nectar > 0))
     {
@@ -123,7 +123,7 @@ Hive::takeNectar (double nectar)
 }
 
 double
-Hive::getNectar ()
+Hive::getNectar()
 {
   return nectar_;
 }

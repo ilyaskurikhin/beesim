@@ -31,7 +31,6 @@
 class Hive;
 class Flower;
 
-
 /**
  * @brief Abstract class Bee.
  */
@@ -46,13 +45,13 @@ public:
    * @param position  The starting position of the bee.
    * @param states    The possible CFSM states of the bee.
    */
-  Bee (Hive* hive, const Vec2d& position, std::vector<State> states);
+  Bee(Hive* hive, const Vec2d& position, std::vector<State> states);
 
   /**
    * @brief Reload the configuration of attributes from JSON. 
    */
   void
-  reloadConfig ();
+  reloadConfig();
 
   /**
    * @brief Move the bee.
@@ -60,7 +59,7 @@ public:
    * @param dt Time for the counter.
    */
   void
-  move (sf::Time dt);
+  move(sf::Time dt);
 
   /**
    * @brief Set a target to move towards
@@ -68,7 +67,7 @@ public:
    * @param position graphic position.
    */
   void
-  setMoveTarget (const Vec2d& position);
+  setMoveTarget(const Vec2d& position);
 
   /**
    * @brief Get the current move target
@@ -76,7 +75,7 @@ public:
    * @return graphic position of target.
    */
   const Vec2d&
-  getMoveTarget () const;
+  getMoveTarget() const;
 
   /**
    * @brief Move the bee towards a target defined by the type of bee.
@@ -84,7 +83,7 @@ public:
    * @param dt Time for the counter.
    */
   virtual void
-  targetMove (sf::Time dt);
+  targetMove(sf::Time dt);
 
   /**
    * @brief Move the bee randomly.
@@ -94,7 +93,7 @@ public:
    * @param dt
    */
   virtual void
-  randomMove (sf::Time dt);
+  randomMove(sf::Time dt);
 
   /**
    * @brief Check if Bee is dead.
@@ -102,7 +101,7 @@ public:
    * @return true is energy is zero.
    */
   bool
-  isDead ();
+  isDead();
 
   /**
    * @brief Evolve the Bee for a given time.
@@ -112,7 +111,7 @@ public:
    * @param dt
    */
   void
-  update (sf::Time dt) override;
+  update(sf::Time dt) override;
 
   /**
    * @brief Draw the Bee onto target.
@@ -120,7 +119,7 @@ public:
    * @param target
    */
   void
-  drawOn (sf::RenderTarget& target) const override;
+  drawOn(sf::RenderTarget& target) const override;
 
   /**
    * @brief Get current speed.
@@ -128,7 +127,7 @@ public:
    * @return speed
    */
   double
-  getSpeed () const;
+  getSpeed() const;
 
   /**
    * @brief Get the energy of the Bee.
@@ -136,13 +135,13 @@ public:
    * @return Energy of the Bee.
    */
   double
-  getEnergy () const;
+  getEnergy() const;
 
   /**
    * @brief Eat some nectar.
    */
   void
-  eatFromHive (sf::Time dt);
+  eatFromHive(sf::Time dt);
 
   /**
    * @brief Get Bee Hive.
@@ -150,7 +149,7 @@ public:
    * @return pointer to current Bee Hive.
    */
   Hive*
-  getHive () const;
+  getHive() const;
 
   /**
    * @brief Get Bee configuration by type.
@@ -159,7 +158,7 @@ public:
    */
   virtual j::Value
   const&
-  getConfig () =0;
+  getConfig() =0;
 
   /**
    * @brief Load the Bee texture.
@@ -167,7 +166,7 @@ public:
    * Load the Bee texture using getConfig.
    */
   void
-  loadTexture ();
+  loadTexture();
 
   /**
    * @brief Find Flower in visible range.
@@ -175,13 +174,11 @@ public:
    * @return pointer to Flower.
    */
   Flower*
-  findVisibleFlower () const;
+  findVisibleFlower() const;
 
-  
-virtual void
-onEnterState (State state) override;
-  
-  
+  virtual void
+  onEnterState(State state) override;
+
 protected:
 
   Hive* hive_;
@@ -201,7 +198,7 @@ protected:
   double visibility_;
 
   State const AT_REST = 0;
-  State const RANDOM = 1; 
+  State const RANDOM = 1;
   State const TARGET = 2;
   State move_state_;
 

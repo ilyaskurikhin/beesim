@@ -20,36 +20,35 @@ class ScoutBee : public Bee
 {
 public:
 
-  ScoutBee (Hive* hive, const Vec2d& position, std::vector<State> states);
+  ScoutBee(Hive* hive, const Vec2d& position, std::vector<State> states);
 
-  ~ScoutBee ();
+  ~ScoutBee();
 
   void
   drawOn(sf::RenderTarget& target) const;
 
   void
-  reloadConfig ();
+  reloadConfig();
 
   void
-  randomMove (sf::Time dt) override;
+  randomMove(sf::Time dt) override;
 
   j::Value const&
-  getConfig () override;
+  getConfig() override;
 
   void
-  onState (State state, sf::Time dt) override;
+  onState(State state, sf::Time dt) override;
 
   void
-  onEnterState (State state) override;
-  
-  void 
-  targetMove (sf::Time dt) override;
+  onEnterState(State state) override;
+
+  void
+  targetMove(sf::Time dt) override;
 
   // TODO make private
   State static const IN_HIVE;
   State static const SEARCH_FLOWER;
-  State static const  RETURN_HIVE;
-
+  State static const RETURN_HIVE;
 
 private:
   Vec2d flower_location_;

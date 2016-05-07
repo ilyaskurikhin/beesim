@@ -7,7 +7,8 @@
 
 #include <Env/WorkerBee.hpp>
 
-WorkerBee::WorkerBee (Hive* hive, const Vec2d& position, std::vector<State> states) :
+WorkerBee::WorkerBee(Hive* hive, const Vec2d& position,
+		     std::vector<State> states) :
     Bee (hive, position, states)
 {
   logEvent ("WorkerBee", "new constructed");
@@ -15,27 +16,27 @@ WorkerBee::WorkerBee (Hive* hive, const Vec2d& position, std::vector<State> stat
   loadTexture ();
 }
 
-WorkerBee::~WorkerBee ()
+WorkerBee::~WorkerBee()
 {
 
 }
 
 void
-WorkerBee::reloadConfig ()
+WorkerBee::reloadConfig()
 {
   Bee::reloadConfig ();
   // TODO load class attributes here
 }
 
 j::Value const&
-WorkerBee::getConfig ()
+WorkerBee::getConfig()
 {
   // TODO make this refer to superclass method
   return getAppConfig ()["simulation"]["bees"]["worker"];
 }
 
 void
-WorkerBee::onState (State state, sf::Time dt)
+WorkerBee::onState(State state, sf::Time dt)
 {
   // TODO implement for states
 }
@@ -52,8 +53,6 @@ WorkerBee::getFlower() const
   return flower_location_;
 }
 
-State const
-WorkerBee::IN_HIVE = createUid ();
+State const WorkerBee::IN_HIVE = createUid ();
 
-State const
-WorkerBee::COLLECT_POLLEN = createUid();
+State const WorkerBee::COLLECT_POLLEN = createUid ();

@@ -43,12 +43,12 @@ public:
    * Draw the world_ to cache.
    * Initialize numberFlowers_ to 0.
    */
-  Env ();
+  Env();
 
   /**
    * @brief Class destructor
    */
-  ~Env ();
+  ~Env();
 
   /**
    * @brief Evolve the environment.
@@ -59,7 +59,7 @@ public:
    * @param dt
    */
   void
-  update (sf::Time dt) override;
+  update(sf::Time dt) override;
 
   /**
    * @brief Draw the Env on the target
@@ -71,31 +71,31 @@ public:
    * @param target where to draw
    */
   void
-  drawOn (sf::RenderTarget& target) const override;
+  drawOn(sf::RenderTarget& target) const override;
 
   /**
    * @brief Reset the environment by regenerating.
    */
   void
-  reset ();
+  reset();
 
   /**
    * @brief Reload the config file
    */
   void
-  reloadConfig ();
+  reloadConfig();
 
   /**
    * @brief Load the world_ from file.
    */
   void
-  loadWorldFromFile ();
+  loadWorldFromFile();
 
   /**
    * @brief Save the world_ to file.
    */
   void
-  saveWorldToFile () const;
+  saveWorldToFile() const;
 
   /**
    * @brief Get humidity for position.
@@ -105,7 +105,7 @@ public:
    * @return humidity.
    */
   double
-  getHumidity (const Vec2d& position) const;
+  getHumidity(const Vec2d& position) const;
 
   /**
    * @brief Check if flower can grow.
@@ -117,7 +117,7 @@ public:
    * @return true is can be grown.
    */
   bool
-  isGrowable (const Vec2d& position) const;
+  isGrowable(const Vec2d& position) const;
 
   /**
    * @brief Check if a Collider could be placed.
@@ -130,7 +130,7 @@ public:
    * @return true is placement is possible.
    */
   bool
-  isPlaceable (const Vec2d& position, double radius) const;
+  isPlaceable(const Vec2d& position, double radius) const;
 
   /**
    * @brief Check is can be flown.
@@ -142,7 +142,7 @@ public:
    * @return true is flight possible.
    */
   bool
-  isFlyable (const Vec2d& position) const;
+  isFlyable(const Vec2d& position) const;
 
   /**
    * @brief Add a Flower at position.
@@ -152,7 +152,7 @@ public:
    * @return true if Flower can be added.
    */
   bool
-  addFlowerAt (const Vec2d& position);
+  addFlowerAt(const Vec2d& position);
 
   /**
    * @brief Draw zone occupied by flower.
@@ -161,7 +161,7 @@ public:
    * @param position where flower would be.
    */
   void
-  drawFlowerZone (sf::RenderTarget& target, const Vec2d& position);
+  drawFlowerZone(sf::RenderTarget& target, const Vec2d& position);
 
   /**
    * @brief Add a Hive.
@@ -171,7 +171,7 @@ public:
    * @return true if Hive can be added.
    */
   bool
-  addHiveAt (const Vec2d& position);
+  addHiveAt(const Vec2d& position);
 
   /**
    * @brief Draw zone occupied by Hive. 
@@ -180,7 +180,7 @@ public:
    * @param position where new Hive would be.
    */
   void
-  drawHiveableZone (sf::RenderTarget& target, const Vec2d& position);
+  drawHiveableZone(sf::RenderTarget& target, const Vec2d& position);
 
   /**
    * @brief Check for Hive collision, return if exists.
@@ -190,7 +190,7 @@ public:
    * @return pointer to Hive if exists.
    */
   Hive*
-  getCollidingHive (const Collider& body) const;
+  getCollidingHive(const Collider& body) const;
 
   /**
    * @brief Check for Flower collision, return is exists.
@@ -200,7 +200,7 @@ public:
    * @return pointer to Flower if exists.
    */
   Flower*
-  getCollidingFlower (const Collider& body) const;
+  getCollidingFlower(const Collider& body) const;
 
   /**
    * @brief Check for Bee at position.
@@ -210,7 +210,7 @@ public:
    * @return pointer to Bee if exists.
    */
   Bee*
-  getBeeAt (const Vec2d& position) const;
+  getBeeAt(const Vec2d& position) const;
 
   /**
    * @brief Get text size for env.

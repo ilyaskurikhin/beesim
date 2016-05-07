@@ -36,7 +36,7 @@ public:
    * @param position vector of the Collider
    * @param radius radius of the Collider
    */
-  Collider (const Vec2d& position, double radius);
+  Collider(const Vec2d& position, double radius);
 
   /**
    * @brief Small constructor.
@@ -45,7 +45,7 @@ public:
    *
    * @param position where to create the Collider.
    */
-  Collider (const Vec2d& position);
+  Collider(const Vec2d& position);
 
   /**
    * @brief Copy constructor.
@@ -54,7 +54,7 @@ public:
    *
    * @param collider Collider to copy.
    */
-  Collider (const Collider& collider);
+  Collider(const Collider& collider);
 
   //
   // OPERATORS
@@ -68,7 +68,7 @@ public:
    * @return true if other is in this.
    */
   bool
-  operator> (const Collider& other) const;
+  operator>(const Collider& other) const;
 
   /**
    * @brief Check if this Collider is colliding with another.
@@ -78,7 +78,7 @@ public:
    * @return true if this is colliding with other.
    */
   bool
-  operator| (const Collider& other) const;
+  operator|(const Collider& other) const;
 
   /**
    * @brief Check if a point p is in the collider.
@@ -88,7 +88,7 @@ public:
    * @return true if point p is within radius_ of this.
    */
   bool
-  operator> (const Vec2d& p) const;
+  operator>(const Vec2d& p) const;
 
   /**
    * @brief Copy operator.
@@ -98,7 +98,7 @@ public:
    * @param collider Collider to copy from.
    */
   Collider&
-  operator= (Collider collider);
+  operator=(Collider collider);
 
   /** 
    * @brief Move this horizontaly by dx.
@@ -106,7 +106,7 @@ public:
    * @param Vector to move this Collider by.
    */
   Collider&
-  operator+= (const Vec2d& dx);
+  operator+=(const Vec2d& dx);
 
   //
   // METHODS
@@ -120,7 +120,7 @@ public:
    * face of the world, and will correct the position if it is.
    */
   Vec2d
-  clamping ();
+  clamping();
 
   /**
    * @brief Check if other is in this Collider. 
@@ -130,7 +130,7 @@ public:
    * @return true if this is within radius of other.
    */
   bool
-  isColliderInside (const Collider& other) const;
+  isColliderInside(const Collider& other) const;
 
   /**
    * @brief Check if colliding.
@@ -140,7 +140,7 @@ public:
    * @return true if either of this or other are within the others radius.
    */
   bool
-  isColliding (const Collider& other) const;
+  isColliding(const Collider& other) const;
 
   /**
    * @brief Check if inside other.
@@ -150,7 +150,7 @@ public:
    * @return true is distance in between p and this < radius_.
    */
   bool
-  isPointInside (const Vec2d& p) const;
+  isPointInside(const Vec2d& p) const;
 
   /**
    * @brief Calculate path to point. 
@@ -162,7 +162,7 @@ public:
    * @return direction vector to other.
    */
   Vec2d
-  directionTo (const Vec2d& other) const;
+  directionTo(const Vec2d& other) const;
 
   /**
    * @brief Calculate path to Collider.
@@ -174,7 +174,7 @@ public:
    * @param other Another Collider.
    */
   Vec2d
-  directionTo (const Collider& other) const;
+  directionTo(const Collider& other) const;
 
   /**
    * @brief Calculate distance to point.
@@ -184,7 +184,7 @@ public:
    * @return distance to other.
    */
   double
-  distanceTo (const Vec2d& other) const;
+  distanceTo(const Vec2d& other) const;
 
   /**
    * @brief Calculate distance to Collider.
@@ -194,7 +194,7 @@ public:
    * @return distance to other.
    */
   double
-  distanceTo (const Collider& other) const;
+  distanceTo(const Collider& other) const;
 
   /**
    * @brief Move this Collider by the vector dx.
@@ -204,7 +204,7 @@ public:
    * @return Collider with new location.
    */
   Collider&
-  move (const Vec2d& dx);
+  move(const Vec2d& dx);
 
   // 
   // GETTERS & SETTERS
@@ -216,7 +216,7 @@ public:
    * @return position of this Collider.
    */
   Vec2d
-  getPosition () const;
+  getPosition() const;
 
   /**
    * @brief Set position.
@@ -224,7 +224,7 @@ public:
    * @param position graphic position.
    */
   void
-  setPosition (const Vec2d& position);
+  setPosition(const Vec2d& position);
 
   /**
    * @brief Get the radius.
@@ -232,7 +232,7 @@ public:
    * @return radius of this Collider.
    */
   double
-  getRadius () const;
+  getRadius() const;
 
   /**
    * @brief Set radius
@@ -240,7 +240,7 @@ public:
    * @param radius graphic radius.
    */
   void
-  setRadius (double radius);
+  setRadius(double radius);
 
 protected:
 
@@ -255,6 +255,6 @@ protected:
  * @param collider Collider to print from.
  */
 std::ostream&
-operator<< (std::ostream& oss, const Collider& collider);
+operator<<(std::ostream& oss, const Collider& collider);
 
 #endif

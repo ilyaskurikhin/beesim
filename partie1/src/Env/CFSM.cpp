@@ -9,51 +9,51 @@
 
 #include <Env/CFSM.hpp>
 
-CFSM::CFSM (std::vector<State> states)
-: states_(states), state_(states[0])
+CFSM::CFSM(std::vector<State> states) :
+    states_ (states), state_ (states[0])
 {
 }
 
-CFSM::~CFSM ()
+CFSM::~CFSM()
 {
 
 }
 
 State
-CFSM::getState ()
+CFSM::getState()
 {
   return state_;
 }
 
 void
-CFSM::nextState ()
+CFSM::nextState()
 {
-  size_t stateNumber(0);
+  size_t stateNumber (0);
   // get state number
-  for (size_t i=0; i < states_.size(); ++i)
+  for (size_t i = 0; i < states_.size (); ++i)
     {
-      if (states_[i] == state_) {
-          stateNumber = i;
-      }
+      if (states_[i] == state_)
+	{
+	  stateNumber = i;
+	}
     }
 
   // cycle to next state
-  if (stateNumber < states_.size() -1)
+  if (stateNumber < states_.size () - 1)
     {
-      state_ = states_[stateNumber +1];
+      state_ = states_[stateNumber + 1];
     }
   else
     {
       state_ = states_[0];
     }
 
-  onEnterState(state_);
+  onEnterState (state_);
 }
 
 void
-CFSM::action (sf::Time dt)
+CFSM::action(sf::Time dt)
 {
-  onState(state_, dt);
+  onState (state_, dt);
 }
-
 

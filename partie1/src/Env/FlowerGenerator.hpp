@@ -27,7 +27,7 @@ public:
   /**
    * @brief Default constructor.
    */
-  FlowerGenerator ();
+  FlowerGenerator();
 
   /**
    * @brief Evolve FlowerGeneratr.
@@ -35,13 +35,13 @@ public:
    * @param dt
    */
   void
-  update (sf::Time dt);
+  update(sf::Time dt);
 
   /**
    * @brief Reset counter of FlowerGenerator.
    */
   void
-  reset ();
+  reset();
 
 private:
 

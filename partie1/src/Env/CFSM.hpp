@@ -23,7 +23,7 @@ public:
    * Construct new CFSM from states and set
    * state to the first element
    */
-  CFSM (std::vector<State> states);
+  CFSM(std::vector<State> states);
 
   /**
    * @brief Destructor.
@@ -31,7 +31,8 @@ public:
    * Destructor that does nothing.
    * It's here because c++ guidelines say so
    */
-  virtual ~CFSM ();
+  virtual
+  ~CFSM();
 
   /**
    * @brief Get current state.
@@ -39,7 +40,7 @@ public:
    * @return current state
    */
   State
-  getState ();
+  getState();
 
   /**
    * @brief Move to next state.
@@ -47,7 +48,7 @@ public:
    * Move to next state in states_.
    */
   void
-  nextState ();
+  nextState();
 
   /**
    * @brief Change behavior to new state.
@@ -55,7 +56,7 @@ public:
    * @param new state
    */
   virtual void
-  onEnterState (State state) =0;
+  onEnterState(State state) =0;
 
   /**
    * @brief Things to do while in the state
@@ -64,7 +65,7 @@ public:
    * @param dt    time for counter
    */
   virtual void
-  onState (State state, sf::Time dt) =0;
+  onState(State state, sf::Time dt) =0;
 
   /**
    * @brief Action to take in current state.
@@ -72,13 +73,12 @@ public:
    * @param time for counter
    */
   void
-  action (sf::Time dt);
+  action(sf::Time dt);
 
 private:
   std::vector<State> states_;
   State state_;
 
 };
-
 
 #endif /* CFSM_HPP */

@@ -5,14 +5,14 @@
 
 bool ENV_VERBOSE (true);
 
-Env::Env () :
+Env::Env() :
     world_ (new World ()), flowerGenerator_ (new FlowerGenerator)
 {
   logEvent ("Env", "generating environment");
   reloadConfig ();
 }
 
-Env::~Env ()
+Env::~Env()
 {
   logEvent ("Env", "destroying environment");
   delete world_;
@@ -32,7 +32,7 @@ Env::~Env ()
 }
 
 void
-Env::update (sf::Time dt)
+Env::update(sf::Time dt)
 {
   // update du generateur
   if ((getAppConfig ()["simulation"]["flower generator"]["active"].toBool ())
@@ -50,15 +50,15 @@ Env::update (sf::Time dt)
 
       // check if flower is dead
       if (flowers_[i]->getPollen () <= 0)
-        {
-          // remove dead flower
-          delete flowers_[i];
-          flowers_[i] = nullptr;
-        }
+	{
+	  // remove dead flower
+	  delete flowers_[i];
+	  flowers_[i] = nullptr;
+	}
     }
   // remove empty locations
   flowers_.erase (std::remove (flowers_.begin (), flowers_.end (), nullptr),
-                  flowers_.end ());
+		  flowers_.end ());
 
   for (size_t i = 0; i < hives_.size (); ++i)
     {
@@ -68,7 +68,7 @@ Env::update (sf::Time dt)
 }
 
 void
-Env::drawOn (sf::RenderTarget& target) const
+Env::drawOn(sf::RenderTarget& target) const
 {
   world_->drawOn (target);
   for (size_t i = 0; i < flowers_.size (); ++i)
@@ -88,40 +88,40 @@ Env::drawOn (sf::RenderTarget& target) const
       // get cursor position
       Vec2d position = getApp ().getCursorPositionInView ();
       if (world_->isInWorld (position))
-        {
-          bool isFlower (false);
-          std::string valueString ("empty");
-          sf::Color color (sf::Color::White);
+	{
+	  bool isFlower (false);
+	  std::string valueString ("empty");
+	  sf::Color color (sf::Color::White);
 
-          // check for flowers
-          for (size_t i = 0; i < flowers_.size (); ++i)
-            {
-              if (*(flowers_[i]) > position)
-                {
-                  isFlower = true;
-                  valueString = to_nice_string (flowers_[i]->getPollen ());
-                  color = sf::Color::Yellow;
-                }
-            }
+	  // check for flowers
+	  for (size_t i = 0; i < flowers_.size (); ++i)
+	    {
+	      if (*(flowers_[i]) > position)
+		{
+		  isFlower = true;
+		  valueString = to_nice_string (flowers_[i]->getPollen ());
+		  color = sf::Color::Yellow;
+		}
+	    }
 
-          // otherwise show ambient humidity
-          if (!isFlower)
-            {
-              valueString = to_nice_string (world_->getHumidity (position));
-              color = sf::Color::Red;
-            }
+	  // otherwise show ambient humidity
+	  if (!isFlower)
+	    {
+	      valueString = to_nice_string (world_->getHumidity (position));
+	      color = sf::Color::Red;
+	    }
 
-          sf::Text text = buildText (valueString, position, getAppFont (),
-                                     debug_text_size_, color);
-          target.draw (text);
+	  sf::Text text = buildText (valueString, position, getAppFont (),
+				     debug_text_size_, color);
+	  target.draw (text);
 
-        }
+	}
     }
 
 }
 
 void
-Env::reset ()
+Env::reset()
 {
   logEvent ("Env", "resetting environment");
 
@@ -141,7 +141,7 @@ Env::reset ()
 }
 
 void
-Env::reloadConfig ()
+Env::reloadConfig()
 {
   // get variables from configuration
   flowerManualRadius_ =
@@ -158,44 +158,45 @@ Env::reloadConfig ()
       getAppConfig ()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble ();
 
   debug_text_size_ = 10
-                    * (getAppConfig ()["simulation"]["world"]["size"].toDouble ()
-                        / getAppConfig ()["simulation"]["world"]["cells"].toDouble ());
+      * (getAppConfig ()["simulation"]["world"]["size"].toDouble ()
+	  / getAppConfig ()["simulation"]["world"]["cells"].toDouble ());
 
-  hiveableFactor_ = getAppConfig ()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble ();
+  hiveableFactor_ =
+      getAppConfig ()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble ();
 }
 
 void
-Env::loadWorldFromFile ()
+Env::loadWorldFromFile()
 {
   world_->loadFromFile ();
 }
 
 void
-Env::saveWorldToFile () const
+Env::saveWorldToFile() const
 {
   world_->saveToFile ();
 }
 
 double
-Env::getHumidity (const Vec2d& position) const
+Env::getHumidity(const Vec2d& position) const
 {
   return world_->getHumidity (position);
 }
 
 bool
-Env::isGrowable (const Vec2d& position) const
+Env::isGrowable(const Vec2d& position) const
 {
   return world_->isGrowable (position);
 }
 
 bool
-Env::isFlyable (const Vec2d& position) const
+Env::isFlyable(const Vec2d& position) const
 {
   return world_->isFlyable (position);
 }
 
 bool
-Env::isPlaceable (const Vec2d& position, double radius) const
+Env::isPlaceable(const Vec2d& position, double radius) const
 {
   if (world_->isGrowable (position))
     {
@@ -203,15 +204,15 @@ Env::isPlaceable (const Vec2d& position, double radius) const
 
       // check if object can be made at position
       if (getCollidingHive (object) == nullptr)
-        {
-          return true;
-        }
+	{
+	  return true;
+	}
     }
   return false;
 }
 
 bool
-Env::addFlowerAt (const Vec2d& position)
+Env::addFlowerAt(const Vec2d& position)
 {
   // check if flower can be made at position
   if ((flowers_.size () < maxFlowers_)
@@ -230,30 +231,24 @@ Env::addFlowerAt (const Vec2d& position)
 }
 
 void
-Env::drawFlowerZone (sf::RenderTarget& target, const Vec2d& position)
+Env::drawFlowerZone(sf::RenderTarget& target, const Vec2d& position)
 {
   if (world_->isGrowable (position))
     {
-      sf::CircleShape shape =
-          buildAnnulus (
-              position,
-              flowerManualRadius_,
-              sf::Color::Green, 5.0);
+      sf::CircleShape shape = buildAnnulus (position, flowerManualRadius_,
+					    sf::Color::Green, 5.0);
       target.draw (shape);
     }
   else
     {
-      sf::CircleShape shape =
-          buildAnnulus (
-              position,
-              flowerManualRadius_,
-              sf::Color::Red, 5.0);
+      sf::CircleShape shape = buildAnnulus (position, flowerManualRadius_,
+					    sf::Color::Red, 5.0);
       target.draw (shape);
     }
 }
 
 bool
-Env::addHiveAt (const Vec2d& position)
+Env::addHiveAt(const Vec2d& position)
 {
 
   if (world_->isGrowable (position)
@@ -269,54 +264,55 @@ Env::addHiveAt (const Vec2d& position)
 }
 
 void
-Env::drawHiveableZone (sf::RenderTarget& target, const Vec2d& position)
+Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
 {
   // TODO implement
 }
 
 Hive*
-Env::getCollidingHive (const Collider& body) const
+Env::getCollidingHive(const Collider& body) const
 {
   for (size_t i (0); i < hives_.size (); ++i)
     {
-      Collider collidingHive (hives_[i]->getPosition (), (hiveManualRadius_ * hiveableFactor_));
+      Collider collidingHive (hives_[i]->getPosition (),
+			      (hiveManualRadius_ * hiveableFactor_));
 
       if (collidingHive.isColliding (body))
-        {
-          return hives_[i];
-        }
+	{
+	  return hives_[i];
+	}
     }
   return nullptr;
 }
 
 Flower*
-Env::getCollidingFlower (const Collider& body) const
+Env::getCollidingFlower(const Collider& body) const
 {
   for (size_t i (0); i < flowers_.size (); ++i)
     {
       Collider collidingFlower (flowers_[i]->getPosition (),
-                                flowers_[i]->getRadius ());
+				flowers_[i]->getRadius ());
 
       if (collidingFlower.isColliding (body))
-        {
-          return flowers_[i];
-        }
+	{
+	  return flowers_[i];
+	}
     }
   return nullptr;
 
 }
 
 Bee*
-Env::getBeeAt (const Vec2d& position) const
+Env::getBeeAt(const Vec2d& position) const
 {
-  for (size_t i=0; i < hives_.size(); ++i)
-  {
-    Bee* bee = hives_[i]->getBeeAt(position);
-    if (bee)
+  for (size_t i = 0; i < hives_.size (); ++i)
     {
-      return bee;
+      Bee* bee = hives_[i]->getBeeAt (position);
+      if (bee)
+	{
+	  return bee;
+	}
     }
-  }
   return nullptr;
 }
 

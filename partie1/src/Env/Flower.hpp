@@ -30,7 +30,7 @@ public:
   /**
    * @brief Default constructor.
    */
-  Flower ();
+  Flower();
 
   /**
    * @brief Detailed constructor.
@@ -39,7 +39,7 @@ public:
    * @param radius size of Flower.
    * @param pollen initial pollen of Flower.
    */
-  Flower (const Vec2d& position, double radius, double pollen);
+  Flower(const Vec2d& position, double radius, double pollen);
 
   /**
    * @brief Remove given quantity of pollen from Flower.
@@ -49,13 +49,13 @@ public:
    * @return Quantity of pollen taken.
    */
   double
-  takePollen (const double& pollen);
+  takePollen(const double& pollen);
 
   /**
    * @brief Load Flower texture.
    */
   void
-  loadTexture ();
+  loadTexture();
 
   /**
    * @brief Evolve Flower.
@@ -63,7 +63,7 @@ public:
    * @param dt
    */
   void
-  update (sf::Time dt) override;
+  update(sf::Time dt) override;
 
   /**
    * @brief Draw Flower on target. 
@@ -71,7 +71,7 @@ public:
    * @param target where to draw.
    */
   void
-  drawOn (sf::RenderTarget& target) const override;
+  drawOn(sf::RenderTarget& target) const override;
 
   /**
    * @brief Get current flower pollen content.
@@ -79,7 +79,7 @@ public:
    * @return current pollen content.
    */
   double
-  getPollen ();
+  getPollen();
 
 private:
 

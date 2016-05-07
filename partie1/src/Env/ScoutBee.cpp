@@ -9,41 +9,41 @@
 
 #include <Env/ScoutBee.hpp>
 
-ScoutBee::ScoutBee (Hive* hive, const Vec2d& position, std::vector<State> states) :
-    Bee (hive, position, states), number_times_shared_(-1)
+ScoutBee::ScoutBee(Hive* hive, const Vec2d& position, std::vector<State> states) :
+    Bee (hive, position, states), number_times_shared_ (-1)
 {
   logEvent ("ScoutBee", "new constructed");
-  reloadConfig (); 
+  reloadConfig ();
   loadTexture ();
 }
 
-ScoutBee::~ScoutBee ()
+ScoutBee::~ScoutBee()
 {
-  
+
 }
 
 void
 ScoutBee::drawOn(sf::RenderTarget& target) const
 {
-  Bee::drawOn(target);
-  if (isDebugOn()) 
-  {
-  std::string valueString ("Scout: ");
-  sf::Color color (sf::Color::Yellow);
-  Vec2d position;
-  position.x = this->getPosition().x;
-  position.y = this->getPosition().y - debug_text_size_;
+  Bee::drawOn (target);
+  if (isDebugOn ())
+    {
+      std::string valueString ("Scout: ");
+      sf::Color color (sf::Color::Yellow);
+      Vec2d position;
+      position.x = this->getPosition ().x;
+      position.y = this->getPosition ().y - debug_text_size_;
 
-
-  valueString =+ "energy " + std::to_string(this->getEnergy());
-  valueString =+ "\n" + debug_status_;
-  sf::Text text = buildText (valueString, position, getAppFont(), debug_text_size_, color);
-  target.draw (text);
-  }
+      valueString = +"energy " + std::to_string (this->getEnergy ());
+      valueString = +"\n" + debug_status_;
+      sf::Text text = buildText (valueString, position, getAppFont (),
+				 debug_text_size_, color);
+      target.draw (text);
+    }
 }
 
 void
-ScoutBee::reloadConfig ()
+ScoutBee::reloadConfig()
 {
   Bee::reloadConfig ();
 
@@ -54,15 +54,15 @@ ScoutBee::reloadConfig ()
       getConfig ()["moving behaviour"]["random"]["rotation angle max"].toDouble ();
 
   energy_seek_flowers_ = getConfig ()["energy"]["to seek flowers"].toDouble ();
-  energy_leave_hive_ = getConfig()["energy"]["to leave hive"].toDouble();
+  energy_leave_hive_ = getConfig ()["energy"]["to leave hive"].toDouble ();
 
   max_sharing_ = getConfig ()["sharing"]["max"].toDouble ();
 
-  debug_text_size_ = getAppEnv().getTextSize();
+  debug_text_size_ = getAppEnv ().getTextSize ();
 }
 
 void
-ScoutBee::randomMove (sf::Time dt)
+ScoutBee::randomMove(sf::Time dt)
 {
   Vec2d position (position_);
   if (bernoulli (rotation_probability_))
@@ -80,13 +80,13 @@ ScoutBee::randomMove (sf::Time dt)
     {
       double angleB;
       if (bernoulli (0.5))
-        {
-          angleB = PI / 4;
-        }
+	{
+	  angleB = PI / 4;
+	}
       else
-        {
-          angleB = -PI / 4;
-        }
+	{
+	  angleB = -PI / 4;
+	}
       move_vec_.rotate (angleB);
 
     }
@@ -97,14 +97,14 @@ ScoutBee::randomMove (sf::Time dt)
 }
 
 j::Value const&
-ScoutBee::getConfig ()
+ScoutBee::getConfig()
 {
   // TODO make this refer to superclass method
   return getAppConfig ()["simulation"]["bees"]["scout"];
 }
 
 void
-ScoutBee::onState (State state, sf::Time dt)
+ScoutBee::onState(State state, sf::Time dt)
 {
   // create vector to compare to for empty status
   Vec2d empty;
@@ -113,97 +113,99 @@ ScoutBee::onState (State state, sf::Time dt)
 
   // first state
   if (state == IN_HIVE)
-  {
-    if (flower_location_ != empty)
     {
-      WorkerBee* worker = this->getHive()->getWorker();
-      if (worker)
-      {
-        worker->setFlower(flower_location_);
-        flower_location_ = empty;
-        debug_status_ = "in_hive_shating";
-        debug_status_ = debug_status_ + std::to_string(number_times_shared_);
-        number_times_shared_ = -1;
-      }
-    }
+      if (flower_location_ != empty)
+	{
+	  WorkerBee* worker = this->getHive ()->getWorker ();
+	  if (worker)
+	    {
+	      worker->setFlower (flower_location_);
+	      flower_location_ = empty;
+	      debug_status_ = "in_hive_shating";
+	      debug_status_ = debug_status_
+		  + std::to_string (number_times_shared_);
+	      number_times_shared_ = -1;
+	    }
+	}
 
-    if (this->getEnergy() < energy_leave_hive_)
-      {
-        debug_status_ = "in_hive_eat";
-        this->eatFromHive(dt);
-      }
-    else if (flower_location_ == empty)    
-      {
-        debug_status_ = "in_hive_leaving";
-        this->nextState();
-      }
-  } 
+      if (this->getEnergy () < energy_leave_hive_)
+	{
+	  debug_status_ = "in_hive_eat";
+	  this->eatFromHive (dt);
+	}
+      else if (flower_location_ == empty)
+	{
+	  debug_status_ = "in_hive_leaving";
+	  this->nextState ();
+	}
+    }
 
   // second state
-  else if (state == SEARCH_FLOWER) 
-  {
-    Flower* flower  = this->findVisibleFlower();
-    if ((flower != nullptr) and (this->getEnergy() > energy_seek_flowers_))
+  else if (state == SEARCH_FLOWER)
     {
-      flower_location_ = flower->getPosition();
-      number_times_shared_ = 0;
-      this->nextState();
+      Flower* flower = this->findVisibleFlower ();
+      if ((flower != nullptr) and (this->getEnergy () > energy_seek_flowers_))
+	{
+	  flower_location_ = flower->getPosition ();
+	  number_times_shared_ = 0;
+	  this->nextState ();
+	}
     }
-  }
 
   // third state
   else if (state == RETURN_HIVE)
-  {
-    this->setMoveTarget(this->getHive()->getPosition());
-    if (getAppEnv().getCollidingHive(this->getPosition()) == this->getHive())
-    //why are you not using isCollidinginside
     {
-      this->nextState();
+      this->setMoveTarget (this->getHive ()->getPosition ());
+      if (getAppEnv ().getCollidingHive (this->getPosition ())
+	  == this->getHive ())
+      //why are you not using isCollidinginside
+	{
+	  this->nextState ();
+	}
     }
-  }
 }
 
-void 
-ScoutBee::onEnterState (State state)
+void
+ScoutBee::onEnterState(State state)
 {
   if (state == IN_HIVE)
-  {
-    move_state_ = AT_REST;
-  } 
+    {
+      move_state_ = AT_REST;
+    }
   else if (state == SEARCH_FLOWER)
-  {
-    move_state_ = RANDOM;
-  }
-  else if (state == RETURN_HIVE) 
-  {
-    move_state_ = TARGET;
-  }
+    {
+      move_state_ = RANDOM;
+    }
+  else if (state == RETURN_HIVE)
+    {
+      move_state_ = TARGET;
+    }
 }
 
-void 
+void
 ScoutBee::targetMove(sf::Time dt)
 {
-  Vec2d target = this->getMoveTarget();
-  Vec2d direction = this->directionTo(target);
-  
-  direction = direction.normalised();
+  Vec2d target = this->getMoveTarget ();
+  Vec2d direction = this->directionTo (target);
+
+  direction = direction.normalised ();
 
   Vec2d position;
-  position += dt.asSeconds () * direction * this->getSpeed();
+  position += dt.asSeconds () * direction * this->getSpeed ();
 
-  Collider protoBee (position, this->getRadius());
+  Collider protoBee (position, this->getRadius ());
   protoBee.clamping ();
   if (!getAppEnv ().isFlyable (protoBee.getPosition ()))
     {
       double angleB;
       if (bernoulli (0.5))
-        {
-          angleB = PI / 4;
-        }
+	{
+	  angleB = PI / 4;
+	}
       else
-        {
-          angleB = -PI / 4;
-        }
+	{
+	  angleB = -PI / 4;
+	}
       move_vec_.rotate (angleB);
 
     }
@@ -213,12 +215,9 @@ ScoutBee::targetMove(sf::Time dt)
     }
 }
 
-State const
-ScoutBee::IN_HIVE = createUid ();
+State const ScoutBee::IN_HIVE = createUid ();
 
-State const
-ScoutBee::SEARCH_FLOWER = createUid ();
+State const ScoutBee::SEARCH_FLOWER = createUid ();
 
-State const
-ScoutBee::RETURN_HIVE = createUid ();
+State const ScoutBee::RETURN_HIVE = createUid ();
 

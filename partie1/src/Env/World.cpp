@@ -1,12 +1,12 @@
 #include <Env/World.hpp>
 
 j::Value
-simulationWorld ()
+simulationWorld()
 {
   return getAppConfig ()["simulation"]["world"];
 }
 
-World::World ()
+World::World()
 {
   logEvent ("World", "building\tnew world");
 
@@ -25,7 +25,7 @@ World::World ()
 }
 
 void
-World::reloadConfig ()
+World::reloadConfig()
 {
   logEvent ("World", "loading\tconfig");
 
@@ -66,19 +66,19 @@ World::reloadConfig ()
   while (humidity > humidityThreshold_)
     {
       humidity = humidityInitialLevel_
-          * std::exp ((double) -humidityRange_ / (double) humidityDecayRate_);
+	  * std::exp ((double) -humidityRange_ / (double) humidityDecayRate_);
       ++humidityRange_;
     }
   appendLog ("World\tset\thumidityRange_ = " + std::to_string (humidityRange_));
 }
 
 void
-World::reloadCacheStructure ()
+World::reloadCacheStructure()
 {
   logEvent ("World", "loading\tcache structure");
 
   grassVertexes_ = generateVertexes (simulationWorld ()["textures"],
-                                     numberColumns_, cellSize_);
+				     numberColumns_, cellSize_);
   waterVertexes_ = grassVertexes_;
   rockVertexes_ = grassVertexes_;
 
@@ -86,13 +86,13 @@ World::reloadCacheStructure ()
 
   // create a cache of all the pixels to display
   renderingCache_.create (numberColumns_ * cellSize_,
-                          numberColumns_ * cellSize_);
+			  numberColumns_ * cellSize_);
   humidityCache_.create (numberColumns_ * cellSize_,
-                         numberColumns_ * cellSize_);
+			 numberColumns_ * cellSize_);
 }
 
 void
-World::updateCache ()
+World::updateCache()
 {
   logEvent ("World", "updating\tcache");
 
@@ -126,68 +126,68 @@ World::updateCache ()
 
       // get the indexes of the vertixes of current cell
       std::vector<size_t> positionIndexes = indexesForCellVertexes (
-          x, y, numberColumns_);
+	  x, y, numberColumns_);
 
       // get the right alpha values of the three layers
       std::array<int, 3> aValues;
       switch (cells_[i])
-        {
-        case Kind::Grass:
-          aValues =
-            { 255,0,0};
-          break;
-          case Kind::Water :
-          aValues =
-            { 0,255,0};
-          break;
-          case Kind::Rock :
-          aValues =
-            { 0,0,255};
-          break;
-          default :
-          aValues =
-            { 0,0,0};
-          break;
-        }
+	{
+	case Kind::Grass:
+	  aValues =
+	    { 255,0,0};
+	  break;
+	  case Kind::Water :
+	  aValues =
+	    { 0,255,0};
+	  break;
+	  case Kind::Rock :
+	  aValues =
+	    { 0,0,255};
+	  break;
+	  default :
+	  aValues =
+	    { 0,0,0};
+	  break;
+	}
 
       // get the right blue level for the humidity layer
       int blueLevel (
-          ((humidityLevels_[i] - minHumidity) / (maxHumidity - minHumidity))
-              * 255);
+	  ((humidityLevels_[i] - minHumidity) / (maxHumidity - minHumidity))
+	      * 255);
 
       // set the right color values for the layers
       for (size_t j (0); j < 4; ++j)
-        {
-          // set alpha values for textures
-          grassVertexes_[positionIndexes[j]].color.a = aValues[0];
-          waterVertexes_[positionIndexes[j]].color.a = aValues[1];
-          rockVertexes_[positionIndexes[j]].color.a = aValues[2];
+	{
+	  // set alpha values for textures
+	  grassVertexes_[positionIndexes[j]].color.a = aValues[0];
+	  waterVertexes_[positionIndexes[j]].color.a = aValues[1];
+	  rockVertexes_[positionIndexes[j]].color.a = aValues[2];
 
-          // set humidity levels
-          humidityVertexes_[positionIndexes[j]].color = sf::Color (0, 0,
-                                                                   blueLevel);
-        }
+	  // set humidity levels
+	  humidityVertexes_[positionIndexes[j]].color = sf::Color (0, 0,
+								   blueLevel);
+	}
     }
 
   renderingCache_.clear ();
   humidityCache_.clear ();
 
   renderingCache_.draw (grassVertexes_.data (), grassVertexes_.size (),
-                        sf::Quads, rsGrass);
+			sf::Quads, rsGrass);
   renderingCache_.draw (waterVertexes_.data (), waterVertexes_.size (),
-                        sf::Quads, rsWater);
+			sf::Quads, rsWater);
   renderingCache_.draw (rockVertexes_.data (), rockVertexes_.size (), sf::Quads,
-                        rsRock);
+			rsRock);
   // draw the humidity on a new cache
   humidityCache_.draw (humidityVertexes_.data (), humidityVertexes_.size (),
-                       sf::Quads, rsHumidity);
+		       sf::Quads, rsHumidity);
   humidityCache_.display ();
 
   renderingCache_.display ();
 }
 
 void
-World::reset (bool regenerate)
+World::reset(bool regenerate)
 {
   logEvent ("World", "resetting\tworld");
 
@@ -222,11 +222,11 @@ World::reset (bool regenerate)
   for (size_t i (0); i < seeds_.size (); ++i)
     {
       size_t index (
-          seeds_[i].position.y * numberColumns_ + seeds_[i].position.x);
+	  seeds_[i].position.y * numberColumns_ + seeds_[i].position.x);
       if (cells_[index] != Kind::Water)
-        {
-          cells_[index] = seeds_[i].texture;
-        }
+	{
+	  cells_[index] = seeds_[i].texture;
+	}
     }
 
   if (regenerate)
@@ -235,7 +235,7 @@ World::reset (bool regenerate)
 
       steps (simulationWorld ()["generation"]["steps"].toInt ());
       smooths (
-          simulationWorld ()["generation"]["smoothness"]["level"].toInt ());
+	  simulationWorld ()["generation"]["smoothness"]["level"].toInt ());
       humidify ();
     }
 
@@ -243,7 +243,7 @@ World::reset (bool regenerate)
 }
 
 void
-World::drawOn (sf::RenderTarget& target) const
+World::drawOn(sf::RenderTarget& target) const
 {
   if (simulationWorld ()["show humidity"].toBool () || isDebugOn ())
     {
@@ -258,7 +258,7 @@ World::drawOn (sf::RenderTarget& target) const
 }
 
 void
-World::loadFromFile ()
+World::loadFromFile()
 {
   logEvent ("World", "loading\tworld from file");
 
@@ -295,20 +295,20 @@ World::loadFromFile ()
       // read .map file values for cell Kind
       size_t size (numberColumns_ * numberColumns_);
       for (size_t i (0); i < size; ++i)
-        {
-          short var;
-          input >> var;
-          Kind value = static_cast<Kind> (var);
-          cells_.push_back (value);
-        }
+	{
+	  short var;
+	  input >> var;
+	  Kind value = static_cast<Kind> (var);
+	  cells_.push_back (value);
+	}
 
       // read .map file values for cell humidity
       for (size_t i (0); i < size; ++i)
-        {
-          double humidity;
-          input >> humidity;
-          humidityLevels_[i] = humidity;
-        }
+	{
+	  double humidity;
+	  input >> humidity;
+	  humidityLevels_[i] = humidity;
+	}
     }
 
   input.close ();
@@ -318,7 +318,7 @@ World::loadFromFile ()
 }
 
 void
-World::saveToFile () const
+World::saveToFile() const
 {
   logEvent ("World", "saving\tworld to file");
 
@@ -342,39 +342,39 @@ World::saveToFile () const
       // write the map contents
       size_t size (numberColumns_ * numberColumns_);
       for (size_t i (0); i < size; ++i)
-        {
-          switch (cells_[i])
-            {
-            case Kind::Grass:
-              output << "0";
-              break;
-            case Kind::Water:
-              output << "1";
-              break;
-            case Kind::Rock:
-              output << "2";
-              break;
-            default:
-              output << "2";
-              break;
-            }
-          output << " ";
-        }
+	{
+	  switch (cells_[i])
+	    {
+	    case Kind::Grass:
+	      output << "0";
+	      break;
+	    case Kind::Water:
+	      output << "1";
+	      break;
+	    case Kind::Rock:
+	      output << "2";
+	      break;
+	    default:
+	      output << "2";
+	      break;
+	    }
+	  output << " ";
+	}
 
       output << std::endl;
 
       // write the humidity
       for (size_t i (0); i < size; ++i)
-        {
-          output << humidityLevels_[i] << " ";
-        }
+	{
+	  output << humidityLevels_[i] << " ";
+	}
     }
 
   output.close ();
 }
 
 void
-World::step ()
+World::step()
 {
   // declare here to save time later
   bool teleport;
@@ -400,35 +400,35 @@ World::step ()
 
       // choose to move or teleport
       if ((seeds_[i].texture == Kind::Water) && teleport)
-        {
-          // teleport to random location
-          seeds_[i].position.x = uniform ((size_t) 0, numberColumns_ - 1);
-          seeds_[i].position.y = uniform ((size_t) 0, numberColumns_ - 1);
-        }
+	{
+	  // teleport to random location
+	  seeds_[i].position.x = uniform ((size_t) 0, numberColumns_ - 1);
+	  seeds_[i].position.y = uniform ((size_t) 0, numberColumns_ - 1);
+	}
       else
-        {
-          // pick a random direction
-          size_t index (uniform (0, 3));
-          seeds_[i].position.x += directions[index][0];
-          seeds_[i].position.y += directions[index][1];
+	{
+	  // pick a random direction
+	  size_t index (uniform (0, 3));
+	  seeds_[i].position.x += directions[index][0];
+	  seeds_[i].position.y += directions[index][1];
 
-          // clamp the seed to the board
-          seeds_[i].position.x = std::max ((int) 0, (int) seeds_[i].position.x);
-          seeds_[i].position.x = std::min ((int) numberColumns_ - 1,
-                                           (int) seeds_[i].position.x);
-          seeds_[i].position.y = std::max ((int) 0, (int) seeds_[i].position.y);
-          seeds_[i].position.y = std::min ((int) numberColumns_ - 1,
-                                           (int) seeds_[i].position.y);
-        }
+	  // clamp the seed to the board
+	  seeds_[i].position.x = std::max ((int) 0, (int) seeds_[i].position.x);
+	  seeds_[i].position.x = std::min ((int) numberColumns_ - 1,
+					   (int) seeds_[i].position.x);
+	  seeds_[i].position.y = std::max ((int) 0, (int) seeds_[i].position.y);
+	  seeds_[i].position.y = std::min ((int) numberColumns_ - 1,
+					   (int) seeds_[i].position.y);
+	}
 
       // set the texture of the seed to cells
       cells_[(seeds_[i].position.y * numberColumns_) + seeds_[i].position.x] =
-          seeds_[i].texture;
+	  seeds_[i].texture;
     }
 }
 
 void
-World::steps (unsigned int n, bool update)
+World::steps(unsigned int n, bool update)
 {
   logEvent ("World", "moving seeds");
 
@@ -446,7 +446,7 @@ World::steps (unsigned int n, bool update)
 }
 
 void
-World::smooth ()
+World::smooth()
 {
   // copy cells_ so as to not have directional bias
   // decisions are made on original, written in copy
@@ -485,68 +485,68 @@ World::smooth ()
       assert(scanRange[2] < scanRange[3]);
 
       for (size_t column (scanRange[0]); column < scanRange[1]; ++column)
-        {
-          for (size_t row (scanRange[2]); row < scanRange[3]; ++row)
-            {
-              // check that we are not on original cell 
-              if (!((column == x) && (row == y)))
-                {
+	{
+	  for (size_t row (scanRange[2]); row < scanRange[3]; ++row)
+	    {
+	      // check that we are not on original cell 
+	      if (!((column == x) && (row == y)))
+		{
 
-                  // increment for each type of cell
-                  switch (cells_[row * numberColumns_ + column])
-                    {
-                    case Kind::Rock:
-                      ++nbRock;
-                      break;
-                    case Kind::Water:
-                      ++nbWater;
-                      break;
-                    case Kind::Grass:
-                      ++nbGrass;
-                      break;
-                    default:
-                      break;
-                    }
-                }
-            }
-        }
+		  // increment for each type of cell
+		  switch (cells_[row * numberColumns_ + column])
+		    {
+		    case Kind::Rock:
+		      ++nbRock;
+		      break;
+		    case Kind::Water:
+		      ++nbWater;
+		      break;
+		    case Kind::Grass:
+		      ++nbGrass;
+		      break;
+		    default:
+		      break;
+		    }
+		}
+	    }
+	}
 
       // define the water and grass ratios
       double waterRatio (
-          (double) nbWater / (double) (nbRock + nbGrass + nbWater));
+	  (double) nbWater / (double) (nbRock + nbGrass + nbWater));
       double grassRatio (
-          (double) nbGrass / (double) (nbRock + nbGrass + nbWater));
+	  (double) nbGrass / (double) (nbRock + nbGrass + nbWater));
 
       switch (cells_[i])
-        {
-        case Kind::Rock:
-          if (waterRatio > sWaterRatio)
-            {
-              localCells[i] = Kind::Water;
-            }
-          else if (grassRatio > sGrassRatio)
-            {
-              localCells[i] = Kind::Grass;
-            }
-          break;
-        case Kind::Grass:
-          if (waterRatio > sWaterRatio)
-            {
-              localCells[i] = Kind::Water;
-            }
-          break;
-        case Kind::Water:
-          break;
-        default:
-          break;
-        }
+	{
+	case Kind::Rock:
+	  if (waterRatio > sWaterRatio)
+	    {
+	      localCells[i] = Kind::Water;
+	    }
+	  else if (grassRatio > sGrassRatio)
+	    {
+	      localCells[i] = Kind::Grass;
+	    }
+	  break;
+	case Kind::Grass:
+	  if (waterRatio > sWaterRatio)
+	    {
+	      localCells[i] = Kind::Water;
+	    }
+	  break;
+	case Kind::Water:
+	  break;
+	default:
+	  break;
+	}
     }
   // swap the changes and original cells_
   std::swap (cells_, localCells);
 }
 
 void
-World::smooths (unsigned int n, bool update)
+World::smooths(unsigned int n, bool update)
 {
   logEvent ("World", "smoothing world");
 
@@ -563,7 +563,7 @@ World::smooths (unsigned int n, bool update)
 }
 
 void
-World::clear ()
+World::clear()
 {
   size_t size (numberColumns_ * numberColumns_);
   for (size_t i (0); i < size; ++i)
@@ -573,7 +573,7 @@ World::clear ()
 }
 
 void
-World::humidify ()
+World::humidify()
 {
   logEvent ("World", "calculating\tglobal humidity");
 
@@ -581,14 +581,14 @@ World::humidify ()
   for (size_t i (0); i < size; ++i)
     {
       if (cells_[i] == Kind::Water)
-        {
-          humidify (i);
-        }
+	{
+	  humidify (i);
+	}
     }
 }
 
 void
-World::humidify (size_t i)
+World::humidify(size_t i)
 {
   size_t x (i % numberColumns_);
   size_t y (i / numberColumns_);
@@ -604,23 +604,23 @@ World::humidify (size_t i)
   for (size_t column (scanRange[0]); column < scanRange[1]; ++column)
     {
       for (size_t row (scanRange[2]); row < scanRange[3]; ++row)
-        {
-          double currentLevel (
-              humidityInitialLevel_
-                  * std::exp (
-                      -std::hypot ((double) x - (double) column,
-                                   (double) y - (double) row)
-                          / humidityDecayRate_));
-          if (currentLevel > humidityThreshold_)
-            {
-              humidityLevels_[row * numberColumns_ + column] += currentLevel;
-            }
-        }
+	{
+	  double currentLevel (
+	      humidityInitialLevel_
+		  * std::exp (
+		      -std::hypot ((double) x - (double) column,
+				   (double) y - (double) row)
+			  / humidityDecayRate_));
+	  if (currentLevel > humidityThreshold_)
+	    {
+	      humidityLevels_[row * numberColumns_ + column] += currentLevel;
+	    }
+	}
     }
 }
 
 std::array<size_t, 4>
-World::calculateScanRange (size_t x, size_t y, unsigned int radius)
+World::calculateScanRange(size_t x, size_t y, unsigned int radius)
 {
   std::array<size_t, 4> scanRange =
     { 0, numberColumns_ - 1, 0, numberColumns_ - 1 };
@@ -642,7 +642,7 @@ World::calculateScanRange (size_t x, size_t y, unsigned int radius)
 }
 
 bool
-World::isGrowable (const Vec2d& position) const
+World::isGrowable(const Vec2d& position) const
 {
   if (cells_[getCellIndex (position)] == Kind::Grass)
     {
@@ -655,7 +655,7 @@ World::isGrowable (const Vec2d& position) const
 }
 
 bool
-World::isHiveable (const Vec2d& position, double radius)
+World::isHiveable(const Vec2d& position, double radius)
 {
   // TODO implement method isHiveable
   Vec2d left;
@@ -671,7 +671,7 @@ World::isHiveable (const Vec2d& position, double radius)
 }
 
 bool
-World::isFlyable (Vec2d const& position) const
+World::isFlyable(Vec2d const& position) const
 {
   if (cells_[getCellIndex (position)] != Kind::Rock)
     {
@@ -684,7 +684,7 @@ World::isFlyable (Vec2d const& position) const
 }
 
 Vec2d
-World::getCellPosition (const Vec2d& position) const
+World::getCellPosition(const Vec2d& position) const
 {
   Vec2d cellPosition;
   cellPosition.x = position.x / (int) cellSize_;
@@ -693,7 +693,7 @@ World::getCellPosition (const Vec2d& position) const
 }
 
 size_t
-World::getCellIndex (const Vec2d& position) const
+World::getCellIndex(const Vec2d& position) const
 {
   if (!isInWorld (position))
     {
@@ -711,13 +711,13 @@ World::getCellIndex (const Vec2d& position) const
 }
 
 double
-World::getHumidity (const Vec2d& position) const
+World::getHumidity(const Vec2d& position) const
 {
   return humidityLevels_[getCellIndex (position)];
 }
 
 bool
-World::isInWorld (const Vec2d& position) const
+World::isInWorld(const Vec2d& position) const
 {
   if ((position.x > numberColumns_ * cellSize_)
       || (position.y > numberColumns_ * cellSize_) || (position.x < 0)

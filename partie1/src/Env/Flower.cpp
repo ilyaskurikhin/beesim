@@ -1,8 +1,8 @@
 #include <Env/Flower.hpp>
 
-Flower::Flower (const Vec2d& position, double radius, double pollen) :
+Flower::Flower(const Vec2d& position, double radius, double pollen) :
     Collider (position, radius), pollen_ (pollen), humidity_ (
-        getAppEnv ().getHumidity (position))
+	getAppEnv ().getHumidity (position))
 {
   loadTexture ();
   splitThreshold_ =
@@ -13,7 +13,7 @@ Flower::Flower (const Vec2d& position, double radius, double pollen) :
 }
 
 double
-Flower::takePollen (const double& pollen)
+Flower::takePollen(const double& pollen)
 {
   double taken (0);
   // if there is enough pollen, take pollen out
@@ -32,14 +32,14 @@ Flower::takePollen (const double& pollen)
 }
 
 void
-Flower::drawOn (sf::RenderTarget& target) const
+Flower::drawOn(sf::RenderTarget& target) const
 {
   auto flowerSprite = buildSprite (this->position_, this->radius_, texture_);
   target.draw (flowerSprite);
 }
 
 void
-Flower::loadTexture ()
+Flower::loadTexture()
 {
   std::vector<std::string> textures;
 
@@ -56,7 +56,7 @@ Flower::loadTexture ()
 }
 
 void
-Flower::update (sf::Time dt)
+Flower::update(sf::Time dt)
 {
   // set the new pollen value
   pollen_ = pollen_ + dt.asSeconds () * humidityFactor_;
@@ -67,27 +67,27 @@ Flower::update (sf::Time dt)
       int i (0);
       bool placed (false);
       while ((!placed) && (i < 100)) //
-        {
-          // set a random distance
-          double distance (uniform (0.5 * radius_, 2 * radius_));
+	{
+	  // set a random distance
+	  double distance (uniform (0.5 * radius_, 2 * radius_));
 
-          // calculate a new position and clamp it
-          Vec2d position = position_ + Vec2d::fromRandomAngle () * distance;
-          Collider protoFlower (position, radius_);
-          protoFlower.clamping ();
+	  // calculate a new position and clamp it
+	  Vec2d position = position_ + Vec2d::fromRandomAngle () * distance;
+	  Collider protoFlower (position, radius_);
+	  protoFlower.clamping ();
 
-          if (getAppEnv ().addFlowerAt (protoFlower.getPosition ()))
-            {
-              placed = true;
-              pollen_ = 0.5 * pollen_;
-            }
-          ++i;
-        }
+	  if (getAppEnv ().addFlowerAt (protoFlower.getPosition ()))
+	    {
+	      placed = true;
+	      pollen_ = 0.5 * pollen_;
+	    }
+	  ++i;
+	}
     }
 }
 
 double
-Flower::getPollen ()
+Flower::getPollen()
 {
   return pollen_;
 }

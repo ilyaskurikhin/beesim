@@ -15,18 +15,18 @@ class WorkerBee : public Bee
 {
 public:
 
-  WorkerBee (Hive* hive, const Vec2d& position, std::vector<State> states);
+  WorkerBee(Hive* hive, const Vec2d& position, std::vector<State> states);
 
-  ~WorkerBee ();
+  ~WorkerBee();
 
   void
-  reloadConfig ();
+  reloadConfig();
 
   j::Value const&
-  getConfig () override;
+  getConfig() override;
 
   void
-  onState (State state, sf::Time dt) override;
+  onState(State state, sf::Time dt) override;
 
   void
   setFlower(const Vec2d& position);

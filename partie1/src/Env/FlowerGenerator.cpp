@@ -1,12 +1,12 @@
 #include <Env/FlowerGenerator.hpp>
 
-FlowerGenerator::FlowerGenerator () :
+FlowerGenerator::FlowerGenerator() :
     counter_ (sf::Time::Zero)
 {
 }
 
 void
-FlowerGenerator::update (sf::Time dt)
+FlowerGenerator::update(sf::Time dt)
 {
   counter_ += dt;
 
@@ -14,7 +14,7 @@ FlowerGenerator::update (sf::Time dt)
   // generate flowers at random locations
   if (counter_
       > sf::seconds (
-          (float) getAppConfig ()["simulation"]["flower generator"]["delay"].toDouble ()))
+	  (float) getAppConfig ()["simulation"]["flower generator"]["delay"].toDouble ()))
     {
       // reset the counter
       counter_ = sf::Time::Zero;
@@ -27,7 +27,7 @@ FlowerGenerator::update (sf::Time dt)
 }
 
 void
-FlowerGenerator::reset ()
+FlowerGenerator::reset()
 {
   counter_ = sf::Time::Zero;
 }

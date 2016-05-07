@@ -50,7 +50,7 @@ public:
    *
    * Load parameters from configuration file.
    */
-  World ();
+  World();
 
   /**
    * @brief Load the app configuration from the config file.
@@ -59,7 +59,7 @@ public:
    * of seeds and fill a blank Rock world.
    */
   void
-  reloadConfig ();
+  reloadConfig();
 
   /**
    * @brief Generate the texture cache.
@@ -67,7 +67,7 @@ public:
    * Generate the Grass, Water and Rock layers and store them to cache.
    */
   void
-  reloadCacheStructure ();
+  reloadCacheStructure();
 
   /**
    * @brief Draw the current world on a target.
@@ -75,7 +75,7 @@ public:
    * @param target where to draw this world
    */
   void
-  drawOn (sf::RenderTarget& target) const override;
+  drawOn(sf::RenderTarget& target) const override;
 
   /**
    * @brief Set the texture to show in each cell.
@@ -85,7 +85,7 @@ public:
    * Set the blue levels for each cell based on humidity.
    */
   void
-  updateCache ();
+  updateCache();
 
   /**
    * @brief Reload the config and generate a new world.a
@@ -96,7 +96,7 @@ public:
    * @param regenerate use seeds to generate terrain, then smooth.
    */
   void
-  reset (bool regenerate);
+  reset(bool regenerate);
 
   /**
    * @brief Load a map from file.
@@ -105,7 +105,7 @@ public:
    * Throw an error if not possible.
    */
   void
-  loadFromFile ();
+  loadFromFile();
 
   /**
    * @brief Save a map to file.
@@ -113,13 +113,13 @@ public:
    * Save a map to teh file specified in the config.
    */
   void
-  saveToFile () const;
+  saveToFile() const;
 
   /**
    * @brief Move all the seeds_, teleport water.
    */
   void
-  step ();
+  step();
 
   /**
    * @brief Move all the seeds_ n times.
@@ -128,7 +128,7 @@ public:
    * @param update update cache after moving
    */
   void
-  steps (unsigned int n, bool update = false);
+  steps(unsigned int n, bool update = false);
 
   /**
    * @brief Smoothen the map.
@@ -136,7 +136,7 @@ public:
    * Flood cells near water and grow grass on rock.
    */
   void
-  smooth ();
+  smooth();
 
   /**
    * @brief Smoothen the map n times.
@@ -145,19 +145,19 @@ public:
    * @param update update cache after smoothening
    */
   void
-  smooths (unsigned int n, bool update = false);
+  smooths(unsigned int n, bool update = false);
 
   /**
    * @brief Reset texture of World to Kind::Rock.
    */
   void
-  clear ();
+  clear();
 
   /**
    * @brief Calculate humidity for whole World.
    */
   void
-  humidify ();
+  humidify();
 
   /**
    * @brief Calculate humidity contribution of a cell.
@@ -165,7 +165,7 @@ public:
    * @param i cell to calculate for.
    */
   void
-  humidify (size_t i);
+  humidify(size_t i);
 
   /**
    * @brief Check if a FLower can be grown.
@@ -175,9 +175,9 @@ public:
    * @param position
    *
    * @return true is can be grown.  
-   * */ 
+   * */
   bool
-  isGrowable (const Vec2d& position) const;
+  isGrowable(const Vec2d& position) const;
 
   /**
    * @brief Check if Bee can be flown.
@@ -189,7 +189,7 @@ public:
    * @return true if can fly.
    */
   bool
-  isFlyable (Vec2d const& position) const;
+  isFlyable(Vec2d const& position) const;
 
   /**
    * @brief Get grid coordinates from graphic coordinates. 
@@ -199,7 +199,7 @@ public:
    * @return grid coordinates in world vector.
    */
   Vec2d
-  getCellPosition (const Vec2d& position) const;
+  getCellPosition(const Vec2d& position) const;
 
   /**
    * @brief Get vector table index from graphic position.
@@ -209,7 +209,7 @@ public:
    * @return Index of corresponding cell.
    */
   size_t
-  getCellIndex (const Vec2d& position) const;
+  getCellIndex(const Vec2d& position) const;
 
   /**
    * @brief Get humidity for a graphic position. 
@@ -219,7 +219,7 @@ public:
    * @return humidity
    */
   double
-  getHumidity (const Vec2d& position) const;
+  getHumidity(const Vec2d& position) const;
 
   /**
    * @brief Check if position is in World bounds.
@@ -229,7 +229,7 @@ public:
    * @return true if is in bounds of World.
    */
   bool
-  isInWorld (const Vec2d& position) const;
+  isInWorld(const Vec2d& position) const;
 
   /**
    * @brief Check if Hive can be build.
@@ -242,7 +242,7 @@ public:
    * @return true is can be placed.
    */
   bool
-  isHiveable (const Vec2d& position, double radius);
+  isHiveable(const Vec2d& position, double radius);
 
 private:
 
@@ -281,6 +281,6 @@ private:
    * Make sure that we do not go over boundaries.
    */
   std::array<size_t, 4>
-  calculateScanRange (size_t x, size_t y, unsigned int radius);
+  calculateScanRange(size_t x, size_t y, unsigned int radius);
 };
 #endif

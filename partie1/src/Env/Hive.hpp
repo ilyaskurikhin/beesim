@@ -38,14 +38,14 @@ public:
    * @param position graphic position of new Hive.
    * @param radius size of new Hive.
    */
-  Hive (const Vec2d& position, double radius);
+  Hive(const Vec2d& position, double radius);
 
-  Hive (const Hive&) = delete;
+  Hive(const Hive&) = delete;
 
   Hive
-  operator= (const Hive&) = delete;
+  operator=(const Hive&) = delete;
 
-  ~Hive ();
+  ~Hive();
 
   /**
    * @brief Add a new ScoutBee.
@@ -53,7 +53,7 @@ public:
    * @return pointer to new ScoutBee.
    */
   ScoutBee*
-  addScout ();
+  addScout();
 
   /**
    * @brief Add a new WorkerBee.
@@ -61,7 +61,7 @@ public:
    * @return pointer to new WorkerBee.
    */
   WorkerBee*
-  addWorker ();
+  addWorker();
 
   /**
    * @brief Get a WorkerBee ready to get nectar.
@@ -71,7 +71,7 @@ public:
    * @return pointer to a WorkerBee.
    */
   WorkerBee*
-  getWorker () const;
+  getWorker() const;
 
   /**
    * @brief Check is there is a Bee with such position.
@@ -81,7 +81,7 @@ public:
    * @return poiter to existing Bee.
    */
   Bee*
-  getBeeAt (const Vec2d& position);
+  getBeeAt(const Vec2d& position);
 
   /**
    * @brief Evolve Hive.
@@ -89,7 +89,7 @@ public:
    * @param dt
    */
   void
-  update (sf::Time dt) override;
+  update(sf::Time dt) override;
 
   /**
    * @brief Draw hive on a target.
@@ -97,7 +97,7 @@ public:
    * @param target where to draw
    */
   void
-  drawOn (sf::RenderTarget& target) const override;
+  drawOn(sf::RenderTarget& target) const override;
 
   /**
    * @brief Drop pollen into Hive.
@@ -107,7 +107,7 @@ public:
    * @return new amont of pollen (nectar) in Hive.
    */
   double
-  dropPollen (double amount);
+  dropPollen(double amount);
 
   /**
    * @brief Take nectar from Hive.
@@ -117,7 +117,7 @@ public:
    * @return new amount to nextar_ in Hive. 
    */
   double
-  takeNectar (double amount);
+  takeNectar(double amount);
 
   /**
    * @brief Get amount to nectar in Hive.
@@ -125,7 +125,7 @@ public:
    * @return current amount of nectar.
    */
   double
-  getNectar ();
+  getNectar();
 
 private:
 

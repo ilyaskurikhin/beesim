@@ -3,11 +3,9 @@
 #include <Env/Hive.hpp>
 #include <Env/Flower.hpp>
 
-Bee::Bee (Hive* hive, const Vec2d& position, std::vector<State> states) :
-    Collider (position), CFSM (states),
-        hive_ (hive),
-        debug_thickness_random_(5), debug_thickness_target_(3),
-        vision_range_(position)
+Bee::Bee(Hive* hive, const Vec2d& position, std::vector<State> states) :
+    Collider (position), CFSM (states), hive_ (hive), debug_thickness_random_ (
+	5), debug_thickness_target_ (3), vision_range_ (position)
 {
   // This constructor can not take care of its members
   // since it does not know what kind of bee it is
@@ -16,77 +14,77 @@ Bee::Bee (Hive* hive, const Vec2d& position, std::vector<State> states) :
   // by calling the reloadConfig function
 }
 
-
-
 void
-Bee::reloadConfig ()
+Bee::reloadConfig()
 {
   // TODO resolve function calls to subclass
   radius_ = getConfig ()["size"].toDouble ();
 
   energy_ = getConfig ()["energy"]["initial"].toDouble ();
-  energy_rate_idle_ = getConfig()["energy"]["consumption rates"]["idle"].toDouble ();
-  energy_rate_moving_ = getConfig()["energy"]["consumption rates"]["moving"].toDouble ();
-  energy_rate_eating_ = getConfig()["energy"]["consumption rates"]["eating"].toDouble ();
+  energy_rate_idle_ =
+      getConfig ()["energy"]["consumption rates"]["idle"].toDouble ();
+  energy_rate_moving_ =
+      getConfig ()["energy"]["consumption rates"]["moving"].toDouble ();
+  energy_rate_eating_ =
+      getConfig ()["energy"]["consumption rates"]["eating"].toDouble ();
 
-  visibility_ = getConfig()["visibility range"].toDouble ();
-  vision_range_.setRadius(visibility_);
+  visibility_ = getConfig ()["visibility range"].toDouble ();
+  vision_range_.setRadius (visibility_);
 
   speed_ = getConfig ()["speed"].toDouble ();
 }
 
 void
-Bee::move (sf::Time dt)
+Bee::move(sf::Time dt)
 {
   if (move_state_ == AT_REST)
     {
-      energy_ = energy_ - energy_rate_idle_ * dt.asSeconds();
+      energy_ = energy_ - energy_rate_idle_ * dt.asSeconds ();
     }
   else if (move_state_ == RANDOM)
     {
       randomMove (dt);
-      energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
+      energy_ = energy_ - energy_rate_moving_ * dt.asSeconds ();
     }
   else if (move_state_ == TARGET)
     {
       targetMove (dt);
-      energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
+      energy_ = energy_ - energy_rate_moving_ * dt.asSeconds ();
     }
 }
 
 void
-Bee::randomMove (sf::Time dt)
+Bee::randomMove(sf::Time dt)
 {
   // TODO implement
 }
 
 void
-Bee::setMoveTarget (const Vec2d& position)
+Bee::setMoveTarget(const Vec2d& position)
 {
   move_target_ = position;
 }
 
 const Vec2d&
-Bee::getMoveTarget () const 
+Bee::getMoveTarget() const
 {
   return move_target_;
 }
 
 double
-Bee::getSpeed () const
+Bee::getSpeed() const
 {
   return speed_;
 }
 
-
 void
-Bee::targetMove (sf::Time dt)
+Bee::targetMove(sf::Time dt)
 {
   // TODO implement
 }
 
 bool
-Bee::isDead ()
+Bee::isDead()
 {
   if (energy_ == 0)
     {
@@ -99,33 +97,33 @@ Bee::isDead ()
 }
 
 void
-Bee::update (sf::Time dt)
+Bee::update(sf::Time dt)
 {
-  this->action(dt);
+  this->action (dt);
   move (dt);
   // TODO implement energy loss
 }
 
 double
-Bee::getEnergy () const
+Bee::getEnergy() const
 {
   return energy_;
 }
 
 void
-Bee::eatFromHive (sf::Time dt)
+Bee::eatFromHive(sf::Time dt)
 {
-  energy_ =+ hive_->takeNectar(energy_rate_eating_ * dt.asSeconds());
+  energy_ = +hive_->takeNectar (energy_rate_eating_ * dt.asSeconds ());
 }
 
 Hive*
-Bee::getHive () const
+Bee::getHive() const
 {
   return hive_;
 }
 
 void
-Bee::drawOn (sf::RenderTarget& target) const
+Bee::drawOn(sf::RenderTarget& target) const
 {
 
   auto beeSprite = buildSprite (position_, radius_, texture_);
@@ -137,28 +135,25 @@ Bee::drawOn (sf::RenderTarget& target) const
   beeSprite.rotate (angle / DEG_TO_RAD);
   target.draw (beeSprite);
 
-  if (isDebugOn())
+  if (isDebugOn ())
     {
-      double thickness(0);
+      double thickness (0);
       if (move_state_ == RANDOM)
-        {
-          thickness = debug_thickness_random_;
-        }
+	{
+	  thickness = debug_thickness_random_;
+	}
       else if (move_state_ == TARGET)
-        {
-          thickness = debug_thickness_target_;
-        }
-      sf::CircleShape shape =
-                buildAnnulus (
-                    position_,
-                    radius_,
-                    sf::Color::Black, thickness);
-            target.draw (shape);
+	{
+	  thickness = debug_thickness_target_;
+	}
+      sf::CircleShape shape = buildAnnulus (position_, radius_,
+					    sf::Color::Black, thickness);
+      target.draw (shape);
     }
 }
 
 void
-Bee::loadTexture ()
+Bee::loadTexture()
 {
   texture_ = getAppTexture (this->getConfig ()["texture"].toString ());
 }
@@ -167,10 +162,10 @@ Flower*
 Bee::findVisibleFlower() const
 {
   //what if two flowers are colliding?
-  return getAppEnv().getCollidingFlower(vision_range_);
+  return getAppEnv ().getCollidingFlower (vision_range_);
 }
 
 void
-Bee::onEnterState (State state) 
+Bee::onEnterState(State state)
 {
 }

@@ -1,6 +1,6 @@
 #include <Env/Collider.hpp>
 
-Collider::Collider (const Vec2d& position, double radius)
+Collider::Collider(const Vec2d& position, double radius)
 // affecte par défaut le rayon et la position
 :
     radius_ (radius), position_ (position)
@@ -9,44 +9,44 @@ Collider::Collider (const Vec2d& position, double radius)
   if (radius_ < 0)
     {
       throw std::runtime_error (
-          "Collider with negative radius created. (Collider::Collider)");
+	  "Collider with negative radius created. (Collider::Collider)");
     }
 
   // puts Collider into map
   clamping ();
 }
 
-Collider::Collider (const Vec2d& position) :
+Collider::Collider(const Vec2d& position) :
     Collider (position, 0)
 {
 }
 
-Collider::Collider (const Collider& collider)
+Collider::Collider(const Collider& collider)
 {
   radius_ = collider.getRadius ();
   position_ = collider.getPosition ();
 }
 
 bool
-Collider::operator> (const Collider& other) const
+Collider::operator>(const Collider& other) const
 {
   return isColliderInside (other);
 }
 
 bool
-Collider::operator| (const Collider& other) const
+Collider::operator|(const Collider& other) const
 {
   return isColliding (other);
 }
 
 bool
-Collider::operator> (const Vec2d& p) const
+Collider::operator>(const Vec2d& p) const
 {
   return isPointInside (p);
 }
 
 std::ostream&
-operator<< (std::ostream& oss, const Collider& collider)
+operator<<(std::ostream& oss, const Collider& collider)
 {
   oss << "Collider: position = (" << collider.getPosition ().x << ","
       << collider.getPosition ().y << ") ";
@@ -56,7 +56,7 @@ operator<< (std::ostream& oss, const Collider& collider)
 }
 
 Collider&
-Collider::operator= (Collider other)
+Collider::operator=(Collider other)
 {
   position_ = other.getPosition ();
   radius_ = other.getRadius ();
@@ -64,13 +64,13 @@ Collider::operator= (Collider other)
 }
 
 Collider&
-Collider::operator+= (const Vec2d& dx)
+Collider::operator+=(const Vec2d& dx)
 {
   return move (dx);
 }
 
 Vec2d
-Collider::clamping ()
+Collider::clamping()
 {
 
   //permet d'obtenir largeur et hauteur du monde
@@ -107,7 +107,7 @@ Collider::clamping ()
 }
 
 bool
-Collider::isColliderInside (const Collider& other) const
+Collider::isColliderInside(const Collider& other) const
 {
   if ((other.getRadius () > radius_)
       || (distanceTo (other) > radius_ - other.getRadius ()))
@@ -121,7 +121,7 @@ Collider::isColliderInside (const Collider& other) const
 }
 
 bool
-Collider::isColliding (const Collider& other) const
+Collider::isColliding(const Collider& other) const
 {
   double minimumDistance (other.getRadius () + radius_);
 
@@ -136,7 +136,7 @@ Collider::isColliding (const Collider& other) const
 }
 
 bool
-Collider::isPointInside (const Vec2d& p) const
+Collider::isPointInside(const Vec2d& p) const
 {
   if (distanceTo (p) <= radius_)
     {
@@ -149,7 +149,7 @@ Collider::isPointInside (const Vec2d& p) const
 }
 
 Vec2d
-Collider::directionTo (const Vec2d& to) const
+Collider::directionTo(const Vec2d& to) const
 {
 
   // permet d'obtenir largeur et hautueur du monde
@@ -190,37 +190,37 @@ Collider::directionTo (const Vec2d& to) const
       currentTo.y = multipliers[i][1] * height + to.y;
 
       if (distance (position_, currentTo) < min)
-        {
-          minimumTo = currentTo;
-          min = distance (position_, currentTo);
-          moveTo.x = minimumTo.x - position_.x;
-          moveTo.y = minimumTo.y - position_.y;
-        }
+	{
+	  minimumTo = currentTo;
+	  min = distance (position_, currentTo);
+	  moveTo.x = minimumTo.x - position_.x;
+	  moveTo.y = minimumTo.y - position_.y;
+	}
     }
 
   return moveTo;
 }
 
 Vec2d
-Collider::directionTo (const Collider& other) const
+Collider::directionTo(const Collider& other) const
 {
   return directionTo (other.getPosition ());
 }
 
 double
-Collider::distanceTo (const Vec2d& to) const
+Collider::distanceTo(const Vec2d& to) const
 {
   return directionTo (to).length ();
 }
 
 double
-Collider::distanceTo (const Collider& other) const
+Collider::distanceTo(const Collider& other) const
 {
   return distanceTo (other.getPosition ());
 }
 
 Collider&
-Collider::move (const Vec2d& dx)
+Collider::move(const Vec2d& dx)
 {
   position_.x += dx.x;
   position_.y += dx.y;
@@ -230,35 +230,37 @@ Collider::move (const Vec2d& dx)
 }
 
 Vec2d
-Collider::getPosition () const
+Collider::getPosition() const
 {
   return position_;
 }
 
 void
-Collider::setPosition (const Vec2d& position)
+Collider::setPosition(const Vec2d& position)
 {
   position_ = position;
-  clamping();
+  clamping ();
 }
 
 double
-Collider::getRadius () const
+Collider::getRadius() const
 {
   return radius_;
 }
 
 void
-Collider::setRadius (double radius)
+Collider::setRadius(double radius)
 {
-  try 
-  {
-    radius_ = radius;
-    if (radius_ < 0)
+  try
     {
-      throw std::runtime_error("ERROR: Negative radius set (Collider)");
+      radius_ = radius;
+      if (radius_ < 0)
+	{
+	  throw std::runtime_error ("ERROR: Negative radius set (Collider)");
+	}
     }
-  } catch (std::string e) {
-    radius_ = 0;
-  }
+  catch (std::string e)
+    {
+      radius_ = 0;
+    }
 }
