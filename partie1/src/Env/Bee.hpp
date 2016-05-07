@@ -2,6 +2,7 @@
  * @file Bee.hpp
  * @brief 
  * @author Ilya Skurikhin
+ * @author Julia Besson
  * @version p5.1
  * @date 2016-05-05
  */
@@ -138,13 +139,13 @@ protected:
   double energy_rate_idle_;
   double energy_rate_moving_;
   double energy_leave_hive_;
-  
+
   sf::Texture texture_;
   double debug_thickness_random_;
   double debug_thickness_target_;
 
   // memory of flower location
-  Vec2d flower_location_;
+  Flower* flower_;
 
   State const AT_REST = 0;
   State const RANDOM = 1; 

@@ -32,7 +32,7 @@ public:
   onState (State state, sf::Time dt) override;
 
   void
-  onEnterState () override;
+  onEnterState (State state) override;
   
   void 
   targetMove () override;

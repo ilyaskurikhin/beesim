@@ -23,7 +23,9 @@ Hive::~Hive ()
 ScoutBee*
 Hive::addScout ()
 {
-  std::vector<State> states = {ScoutBee::IN_HIVE};
+  std::vector<State> states = {ScoutBee::IN_HIVE,
+                               ScoutBee::SEARCH_FLOWER,
+                               ScoutBee::RETURN_HIVE};
   ScoutBee* scout (new ScoutBee (this, this->getPosition (), states));
   scout->reloadConfig ();
   bees_.push_back (scout);

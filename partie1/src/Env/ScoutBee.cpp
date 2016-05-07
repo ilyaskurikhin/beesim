@@ -1,8 +1,10 @@
-/*
- * ScoutBee.cpp
- *
- *  Created on: Apr 28, 2016
- *      Author: ilya
+/**
+ * @file ScoutBee.cpp
+ * @brief 
+ * @author Ilya Skurikhina
+ * @author Julia Besson
+ * @version p5.1
+ * @date 2016-05-05
  */
 
 #include <Env/ScoutBee.hpp>
@@ -81,42 +83,40 @@ ScoutBee::getConfig ()
 void
 ScoutBee::onState (State state, sf::Time dt)
 {
-  if (energy_ > energy_leave_hive)
-  {
-    state_ = SEARCH_FLOWER;
-    onEnterState();
-    
-  }
+  switch (this->getState()) 
+    {
+      case IN_HIVE: 
+        move_state_ = AT_REST
+        if (energy_ < energy_leave_hive_)
+          {
+            energy =+ hive_->takeNectar(energy_leave_hive_ - energy_);
+          }
+        else if (flower_location_ == (-1,-1));
+          {
+            state_ = SEARCH_FLOWER;
+            onEnterState();
+          }
+        break;
+      case SEARCH_FLOWER : 
+        move_state_ = RANDOM;
+        break;
+      case RETURN_HIVE: 
+        move_state_ = TARGET;
+        flower_location_.clear();
+        //il faut fixer la ruche comme cible à avoir
+        break;
+    }
 }
 
 void 
-ScoutBee::onEnterState ()
+ScoutBee::onEnterState (State state)
 {
-  switch (state_)
-  case IN_HIVE: 
-  {
-    state_ = AT_REST;
-  }
-  break;
-  case SEARCH_FLOWER : 
-  {
-    state_ = RANDOM;
-  }
-  break;
-  case RETURN_HIVE: 
-  {
-    state_ = TARGET;
-    flower_location_.clear();
-    //il faut fixer la ruche comme cible à avoir
-  }
-  break;
 }
 
 void 
 ScoutBee::targetMove()
 {
-  
-  
+  // TODO implement for states
 }
 
 State const

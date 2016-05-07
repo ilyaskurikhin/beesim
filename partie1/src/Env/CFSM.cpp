@@ -1,8 +1,10 @@
-/*
- * CFSM.cpp
- *
- *  Created on: Apr 30, 2016
- *      Author: Ilya Skurikhin
+/**
+ * @file CFSM.cpp
+ * @brief 
+ * @author Ilya Skurikhin
+ * @author Julia Besson
+ * @version p5.1
+ * @date 2016-05-05
  */
 
 #include <Env/CFSM.hpp>

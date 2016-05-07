@@ -7,7 +7,7 @@ Bee::Bee (Hive* hive, const Vec2d& position, std::vector<State> states) :
         hive_ (hive), move_vec_ (0, 0), speed_ (0),
         energy_ (0), energy_rate_idle_(0), energy_rate_moving_(0),
         debug_thickness_random_(5), debug_thickness_target_(3),
-        flower_location_ (0, 0), move_state_(0)
+        flower_ (nullptr), move_state_(0)
 {
   // This constructor can not take care of its members
   // since it does not know what kind of bee it is
@@ -28,7 +28,7 @@ Bee::reloadConfig ()
   energy_rate_idle_ = getConfig()["energy"]["consumption rates"]["idle"].toDouble ();
   energy_rate_moving_ = getConfig()["energy"]["consumption rates"]["moving"].toDouble ();
   energy_leave_hive_ = getConfig()["energy"]["to leave hive"].toDouble();
-  
+
   speed_ = getConfig ()["speed"].toDouble ();
 }
 
