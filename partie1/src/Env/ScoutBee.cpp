@@ -89,20 +89,21 @@ ScoutBee::randomMove(sf::Time dt)
     {
       double angleB;
       if (bernoulli(0.5))
-	{
-	  angleB = PI / 4;
-	}
+      {
+        angleB = PI / 4;
+      }
       else
-	{
-	  angleB = -PI / 4;
-	}
-      move_vec_.rotate(angleB);
+      {
+        angleB = -PI / 4;
+      }
+      
+    move_vec_.rotate(angleB);
 
-    }
+  }
   else
-    {
-      this->setPosition(protoBee.getPosition());
-    }
+  {
+    this->setPosition(protoBee.getPosition());
+  }
 }
 
 j::Value const&
@@ -124,53 +125,63 @@ ScoutBee::onState(State state, sf::Time dt)
   if (state == IN_HIVE)
     {
       if (flower_location_ != empty)
-	{
-	  WorkerBee* worker = this->getHive()->getWorker();
-	  if (worker)
-	    {
-	      worker->setFlower(flower_location_);
-	      flower_location_ = empty;
-	      debug_status_ = "in_hive_sharing";
-	      debug_status_ = debug_status_
-		  + std::to_string(number_times_shared_);
-	      number_times_shared_ = -1;
-	    }
-	}
+      {
+        WorkerBee* worker = this->getHive()->getWorker();
+        if (worker)
+          {
+            worker->setFlower(flower_location_);
+            flower_location_ = empty;
+            debug_status_ = "in_hive_sharing";
+            debug_status_ = debug_status_
+            + std::to_string(number_times_shared_);
+            number_times_shared_ = -1;
+          }
+      }
 
       if (this->getEnergy() < energy_leave_hive_)
-	{
-	  debug_status_ = "in_hive_eat";
-	  this->eatFromHive(dt);
-	}
-      else if (flower_location_ == empty)
-	{
-	  debug_status_ = "in_hive_leaving";
-	  this->nextState();
-	}
+    {
+        debug_status_ = "in_hive_eat";
+        this->eatFromHive(dt);
     }
+      else if (flower_location_ == empty)
+    {
+      debug_status_ = "in_hive_leaving";
+      this->nextState();
+    }
+  }
 
   // second state
   else if (state == SEARCH_FLOWER)
     {
-      Flower* flower = this->findVisibleFlower();
-      if ((flower != nullptr) and (this->getEnergy() > energy_seek_flowers_))
-	{
-	  flower_location_ = flower->getPosition();
-	  number_times_shared_ = 0;
-	  this->nextState();
-	}
+      if (this->getEnergy() > energy_seek_flowers_)
+      {
+        debug_status_ = "seeking_flower";
+        Flower* flower = this->findVisibleFlower();
+        if (flower != nullptr)
+        {
+          flower_location_ = flower->getPosition();
+          number_times_shared_ = 0;
+          this->nextState();
+        }
+      }
+      else 
+      {
+        std::cout << "changing state" <<std::endl;
+        this->nextState();
+      }
     }
 
   // third state
   else if (state == RETURN_HIVE)
     {
+      debug_status_ = "back_to_hive";
       this->setMoveTarget(this->getHive()->getPosition());
       if (getAppEnv().getCollidingHive(this->getPosition()) == this->getHive())
       //why are you not using isCollidinginside
-	{
-	  this->nextState();
-	}
-    }
+        {
+          this->nextState();
+        }
+      }
 }
 
 void

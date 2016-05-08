@@ -32,6 +32,8 @@ Bee::reloadConfig()
   vision_range_.setRadius(visibility_);
 
   speed_ = getConfig()["speed"].toDouble();
+  
+  move_vec_ = Vec2d::fromRandomAngle () * speed_;
 }
 
 void
@@ -138,19 +140,19 @@ Bee::drawOn(sf::RenderTarget& target) const
     {
       double thickness(0);
       if (move_state_ == RANDOM)
-	{
-	  thickness = debug_thickness_random_;
-	  sf::CircleShape shape = buildAnnulus(position_, radius_,
-					       sf::Color::Black, thickness);
-	  target.draw(shape);
-	}
+      {
+        thickness = debug_thickness_random_;
+        sf::CircleShape shape = buildAnnulus(position_, radius_,
+                    sf::Color::Black, thickness);
+        target.draw(shape);
+      }
       else if (move_state_ == TARGET)
-	{
-	  thickness = debug_thickness_target_;
-	  sf::CircleShape shape = buildAnnulus(position_, radius_,
-					       sf::Color::Black, thickness);
-	  target.draw(shape);
-	}
+      {
+        thickness = debug_thickness_target_;
+        sf::CircleShape shape = buildAnnulus(position_, radius_,
+                    sf::Color::Blue, thickness);
+        target.draw(shape);
+      }
 
     }
 }
