@@ -44,7 +44,7 @@ ScoutBee::drawOn(sf::RenderTarget& target) const
       std::string statusString(debug_status_);
       position.y = position.y + debug_text_size_;
       sf::Text status = buildText(statusString, position, getAppFont(),
-        debug_text_size_, color);
+				  debug_text_size_, color);
       target.draw(status);
     }
 }
@@ -77,11 +77,11 @@ ScoutBee::randomMove(sf::Time dt)
   if (bernoulli(rotation_probability_))
     {
       double angleA(uniform(-max_angle_, max_angle_));
-      this->position_.rotate(angleA);
+      move_vec_.rotate(angleA);
     }
 
-  position.x += dt.asSeconds() * this->position_.x;
-  position.y += dt.asSeconds() * this->position_.y;
+  position.x += dt.asSeconds() * move_vec_.x;
+  position.y += dt.asSeconds() * move_vec_.y;
 
   Collider protoBee(position, radius_);
   protoBee.clamping();
@@ -89,19 +89,19 @@ ScoutBee::randomMove(sf::Time dt)
     {
       double angleB;
       if (bernoulli(0.5))
-      {
-        angleB = PI / 4;
-      }
+	{
+	  angleB = PI / 4;
+	}
       else
-      {
-        angleB = -PI / 4;
-      }
-    this->position_.rotate(angleB);
+	{
+	  angleB = -PI / 4;
+	}
+      move_vec_.rotate(angleB);
 
     }
   else
     {
-      this->position_ = protoBee.getPosition();
+      this->setPosition(protoBee.getPosition());
     }
 }
 
@@ -214,7 +214,7 @@ ScoutBee::targetMove(sf::Time dt)
 	{
 	  angleB = -PI / 4;
 	}
-      this->position_.rotate(angleB);
+      move_vec_.rotate(angleB);
 
     }
   else

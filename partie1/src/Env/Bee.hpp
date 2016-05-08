@@ -182,7 +182,7 @@ public:
 protected:
 
   Hive* hive_;
-  //Vec2d move_vec_;
+  Vec2d move_vec_;
   Vec2d move_target_;
   double speed_;
   double energy_;
