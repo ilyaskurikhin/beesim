@@ -78,7 +78,7 @@ Hive::update(sf::Time dt)
     {
       bees_[i]->update(dt);
 
-      if (bees_[i]->getEnergy() == 0)
+      if (bees_[i]->isDead())
 	{
 	  delete bees_[i];
 	  bees_[i] = nullptr;

@@ -28,8 +28,9 @@ CFSM::getState()
 void
 CFSM::nextState()
 {
+
   size_t stateNumber(0);
-  // get state number
+  // get state number, number_times_shared_(-1)
   for (size_t i = 0; i < states_.size(); ++i)
     {
       if (states_[i] == state_)

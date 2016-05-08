@@ -25,13 +25,13 @@ public:
   ~ScoutBee();
 
   void
-  drawOn(sf::RenderTarget& target) const;
+  drawOn(sf::RenderTarget& target) const override;
 
   void
   reloadConfig();
 
   void
-  randomMove(sf::Time dt) override;
+  randomMove(sf::Time dt);
 
   j::Value const&
   getConfig() override;

@@ -9,7 +9,10 @@
 #define CFSM_HPP
 
 #include <Utility/Utility.hpp>
+#include <Utility/Logging.hpp>
+
 #include <vector>
+#include <string>
 
 typedef Uid State;
 

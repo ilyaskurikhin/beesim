@@ -56,7 +56,7 @@ Bee::move(sf::Time dt)
 void
 Bee::randomMove(sf::Time dt)
 {
-  // TODO implement
+  logEvent("Bee", "randomMove called");
 }
 
 void
@@ -86,7 +86,7 @@ Bee::targetMove(sf::Time dt)
 bool
 Bee::isDead()
 {
-  if (energy_ == 0)
+  if (energy_ <= 0)
     {
       return true;
     }
@@ -100,8 +100,7 @@ void
 Bee::update(sf::Time dt)
 {
   this->action(dt);
-  move(dt);
-  // TODO implement energy loss
+  this->move(dt);
 }
 
 double
@@ -141,14 +140,18 @@ Bee::drawOn(sf::RenderTarget& target) const
       if (move_state_ == RANDOM)
 	{
 	  thickness = debug_thickness_random_;
+	  sf::CircleShape shape = buildAnnulus(position_, radius_,
+					       sf::Color::Black, thickness);
+	  target.draw(shape);
 	}
       else if (move_state_ == TARGET)
 	{
 	  thickness = debug_thickness_target_;
+	  sf::CircleShape shape = buildAnnulus(position_, radius_,
+					       sf::Color::Black, thickness);
+	  target.draw(shape);
 	}
-      sf::CircleShape shape = buildAnnulus(position_, radius_, sf::Color::Black,
-					   thickness);
-      target.draw(shape);
+
     }
 }
 
@@ -163,9 +166,4 @@ Bee::findVisibleFlower() const
 {
   //what if two flowers are colliding?
   return getAppEnv().getCollidingFlower(vision_range_);
-}
-
-void
-Bee::onEnterState(State state)
-{
 }

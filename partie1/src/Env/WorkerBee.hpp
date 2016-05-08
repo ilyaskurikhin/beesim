@@ -29,6 +29,9 @@ public:
   onState(State state, sf::Time dt) override;
 
   void
+  onEnterState(State state) override;
+
+  void
   setFlower(const Vec2d& position);
 
   Vec2d

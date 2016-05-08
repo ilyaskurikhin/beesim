@@ -177,7 +177,7 @@ public:
   findVisibleFlower() const;
 
   virtual void
-  onEnterState(State state) override;
+  onEnterState(State state) = 0;
 
 protected:
 

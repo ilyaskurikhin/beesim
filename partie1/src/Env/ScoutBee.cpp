@@ -10,7 +10,8 @@
 #include <Env/ScoutBee.hpp>
 
 ScoutBee::ScoutBee(Hive* hive, const Vec2d& position, std::vector<State> states) :
-    Bee(hive, position, states), number_times_shared_(-1)
+    Bee(hive, position, states), flower_location_(-1, -1), number_times_shared_(
+	-1)
 {
   logEvent("ScoutBee", "new constructed");
   reloadConfig();
@@ -42,7 +43,8 @@ ScoutBee::drawOn(sf::RenderTarget& target) const
 
       std::string statusString(debug_status_);
       position.y = position.y + debug_text_size_;
-      sf::Text status = buildText(statusString, position, getAppFont(), debug_text_size_, color);
+      sf::Text status = buildText(statusString, position, getAppFont(),
+				  debug_text_size_, color);
       target.draw(status);
     }
 }
@@ -69,7 +71,9 @@ ScoutBee::reloadConfig()
 void
 ScoutBee::randomMove(sf::Time dt)
 {
-  Vec2d position(position_);
+  logEvent("ScoutBee", "random move");
+
+  Vec2d position(this->getPosition());
   if (bernoulli(rotation_probability_))
     {
       double angleA(uniform(-max_angle_, max_angle_));
@@ -97,7 +101,7 @@ ScoutBee::randomMove(sf::Time dt)
     }
   else
     {
-      this->position_ = protoBee.getPosition();
+      this->setPosition(protoBee.getPosition());
     }
 }
 
@@ -126,7 +130,7 @@ ScoutBee::onState(State state, sf::Time dt)
 	    {
 	      worker->setFlower(flower_location_);
 	      flower_location_ = empty;
-	      debug_status_ = "in_hive_shating";
+	      debug_status_ = "in_hive_sharing";
 	      debug_status_ = debug_status_
 		  + std::to_string(number_times_shared_);
 	      number_times_shared_ = -1;

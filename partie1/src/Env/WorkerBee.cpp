@@ -42,6 +42,12 @@ WorkerBee::onState(State state, sf::Time dt)
 }
 
 void
+WorkerBee::onEnterState(State state)
+{
+  // TODO implement
+}
+
+void
 WorkerBee::setFlower(const Vec2d& position)
 {
   flower_location_ = position;
