@@ -159,6 +159,7 @@ ScoutBee::onState(State state, sf::Time dt)
         Flower* flower = this->findVisibleFlower();
         if (flower != nullptr)
         {
+          std::cout << "found flower" << std::endl;
           flower_location_ = flower->getPosition();
           number_times_shared_ = 0;
           this->nextState();
@@ -166,7 +167,6 @@ ScoutBee::onState(State state, sf::Time dt)
       }
       else 
       {
-        std::cout << "changing state" <<std::endl;
         this->nextState();
       }
     }

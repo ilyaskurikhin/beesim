@@ -29,7 +29,8 @@ Bee::reloadConfig()
       getConfig()["energy"]["consumption rates"]["eating"].toDouble();
 
   visibility_ = getConfig()["visibility range"].toDouble();
-  vision_range_.setRadius(visibility_);
+  vision_range_.setRadius(visibility_ + this->radius_);
+  vision_range_.setPosition(this->position_);
 
   speed_ = getConfig()["speed"].toDouble();
   
@@ -166,6 +167,6 @@ Bee::loadTexture()
 Flower*
 Bee::findVisibleFlower() const
 {
-  //what if two flowers are colliding?
+  //what if two flowers are colliding?  
   return getAppEnv().getCollidingFlower(vision_range_);
 }
