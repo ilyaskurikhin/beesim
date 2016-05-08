@@ -9,11 +9,11 @@
 
 WorkerBee::WorkerBee(Hive* hive, const Vec2d& position,
 		     std::vector<State> states) :
-    Bee (hive, position, states)
+    Bee(hive, position, states)
 {
-  logEvent ("WorkerBee", "new constructed");
-  reloadConfig ();
-  loadTexture ();
+  logEvent("WorkerBee", "new constructed");
+  reloadConfig();
+  loadTexture();
 }
 
 WorkerBee::~WorkerBee()
@@ -24,7 +24,7 @@ WorkerBee::~WorkerBee()
 void
 WorkerBee::reloadConfig()
 {
-  Bee::reloadConfig ();
+  Bee::reloadConfig();
   // TODO load class attributes here
 }
 
@@ -32,7 +32,7 @@ j::Value const&
 WorkerBee::getConfig()
 {
   // TODO make this refer to superclass method
-  return getAppConfig ()["simulation"]["bees"]["worker"];
+  return getAppConfig()["simulation"]["bees"]["worker"];
 }
 
 void
@@ -53,6 +53,6 @@ WorkerBee::getFlower() const
   return flower_location_;
 }
 
-State const WorkerBee::IN_HIVE = createUid ();
+State const WorkerBee::IN_HIVE = createUid();
 
-State const WorkerBee::COLLECT_POLLEN = createUid ();
+State const WorkerBee::COLLECT_POLLEN = createUid();

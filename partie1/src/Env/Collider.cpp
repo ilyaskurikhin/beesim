@@ -3,54 +3,54 @@
 Collider::Collider(const Vec2d& position, double radius)
 // affecte par défaut le rayon et la position
 :
-    radius_ (radius), position_ (position)
+    radius_(radius), position_(position)
 {
   // PRECODITIONS for constructor
   if (radius_ < 0)
     {
-      throw std::runtime_error (
+      throw std::runtime_error(
 	  "Collider with negative radius created. (Collider::Collider)");
     }
 
   // puts Collider into map
-  clamping ();
+  clamping();
 }
 
 Collider::Collider(const Vec2d& position) :
-    Collider (position, 0)
+    Collider(position, 0)
 {
 }
 
 Collider::Collider(const Collider& collider)
 {
-  radius_ = collider.getRadius ();
-  position_ = collider.getPosition ();
+  radius_ = collider.getRadius();
+  position_ = collider.getPosition();
 }
 
 bool
 Collider::operator>(const Collider& other) const
 {
-  return isColliderInside (other);
+  return isColliderInside(other);
 }
 
 bool
 Collider::operator|(const Collider& other) const
 {
-  return isColliding (other);
+  return isColliding(other);
 }
 
 bool
 Collider::operator>(const Vec2d& p) const
 {
-  return isPointInside (p);
+  return isPointInside(p);
 }
 
 std::ostream&
 operator<<(std::ostream& oss, const Collider& collider)
 {
-  oss << "Collider: position = (" << collider.getPosition ().x << ","
-      << collider.getPosition ().y << ") ";
-  oss << "radius = " << collider.getRadius () << std::endl;
+  oss << "Collider: position = (" << collider.getPosition().x << ","
+      << collider.getPosition().y << ") ";
+  oss << "radius = " << collider.getRadius() << std::endl;
 
   return oss;
 }
@@ -58,15 +58,15 @@ operator<<(std::ostream& oss, const Collider& collider)
 Collider&
 Collider::operator=(Collider other)
 {
-  position_ = other.getPosition ();
-  radius_ = other.getRadius ();
+  position_ = other.getPosition();
+  radius_ = other.getRadius();
   return *this;
 }
 
 Collider&
 Collider::operator+=(const Vec2d& dx)
 {
-  return move (dx);
+  return move(dx);
 }
 
 Vec2d
@@ -74,7 +74,7 @@ Collider::clamping()
 {
 
   //permet d'obtenir largeur et hauteur du monde
-  auto worldSize = getApp ().getWorldSize ();
+  auto worldSize = getApp().getWorldSize();
   auto width = worldSize.x;
   auto height = worldSize.y;
 
@@ -109,8 +109,8 @@ Collider::clamping()
 bool
 Collider::isColliderInside(const Collider& other) const
 {
-  if ((other.getRadius () > radius_)
-      || (distanceTo (other) > radius_ - other.getRadius ()))
+  if ((other.getRadius() > radius_)
+      || (distanceTo(other) > radius_ - other.getRadius()))
     {
       return false;
     }
@@ -123,9 +123,9 @@ Collider::isColliderInside(const Collider& other) const
 bool
 Collider::isColliding(const Collider& other) const
 {
-  double minimumDistance (other.getRadius () + radius_);
+  double minimumDistance(other.getRadius() + radius_);
 
-  if (distanceTo (other) <= minimumDistance)
+  if (distanceTo(other) <= minimumDistance)
     {
       return true;
     }
@@ -138,7 +138,7 @@ Collider::isColliding(const Collider& other) const
 bool
 Collider::isPointInside(const Vec2d& p) const
 {
-  if (distanceTo (p) <= radius_)
+  if (distanceTo(p) <= radius_)
     {
       return true;
     }
@@ -153,46 +153,46 @@ Collider::directionTo(const Vec2d& to) const
 {
 
   // permet d'obtenir largeur et hautueur du monde
-  auto worldSize = getApp ().getWorldSize ();
+  auto worldSize = getApp().getWorldSize();
   auto width = worldSize.x;
   auto height = worldSize.y;
 
   // create vector of possible positions of to 
   std::vector<std::vector<double>> multipliers;
-  multipliers.push_back (
+  multipliers.push_back(
     { 0, 0 });
-  multipliers.push_back (
+  multipliers.push_back(
     { 0, 1 });
-  multipliers.push_back (
+  multipliers.push_back(
     { 0, -1 });
-  multipliers.push_back (
+  multipliers.push_back(
     { 1, 0 });
-  multipliers.push_back (
+  multipliers.push_back(
     { -1, 0 });
-  multipliers.push_back (
+  multipliers.push_back(
     { 1, 1 });
-  multipliers.push_back (
+  multipliers.push_back(
     { 1, -1 });
-  multipliers.push_back (
+  multipliers.push_back(
     { -1, 1 });
-  multipliers.push_back (
+  multipliers.push_back(
     { -1, -1 });
 
   // find the 'to' at minimal distance from position_'
   Vec2d currentTo;
   Vec2d minimumTo;
   Vec2d moveTo;
-  double min (100000);
-  size_t size (multipliers.size ());
-  for (size_t i (0); i < size; ++i)
+  double min(100000);
+  size_t size(multipliers.size());
+  for (size_t i(0); i < size; ++i)
     {
       currentTo.x = multipliers[i][0] * width + to.x;
       currentTo.y = multipliers[i][1] * height + to.y;
 
-      if (distance (position_, currentTo) < min)
+      if (distance(position_, currentTo) < min)
 	{
 	  minimumTo = currentTo;
-	  min = distance (position_, currentTo);
+	  min = distance(position_, currentTo);
 	  moveTo.x = minimumTo.x - position_.x;
 	  moveTo.y = minimumTo.y - position_.y;
 	}
@@ -204,19 +204,19 @@ Collider::directionTo(const Vec2d& to) const
 Vec2d
 Collider::directionTo(const Collider& other) const
 {
-  return directionTo (other.getPosition ());
+  return directionTo(other.getPosition());
 }
 
 double
 Collider::distanceTo(const Vec2d& to) const
 {
-  return directionTo (to).length ();
+  return directionTo(to).length();
 }
 
 double
 Collider::distanceTo(const Collider& other) const
 {
-  return distanceTo (other.getPosition ());
+  return distanceTo(other.getPosition());
 }
 
 Collider&
@@ -225,7 +225,7 @@ Collider::move(const Vec2d& dx)
   position_.x += dx.x;
   position_.y += dx.y;
 
-  clamping ();
+  clamping();
   return *this;
 }
 
@@ -239,7 +239,7 @@ void
 Collider::setPosition(const Vec2d& position)
 {
   position_ = position;
-  clamping ();
+  clamping();
 }
 
 double
@@ -256,7 +256,7 @@ Collider::setRadius(double radius)
       radius_ = radius;
       if (radius_ < 0)
 	{
-	  throw std::runtime_error ("ERROR: Negative radius set (Collider)");
+	  throw std::runtime_error("ERROR: Negative radius set (Collider)");
 	}
     }
   catch (std::string e)
