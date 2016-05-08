@@ -126,7 +126,7 @@ Bee::drawOn(sf::RenderTarget& target) const
 {
 
   auto beeSprite = buildSprite(position_, radius_, texture_);
-  double angle(move_vec_.Vec2d::angle());
+  double angle(this->position_.Vec2d::angle());
   if ((angle >= PI / 2) or (angle <= -PI / 2))
     {
       beeSprite.scale(1, -1);
