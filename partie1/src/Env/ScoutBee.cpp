@@ -28,17 +28,22 @@ ScoutBee::drawOn(sf::RenderTarget& target) const
   Bee::drawOn(target);
   if (isDebugOn())
     {
-      std::string valueString("Scout: ");
+      std::string valueString;
       sf::Color color(sf::Color::Yellow);
       Vec2d position;
-      position.x = this->getPosition().x;
-      position.y = this->getPosition().y - debug_text_size_;
 
-      valueString = +"energy " + std::to_string(this->getEnergy());
-      valueString = +"\n" + debug_status_;
+      position.x = this->getPosition().x;
+      position.y = this->getPosition().y + debug_text_size_;
+
+      valueString = "Scout: energy " + to_nice_string(this->getEnergy());
       sf::Text text = buildText(valueString, position, getAppFont(),
 				debug_text_size_, color);
       target.draw(text);
+
+      std::string statusString(debug_status_);
+      position.y = position.y + debug_text_size_;
+      sf::Text status = buildText(statusString, position, getAppFont(), debug_text_size_, color);
+      target.draw(status);
     }
 }
 
