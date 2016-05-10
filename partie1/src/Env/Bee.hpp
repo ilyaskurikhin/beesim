@@ -64,10 +64,10 @@ public:
   /**
    * @brief Set a target to move towards
    *
-   * @param position graphic position.
+   * @param target graphic position.
    */
   void
-  setMoveTarget(const Vec2d& position);
+  setMoveTarget(const Vec2d& target);
 
   /**
    * @brief Get the current move target
@@ -179,7 +179,28 @@ public:
   virtual void
   onEnterState(State state) = 0;
 
-protected:
+  void
+  setMoveStateAT_REST();
+
+  void
+  setMoveStateRANDOM();
+
+  void
+  setMoveStateTARGET();
+
+  void
+  setDebugStatus(const std::string& status);
+
+  const std::string&
+  getDebugStatus() const;
+
+  const Vec2d&
+  getMoveVec() const;
+
+  void
+  rotateMoveVec(double angle);
+
+private:
 
   Hive* hive_;
   Vec2d move_vec_;
@@ -209,7 +230,6 @@ protected:
 
 
   std::string debug_status_;
-  double debug_text_size_;
 
 };
 

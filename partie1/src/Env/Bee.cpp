@@ -213,3 +213,46 @@ Bee::findVisibleFlower() const
   //what if two flowers are colliding?  
   return getAppEnv().getCollidingFlower(vision_range_);
 }
+
+void
+Bee::setMoveStateAT_REST()
+{
+  move_state_ = AT_REST;
+}
+
+void
+Bee::setMoveStateRANDOM()
+{
+  move_state_ = RANDOM;
+}
+
+void
+Bee::setMoveStateTARGET()
+{
+  move_state_ = TARGET;
+}
+
+void
+Bee::setDebugStatus(const std::string& status)
+{
+  debug_status_ = status;
+}
+
+const std::string&
+Bee::getDebugStatus() const
+{
+  return debug_status_;
+}
+
+const Vec2d&
+Bee::getMoveVec() const
+{
+  return move_vec_;
+}
+
+void
+Bee::rotateMoveVec(double angle)
+{
+  move_vec_.rotate(angle);
+}
+

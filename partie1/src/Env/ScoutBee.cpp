@@ -32,19 +32,19 @@ ScoutBee::drawOn(sf::RenderTarget& target) const
       std::string valueString;
       sf::Color color(sf::Color::Yellow);
       Vec2d position;
+      double text_size(getAppEnv().getTextSize());
 
       position.x = this->getPosition().x;
-      position.y = this->getPosition().y + debug_text_size_;
+      position.y = this->getPosition().y + text_size;
 
       valueString = "Scout: energy " + to_nice_string(this->getEnergy());
       sf::Text text = buildText(valueString, position, getAppFont(),
-				debug_text_size_, color);
+				text_size, color);
       target.draw(text);
 
-      std::string statusString(debug_status_);
-      position.y = position.y + debug_text_size_;
-      sf::Text status = buildText(statusString, position, getAppFont(),
-				  debug_text_size_, color);
+      position.y = position.y + text_size;
+      sf::Text status = buildText(this->getDebugStatus(), position, getAppFont(),
+				  text_size, color);
       target.draw(status);
     }
 }
@@ -64,8 +64,6 @@ ScoutBee::reloadConfig()
       getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble();
   max_angle_ =
       getConfig()["moving behaviour"]["random"]["rotation angle max"].toDouble();
-
-  debug_text_size_ = getAppEnv().getTextSize();
 }
 
 void
@@ -76,11 +74,10 @@ ScoutBee::randomMove(sf::Time dt)
   if (bernoulli(rotation_probability_))
   {
     double angleA(uniform(-max_angle_, max_angle_));
-    move_vec_.rotate(angleA);
+    this->rotateMoveVec(angleA);
   }
 
-  position.x += dt.asSeconds() * move_vec_.x;
-  position.y += dt.asSeconds() * move_vec_.y;
+  position += dt.asSeconds() * this->getMoveVec();
 
   Collider protoBee(position, this->getRadius());
   protoBee.clamping();
@@ -96,7 +93,7 @@ ScoutBee::randomMove(sf::Time dt)
       angleB = -PI / 4;
     }
     
-    move_vec_.rotate(angleB);
+    this->rotateMoveVec(angleB);
 
   }
   else
@@ -131,21 +128,20 @@ ScoutBee::onState(State state, sf::Time dt)
           {
             worker->setFlower(flower_location_);
             flower_location_ = empty;
-            debug_status_ = "in_hive_sharing";
-            debug_status_ = debug_status_
-            + std::to_string(number_times_shared_);
+            std::string status = "in_hive_sharing" + std::to_string(number_times_shared_);
+            this->setDebugStatus(status);
             number_times_shared_ = -1;
           }
       }
 
       if (this->getEnergy() < energy_leave_hive_)
       {
-        debug_status_ = "in_hive_eating";
+        this->setDebugStatus("in_hive_eating");
         this->eatFromHive(dt);
       }
       else if (flower_location_ == empty)
       {
-      debug_status_ = "in_hive_leaving";
+      this->setDebugStatus("in_hive_leaving");
       this->nextState();
       }
     }
@@ -155,7 +151,7 @@ ScoutBee::onState(State state, sf::Time dt)
     {
       if (this->getEnergy() > energy_seek_flowers_)
       {
-        debug_status_ = "seeking_flower";
+        this->setDebugStatus("seeking_flower");
         Flower* flower = this->findVisibleFlower();
         if (flower != nullptr)
         {
@@ -173,7 +169,7 @@ ScoutBee::onState(State state, sf::Time dt)
   // third state
   else if (state == RETURN_HIVE)
     {
-      debug_status_ = "back_to_hive";
+      this->setDebugStatus("back_to_hive");
       this->setMoveTarget(this->getHive()->getPosition());
       if (this->getHive()->isColliderInside(this->getCollider()))
         {
@@ -187,15 +183,15 @@ ScoutBee::onEnterState(State state)
 {
   if (state == IN_HIVE)
     {
-      move_state_ = AT_REST;
+      this->setMoveStateAT_REST();
     }
   else if (state == SEARCH_FLOWER)
     {
-      move_state_ = RANDOM;
+      this->setMoveStateRANDOM();
     }
   else if (state == RETURN_HIVE)
     {
-      move_state_ = TARGET;
+      this->setMoveStateTARGET();
     }
 }
 

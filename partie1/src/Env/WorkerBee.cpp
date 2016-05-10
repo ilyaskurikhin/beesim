@@ -29,7 +29,6 @@ WorkerBee::reloadConfig ()
   pollen_collecting_rate_ = getConfig ()["harvest rate"].toDouble ();
   energy_leave_hive_ = getConfig ()["energy"]["to leave hive"].toDouble ();
   pollen_transfer_rate_ = getConfig()["transfer rate"].toDouble();
-  debug_text_size_ = getAppEnv().getTextSize();
 
 }
 
@@ -55,32 +54,33 @@ WorkerBee::onState (State state, sf::Time dt)
     {
       setPollen(0);
     }
-	  debug_status_ = "in_hive_leaving_pollen";
+	  this->setDebugStatus("in_hive_leaving_pollen");
 	}
 
   if ((this->getPollen () == 0))
 	{
 	  if (this->getEnergy () < energy_leave_hive_)
 	    {
-	      debug_status_ = "in_hive_eating";
+	      this->setDebugStatus("in_hive_eating");
 	      this->eatFromHive (dt);
 	    }
 	  else if (flower_location_ != empty)
 	    {
-	      debug_status_ = "in_hive_leaving";
+	      this->setDebugStatus("in_hive_leaving");
 	      this->setMoveTarget (flower_location_);
 	      this->nextState ();
 	    }
 	  else
 	    {
-      debug_status_ = "in_hive_no_flower";	    }
+	      this->setDebugStatus("in_hive_no_flower");
+	    }
     }
     }
 
   // second state
   else if (state == TO_FLOWER)
   {
-      debug_status_ = "to_flower";
+      this->setDebugStatus("to_flower");
 
       if (this->getCollider ().isPointInside (flower_location_))
       { 
@@ -100,8 +100,8 @@ WorkerBee::onState (State state, sf::Time dt)
   // third state
   else if (state == COLLECT_POLLEN)
     {
-      debug_status_ = "collecting_pollen";
-      move_target_ = empty;
+      this->setDebugStatus("collecting_pollen");
+      this->setMoveTarget(empty);
       if (this->getPollen () < maxPollen_
 	  && getAppEnv ().getCollidingFlower (this->getCollider ()) != nullptr)
 	{
@@ -114,7 +114,7 @@ WorkerBee::onState (State state, sf::Time dt)
     }
   else if (state == RETURN_HIVE)
     {
-      debug_status_ = "back_to_hive";
+      this->setDebugStatus("back_to_hive");
       this->setMoveTarget (this->getHive ()->getPosition ());
       if (this->getHive ()->isColliderInside (this->getCollider ()))
 	{
@@ -128,11 +128,11 @@ WorkerBee::onEnterState (State state)
 {
   if (state == IN_HIVE or state == COLLECT_POLLEN)
     {
-      move_state_ = AT_REST;
+      this->setMoveStateAT_REST();
     }
   else if (state == TO_FLOWER or state == RETURN_HIVE)
     {
-      move_state_ = TARGET;
+      this->setMoveStateTARGET();
     }
 }
 
@@ -188,19 +188,19 @@ WorkerBee::drawOn (sf::RenderTarget& target) const
       std::string valueString;
       sf::Color color (sf::Color::Magenta);
       Vec2d position;
+      double text_size(getAppEnv().getTextSize());
 
       position.x = this->getPosition ().x;
-      position.y = this->getPosition ().y + debug_text_size_;
+      position.y = this->getPosition ().y + text_size;
 
       valueString = "Worker: energy " + to_nice_string (this->getEnergy ());
       sf::Text text = buildText (valueString, position, getAppFont (),
-				 debug_text_size_, color);
+				 text_size, color);
       target.draw (text);
 
-      std::string statusString (debug_status_);
-      position.y = position.y + debug_text_size_;
-      sf::Text status = buildText (statusString, position, getAppFont (),
-				   debug_text_size_, color);
+      position.y = position.y + text_size;
+      sf::Text status = buildText (this->getDebugStatus(), position, getAppFont (),
+				   text_size, color);
       target.draw (status);
     }
 }
