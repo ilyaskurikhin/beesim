@@ -86,8 +86,8 @@ void
 Bee::targetMove(sf::Time dt)
 {
   Vec2d position(this->position_);
-  Vec2d target = this->getMoveTarget();
-  Vec2d direction = this->directionTo(target);
+  Vec2d target(this->getMoveTarget());
+  Vec2d direction(this->directionTo(target));
 
   direction = direction.normalised();
 
@@ -100,8 +100,7 @@ Bee::targetMove(sf::Time dt)
     avoidanceClock_ -= dt;
   }
   
-  position.x += dt.asSeconds() * move_vec_.x;
-  position.y += dt.asSeconds() * move_vec_.y;
+  position+= dt.asSeconds() * move_vec_;
   
   Collider protoBee(position, this->getRadius());
   protoBee.clamping();

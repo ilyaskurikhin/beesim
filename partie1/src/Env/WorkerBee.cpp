@@ -42,9 +42,7 @@ WorkerBee::getConfig ()
 void
 WorkerBee::onState (State state, sf::Time dt)
 {
-  Vec2d empty;
-  empty.x = -1.0;
-  empty.y = -1.0;
+  Vec2d empty(-1.0,-1.0);
 
   // first state
   if (state == IN_HIVE)
@@ -211,7 +209,6 @@ WorkerBee::drawOn (sf::RenderTarget& target) const
 void
 WorkerBee::targetMove(sf::Time dt)
 {
-  logEvent("WorkerBee", "random move");
   Bee::targetMove(dt);
 }
 

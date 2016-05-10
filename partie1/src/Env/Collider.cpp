@@ -75,8 +75,8 @@ Collider::clamping()
 
   //permet d'obtenir largeur et hauteur du monde
   auto worldSize = getApp().getWorldSize();
-  auto width = worldSize.x;
-  auto height = worldSize.y;
+  auto width = worldSize.x -1;
+  auto height = worldSize.y -1;
 
   //tant que position en x <0, on lui incrémente la largeur du monde
   //tant que position > largeur du monde, on lui décremente la largeur du monde
