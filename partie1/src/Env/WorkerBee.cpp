@@ -28,6 +28,7 @@ WorkerBee::reloadConfig ()
   maxPollen_ = getConfig ()["max pollen capacity"].toDouble ();
   pollen_collecting_rate_ = getConfig ()["harvest rate"].toDouble ();
   energy_leave_hive_ = getConfig ()["energy"]["to leave hive"].toDouble ();
+  pollen_transfer_rate_ = getConfig()["transfer rate"].toDouble();
   debug_text_size_ = getAppEnv().getTextSize();
 
 }
@@ -52,6 +53,10 @@ WorkerBee::onState (State state, sf::Time dt)
       if (this->getPollen () != 0)
 	{
 	  transferPollen(dt);
+    if (this->getPollen() < 0) 
+    {
+      setPollen(0);
+    }
 	  debug_status_ = "in_hive_leaving_pollen";
 	}
 
@@ -59,7 +64,7 @@ WorkerBee::onState (State state, sf::Time dt)
 	{
 	  if (this->getEnergy () < energy_leave_hive_)
 	    {
-	      debug_status_ = "in_hive_???";
+	      debug_status_ = "in_hive_eating";
 	      this->eatFromHive (dt);
 	    }
 	  else if (flower_location_ != empty)
@@ -70,9 +75,8 @@ WorkerBee::onState (State state, sf::Time dt)
 	    }
 	  else
 	    {
-	      //debug_status_ = "in_hive_no_flower";
-	    }
-	}
+      debug_status_ = "in_hive_no_flower";	    }
+    }
     }
 
   // second state
@@ -155,8 +159,8 @@ WorkerBee::getPollen () const
 void
 WorkerBee::transferPollen (sf::Time dt)
 {
-  this->getHive ()->dropPollen (energy_rate_eating_ * dt.asSeconds ());
-  setPollen (this->getPollen () - energy_rate_eating_ * dt.asSeconds ());
+  this->getHive ()->dropPollen (pollen_transfer_rate_ * dt.asSeconds ());
+  setPollen (this->getPollen () - pollen_transfer_rate_ * dt.asSeconds ());
 }
 
 void

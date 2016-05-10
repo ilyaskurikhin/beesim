@@ -56,7 +56,7 @@
                 "size" : 15,
                 "energy" : {
                     "initial" : 20,
-                    "to leave hive" : 1,
+                    "to leave hive" : 22,
                     "consumption rates" : {
                        "idle" :  0.015,
                        "moving": 0.06,

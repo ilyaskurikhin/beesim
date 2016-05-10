@@ -74,7 +74,7 @@ private:
   double maxPollen_;
   double pollen_collecting_rate_;
   double energy_leave_hive_;
-
+  double pollen_transfer_rate_;
   
 };
 

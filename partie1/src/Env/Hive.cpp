@@ -36,7 +36,7 @@ WorkerBee*
 Hive::addWorker()
 {
   std::vector<State> states =
-    { WorkerBee::IN_HIVE };
+    { WorkerBee::IN_HIVE, WorkerBee::TO_FLOWER, WorkerBee::COLLECT_POLLEN, WorkerBee::RETURN_HIVE };
   WorkerBee* worker(new WorkerBee(this, this->getPosition(), states));
   worker->reloadConfig();
   bees_.push_back(worker);
