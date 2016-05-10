@@ -18,7 +18,7 @@ void
 Bee::reloadConfig()
 {
   // TODO resolve function calls to subclass
-  radius_ = getConfig()["size"].toDouble();
+  this->setRadius(getConfig()["size"].toDouble());
 
   energy_ = getConfig()["energy"]["initial"].toDouble();
   energy_rate_idle_ =
@@ -31,7 +31,7 @@ Bee::reloadConfig()
   delay_ = sf::seconds(getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble());
 
   visibility_ = getConfig()["visibility range"].toDouble();
-  vision_range_.setRadius(visibility_ + radius_);
+  vision_range_.setRadius(visibility_ + this->getRadius());
   
   speed_ = getConfig()["speed"].toDouble();
   
@@ -85,7 +85,7 @@ Bee::randomMove(sf::Time dt)
 void
 Bee::targetMove(sf::Time dt)
 {
-  Vec2d position(this->position_);
+  Vec2d position(this->getPosition());
   Vec2d target(this->getMoveTarget());
   Vec2d direction(this->directionTo(target));
 
@@ -122,7 +122,7 @@ Bee::targetMove(sf::Time dt)
     }
   else
     {
-      this->position_ = protoBee.getPosition();
+      this->setPosition(protoBee.getPosition());
     }
 }
 
@@ -168,8 +168,10 @@ Bee::getHive() const
 void
 Bee::drawOn(sf::RenderTarget& target) const
 {
+  Vec2d position(this->getPosition());
+  double radius(this->getRadius());
 
-  auto beeSprite = buildSprite(position_, radius_, texture_);
+  auto beeSprite = buildSprite(position, radius, texture_);
   double angle(move_vec_.Vec2d::angle());
   if ((angle >= PI / 2) or (angle <= -PI / 2))
     {
@@ -184,14 +186,14 @@ Bee::drawOn(sf::RenderTarget& target) const
       if (move_state_ == RANDOM)
       {
         thickness = debug_thickness_random_;
-        sf::CircleShape shape = buildAnnulus(position_, radius_,
+        sf::CircleShape shape = buildAnnulus(position, radius,
                     sf::Color::Black, thickness);
         target.draw(shape);
       }
       else if (move_state_ == TARGET)
       {
         thickness = debug_thickness_target_;
-        sf::CircleShape shape = buildAnnulus(position_, radius_,
+        sf::CircleShape shape = buildAnnulus(position, radius,
                     sf::Color::Blue, thickness);
         target.draw(shape);
       }

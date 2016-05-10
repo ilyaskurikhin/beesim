@@ -81,29 +81,49 @@ Collider::clamping()
   //tant que position en x <0, on lui incrémente la largeur du monde
   //tant que position > largeur du monde, on lui décremente la largeur du monde
 
-  while (position_.x < 0)
-    {
+  if (position_.x < 0)
       position_.x += width;
-    }
 
-  while (position_.x > width)
-    {
+  if (position_.x > width)
       position_.x -= width;
-    }
 
   //idem pour position en y
-  while (position_.y < 0)
-    {
+  if (position_.y < 0)
       position_.y += height;
-    }
 
-  while (position_.y > width)
-    {
+  if (position_.y > width)
       position_.y -= height;
-    }
 
+  if (!isClamped())
+    clamping();
   //retourne le nouveau vec2d position
   return position_;
+}
+
+bool
+Collider::isClamped() const
+{
+
+  //permet d'obtenir largeur et hauteur du monde
+  Vec2d worldSize = getApp().getWorldSize();
+  double width = worldSize.x -1;
+  double height = worldSize.y -1;
+
+
+  if (position_.x < 0)
+      return false;
+
+  if (position_.x > width)
+      return false;
+
+  //idem pour position en y
+  if (position_.y < 0)
+      return false;
+
+  if (position_.y > width)
+      return false;
+
+  return true;
 }
 
 bool

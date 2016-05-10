@@ -82,7 +82,7 @@ ScoutBee::randomMove(sf::Time dt)
   position.x += dt.asSeconds() * move_vec_.x;
   position.y += dt.asSeconds() * move_vec_.y;
 
-  Collider protoBee(position, radius_);
+  Collider protoBee(position, this->getRadius());
   protoBee.clamping();
   if (!getAppEnv().isFlyable(protoBee.getPosition()))
   {
@@ -124,7 +124,6 @@ ScoutBee::onState(State state, sf::Time dt)
   // first state
   if (state == IN_HIVE)
     {
-      std::cout<< "in hive" << std::endl;
       if (flower_location_ != empty)
       {
         WorkerBee* worker = this->getHive()->getWorker();

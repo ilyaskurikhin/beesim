@@ -34,7 +34,7 @@ Flower::takePollen(const double& pollen)
 void
 Flower::drawOn(sf::RenderTarget& target) const
 {
-  auto flowerSprite = buildSprite(this->position_, this->radius_, texture_);
+  auto flowerSprite = buildSprite(this->getPosition(), this->getRadius(), texture_);
   target.draw(flowerSprite);
 }
 
@@ -69,11 +69,11 @@ Flower::update(sf::Time dt)
       while ((!placed) && (i < 100)) //
 	{
 	  // set a random distance
-	  double distance(uniform(0.5 * radius_, 2 * radius_));
+	  double distance(uniform(0.5 * this->getRadius(), 2 * this->getRadius()));
 
 	  // calculate a new position and clamp it
-	  Vec2d position = position_ + Vec2d::fromRandomAngle() * distance;
-	  Collider protoFlower(position, radius_);
+	  Vec2d position = this->getPosition() + Vec2d::fromRandomAngle() * distance;
+	  Collider protoFlower(position, this->getRadius());
 	  protoFlower.clamping();
 
 	  if (getAppEnv().addFlowerAt(protoFlower.getPosition()))

@@ -93,7 +93,7 @@ Hive::update(sf::Time dt)
 void
 Hive::drawOn(sf::RenderTarget& target) const
 {
-  auto hiveSprite = buildSprite(this->position_, this->radius_, hiveTexture_);
+  auto hiveSprite = buildSprite(this->getPosition(), this->getRadius(), hiveTexture_);
   target.draw(hiveSprite);
 
   for (size_t i = 0; i < bees_.size(); ++i)

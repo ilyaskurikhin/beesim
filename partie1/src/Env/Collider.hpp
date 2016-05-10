@@ -246,10 +246,13 @@ public:
   getCollider();
   
 
-protected:
+private:
 
   double radius_; /** radius of this Collider. */
   Vec2d position_; /** position of this Collider. */
+
+  bool
+  isClamped() const;
 };
 
 /** 
@@ -260,5 +263,6 @@ protected:
  */
 std::ostream&
 operator<<(std::ostream& oss, const Collider& collider);
+
 
 #endif
