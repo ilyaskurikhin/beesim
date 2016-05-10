@@ -186,7 +186,7 @@ Env::getHumidity(const Vec2d& position) const
 bool
 Env::isGrowable(const Vec2d& position) const
 {
-  return world_->isGrowable(position);
+  return world_->isGrass(position);
 }
 
 bool
@@ -198,7 +198,7 @@ Env::isFlyable(const Vec2d& position) const
 bool
 Env::isPlaceable(const Vec2d& position, double radius) const
 {
-  if (world_->isGrowable(position))
+  if (world_->isGrass(position))
     {
       Collider object(position, radius);
 
@@ -233,7 +233,7 @@ Env::addFlowerAt(const Vec2d& position)
 void
 Env::drawFlowerZone(sf::RenderTarget& target, const Vec2d& position)
 {
-  if (world_->isGrowable(position))
+  if (world_->isGrass(position))
     {
       sf::CircleShape shape = buildAnnulus(position, flowerManualRadius_,
                                            sf::Color::Green, 5.0);
@@ -251,8 +251,7 @@ bool
 Env::addHiveAt(const Vec2d& position)
 {
 
-  if (world_->isGrowable(position)
-      && (isPlaceable(position, hiveManualRadius_)))
+  if (world_->isGrass(position) && (isPlaceable(position, hiveManualRadius_)))
     {
       hives_.push_back(new Hive(position, hiveManualRadius_));
       return true;

@@ -68,7 +68,6 @@ ScoutBee::reloadConfig()
 void
 ScoutBee::randomMove(sf::Time dt)
 {
-  logEvent("ScoutBee", "random move");
   Vec2d position(this->getPosition());
   if (bernoulli(rotation_probability_))
     {

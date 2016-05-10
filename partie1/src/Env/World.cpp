@@ -687,7 +687,7 @@ World::calculateScanRange(size_t x, size_t y, unsigned int radius)
 }
 
 bool
-World::isGrowable(const Vec2d& position) const
+World::isGrass(const Vec2d& position) const
 {
   if (cells_[getCellIndex(position)] == Kind::Grass)
     {
@@ -700,7 +700,7 @@ World::isGrowable(const Vec2d& position) const
 }
 
 bool
-World::isGrowable(size_t x, size_t y) const
+World::isGrass(size_t x, size_t y) const
 {
   if (cells_[y * numberColumns_ + x] == Kind::Grass)
     {
@@ -722,33 +722,12 @@ World::isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight)
     {
       for (size_t j = start.y; j < end.y; ++j)
         {
-          if (!isGrowable(i, j))
+          if (!isGrass(i, j))
             {
               return false;
             }
         }
     }
-  return true;
-}
-
-bool
-World::isHiveable(const Vec2d& position, double radius)
-{
-  if (!isInWorld(position))
-    {
-      return false;
-    }
-
-  // TODO implement method isHiveable
-  Vec2d left;
-  Vec2d right;
-  Vec2d top;
-  Vec2d bottom;
-  if (cells_[getCellIndex(position)] != Kind::Grass)
-    {
-      return false;
-    }
-  //do not place a hive if its position is on a water or rock cell
   return true;
 }
 

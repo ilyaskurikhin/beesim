@@ -193,10 +193,10 @@ public:
    * @return true is can be grown.  
    * */
   bool
-  isGrowable(const Vec2d& position) const;
+  isGrass(const Vec2d& position) const;
 
   bool
-  isGrowable(size_t x, size_t y) const;
+  isGrass(size_t x, size_t y) const;
 
   /**
    * @brief Check if the area is all grass.
@@ -260,19 +260,6 @@ public:
    */
   bool
   isInWorld(const Vec2d& position) const;
-
-  /**
-   * @brief Check if Hive can be build.
-   *
-   * Check for Rock, Water and other Hives.
-   *
-   * @param position graphic position to check for.
-   * @param radius radius to check.
-   *
-   * @return true is can be placed.
-   */
-  bool
-  isHiveable(const Vec2d& position, double radius);
 
 private:
 
