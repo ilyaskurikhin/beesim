@@ -272,10 +272,10 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
 
   sf::Color color;
   sf::Color fillColor;
-  fillColor.a= 0;
+  fillColor.a = 0;
   double left, right, top, bottom;
-  double h_left(-10), h_right(-10); // horizontal
-  double v_top(-10), v_bottom(-10); // vertical
+  double h_left(-5), h_right(-5); // horizontal
+  double v_top(-5), v_bottom(-5); // vertical
 
   if(!world_->isInWorld(position))
     return;

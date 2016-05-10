@@ -371,6 +371,53 @@ World::saveToFile() const
   output.close();
 }
 
+const Vec2d&
+World::clamping(Vec2d& position)
+{
+  Vec2d pos = position;
+  double worldSize = cellSize_ * numberColumns_;
+  while (pos.x < 0)
+    {
+      pos.x += worldSize;
+    }
+
+  while (pos.x > worldSize)
+    {
+      pos.x -= worldSize;
+    }
+
+  while (pos.y < 0)
+    {
+      pos.y += worldSize;
+    }
+
+  while (pos.y > worldSize)
+    {
+      pos.y -= worldSize;
+    }
+
+  return pos;
+}
+
+const sf::Vector2i&
+World::clamping(sf::Vector2i& position)
+{
+  while (position.x < 0)
+    {
+      position.x += numberColumns_;
+    }
+
+  while (position.y < 0)
+    {
+      position.y += numberColumns_;
+    }
+
+  position.x = position.x % numberColumns_;
+  position.y = position.y % numberColumns_;
+
+  return position;
+}
+
 void
 World::step()
 {
@@ -378,15 +425,7 @@ World::step()
   bool teleport;
 
   // array of directions to choose from
-  std::array<std::array<int, 2>, 4> directions;
-  directions[0] =
-    { 1,0};
-  directions[1] =
-    { -1,0};
-  directions[2] =
-    { 0,1};
-  directions[3] =
-    { 0,-1};
+  std::array<int, 3> directions = {-1,0,1};
 
   // loop through seeds_ to move them
   for (size_t i(0); i < seeds_.size(); ++i)
@@ -406,17 +445,11 @@ World::step()
       else
 	{
 	  // pick a random direction
-	  size_t index(uniform(0, 3));
-	  seeds_[i].position.x += directions[index][0];
-	  seeds_[i].position.y += directions[index][1];
+	  seeds_[i].position.x += directions[uniform(0, 2)];
+	  seeds_[i].position.y += directions[uniform(0, 2)];
 
 	  // clamp the seed to the board
-	  seeds_[i].position.x = std::max((int) 0, (int) seeds_[i].position.x);
-	  seeds_[i].position.x = std::min((int) numberColumns_ - 1,
-					  (int) seeds_[i].position.x);
-	  seeds_[i].position.y = std::max((int) 0, (int) seeds_[i].position.y);
-	  seeds_[i].position.y = std::min((int) numberColumns_ - 1,
-					  (int) seeds_[i].position.y);
+	  seeds_[i].position = clamping(seeds_[i].position);
 	}
 
       // set the texture of the seed to cells

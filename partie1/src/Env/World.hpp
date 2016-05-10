@@ -116,6 +116,19 @@ public:
   saveToFile() const;
 
   /**
+   * @brief Get clamped position
+   *
+   * @param position graphic position to clamp.
+   *
+   * @return clamped position
+   */
+  const Vec2d&
+  clamping(Vec2d& position);
+
+  const sf::Vector2i&
+  clamping(sf::Vector2i& position);
+
+  /**
    * @brief Move all the seeds_, teleport water.
    */
   void
