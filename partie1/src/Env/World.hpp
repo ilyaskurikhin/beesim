@@ -122,10 +122,10 @@ public:
    *
    * @return clamped position
    */
-  const Vec2d&
+  Vec2d
   clamping(Vec2d& position);
 
-  const sf::Vector2i&
+  sf::Vector2i
   clamping(sf::Vector2i& position);
 
   /**
@@ -165,6 +165,9 @@ public:
    */
   void
   clear();
+
+  void
+  calculateHumidityMatrix();
 
   /**
    * @brief Calculate humidity for whole World.
@@ -297,6 +300,7 @@ private:
 
   /// vector of humidity values
   std::vector<double> humidityLevels_;
+  std::vector<double> humidityMatrix_;
   std::vector<sf::Vertex> humidityVertexes_;
   double humidityRange_;
   double humidityThreshold_;

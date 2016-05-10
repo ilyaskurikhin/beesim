@@ -70,6 +70,9 @@ World::reloadConfig()
       ++humidityRange_;
     }
   appendLog("World\tset\thumidityRange_ = " + std::to_string(humidityRange_));
+
+  humidityMatrix_ = std::vector<double>(humidityRange_ * humidityRange_);
+  calculateHumidityMatrix();
 }
 
 void
@@ -371,7 +374,7 @@ World::saveToFile() const
   output.close();
 }
 
-const Vec2d&
+Vec2d
 World::clamping(Vec2d& position)
 {
   Vec2d pos = position;
@@ -399,7 +402,7 @@ World::clamping(Vec2d& position)
   return pos;
 }
 
-const sf::Vector2i&
+sf::Vector2i
 World::clamping(sf::Vector2i& position)
 {
   while (position.x < 0)
@@ -604,6 +607,26 @@ World::clear()
 }
 
 void
+World::calculateHumidityMatrix()
+{
+  logEvent("World","calculating humidity matrix");
+
+  for (size_t i=0; i < humidityRange_; ++i)
+    {
+      for (size_t j=0; j < humidityRange_; ++j)
+	{
+	  double currentLevel(
+	      humidityInitialLevel_
+		  * std::exp(-std::hypot((double) i, (double) j) / humidityDecayRate_));
+	  if (currentLevel > humidityThreshold_)
+	    {
+	      humidityMatrix_[j * humidityRange_ + i] += currentLevel;
+	    }
+	}
+    }
+}
+
+void
 World::humidify()
 {
   logEvent("World", "calculating\tglobal humidity");
@@ -619,33 +642,21 @@ World::humidify()
 }
 
 void
-World::humidify(size_t i)
+World::humidify(size_t index)
 {
-  size_t x(i % numberColumns_);
-  size_t y(i / numberColumns_);
-  /*
-   size_t left (std::max (x - (size_t) humidityRange_, (size_t) 0));
-   size_t right (std::min (x + (size_t) humidityRange_, numberColumns_));
-   size_t top (std::max (y - (size_t) humidityRange_, (size_t) 0));
-   size_t bottom (std::min (y + (size_t) humidityRange_, numberColumns_));
-   */
+  size_t x(index % numberColumns_);
+  size_t y(index / numberColumns_);
 
-  std::array<size_t, 4> scanRange = calculateScanRange(x, y, humidityRange_);
-
-  for (size_t column(scanRange[0]); column < scanRange[1]; ++column)
+  sf::Vector2i loc_pos;
+  for (int i=-humidityRange_ +1; i < humidityRange_; ++i)
     {
-      for (size_t row(scanRange[2]); row < scanRange[3]; ++row)
+      for (int j=-humidityRange_+1; j < humidityRange_; ++j)
 	{
-	  double currentLevel(
-	      humidityInitialLevel_
-		  * std::exp(
-		      -std::hypot((double) x - (double) column,
-				  (double) y - (double) row)
-			  / humidityDecayRate_));
-	  if (currentLevel > humidityThreshold_)
-	    {
-	      humidityLevels_[row * numberColumns_ + column] += currentLevel;
-	    }
+	  loc_pos.x = x + i;
+	  loc_pos.y = y + j;
+	  clamping(loc_pos);
+	  humidityLevels_[loc_pos.y * numberColumns_ + loc_pos.x] +=
+	      humidityMatrix_[std::abs(j) * humidityRange_ + std::abs(i)];
 	}
     }
 }
