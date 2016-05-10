@@ -179,6 +179,20 @@ public:
   bool
   isGrowable(const Vec2d& position) const;
 
+  bool
+  isGrowable(size_t x, size_t y) const;
+
+  /**
+   * @brief Check if the area is all grass.
+   *
+   * @param topLeft top left corner graphic position
+   * @param bottomRight bottom right corner graphic position
+   *
+   * @return true if is all grass
+   */
+  bool
+  isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight);
+
   /**
    * @brief Check if Bee can be flown.
    *

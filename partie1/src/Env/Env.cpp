@@ -267,6 +267,72 @@ void
 Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
 {
   // TODO implement
+
+  Vec2d worldSize = getApp().getWorldSize();
+
+  sf::Color color;
+  sf::Color fillColor;
+  fillColor.a= 0;
+  double left, right, top, bottom;
+  double h_left(-10), h_right(-10); // horizontal
+  double v_top(-10), v_bottom(-10); // vertical
+
+  if(!world_->isInWorld(position))
+    return;
+
+
+  left = position.x - hiveManualRadius_;
+  if (left < 0)
+    {
+      h_right = left + worldSize.x;
+      h_left = worldSize.x;
+    }
+
+  right = position.x + hiveManualRadius_;
+  if (right > worldSize.x)
+    {
+      h_right = right - worldSize.x;
+      h_left = 0;
+    }
+
+  top = position.y - hiveManualRadius_;
+  if (top < 0)
+    {
+      v_bottom = worldSize.y;
+      v_top = top + worldSize.y;
+    }
+
+  bottom = position.y + hiveManualRadius_;
+  if (bottom > worldSize.y)
+    {
+      v_bottom = 0;
+      v_top = bottom - worldSize.y;
+    }
+
+  if (!world_->isGrassArea(Vec2d(left, top), Vec2d (right, bottom))
+      || !world_->isGrassArea(Vec2d(h_left, top), Vec2d(h_right, bottom))
+      || !world_->isGrassArea(Vec2d(left, v_top), Vec2d(right, v_bottom))
+      || !world_->isGrassArea(Vec2d(h_left,v_top), Vec2d(h_right,v_bottom)))
+    {
+      color = sf::Color::Blue;
+    }
+  else if (!isPlaceable(position, hiveManualRadius_))
+    {
+      color = sf::Color::Red;
+    }
+  else
+    {
+      color = sf::Color::Green;
+    }
+
+  sf::RectangleShape shape(buildRectangle( Vec2d(left, top), Vec2d(right, bottom), color, 5.0, fillColor));
+  target.draw(shape);
+  sf::RectangleShape h_shape(buildRectangle( Vec2d(h_left, top), Vec2d(h_right, bottom), color, 5.0, fillColor));
+  target.draw(h_shape);
+  sf::RectangleShape v_shape(buildRectangle( Vec2d(left, v_top), Vec2d(right, v_bottom), color, 5.0, fillColor));
+  target.draw(v_shape);
+  sf::RectangleShape d_shape(buildRectangle( Vec2d(h_left, v_top), Vec2d(h_right, v_bottom), color, 5.0, fillColor));
+  target.draw(d_shape);
 }
 
 Hive*

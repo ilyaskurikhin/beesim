@@ -653,8 +653,46 @@ World::isGrowable(const Vec2d& position) const
 }
 
 bool
+World::isGrowable(size_t x, size_t y) const
+{
+  if (cells_[y * numberColumns_ + x] == Kind::Grass)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
+
+bool
+World::isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight)
+{
+  Vec2d start = getCellPosition(topLeft);
+  Vec2d end = getCellPosition(bottomRight);
+
+  for (size_t i=start.x; i < end.x; ++i)
+    {
+      for (size_t j=start.y; j < end.y; ++j)
+	{
+	  if (!isGrowable(i,j))
+	    {
+	      return false;
+	    }
+	}
+    }
+  return true;
+}
+
+bool
 World::isHiveable(const Vec2d& position, double radius)
 {
+  if (!isInWorld(position))
+    {
+      return false;
+    }
+
   // TODO implement method isHiveable
   Vec2d left;
   Vec2d right;
@@ -717,8 +755,9 @@ World::getHumidity(const Vec2d& position) const
 bool
 World::isInWorld(const Vec2d& position) const
 {
-  if ((position.x > numberColumns_ * cellSize_)
-      || (position.y > numberColumns_ * cellSize_) || (position.x < 0)
+  if ((position.x > getApp().getWorldSize().x - 1)
+      || (position.y > getApp().getWorldSize().y - 1)
+      || (position.x < 0)
       || (position.y < 0))
     {
       return false;
