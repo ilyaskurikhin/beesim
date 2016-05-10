@@ -241,6 +241,10 @@ public:
    */
   void
   setRadius(double radius);
+  
+  const Collider&
+  getCollider();
+  
 
 protected:
 

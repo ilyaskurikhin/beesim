@@ -100,7 +100,7 @@ public:
    *
    * @return true is energy is zero.
    */
-  bool
+  bool 
   isDead();
 
   /**
@@ -194,6 +194,9 @@ protected:
   double debug_thickness_random_;
   double debug_thickness_target_;
 
+  sf::Time avoidanceClock_;
+  sf::Time delay_;
+  
   Collider vision_range_;
   double visibility_;
 

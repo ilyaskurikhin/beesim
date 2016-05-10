@@ -27,11 +27,12 @@ Bee::reloadConfig()
       getConfig()["energy"]["consumption rates"]["moving"].toDouble();
   energy_rate_eating_ =
       getConfig()["energy"]["consumption rates"]["eating"].toDouble();
+  
+  delay_ = sf::seconds(getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble());
 
   visibility_ = getConfig()["visibility range"].toDouble();
-  vision_range_.setRadius(visibility_ + this->radius_);
-  vision_range_.setPosition(this->position_);
-
+  vision_range_.setRadius(visibility_ + radius_);
+  
   speed_ = getConfig()["speed"].toDouble();
   
   move_vec_ = Vec2d::fromRandomAngle () * speed_;
@@ -54,6 +55,7 @@ Bee::move(sf::Time dt)
       targetMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
+  vision_range_.setPosition(this->getPosition());
 }
 
 void

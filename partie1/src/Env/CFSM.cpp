@@ -40,7 +40,7 @@ CFSM::nextState()
     }
 
   // cycle to next state
-  if (stateNumber < states_.size())
+  if (stateNumber < states_.size() - 1)
     {
       state_ = states_[stateNumber + 1];
     }

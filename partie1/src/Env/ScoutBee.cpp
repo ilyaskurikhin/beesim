@@ -124,6 +124,7 @@ ScoutBee::onState(State state, sf::Time dt)
   // first state
   if (state == IN_HIVE)
     {
+
       if (flower_location_ != empty)
       {
         WorkerBee* worker = this->getHive()->getWorker();
@@ -139,16 +140,16 @@ ScoutBee::onState(State state, sf::Time dt)
       }
 
       if (this->getEnergy() < energy_leave_hive_)
-    {
+      {
         debug_status_ = "in_hive_eat";
         this->eatFromHive(dt);
-    }
+      }
       else if (flower_location_ == empty)
-    {
+      {
       debug_status_ = "in_hive_leaving";
       this->nextState();
+      }
     }
-  }
 
   // second state
   else if (state == SEARCH_FLOWER)
@@ -159,7 +160,6 @@ ScoutBee::onState(State state, sf::Time dt)
         Flower* flower = this->findVisibleFlower();
         if (flower != nullptr)
         {
-          std::cout << "found flower" << std::endl;
           flower_location_ = flower->getPosition();
           number_times_shared_ = 0;
           this->nextState();
@@ -176,9 +176,9 @@ ScoutBee::onState(State state, sf::Time dt)
     {
       debug_status_ = "back_to_hive";
       this->setMoveTarget(this->getHive()->getPosition());
-      if (getAppEnv().getCollidingHive(this->getPosition()) == this->getHive())
-      //why are you not using isCollidinginside
+      if (this->getHive()->isColliderInside(this->getCollider()))
         {
+          std::cout << "found hive" << std::endl;
           this->nextState();
         }
       }
@@ -204,29 +204,41 @@ ScoutBee::onEnterState(State state)
 void
 ScoutBee::targetMove(sf::Time dt)
 {
+  Vec2d position(this->position_);
   Vec2d target = this->getMoveTarget();
   Vec2d direction = this->directionTo(target);
 
   direction = direction.normalised();
 
-  Vec2d position;
-  position += dt.asSeconds() * direction * this->getSpeed();
-
+  if (avoidanceClock_ < sf::Time::Zero) 
+  {
+    move_vec_ = direction * move_vec_.length();
+  }
+  else 
+  {
+    avoidanceClock_ -= dt;
+  }
+  
+  position.x += dt.asSeconds() * move_vec_.x;
+  position.y += dt.asSeconds() * move_vec_.y;
+  
   Collider protoBee(position, this->getRadius());
   protoBee.clamping();
+  
   if (!getAppEnv().isFlyable(protoBee.getPosition()))
     {
       double angleB;
       if (bernoulli(0.5))
-	{
-	  angleB = PI / 4;
-	}
+      {
+        angleB = PI / 4;
+      }
       else
-	{
-	  angleB = -PI / 4;
-	}
-      move_vec_.rotate(angleB);
-
+      {
+        angleB = -PI / 4;
+      }
+    move_vec_.rotate(angleB);
+    avoidanceClock_ = delay_;
+    
     }
   else
     {

@@ -264,3 +264,9 @@ Collider::setRadius(double radius)
       radius_ = 0;
     }
 }
+
+const Collider&
+Collider::getCollider()
+{
+	return *this;
+}
