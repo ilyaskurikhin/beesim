@@ -19,7 +19,7 @@ void
 printConsole (std::string string)
 {
   std::clog << std::setw (80) << std::setprecision (3) << "\r" << string << "\r"
-      << std::flush;
+      << std::setw(80) << std::flush;
 }
 
 void
