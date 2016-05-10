@@ -141,7 +141,7 @@ ScoutBee::onState(State state, sf::Time dt)
 
       if (this->getEnergy() < energy_leave_hive_)
       {
-        debug_status_ = "in_hive_eat";
+        debug_status_ = "in_hive_eating";
         this->eatFromHive(dt);
       }
       else if (flower_location_ == empty)
@@ -178,7 +178,6 @@ ScoutBee::onState(State state, sf::Time dt)
       this->setMoveTarget(this->getHive()->getPosition());
       if (this->getHive()->isColliderInside(this->getCollider()))
         {
-          std::cout << "found hive" << std::endl;
           this->nextState();
         }
       }

@@ -54,9 +54,6 @@ private:
   Vec2d flower_location_;
   int number_times_shared_;
 
-  std::string debug_status_;
-  double debug_text_size_;
-
   double energy_leave_hive_;
   double energy_seek_flowers_;
 

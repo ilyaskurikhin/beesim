@@ -103,13 +103,13 @@ void WorkerTest::onEvent(sf::Event event, sf::RenderWindow&)
                 assert(mLastHive != nullptr);
                 std::cout << "New hive created\n";
                 WorkerBee* newWorker = mLastHive->addWorker();
-				/* 
+				
 				  // uncomment me when learnFlowerLocation is coded
 				if (newWorker != nullptr) newWorker->learnFlowerLocation(mFlowerPosition);
             } else {
                 std::cout << "Couldn't create new hive, add flowers first\n";
             }
-				*/
+				
             break;
         }
         }

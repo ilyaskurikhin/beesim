@@ -117,7 +117,8 @@ Bee::getEnergy() const
 void
 Bee::eatFromHive(sf::Time dt)
 {
-  energy_ = +hive_->takeNectar(energy_rate_eating_ * dt.asSeconds());
+  energy_ += energy_rate_eating_ * dt.asSeconds();
+  this->getHive()->takeNectar(energy_rate_eating_ * dt.asSeconds());
 }
 
 Hive*

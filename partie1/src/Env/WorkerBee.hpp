@@ -25,6 +25,10 @@ public:
   j::Value const&
   getConfig() override;
 
+  
+  void
+  drawOn(sf::RenderTarget& target) const;
+  
   void
   onState(State state, sf::Time dt) override;
 
@@ -37,13 +41,34 @@ public:
   Vec2d
   getFlower() const;
 
+  double
+  getPollen() const;
+  
+  void 
+  transferPollen(sf::Time dt);
+  
+  void 
+  eatPollen(sf::Time dt);
+  
+  void
+  learnFlowerLocation(const Vec2d& flowerPosition);
+  
+  void 
+  setPollen(double amount);
+  
   // TODO make private
   State static const IN_HIVE;
+  State static const TO_FLOWER;
   State static const COLLECT_POLLEN;
+  State static const RETURN_HIVE;
 
 private:
-  Vec2d flower_location_;
 
+  Vec2d flower_location_;
+  double pollen_;
+  double maxPollen_;
+  double pollen_collecting_rate_;
+  double energy_leave_hive_;
 };
 
 #endif /* WORKERBEE_HPP */

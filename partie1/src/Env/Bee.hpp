@@ -205,6 +205,10 @@ protected:
   State const TARGET = 2;
   State move_state_;
 
+
+  std::string debug_status_;
+  double debug_text_size_;
+
 };
 
 #endif
