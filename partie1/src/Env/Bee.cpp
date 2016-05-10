@@ -5,7 +5,7 @@
 
 Bee::Bee(Hive* hive, const Vec2d& position, std::vector<State> states) :
     Collider(position), CFSM(states), hive_(hive), debug_thickness_random_(5), debug_thickness_target_(
-	3), vision_range_(position)
+        3), vision_range_(position)
 {
   // This constructor can not take care of its members
   // since it does not know what kind of bee it is
@@ -27,15 +27,16 @@ Bee::reloadConfig()
       getConfig()["energy"]["consumption rates"]["moving"].toDouble();
   energy_rate_eating_ =
       getConfig()["energy"]["consumption rates"]["eating"].toDouble();
-      
-  delay_ = sf::seconds(getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble());
+
+  delay_ = sf::seconds(
+      getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble());
 
   visibility_ = getConfig()["visibility range"].toDouble();
   vision_range_.setRadius(visibility_ + this->getRadius());
-  
+
   speed_ = getConfig()["speed"].toDouble();
-  
-  move_vec_ = Vec2d::fromRandomAngle () * speed_;
+
+  move_vec_ = Vec2d::fromRandomAngle() * speed_;
 }
 
 void
@@ -57,7 +58,6 @@ Bee::move(sf::Time dt)
     }
   vision_range_.setPosition(this->getPosition());
 }
-
 
 void
 Bee::setMoveTarget(const Vec2d& position)
@@ -91,34 +91,34 @@ Bee::targetMove(sf::Time dt)
 
   direction = direction.normalised();
 
-  if (avoidanceClock_ < sf::Time::Zero) 
-  {
-    move_vec_ = direction * move_vec_.length();
-  }
-  else 
-  {
-    avoidanceClock_ -= dt;
-  }
-  
-  position+= dt.asSeconds() * move_vec_;
-  
+  if (avoidanceClock_ < sf::Time::Zero)
+    {
+      move_vec_ = direction * move_vec_.length();
+    }
+  else
+    {
+      avoidanceClock_ -= dt;
+    }
+
+  position += dt.asSeconds() * move_vec_;
+
   Collider protoBee(position, this->getRadius());
   protoBee.clamping();
-  
+
   if (!getAppEnv().isFlyable(protoBee.getPosition()))
     {
       double angleB;
       if (bernoulli(0.5))
-      {
-        angleB = PI / 4;
-      }
+        {
+          angleB = PI / 4;
+        }
       else
-      {
-        angleB = -PI / 4;
-      }
-    move_vec_.rotate(angleB);
-    avoidanceClock_ = delay_;
-    
+        {
+          angleB = -PI / 4;
+        }
+      move_vec_.rotate(angleB);
+      avoidanceClock_ = delay_;
+
     }
   else
     {
@@ -184,19 +184,19 @@ Bee::drawOn(sf::RenderTarget& target) const
     {
       double thickness(0);
       if (move_state_ == RANDOM)
-      {
-        thickness = debug_thickness_random_;
-        sf::CircleShape shape = buildAnnulus(position, radius,
-                    sf::Color::Black, thickness);
-        target.draw(shape);
-      }
+        {
+          thickness = debug_thickness_random_;
+          sf::CircleShape shape = buildAnnulus(position, radius,
+                                               sf::Color::Black, thickness);
+          target.draw(shape);
+        }
       else if (move_state_ == TARGET)
-      {
-        thickness = debug_thickness_target_;
-        sf::CircleShape shape = buildAnnulus(position, radius,
-                    sf::Color::Blue, thickness);
-        target.draw(shape);
-      }
+        {
+          thickness = debug_thickness_target_;
+          sf::CircleShape shape = buildAnnulus(position, radius,
+                                               sf::Color::Blue, thickness);
+          target.draw(shape);
+        }
 
     }
 }

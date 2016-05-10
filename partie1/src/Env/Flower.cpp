@@ -2,7 +2,7 @@
 
 Flower::Flower(const Vec2d& position, double radius, double pollen) :
     Collider(position, radius), pollen_(pollen), humidity_(
-	getAppEnv().getHumidity(position))
+        getAppEnv().getHumidity(position))
 {
   loadTexture();
   splitThreshold_ =
@@ -34,7 +34,8 @@ Flower::takePollen(const double& pollen)
 void
 Flower::drawOn(sf::RenderTarget& target) const
 {
-  auto flowerSprite = buildSprite(this->getPosition(), this->getRadius(), texture_);
+  auto flowerSprite = buildSprite(this->getPosition(), this->getRadius(),
+                                  texture_);
   target.draw(flowerSprite);
 }
 
@@ -67,22 +68,24 @@ Flower::update(sf::Time dt)
       int i(0);
       bool placed(false);
       while ((!placed) && (i < 100)) //
-	{
-	  // set a random distance
-	  double distance(uniform(0.5 * this->getRadius(), 2 * this->getRadius()));
+        {
+          // set a random distance
+          double distance(
+              uniform(0.5 * this->getRadius(), 2 * this->getRadius()));
 
-	  // calculate a new position and clamp it
-	  Vec2d position = this->getPosition() + Vec2d::fromRandomAngle() * distance;
-	  Collider protoFlower(position, this->getRadius());
-	  protoFlower.clamping();
+          // calculate a new position and clamp it
+          Vec2d position = this->getPosition()
+              + Vec2d::fromRandomAngle() * distance;
+          Collider protoFlower(position, this->getRadius());
+          protoFlower.clamping();
 
-	  if (getAppEnv().addFlowerAt(protoFlower.getPosition()))
-	    {
-	      placed = true;
-	      pollen_ = 0.5 * pollen_;
-	    }
-	  ++i;
-	}
+          if (getAppEnv().addFlowerAt(protoFlower.getPosition()))
+            {
+              placed = true;
+              pollen_ = 0.5 * pollen_;
+            }
+          ++i;
+        }
     }
 }
 

@@ -5,9 +5,9 @@
 
 Hive::Hive(const Vec2d& position, double radius) :
     Collider(position, radius), nectar_(
-	getAppConfig()["simulation"]["hive"]["initial"]["nectar"].toDouble()), hiveTexture_(
-	getAppTexture(
-	    getAppConfig()["simulation"]["hive"]["texture"].toString()))
+        getAppConfig()["simulation"]["hive"]["initial"]["nectar"].toDouble()), hiveTexture_(
+        getAppTexture(
+            getAppConfig()["simulation"]["hive"]["texture"].toString()))
 {
 }
 
@@ -36,7 +36,8 @@ WorkerBee*
 Hive::addWorker()
 {
   std::vector<State> states =
-    { WorkerBee::IN_HIVE, WorkerBee::TO_FLOWER, WorkerBee::COLLECT_POLLEN, WorkerBee::RETURN_HIVE };
+    { WorkerBee::IN_HIVE, WorkerBee::TO_FLOWER, WorkerBee::COLLECT_POLLEN,
+        WorkerBee::RETURN_HIVE };
   WorkerBee* worker(new WorkerBee(this, this->getPosition(), states));
   worker->reloadConfig();
   bees_.push_back(worker);
@@ -50,10 +51,10 @@ Hive::getWorker() const
   for (size_t i = 0; i < workers_.size(); ++i)
     {
       if (workers_[i]->getState() == WorkerBee::IN_HIVE
-	  && workers_[i]->getFlower() == Vec2d(-1, -1))
-	{
-	  return workers_[i];
-	}
+          && workers_[i]->getFlower() == Vec2d(-1, -1))
+        {
+          return workers_[i];
+        }
     }
   return nullptr;
 }
@@ -64,9 +65,9 @@ Hive::getBeeAt(const Vec2d& position)
   for (size_t i = 0; i < bees_.size(); ++i)
     {
       if (bees_[i]->isPointInside(position))
-	{
-	  return bees_[i];
-	}
+        {
+          return bees_[i];
+        }
     }
   return nullptr;
 }
@@ -79,13 +80,13 @@ Hive::update(sf::Time dt)
       bees_[i]->update(dt);
 
       if (bees_[i]->isDead())
-	{
-	  delete bees_[i];
-	  bees_[i] = nullptr;
-	}
+        {
+          delete bees_[i];
+          bees_[i] = nullptr;
+        }
 
       bees_.erase(std::remove(bees_.begin(), bees_.end(), nullptr),
-		  bees_.end());
+                  bees_.end());
 
     }
 }
@@ -93,7 +94,8 @@ Hive::update(sf::Time dt)
 void
 Hive::drawOn(sf::RenderTarget& target) const
 {
-  auto hiveSprite = buildSprite(this->getPosition(), this->getRadius(), hiveTexture_);
+  auto hiveSprite = buildSprite(this->getPosition(), this->getRadius(),
+                                hiveTexture_);
   target.draw(hiveSprite);
 
   for (size_t i = 0; i < bees_.size(); ++i)

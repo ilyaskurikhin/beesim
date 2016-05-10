@@ -241,10 +241,9 @@ public:
    */
   void
   setRadius(double radius);
-  
+
   const Collider&
   getCollider();
-  
 
 private:
 
@@ -263,6 +262,5 @@ private:
  */
 std::ostream&
 operator<<(std::ostream& oss, const Collider& collider);
-
 
 #endif

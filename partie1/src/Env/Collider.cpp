@@ -9,7 +9,7 @@ Collider::Collider(const Vec2d& position, double radius)
   if (radius_ < 0)
     {
       throw std::runtime_error(
-	  "Collider with negative radius created. (Collider::Collider)");
+          "Collider with negative radius created. (Collider::Collider)");
     }
 
   // puts Collider into map
@@ -75,24 +75,24 @@ Collider::clamping()
 
   //permet d'obtenir largeur et hauteur du monde
   auto worldSize = getApp().getWorldSize();
-  auto width = worldSize.x -1;
-  auto height = worldSize.y -1;
+  auto width = worldSize.x - 1;
+  auto height = worldSize.y - 1;
 
   //tant que position en x <0, on lui incrémente la largeur du monde
   //tant que position > largeur du monde, on lui décremente la largeur du monde
 
   if (position_.x < 0)
-      position_.x += width;
+    position_.x += width;
 
   if (position_.x > width)
-      position_.x -= width;
+    position_.x -= width;
 
   //idem pour position en y
   if (position_.y < 0)
-      position_.y += height;
+    position_.y += height;
 
   if (position_.y > width)
-      position_.y -= height;
+    position_.y -= height;
 
   if (!isClamped())
     clamping();
@@ -106,22 +106,21 @@ Collider::isClamped() const
 
   //permet d'obtenir largeur et hauteur du monde
   Vec2d worldSize = getApp().getWorldSize();
-  double width = worldSize.x -1;
-  double height = worldSize.y -1;
-
+  double width = worldSize.x - 1;
+  double height = worldSize.y - 1;
 
   if (position_.x < 0)
-      return false;
+    return false;
 
   if (position_.x > width)
-      return false;
+    return false;
 
   //idem pour position en y
   if (position_.y < 0)
-      return false;
+    return false;
 
   if (position_.y > width)
-      return false;
+    return false;
 
   return true;
 }
@@ -210,12 +209,12 @@ Collider::directionTo(const Vec2d& to) const
       currentTo.y = multipliers[i][1] * height + to.y;
 
       if (distance(position_, currentTo) < min)
-	{
-	  minimumTo = currentTo;
-	  min = distance(position_, currentTo);
-	  moveTo.x = minimumTo.x - position_.x;
-	  moveTo.y = minimumTo.y - position_.y;
-	}
+        {
+          minimumTo = currentTo;
+          min = distance(position_, currentTo);
+          moveTo.x = minimumTo.x - position_.x;
+          moveTo.y = minimumTo.y - position_.y;
+        }
     }
 
   return moveTo;
@@ -275,9 +274,9 @@ Collider::setRadius(double radius)
     {
       radius_ = radius;
       if (radius_ < 0)
-	{
-	  throw std::runtime_error("ERROR: Negative radius set (Collider)");
-	}
+        {
+          throw std::runtime_error("ERROR: Negative radius set (Collider)");
+        }
     }
   catch (std::string e)
     {
@@ -288,5 +287,5 @@ Collider::setRadius(double radius)
 const Collider&
 Collider::getCollider()
 {
-	return *this;
+  return *this;
 }

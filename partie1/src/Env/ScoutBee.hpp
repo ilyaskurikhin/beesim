@@ -45,7 +45,6 @@ public:
   void
   targetMove(sf::Time dt) override;
 
-
   // TODO make private
   State static const IN_HIVE;
   State static const SEARCH_FLOWER;
@@ -57,12 +56,12 @@ private:
 
   double energy_leave_hive_;
   double energy_seek_flowers_;
-  
+
   double max_angle_;
   double rotation_probability_;
-  
+
   double max_sharing_;
-  
+
 };
 
 #endif /* SCOUTBEE_HPP */

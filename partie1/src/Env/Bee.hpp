@@ -100,7 +100,7 @@ public:
    *
    * @return true is energy is zero.
    */
-  bool 
+  bool
   isDead();
 
   /**
@@ -212,14 +212,14 @@ private:
   double energy_rate_eating_;
 
   double max_angle_;
-  
+
   sf::Texture texture_;
   double debug_thickness_random_;
   double debug_thickness_target_;
 
   sf::Time avoidanceClock_;
   sf::Time delay_;
-  
+
   Collider vision_range_;
   double visibility_;
 
@@ -227,7 +227,6 @@ private:
   State const RANDOM = 1;
   State const TARGET = 2;
   State move_state_;
-
 
   std::string debug_status_;
 

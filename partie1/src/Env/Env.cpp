@@ -50,15 +50,15 @@ Env::update(sf::Time dt)
 
       // check if flower is dead
       if (flowers_[i]->getPollen() <= 0)
-	{
-	  // remove dead flower
-	  delete flowers_[i];
-	  flowers_[i] = nullptr;
-	}
+        {
+          // remove dead flower
+          delete flowers_[i];
+          flowers_[i] = nullptr;
+        }
     }
   // remove empty locations
   flowers_.erase(std::remove(flowers_.begin(), flowers_.end(), nullptr),
-		 flowers_.end());
+                 flowers_.end());
 
   for (size_t i = 0; i < hives_.size(); ++i)
     {
@@ -88,34 +88,34 @@ Env::drawOn(sf::RenderTarget& target) const
       // get cursor position
       Vec2d position = getApp().getCursorPositionInView();
       if (world_->isInWorld(position))
-	{
-	  bool isFlower(false);
-	  std::string valueString("empty");
-	  sf::Color color(sf::Color::White);
+        {
+          bool isFlower(false);
+          std::string valueString("empty");
+          sf::Color color(sf::Color::White);
 
-	  // check for flowers
-	  for (size_t i = 0; i < flowers_.size(); ++i)
-	    {
-	      if (*(flowers_[i]) > position)
-		{
-		  isFlower = true;
-		  valueString = to_nice_string(flowers_[i]->getPollen());
-		  color = sf::Color::Yellow;
-		}
-	    }
+          // check for flowers
+          for (size_t i = 0; i < flowers_.size(); ++i)
+            {
+              if (*(flowers_[i]) > position)
+                {
+                  isFlower = true;
+                  valueString = to_nice_string(flowers_[i]->getPollen());
+                  color = sf::Color::Yellow;
+                }
+            }
 
-	  // otherwise show ambient humidity
-	  if (!isFlower)
-	    {
-	      valueString = to_nice_string(world_->getHumidity(position));
-	      color = sf::Color::Red;
-	    }
+          // otherwise show ambient humidity
+          if (!isFlower)
+            {
+              valueString = to_nice_string(world_->getHumidity(position));
+              color = sf::Color::Red;
+            }
 
-	  sf::Text text = buildText(valueString, position, getAppFont(),
-				    debug_text_size_, color);
-	  target.draw(text);
+          sf::Text text = buildText(valueString, position, getAppFont(),
+                                    debug_text_size_, color);
+          target.draw(text);
 
-	}
+        }
     }
 
 }
@@ -159,7 +159,7 @@ Env::reloadConfig()
 
   debug_text_size_ = 10
       * (getAppConfig()["simulation"]["world"]["size"].toDouble()
-	  / getAppConfig()["simulation"]["world"]["cells"].toDouble());
+          / getAppConfig()["simulation"]["world"]["cells"].toDouble());
 
   hiveableFactor_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble();
@@ -204,9 +204,9 @@ Env::isPlaceable(const Vec2d& position, double radius) const
 
       // check if object can be made at position
       if (getCollidingHive(object) == nullptr)
-	{
-	  return true;
-	}
+        {
+          return true;
+        }
     }
   return false;
 }
@@ -236,13 +236,13 @@ Env::drawFlowerZone(sf::RenderTarget& target, const Vec2d& position)
   if (world_->isGrowable(position))
     {
       sf::CircleShape shape = buildAnnulus(position, flowerManualRadius_,
-					   sf::Color::Green, 5.0);
+                                           sf::Color::Green, 5.0);
       target.draw(shape);
     }
   else
     {
       sf::CircleShape shape = buildAnnulus(position, flowerManualRadius_,
-					   sf::Color::Red, 5.0);
+                                           sf::Color::Red, 5.0);
       target.draw(shape);
     }
 }
@@ -277,9 +277,8 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
   double h_left(-5), h_right(-5); // horizontal
   double v_top(-5), v_bottom(-5); // vertical
 
-  if(!world_->isInWorld(position))
+  if (!world_->isInWorld(position))
     return;
-
 
   left = position.x - hiveManualRadius_;
   if (left < 0)
@@ -309,10 +308,10 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
       v_top = bottom - worldSize.y;
     }
 
-  if (!world_->isGrassArea(Vec2d(left, top), Vec2d (right, bottom))
+  if (!world_->isGrassArea(Vec2d(left, top), Vec2d(right, bottom))
       || !world_->isGrassArea(Vec2d(h_left, top), Vec2d(h_right, bottom))
       || !world_->isGrassArea(Vec2d(left, v_top), Vec2d(right, v_bottom))
-      || !world_->isGrassArea(Vec2d(h_left,v_top), Vec2d(h_right,v_bottom)))
+      || !world_->isGrassArea(Vec2d(h_left, v_top), Vec2d(h_right, v_bottom)))
     {
       color = sf::Color::Blue;
     }
@@ -325,13 +324,21 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
       color = sf::Color::Green;
     }
 
-  sf::RectangleShape shape(buildRectangle( Vec2d(left, top), Vec2d(right, bottom), color, 5.0, fillColor));
+  sf::RectangleShape shape(
+      buildRectangle(Vec2d(left, top), Vec2d(right, bottom), color, 5.0,
+                     fillColor));
   target.draw(shape);
-  sf::RectangleShape h_shape(buildRectangle( Vec2d(h_left, top), Vec2d(h_right, bottom), color, 5.0, fillColor));
+  sf::RectangleShape h_shape(
+      buildRectangle(Vec2d(h_left, top), Vec2d(h_right, bottom), color, 5.0,
+                     fillColor));
   target.draw(h_shape);
-  sf::RectangleShape v_shape(buildRectangle( Vec2d(left, v_top), Vec2d(right, v_bottom), color, 5.0, fillColor));
+  sf::RectangleShape v_shape(
+      buildRectangle(Vec2d(left, v_top), Vec2d(right, v_bottom), color, 5.0,
+                     fillColor));
   target.draw(v_shape);
-  sf::RectangleShape d_shape(buildRectangle( Vec2d(h_left, v_top), Vec2d(h_right, v_bottom), color, 5.0, fillColor));
+  sf::RectangleShape d_shape(
+      buildRectangle(Vec2d(h_left, v_top), Vec2d(h_right, v_bottom), color, 5.0,
+                     fillColor));
   target.draw(d_shape);
 }
 
@@ -341,12 +348,12 @@ Env::getCollidingHive(const Collider& body) const
   for (size_t i(0); i < hives_.size(); ++i)
     {
       Collider collidingHive(hives_[i]->getPosition(),
-			     (hiveManualRadius_ * hiveableFactor_));
+                             (hiveManualRadius_ * hiveableFactor_));
 
       if (collidingHive.isColliding(body))
-	{
-	  return hives_[i];
-	}
+        {
+          return hives_[i];
+        }
     }
   return nullptr;
 }
@@ -357,12 +364,12 @@ Env::getCollidingFlower(const Collider& body) const
   for (size_t i(0); i < flowers_.size(); ++i)
     {
       Collider collidingFlower(flowers_[i]->getPosition(),
-			       flowers_[i]->getRadius());
+                               flowers_[i]->getRadius());
 
       if (collidingFlower.isColliding(body))
-	{
-	  return flowers_[i];
-	}
+        {
+          return flowers_[i];
+        }
     }
   return nullptr;
 
@@ -375,9 +382,9 @@ Env::getBeeAt(const Vec2d& position) const
     {
       Bee* bee = hives_[i]->getBeeAt(position);
       if (bee)
-	{
-	  return bee;
-	}
+        {
+          return bee;
+        }
     }
   return nullptr;
 }

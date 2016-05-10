@@ -25,10 +25,9 @@ public:
   j::Value const&
   getConfig() override;
 
-  
   void
   drawOn(sf::RenderTarget& target) const;
-  
+
   void
   onState(State state, sf::Time dt) override;
 
@@ -43,24 +42,22 @@ public:
 
   double
   getPollen() const;
-  
-  void 
+
+  void
   transferPollen(sf::Time dt);
-  
-  void 
+
+  void
   eatPollen(sf::Time dt);
-  
+
   void
   learnFlowerLocation(const Vec2d& flowerPosition);
-  
-  void 
+
+  void
   setPollen(double amount);
-  
+
   void
   targetMove(sf::Time dt);
 
-
-  
   // TODO make private
   State static const IN_HIVE;
   State static const TO_FLOWER;
@@ -75,7 +72,7 @@ private:
   double pollen_collecting_rate_;
   double energy_leave_hive_;
   double pollen_transfer_rate_;
-  
+
 };
 
 #endif /* WORKERBEE_HPP */

@@ -34,9 +34,9 @@ CFSM::nextState()
   for (size_t i = 0; i < states_.size(); ++i)
     {
       if (states_[i] == state_)
-	{
-	  stateNumber = i;
-	}
+        {
+          stateNumber = i;
+        }
     }
 
   // cycle to next state
