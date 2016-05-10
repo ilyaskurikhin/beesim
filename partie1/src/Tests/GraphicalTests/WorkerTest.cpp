@@ -111,7 +111,7 @@ void WorkerTest::onEvent(sf::Event event, sf::RenderWindow&)
             }
 				
             break;
-        }
+
         }
     }
 }
