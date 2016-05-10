@@ -190,6 +190,8 @@ protected:
   double energy_rate_moving_;
   double energy_rate_eating_;
 
+  double max_angle_;
+  
   sf::Texture texture_;
   double debug_thickness_random_;
   double debug_thickness_target_;

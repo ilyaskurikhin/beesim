@@ -54,16 +54,16 @@ ScoutBee::reloadConfig()
 {
   Bee::reloadConfig();
 
-  // TODO load class attributes here
-  rotation_probability_ =
-      getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble();
-  max_angle_ =
-      getConfig()["moving behaviour"]["random"]["rotation angle max"].toDouble();
 
   energy_seek_flowers_ = getConfig()["energy"]["to seek flowers"].toDouble();
   energy_leave_hive_ = getConfig()["energy"]["to leave hive"].toDouble();
 
   max_sharing_ = getConfig()["sharing"]["max"].toDouble();
+
+  rotation_probability_ =
+      getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble();
+  max_angle_ =
+      getConfig()["moving behaviour"]["random"]["rotation angle max"].toDouble();
 
   debug_text_size_ = getAppEnv().getTextSize();
 }
@@ -72,13 +72,12 @@ void
 ScoutBee::randomMove(sf::Time dt)
 {
   logEvent("ScoutBee", "random move");
-
   Vec2d position(this->getPosition());
   if (bernoulli(rotation_probability_))
-    {
-      double angleA(uniform(-max_angle_, max_angle_));
-      move_vec_.rotate(angleA);
-    }
+  {
+    double angleA(uniform(-max_angle_, max_angle_));
+    move_vec_.rotate(angleA);
+  }
 
   position.x += dt.asSeconds() * move_vec_.x;
   position.y += dt.asSeconds() * move_vec_.y;
@@ -86,17 +85,17 @@ ScoutBee::randomMove(sf::Time dt)
   Collider protoBee(position, radius_);
   protoBee.clamping();
   if (!getAppEnv().isFlyable(protoBee.getPosition()))
+  {
+    double angleB;
+    if (bernoulli(0.5))
     {
-      double angleB;
-      if (bernoulli(0.5))
-      {
-        angleB = PI / 4;
-      }
-      else
-      {
-        angleB = -PI / 4;
-      }
-      
+      angleB = PI / 4;
+    }
+    else
+    {
+      angleB = -PI / 4;
+    }
+    
     move_vec_.rotate(angleB);
 
   }
@@ -104,6 +103,7 @@ ScoutBee::randomMove(sf::Time dt)
   {
     this->setPosition(protoBee.getPosition());
   }
+
 }
 
 j::Value const&
@@ -124,7 +124,7 @@ ScoutBee::onState(State state, sf::Time dt)
   // first state
   if (state == IN_HIVE)
     {
-
+      std::cout<< "in hive" << std::endl;
       if (flower_location_ != empty)
       {
         WorkerBee* worker = this->getHive()->getWorker();
@@ -203,46 +203,9 @@ ScoutBee::onEnterState(State state)
 void
 ScoutBee::targetMove(sf::Time dt)
 {
-  Vec2d position(this->position_);
-  Vec2d target = this->getMoveTarget();
-  Vec2d direction = this->directionTo(target);
-
-  direction = direction.normalised();
-
-  if (avoidanceClock_ < sf::Time::Zero) 
-  {
-    move_vec_ = direction * move_vec_.length();
-  }
-  else 
-  {
-    avoidanceClock_ -= dt;
-  }
+    logEvent("ScoutBee", "target move");
+    Bee::targetMove(dt);
   
-  position.x += dt.asSeconds() * move_vec_.x;
-  position.y += dt.asSeconds() * move_vec_.y;
-  
-  Collider protoBee(position, this->getRadius());
-  protoBee.clamping();
-  
-  if (!getAppEnv().isFlyable(protoBee.getPosition()))
-    {
-      double angleB;
-      if (bernoulli(0.5))
-      {
-        angleB = PI / 4;
-      }
-      else
-      {
-        angleB = -PI / 4;
-      }
-    move_vec_.rotate(angleB);
-    avoidanceClock_ = delay_;
-    
-    }
-  else
-    {
-      this->position_ = protoBee.getPosition();
-    }
 }
 
 State const ScoutBee::IN_HIVE = createUid();

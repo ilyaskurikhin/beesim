@@ -56,6 +56,11 @@ public:
   void 
   setPollen(double amount);
   
+  void
+  targetMove(sf::Time dt);
+
+
+  
   // TODO make private
   State static const IN_HIVE;
   State static const TO_FLOWER;
@@ -69,6 +74,8 @@ private:
   double maxPollen_;
   double pollen_collecting_rate_;
   double energy_leave_hive_;
+
+  
 };
 
 #endif /* WORKERBEE_HPP */

@@ -9,7 +9,7 @@
 
 WorkerBee::WorkerBee (Hive* hive, const Vec2d& position,
 		      std::vector<State> states) :
-    Bee (hive, position, states), pollen_ (0.0)
+    Bee (hive, position, states), flower_location_(-1, -1), pollen_ (0.0)
 {
   logEvent ("WorkerBee", "new constructed");
   reloadConfig ();
@@ -28,13 +28,13 @@ WorkerBee::reloadConfig ()
   maxPollen_ = getConfig ()["max pollen capacity"].toDouble ();
   pollen_collecting_rate_ = getConfig ()["harvest rate"].toDouble ();
   energy_leave_hive_ = getConfig ()["energy"]["to leave hive"].toDouble ();
+  debug_text_size_ = getAppEnv().getTextSize();
 
 }
 
 j::Value const&
 WorkerBee::getConfig ()
 {
-  // TODO make this refer to superclass method
   return getAppConfig ()["simulation"]["bees"]["worker"];
 }
 
@@ -48,13 +48,14 @@ WorkerBee::onState (State state, sf::Time dt)
   // first state
   if (state == IN_HIVE)
     {
+      
       if (this->getPollen () != 0)
 	{
-	  transferPollen (dt);
+	  transferPollen(dt);
 	  debug_status_ = "in_hive_leaving_pollen";
 	}
 
-      if ((this->getPollen () == 0))
+  if ((this->getPollen () == 0))
 	{
 	  if (this->getEnergy () < energy_leave_hive_)
 	    {
@@ -76,21 +77,23 @@ WorkerBee::onState (State state, sf::Time dt)
 
   // second state
   else if (state == TO_FLOWER)
-    {
+  {
       debug_status_ = "to_flower";
 
-      if (this->getCollider ().isPointInside (flower_location_)
-	  && getAppEnv ().getCollidingFlower (this->getCollider ()) != nullptr)
-	{
-	  this->nextState ();
-	}
+      if (this->getCollider ().isPointInside (flower_location_))
+      { 
+        if (getAppEnv ().getCollidingFlower (this->getCollider ()) != nullptr)
+        {
+          this->nextState ();
+        }
       else
-	{
-	  //if the flower doesn't exist anymore, goes two states further
-	  this->nextState ();
-	  this->nextState ();
-	}
+      {
+        //if the flower doesn't exist anymore, goes two states further
+        this->nextState ();
+        this->nextState ();
+      }
     }
+  }
 
   // third state
   else if (state == COLLECT_POLLEN)
@@ -198,6 +201,14 @@ WorkerBee::drawOn (sf::RenderTarget& target) const
 				   debug_text_size_, color);
       target.draw (status);
     }
+}
+
+
+void
+WorkerBee::targetMove(sf::Time dt)
+{
+  logEvent("WorkerBee", "random move");
+  Bee::targetMove(dt);
 }
 
 State const WorkerBee::IN_HIVE = createUid ();

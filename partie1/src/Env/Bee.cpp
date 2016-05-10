@@ -27,7 +27,7 @@ Bee::reloadConfig()
       getConfig()["energy"]["consumption rates"]["moving"].toDouble();
   energy_rate_eating_ =
       getConfig()["energy"]["consumption rates"]["eating"].toDouble();
-  
+      
   delay_ = sf::seconds(getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble());
 
   visibility_ = getConfig()["visibility range"].toDouble();
@@ -58,11 +58,6 @@ Bee::move(sf::Time dt)
   vision_range_.setPosition(this->getPosition());
 }
 
-void
-Bee::randomMove(sf::Time dt)
-{
-  logEvent("Bee", "randomMove called");
-}
 
 void
 Bee::setMoveTarget(const Vec2d& position)
@@ -83,9 +78,53 @@ Bee::getSpeed() const
 }
 
 void
+Bee::randomMove(sf::Time dt)
+{
+}
+
+void
 Bee::targetMove(sf::Time dt)
 {
-  // TODO implement
+  Vec2d position(this->position_);
+  Vec2d target = this->getMoveTarget();
+  Vec2d direction = this->directionTo(target);
+
+  direction = direction.normalised();
+
+  if (avoidanceClock_ < sf::Time::Zero) 
+  {
+    move_vec_ = direction * move_vec_.length();
+  }
+  else 
+  {
+    avoidanceClock_ -= dt;
+  }
+  
+  position.x += dt.asSeconds() * move_vec_.x;
+  position.y += dt.asSeconds() * move_vec_.y;
+  
+  Collider protoBee(position, this->getRadius());
+  protoBee.clamping();
+  
+  if (!getAppEnv().isFlyable(protoBee.getPosition()))
+    {
+      double angleB;
+      if (bernoulli(0.5))
+      {
+        angleB = PI / 4;
+      }
+      else
+      {
+        angleB = -PI / 4;
+      }
+    move_vec_.rotate(angleB);
+    avoidanceClock_ = delay_;
+    
+    }
+  else
+    {
+      this->position_ = protoBee.getPosition();
+    }
 }
 
 bool
