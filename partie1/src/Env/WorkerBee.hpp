@@ -34,9 +34,6 @@ public:
   void
   onEnterState(State state) override;
 
-  void
-  setFlower(const Vec2d& position);
-
   Vec2d
   getFlower() const;
 
@@ -58,11 +55,20 @@ public:
   void
   targetMove(sf::Time dt);
 
+  void
+  interact(Bee* other) override;
+  
+  void
+  interactWith(ScoutBee* scouting) override;
+  
+  void
+  interactWith(WorkerBee* working) override;
+  
   // TODO make private
-  State static const IN_HIVE;
+
   State static const TO_FLOWER;
   State static const COLLECT_POLLEN;
-  State static const RETURN_HIVE;
+
 
 private:
 

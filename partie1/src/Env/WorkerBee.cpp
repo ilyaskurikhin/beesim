@@ -50,6 +50,7 @@ WorkerBee::onState(State state, sf::Time dt)
       if (this->getPollen() != 0)
         {
           transferPollen(dt);
+          flower_location_ = empty;
           if (this->getPollen() < 0)
             {
               setPollen(0);
@@ -136,12 +137,6 @@ WorkerBee::onEnterState(State state)
     }
 }
 
-void
-WorkerBee::setFlower(const Vec2d& position)
-{
-  flower_location_ = position;
-}
-
 Vec2d
 WorkerBee::getFlower() const
 {
@@ -211,7 +206,23 @@ WorkerBee::targetMove(sf::Time dt)
   Bee::targetMove(dt);
 }
 
-State const WorkerBee::IN_HIVE = createUid();
+
+void
+WorkerBee::interact(Bee* other)
+{
+  other->interactWith(this);
+}
+  
+void
+WorkerBee::interactWith(ScoutBee* scouting)
+{
+  
+}
+  
+void
+WorkerBee::interactWith(WorkerBee* working)
+{
+}
+
 State const WorkerBee::TO_FLOWER = createUid();
 State const WorkerBee::COLLECT_POLLEN = createUid();
-State const WorkerBee::RETURN_HIVE = createUid();

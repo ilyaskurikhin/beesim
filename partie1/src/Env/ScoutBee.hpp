@@ -46,10 +46,17 @@ public:
   targetMove(sf::Time dt) override;
 
   // TODO make private
-  State static const IN_HIVE;
   State static const SEARCH_FLOWER;
-  State static const RETURN_HIVE;
-
+  
+  void
+  interact(Bee* other) override;
+  
+  void
+  interactWith(ScoutBee* scouting) override;
+  
+  void
+  interactWith(WorkerBee* working) override;
+  
 private:
   Vec2d flower_location_;
   int number_times_shared_;
