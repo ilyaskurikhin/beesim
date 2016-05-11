@@ -24,7 +24,7 @@ ScoutBee*
 Hive::addScout()
 {
   std::vector<State> states =
-    { ScoutBee::IN_HIVE, ScoutBee::SEARCH_FLOWER, ScoutBee::RETURN_HIVE };
+    { Bee::IN_HIVE, ScoutBee::SEARCH_FLOWER, ScoutBee::RETURN_HIVE };
   ScoutBee* scout(new ScoutBee(this, this->getPosition(), states));
   scout->reloadConfig();
   bees_.push_back(scout);
@@ -36,7 +36,7 @@ WorkerBee*
 Hive::addWorker()
 {
   std::vector<State> states =
-    { WorkerBee::IN_HIVE, WorkerBee::TO_FLOWER, WorkerBee::COLLECT_POLLEN,
+    { Bee::IN_HIVE, WorkerBee::TO_FLOWER, WorkerBee::COLLECT_POLLEN,
         WorkerBee::RETURN_HIVE };
   WorkerBee* worker(new WorkerBee(this, this->getPosition(), states));
   worker->reloadConfig();
@@ -146,3 +146,22 @@ Hive::getNectar()
   return nectar_;
 }
 
+void
+Hive::interactingBees()
+{
+  std::vector<Bee*> beesInHive;
+  for (size_t i(0); i < bees_.size(); ++i)
+  {
+    if (bees_[i]->isInHive())
+    {
+      beesInHive.push_back(bees_[i]);
+    }
+  }
+  for (size_t i(0); i < beesInHive.size(); ++i)
+  {
+    for (size_t j(0); j < beesInHive.size(); ++j)
+    {
+      beesInHive[i]->interact(beesInHive[j]);
+    }
+  }
+}

@@ -127,6 +127,9 @@ public:
   double
   getNectar();
 
+  void
+  interactingBees();
+  
 private:
 
   double nectar_;

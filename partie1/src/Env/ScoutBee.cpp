@@ -116,16 +116,13 @@ ScoutBee::onState(State state, sf::Time dt)
     {
       if (flower_location_ != empty)
         {
-          WorkerBee* worker = this->getHive()->getWorker();
-          if (worker)
-            {
-              worker->setFlower(flower_location_);
+              this->getHive()->interactingBees();
               flower_location_ = empty;
               std::string status = "in_hive_sharing"
                   + std::to_string(number_times_shared_);
               this->setDebugStatus(status);
               number_times_shared_ = -1;
-            }
+            
         }
 
       if (this->getEnergy() < energy_leave_hive_)
@@ -195,9 +192,33 @@ ScoutBee::targetMove(sf::Time dt)
   Bee::targetMove(dt);
 }
 
-State const ScoutBee::IN_HIVE = createUid();
+
+void
+ScoutBee::interact(Bee* other)
+{
+  other->interactWith(this);
+}
+  
+void
+ScoutBee::interactWith(ScoutBee* scouting)
+{
+}
+  
+void
+ScoutBee::interactWith(WorkerBee* working)
+{
+  Vec2d empty;
+  empty.x = -1;
+  empty.y = -1;
+  
+  if ((flower_location_ != empty) && number_times_shared_ < max_sharing_ )
+  {
+    working->learnFlowerLocation(this->flower_location_);
+    std::cout << "interacting" << std::endl;
+    number_times_shared_ += 1;
+  }
+  
+}
 
 State const ScoutBee::SEARCH_FLOWER = createUid();
-
-State const ScoutBee::RETURN_HIVE = createUid();
 
