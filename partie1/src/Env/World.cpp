@@ -758,8 +758,10 @@ World::getCellIndex(const Vec2d& position) const
 {
   if (!isInWorld(position))
     {
-      throw std::runtime_error("Position not in world. (World::getIndex)");
+      return true;
+      //throw std::runtime_error("Position not in world. (World::getIndex)");
     }
+
   Vec2d cellPosition;
   cellPosition = getCellPosition(position);
   size_t index(

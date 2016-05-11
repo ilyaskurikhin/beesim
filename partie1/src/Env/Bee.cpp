@@ -85,7 +85,6 @@ Bee::randomMove(sf::Time dt)
 void
 Bee::targetMove(sf::Time dt)
 {
-  Vec2d position(this->getPosition());
   Vec2d target(this->getMoveTarget());
   Vec2d direction(this->directionTo(target));
 
@@ -100,12 +99,12 @@ Bee::targetMove(sf::Time dt)
       avoidanceClock_ -= dt;
     }
 
-  position += dt.asSeconds() * move_vec_;
+  Vec2d move(move_vec_);
+  move *= dt.asSeconds();
 
-  Collider protoBee(position, this->getRadius());
-  protoBee.clamping();
+  this->Collider::move(move);
 
-  if (!getAppEnv().isFlyable(protoBee.getPosition()))
+  if (!getAppEnv().isFlyable(this->getPosition()))
     {
       double angleB;
       if (bernoulli(0.5))
@@ -119,10 +118,7 @@ Bee::targetMove(sf::Time dt)
       move_vec_.rotate(angleB);
       avoidanceClock_ = delay_;
 
-    }
-  else
-    {
-      this->setPosition(protoBee.getPosition());
+      this->Collider::move(-move);
     }
 }
 

@@ -106,8 +106,8 @@ Collider::isClamped() const
 
   //permet d'obtenir largeur et hauteur du monde
   Vec2d worldSize = getApp().getWorldSize();
-  double width = worldSize.x - 1;
-  double height = worldSize.y - 1;
+  double width = worldSize.x;
+  double height = worldSize.y;
 
   if (position_.x < 0)
     return false;

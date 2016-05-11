@@ -68,18 +68,19 @@ ScoutBee::reloadConfig()
 void
 ScoutBee::randomMove(sf::Time dt)
 {
-  Vec2d position(this->getPosition());
   if (bernoulli(rotation_probability_))
     {
       double angleA(uniform(-max_angle_, max_angle_));
       this->rotateMoveVec(angleA);
     }
 
-  position += dt.asSeconds() * this->getMoveVec();
+  Vec2d move(this->getMoveVec());
 
-  Collider protoBee(position, this->getRadius());
-  protoBee.clamping();
-  if (!getAppEnv().isFlyable(protoBee.getPosition()))
+  move *= dt.asSeconds();
+
+  this->Collider::move(move);
+
+  if (!getAppEnv().isFlyable(this->getPosition()))
     {
       double angleB;
       if (bernoulli(0.5))
@@ -92,13 +93,8 @@ ScoutBee::randomMove(sf::Time dt)
         }
 
       this->rotateMoveVec(angleB);
-
+      this->Collider::move(-move);
     }
-  else
-    {
-      this->setPosition(protoBee.getPosition());
-    }
-
 }
 
 j::Value const&
