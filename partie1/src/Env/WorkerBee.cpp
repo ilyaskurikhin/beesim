@@ -25,7 +25,7 @@ void
 WorkerBee::reloadConfig()
 {
   Bee::reloadConfig();
-  maxPollen_ = getConfig()["max pollen capacity"].toDouble();
+  max_pollen_ = getConfig()["max pollen capacity"].toDouble();
   pollen_collecting_rate_ = getConfig()["harvest rate"].toDouble();
   energy_leave_hive_ = getConfig()["energy"]["to leave hive"].toDouble();
   pollen_transfer_rate_ = getConfig()["transfer rate"].toDouble();
@@ -47,17 +47,12 @@ WorkerBee::onState(State state, sf::Time dt)
   if (state == IN_HIVE)
     {
 
-      if (this->getPollen() != 0)
+      if (this->getPollen() > 0)
         {
           transferPollen(dt);
-          if (this->getPollen() < 0)
-            {
-              setPollen(0);
-            }
           this->setDebugStatus("in_hive_leaving_pollen");
         }
-
-      if ((this->getPollen() == 0))
+      else
         {
           if (this->getEnergy() < energy_leave_hive_)
             {
@@ -84,16 +79,12 @@ WorkerBee::onState(State state, sf::Time dt)
 
       if (this->getCollider().isPointInside(flower_location_))
         {
-          if (getAppEnv().getCollidingFlower(this->getCollider()) != nullptr)
+          if (getAppEnv().getCollidingFlower(this->getCollider()) == nullptr)
             {
+              // skip collection if no flower present
               this->nextState();
             }
-          else
-            {
-              //if the flower doesn't exist anymore, goes two states further
               this->nextState();
-              this->nextState();
-            }
         }
     }
 
@@ -102,10 +93,11 @@ WorkerBee::onState(State state, sf::Time dt)
     {
       this->setDebugStatus("collecting_pollen");
       this->setMoveTarget(empty);
-      if (this->getPollen() < maxPollen_
-          && getAppEnv().getCollidingFlower(this->getCollider()) != nullptr)
+      Flower* flower(getAppEnv().getCollidingFlower(this->getCollider()));
+      if ((this->getPollen() < max_pollen_)
+          && (flower != nullptr))
         {
-          eatPollen(dt);
+          eatPollen(flower, dt);
         }
       else
         {
@@ -142,7 +134,7 @@ WorkerBee::setFlower(const Vec2d& position)
   flower_location_ = position;
 }
 
-Vec2d
+const Vec2d&
 WorkerBee::getFlower() const
 {
   return flower_location_;
@@ -154,17 +146,40 @@ WorkerBee::getPollen() const
   return pollen_;
 }
 
-void
+double
+WorkerBee::takePollen(double pollen)
+{
+  double taken(0);
+
+  if (pollen_ < pollen)
+    {
+      taken = pollen_;
+      pollen_ = 0;
+    }
+  else
+    {
+      taken = pollen;
+      pollen_ -= pollen;
+    }
+  return taken;
+}
+
+double
 WorkerBee::transferPollen(sf::Time dt)
 {
-  this->getHive()->dropPollen(pollen_transfer_rate_ * dt.asSeconds());
-  setPollen(this->getPollen() - pollen_transfer_rate_ * dt.asSeconds());
+  double pollen(takePollen(pollen_transfer_rate_ * dt.asSeconds()));
+  this->getHive()->dropPollen(pollen);
+  return pollen;
 }
 
 void
-WorkerBee::eatPollen(sf::Time dt)
+WorkerBee::eatPollen(Flower* flower, sf::Time dt)
 {
-  setPollen(this->getPollen() + pollen_collecting_rate_ * dt.asSeconds());
+  double pollen(pollen_collecting_rate_ * dt.asSeconds());
+  if (pollen + this->getPollen() > max_pollen_)
+    pollen = max_pollen_ - this->getPollen();
+
+  setPollen(this->getPollen() + flower->takePollen(pollen));
 }
 
 void
@@ -176,6 +191,7 @@ WorkerBee::learnFlowerLocation(const Vec2d& flowerPosition)
 void
 WorkerBee::setPollen(double amount)
 {
+
   pollen_ = amount;
 }
 

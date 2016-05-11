@@ -19,14 +19,14 @@ Flower::takePollen(const double& pollen)
   // if there is enough pollen, take pollen out
   if (pollen > pollen_)
     {
-      taken = pollen;
-      pollen_ = pollen_ - pollen;
+      taken = pollen_;
+      pollen_ = 0;
     }
   // if there is not enough pollen, empty the flower
   else
     {
-      taken = pollen_;
-      pollen_ = 0;
+      taken = pollen;
+      pollen_ -= pollen;
     }
   return taken;
 }

@@ -9,6 +9,7 @@
 #define WORKERBEE_HPP
 
 #include <Env/Bee.hpp>
+#include <Env/Flower.hpp>
 #include <JSON/JSON.hpp>
 
 class WorkerBee : public Bee
@@ -37,17 +38,20 @@ public:
   void
   setFlower(const Vec2d& position);
 
-  Vec2d
+  const Vec2d&
   getFlower() const;
 
   double
   getPollen() const;
 
-  void
+  double
+  takePollen(double pollen);
+
+  double
   transferPollen(sf::Time dt);
 
   void
-  eatPollen(sf::Time dt);
+  eatPollen(Flower* flower, sf::Time dt);
 
   void
   learnFlowerLocation(const Vec2d& flowerPosition);
@@ -68,7 +72,7 @@ private:
 
   Vec2d flower_location_;
   double pollen_;
-  double maxPollen_;
+  double max_pollen_;
   double pollen_collecting_rate_;
   double energy_leave_hive_;
   double pollen_transfer_rate_;

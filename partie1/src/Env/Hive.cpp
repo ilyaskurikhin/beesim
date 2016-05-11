@@ -102,6 +102,22 @@ Hive::drawOn(sf::RenderTarget& target) const
     {
       bees_[i]->drawOn(target);
     }
+
+  if (isDebugOn())
+    {
+      std::string valueString;
+      sf::Color color(sf::Color::Blue);
+      Vec2d position;
+      double text_size(getAppEnv().getTextSize());
+
+      position = this->getPosition();
+      position.y -= text_size;
+
+      valueString = "Nectar: " + to_nice_string(nectar_);
+      sf::Text text = buildText(valueString, position, getAppFont(), text_size,
+                                color);
+      target.draw(text);
+    }
 }
 
 double
