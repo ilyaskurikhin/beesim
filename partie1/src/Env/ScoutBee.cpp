@@ -13,7 +13,6 @@ ScoutBee::ScoutBee(Hive* hive, const Vec2d& position, std::vector<State> states)
     Bee(hive, position, states), flower_location_(-1, -1), number_times_shared_(
         -1)
 {
-  logEvent("ScoutBee", "new constructed");
   reloadConfig();
   loadTexture();
 }
@@ -193,9 +192,7 @@ ScoutBee::onEnterState(State state)
 void
 ScoutBee::targetMove(sf::Time dt)
 {
-  logEvent("ScoutBee", "target move");
   Bee::targetMove(dt);
-
 }
 
 State const ScoutBee::IN_HIVE = createUid();

@@ -13,8 +13,12 @@
 #include <SFML/System.hpp>
 
 #include <Application.hpp>
+
+#include <Utility/Logging.hpp>
 #include <Random/Random.hpp>
+
 #include <Interface/Updatable.hpp>
+
 #include <Env/Env.hpp>
 
 /**
@@ -46,6 +50,7 @@ public:
 private:
 
   sf::Time counter_;
+  sf::Time delay_;
 };
 
 #endif

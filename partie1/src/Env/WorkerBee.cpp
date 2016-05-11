@@ -11,7 +11,6 @@ WorkerBee::WorkerBee(Hive* hive, const Vec2d& position,
                      std::vector<State> states) :
     Bee(hive, position, states), flower_location_(-1, -1), pollen_(0.0)
 {
-  logEvent("WorkerBee", "new constructed");
   reloadConfig();
   loadTexture();
 }
@@ -84,7 +83,7 @@ WorkerBee::onState(State state, sf::Time dt)
               // skip collection if no flower present
               this->nextState();
             }
-              this->nextState();
+          this->nextState();
         }
     }
 
@@ -94,8 +93,7 @@ WorkerBee::onState(State state, sf::Time dt)
       this->setDebugStatus("collecting_pollen");
       this->setMoveTarget(empty);
       Flower* flower(getAppEnv().getCollidingFlower(this->getCollider()));
-      if ((this->getPollen() < max_pollen_)
-          && (flower != nullptr))
+      if ((this->getPollen() < max_pollen_) && (flower != nullptr))
         {
           eatPollen(flower, dt);
         }
