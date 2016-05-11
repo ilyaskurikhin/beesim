@@ -28,8 +28,11 @@
 
 #include <cmath>
 
+class ScoutBee;
+class WorkerBee;
 class Hive;
 class Flower;
+
 
 /**
  * @brief Abstract class Bee.
@@ -199,6 +202,21 @@ public:
 
   void
   rotateMoveVec(double angle);
+  
+  bool
+  isInHive();
+  
+  virtual void
+  interact(Bee* other)=0;
+  
+  virtual void
+  interactWith(ScoutBee* scouting)=0;
+  
+  virtual void
+  interactWith(WorkerBee* working)=0;
+
+  State static const IN_HIVE;
+  State static const RETURN_HIVE;
 
 private:
 

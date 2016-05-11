@@ -1,5 +1,5 @@
 #include <Env/Bee.hpp>
-
+#include <Env/CFSM.hpp>
 #include <Env/Hive.hpp>
 #include <Env/Flower.hpp>
 
@@ -251,4 +251,36 @@ Bee::rotateMoveVec(double angle)
 {
   move_vec_.rotate(angle);
 }
+
+bool
+Bee::isInHive() 
+{
+  if (this->getState() == IN_HIVE)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+void
+Bee::interact(Bee* other)
+{
+}
+  
+void
+Bee::interactWith(ScoutBee* scouting)
+{
+}
+  
+void
+Bee::interactWith(WorkerBee* working)
+{
+}
+  
+State const Bee::IN_HIVE = createUid();
+State const Bee::RETURN_HIVE = createUid();
+
 
