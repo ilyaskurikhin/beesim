@@ -264,21 +264,6 @@ Bee::isInHive()
     }
 }
 
-void
-Bee::interact(Bee* other)
-{
-}
-
-void
-Bee::interactWith(ScoutBee* scouting)
-{
-}
-
-void
-Bee::interactWith(WorkerBee* working)
-{
-}
-
 State const Bee::IN_HIVE = createUid();
 State const Bee::RETURN_HIVE = createUid();
 
