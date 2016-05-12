@@ -61,7 +61,7 @@ Env::regenerate()
           position.x = uniform(0.0,getWorldSize().x);
           position.y = uniform(0.0,getWorldSize().y);
 
-          if (addHiveAt(position))
+          if (addHiveAt(position,uniform(hive_min_size,hive_max_size)))
             placed = true;
           else
             ++num_tries;
@@ -79,7 +79,7 @@ Env::regenerate()
       position.y = uniform(0.0,getWorldSize().y);
 
       int num_tries(0);
-      if (addFlowerAt(position))
+      if (addFlowerAt(position, uniform(flower_min_size,flower_max_size)))
         placed = true;
       else
         ++num_tries;
@@ -297,14 +297,19 @@ Env::canAddFlower()
 bool
 Env::addFlowerAt(const Vec2d& position)
 {
+  return addFlowerAt(position, flower_manual_radius_);
+}
+
+bool
+Env::addFlowerAt(const Vec2d& position, double size)
+{
   // check if flower can be made at position
   if ((flowers_.size() < max_flowers_)
-      && (isPlaceable(position, flower_manual_radius_)))
+      && (isPlaceable(position, size)))
     {
       // set a random number of pollen
       double pollen = uniform(flower_min_nectar_, flower_max_nectar_);
-
-      flowers_.push_back(new Flower(position, flower_manual_radius_, pollen));
+      flowers_.push_back(new Flower(position, size, pollen));
       return true;
     }
   else
@@ -333,10 +338,15 @@ Env::drawFlowerZone(sf::RenderTarget& target, const Vec2d& position)
 bool
 Env::addHiveAt(const Vec2d& position)
 {
+  return addHiveAt(position, hive_manual_radius_);
+}
 
-  if (world_->isGrass(position) && (isPlaceable(position, hive_manual_radius_)))
+bool
+Env::addHiveAt(const Vec2d& position, double size)
+{
+  if (world_->isGrass(position) && (isPlaceable(position, size)))
     {
-      hives_.push_back(new Hive(position, hive_manual_radius_));
+      hives_.push_back(new Hive(position, size));
       return true;
     }
   else

@@ -166,6 +166,9 @@ public:
   bool
   addFlowerAt(const Vec2d& position);
 
+  bool
+  addFlowerAt(const Vec2d& position, double size);
+
   /**
    * @brief Draw zone occupied by flower.
    *
@@ -184,6 +187,9 @@ public:
    */
   bool
   addHiveAt(const Vec2d& position);
+
+  bool
+  addHiveAt(const Vec2d& position, double size);
 
   /**
    * @brief Draw zone occupied by Hive. 
