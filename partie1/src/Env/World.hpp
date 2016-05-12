@@ -264,35 +264,35 @@ public:
 private:
 
   /// number of cells in a row
-  size_t numberColumns_;
+  size_t number_columns_;
   /// number of pixels in a cell
-  float cellSize_;
+  float cell_size_;
   /// grid of all cells
   std::vector<Kind> cells_;
 
   /// cache of all pixels
-  sf::RenderTexture renderingCache_;
-  sf::RenderTexture humidityCache_;
+  sf::RenderTexture rendering_cache_;
+  sf::RenderTexture humidity_cache_;
 
-  std::vector<sf::Vertex> grassVertexes_;
-  std::vector<sf::Vertex> waterVertexes_;
-  std::vector<sf::Vertex> rockVertexes_;
+  std::vector<sf::Vertex> grass_vertexes_;
+  std::vector<sf::Vertex> water_vertexes_;
+  std::vector<sf::Vertex> rock_vertexes_;
 
   /// vector of water and grass seeds
   std::vector<Seed> seeds_;
-  unsigned int nbWaterSeeds_;
-  unsigned int nbGrassSeeds_;
+  unsigned int num_water_seeds_;
+  unsigned int num_grass_seeds_;
 
-  double teleportProbability_;
+  double teleport_probability_;
 
   /// vector of humidity values
-  std::vector<double> humidityLevels_;
-  std::vector<double> humidityMatrix_;
-  std::vector<sf::Vertex> humidityVertexes_;
-  double humidityRange_;
-  double humidityThreshold_;
-  double humidityInitialLevel_;
-  double humidityDecayRate_;
+  std::vector<double> humidity_levels_;
+  std::vector<double> humidity_matrix_;
+  std::vector<sf::Vertex> humidity_vertexes_;
+  double humidity_range_;
+  double humidity_threshold_;
+  double humidity_initial_level_;
+  double humidity_decay_rate_;
 
   /**
    * Find the cells to scan for given radius.

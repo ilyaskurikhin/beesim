@@ -90,13 +90,13 @@ Bee::targetMove(sf::Time dt)
 
   direction = direction.normalised();
 
-  if (avoidanceClock_ < sf::Time::Zero)
+  if (avoidance_clock_ < sf::Time::Zero)
     {
       move_vec_ = direction * move_vec_.length();
     }
   else
     {
-      avoidanceClock_ -= dt;
+      avoidance_clock_ -= dt;
     }
 
   Vec2d move(move_vec_);
@@ -116,7 +116,7 @@ Bee::targetMove(sf::Time dt)
           angleB = -PI / 4;
         }
       move_vec_.rotate(angleB);
-      avoidanceClock_ = delay_;
+      avoidance_clock_ = delay_;
 
       this->Collider::move(-move);
     }

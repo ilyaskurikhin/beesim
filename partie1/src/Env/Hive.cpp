@@ -5,7 +5,7 @@
 
 Hive::Hive(const Vec2d& position, double radius) :
     Collider(position, radius), nectar_(
-        getAppConfig()["simulation"]["hive"]["initial"]["nectar"].toDouble()), hiveTexture_(
+        getAppConfig()["simulation"]["hive"]["initial"]["nectar"].toDouble()), hive_texture_(
         getAppTexture(
             getAppConfig()["simulation"]["hive"]["texture"].toString()))
 {
@@ -95,7 +95,7 @@ void
 Hive::drawOn(sf::RenderTarget& target) const
 {
   auto hiveSprite = buildSprite(this->getPosition(), this->getRadius(),
-                                hiveTexture_);
+                                hive_texture_);
   target.draw(hiveSprite);
 
   for (size_t i = 0; i < bees_.size(); ++i)

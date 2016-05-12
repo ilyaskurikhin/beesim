@@ -136,7 +136,7 @@ private:
   std::vector<Bee*> bees_;
   std::vector<WorkerBee*> workers_;
   std::vector<ScoutBee*> scouts_;
-  sf::Texture hiveTexture_;
+  sf::Texture hive_texture_;
 
 };
 

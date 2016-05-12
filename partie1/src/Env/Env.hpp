@@ -224,16 +224,16 @@ private:
 
   World* world_;
   std::vector<Flower*> flowers_;
-  FlowerGenerator* flowerGenerator_;
+  FlowerGenerator* flower_generator_;
   std::vector<Hive*> hives_;
 
-  double flowerMinNectar_;
-  double flowerMaxNectar_;
-  double flowerManualRadius_;
-  size_t maxFlowers_;
+  double flower_min_nectar_;
+  double flower_max_nectar_;
+  double flower_manual_radius_;
+  size_t max_flowers_;
 
-  double hiveManualRadius_;
-  double hiveableFactor_;
+  double hive_manual_radius_;
+  double hiveable_factor_;
 
   double debug_text_size_;
 };

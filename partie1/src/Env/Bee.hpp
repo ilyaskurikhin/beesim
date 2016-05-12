@@ -235,7 +235,7 @@ private:
   double debug_thickness_random_;
   double debug_thickness_target_;
 
-  sf::Time avoidanceClock_;
+  sf::Time avoidance_clock_;
   sf::Time delay_;
 
   Collider vision_range_;

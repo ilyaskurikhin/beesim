@@ -6,7 +6,7 @@
 bool ENV_VERBOSE(true);
 
 Env::Env() :
-    world_(new World()), flowerGenerator_(new FlowerGenerator)
+    world_(new World()), flower_generator_(new FlowerGenerator)
 {
   logEvent("Env", "generating environment");
   reloadConfig();
@@ -36,9 +36,9 @@ Env::update(sf::Time dt)
 {
   // update du generateur
   if ((getAppConfig()["simulation"]["flower generator"]["active"].toBool())
-      && (flowers_.size() < maxFlowers_))
+      && (flowers_.size() < max_flowers_))
     {
-      flowerGenerator_->update(dt);
+      flower_generator_->update(dt);
     }
 
   // iterate through flowers
@@ -131,7 +131,7 @@ Env::reset()
       delete flowers_[i];
     }
   flowers_.clear();
-  flowerGenerator_->reset();
+  flower_generator_->reset();
 
   for (size_t i = 0; i < hives_.size(); ++i)
     {
@@ -144,24 +144,24 @@ void
 Env::reloadConfig()
 {
   // get variables from configuration
-  flowerManualRadius_ =
+  flower_manual_radius_ =
       getAppConfig()["simulation"]["env"]["initial"]["flower"]["size"]["manual"].toDouble();
-  flowerMaxNectar_ =
+  flower_max_nectar_ =
       getAppConfig()["simulation"]["env"]["initial"]["flower"]["nectar"]["max"].toDouble();
-  flowerMinNectar_ =
+  flower_min_nectar_ =
       getAppConfig()["simulation"]["env"]["initial"]["flower"]["nectar"]["min"].toDouble();
 
   // get max number of Flower from configuration
-  maxFlowers_ = getAppConfig()["simulation"]["env"]["max flowers"].toInt();
+  max_flowers_ = getAppConfig()["simulation"]["env"]["max flowers"].toInt();
 
-  hiveManualRadius_ =
+  hive_manual_radius_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble();
 
   debug_text_size_ = 10
       * (getAppConfig()["simulation"]["world"]["size"].toDouble()
           / getAppConfig()["simulation"]["world"]["cells"].toDouble());
 
-  hiveableFactor_ =
+  hiveable_factor_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble();
 }
 
@@ -215,13 +215,13 @@ bool
 Env::addFlowerAt(const Vec2d& position)
 {
   // check if flower can be made at position
-  if ((flowers_.size() < maxFlowers_)
-      && (isPlaceable(position, flowerManualRadius_)))
+  if ((flowers_.size() < max_flowers_)
+      && (isPlaceable(position, flower_manual_radius_)))
     {
       // set a random number of pollen
-      double pollen = uniform(flowerMinNectar_, flowerMaxNectar_);
+      double pollen = uniform(flower_min_nectar_, flower_max_nectar_);
 
-      flowers_.push_back(new Flower(position, flowerManualRadius_, pollen));
+      flowers_.push_back(new Flower(position, flower_manual_radius_, pollen));
       return true;
     }
   else
@@ -235,13 +235,13 @@ Env::drawFlowerZone(sf::RenderTarget& target, const Vec2d& position)
 {
   if (world_->isGrass(position))
     {
-      sf::CircleShape shape = buildAnnulus(position, flowerManualRadius_,
+      sf::CircleShape shape = buildAnnulus(position, flower_manual_radius_,
                                            sf::Color::Green, 5.0);
       target.draw(shape);
     }
   else
     {
-      sf::CircleShape shape = buildAnnulus(position, flowerManualRadius_,
+      sf::CircleShape shape = buildAnnulus(position, flower_manual_radius_,
                                            sf::Color::Red, 5.0);
       target.draw(shape);
     }
@@ -251,9 +251,9 @@ bool
 Env::addHiveAt(const Vec2d& position)
 {
 
-  if (world_->isGrass(position) && (isPlaceable(position, hiveManualRadius_)))
+  if (world_->isGrass(position) && (isPlaceable(position, hive_manual_radius_)))
     {
-      hives_.push_back(new Hive(position, hiveManualRadius_));
+      hives_.push_back(new Hive(position, hive_manual_radius_));
       return true;
     }
   else
@@ -279,28 +279,28 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
   if (!world_->isInWorld(position))
     return;
 
-  left = position.x - hiveManualRadius_;
+  left = position.x - hive_manual_radius_;
   if (left < 0)
     {
       h_right = left + worldSize.x;
       h_left = worldSize.x;
     }
 
-  right = position.x + hiveManualRadius_;
+  right = position.x + hive_manual_radius_;
   if (right > worldSize.x)
     {
       h_right = right - worldSize.x;
       h_left = 0;
     }
 
-  top = position.y - hiveManualRadius_;
+  top = position.y - hive_manual_radius_;
   if (top < 0)
     {
       v_bottom = worldSize.y;
       v_top = top + worldSize.y;
     }
 
-  bottom = position.y + hiveManualRadius_;
+  bottom = position.y + hive_manual_radius_;
   if (bottom > worldSize.y)
     {
       v_bottom = 0;
@@ -314,7 +314,7 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
     {
       color = sf::Color::Blue;
     }
-  else if (!isPlaceable(position, hiveManualRadius_))
+  else if (!isPlaceable(position, hive_manual_radius_))
     {
       color = sf::Color::Red;
     }
@@ -347,7 +347,7 @@ Env::getCollidingHive(const Collider& body) const
   for (size_t i(0); i < hives_.size(); ++i)
     {
       Collider collidingHive(hives_[i]->getPosition(),
-                             (hiveManualRadius_ * hiveableFactor_));
+                             (hive_manual_radius_ * hiveable_factor_));
 
       if (collidingHive.isColliding(body))
         {

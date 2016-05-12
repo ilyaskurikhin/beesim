@@ -5,11 +5,11 @@ Flower::Flower(const Vec2d& position, double radius, double pollen) :
         getAppEnv().getHumidity(position))
 {
   loadTexture();
-  splitThreshold_ =
+  split_threshold_ =
       getAppConfig()["simulation"]["flower"]["growth"]["split"].toDouble();
-  humidityThreshold_ =
+  humidity_threshold_ =
       getAppConfig()["simulation"]["flower"]["growth"]["threshold"].toDouble();
-  humidityFactor_ = std::log(humidity_ / humidityThreshold_);
+  humidity_factor_ = std::log(humidity_ / humidity_threshold_);
 }
 
 double
@@ -60,10 +60,10 @@ void
 Flower::update(sf::Time dt)
 {
   // set the new pollen value
-  pollen_ = pollen_ + dt.asSeconds() * humidityFactor_;
+  pollen_ = pollen_ + dt.asSeconds() * humidity_factor_;
 
   // split flower if has enough pollen
-  if (pollen_ > splitThreshold_)
+  if (pollen_ > split_threshold_)
     {
       int i(0);
       bool placed(false);
