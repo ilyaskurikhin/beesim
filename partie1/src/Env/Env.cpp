@@ -37,6 +37,7 @@ Env::~Env()
 void
 Env::regenerate()
 {
+  logEvent("Env","regenerating objects");
   auto const& initial = getAppConfig()["simulation"]["env"]["initial"];
 
   int num_hives(initial["hive"]["count"].toInt());
@@ -237,6 +238,7 @@ void
 Env::loadWorldFromFile()
 {
   world_->loadFromFile();
+  regenerate();
 }
 
 void
