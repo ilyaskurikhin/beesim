@@ -22,7 +22,7 @@ includeFlags = '-I{sfmlcosun}/include/ -I{catch} -I/usr/local/include/'.format(
   catch = "extlib/Catch/include/"
 )
 
-env.Append(CCFLAGS = '-std=c++11 -Wall -Wextra -g ' + includeFlags)
+env.Append(CCFLAGS = '-std=c++11 -Wall -Wextra -g -O3 ' + includeFlags)
 env.Append(LIBS = ['sfml-system', 'sfml-window', 'sfml-graphics'])
 env.Append(LINKFLAGS = '-L/usr/local/softs/SFML/lib')
 env.Decider('content')
