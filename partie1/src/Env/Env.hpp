@@ -14,9 +14,12 @@
 #include <Utility/Vec2d.hpp>
 #include <Utility/Utility.hpp>
 #include <Utility/Logging.hpp>
+
 #include <Random/Random.hpp>
+
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
+
 #include <Env/Bee.hpp>
 #include <Env/Hive.hpp>
 #include <Env/Collider.hpp>
@@ -49,6 +52,9 @@ public:
    * @brief Class destructor
    */
   ~Env();
+
+  void
+  regenerate();
 
   /**
    * @brief Evolve the environment.

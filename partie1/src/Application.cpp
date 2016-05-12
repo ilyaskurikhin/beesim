@@ -151,6 +151,10 @@ void Application::run()
 {
     // Load lab and stats
     mEnv   = new Env;
+    // generate new objects
+    // this method needs to be called after construction
+    // since the construction of its attributes requires its construction to have completed
+    mEnv->regenerate();
     //mStats = new Stats;  TODO step5 uncomment me
 
     // Set up subclasses
