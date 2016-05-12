@@ -56,6 +56,9 @@ public:
    */
   Collider(const Collider& collider);
 
+  void
+  reloadConfig();
+
   //
   // OPERATORS
   //
@@ -249,6 +252,7 @@ private:
 
   double radius_; /** radius of this Collider. */
   Vec2d position_; /** position of this Collider. */
+  Vec2d world_size_;
 
   bool
   isClamped() const;

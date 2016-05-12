@@ -1,10 +1,13 @@
 #include <Env/Collider.hpp>
 
+#include <Env/Env.hpp>
+
 Collider::Collider(const Vec2d& position, double radius)
 // affecte par défaut le rayon et la position
 :
     radius_(radius), position_(position)
 {
+  reloadConfig();
   // PRECODITIONS for constructor
   if (radius_ < 0)
     {
@@ -25,6 +28,12 @@ Collider::Collider(const Collider& collider)
 {
   radius_ = collider.getRadius();
   position_ = collider.getPosition();
+}
+
+void
+Collider::reloadConfig()
+{
+  world_size_ = getAppEnv().getWorldSize();
 }
 
 bool
@@ -72,27 +81,21 @@ Collider::operator+=(const Vec2d& dx)
 Vec2d
 Collider::clamping()
 {
-
-  //permet d'obtenir largeur et hauteur du monde
-  Vec2d worldSize = getApp().getWorldSize();
-  double width = worldSize.x;
-  double height = worldSize.y;
-
   //tant que position en x <0, on lui incrémente la largeur du monde
   //tant que position > largeur du monde, on lui décremente la largeur du monde
 
   if (position_.x < 0)
-    position_.x += width;
+    position_.x += world_size_.x;
 
-  if (position_.x > width)
-    position_.x -= width;
+  if (position_.x > world_size_.x)
+    position_.x -= world_size_.x;
 
   //idem pour position en y
   if (position_.y < 0)
-    position_.y += height;
+    position_.y += world_size_.y;
 
-  if (position_.y > height)
-    position_.y -= height;
+  if (position_.y > world_size_.y)
+    position_.y -= world_size_.y;
 
   if (!isClamped())
     clamping();
@@ -103,23 +106,17 @@ Collider::clamping()
 bool
 Collider::isClamped() const
 {
-
-  //permet d'obtenir largeur et hauteur du monde
-  Vec2d worldSize = getApp().getWorldSize();
-  double width = worldSize.x;
-  double height = worldSize.y;
-
   if (position_.x < 0)
     return false;
 
-  if (position_.x > width)
+  if (position_.x > world_size_.x)
     return false;
 
   //idem pour position en y
   if (position_.y < 0)
     return false;
 
-  if (position_.y > height)
+  if (position_.y > world_size_.y)
     return false;
 
   return true;
@@ -170,27 +167,24 @@ Collider::isPointInside(const Vec2d& p) const
 Vec2d
 Collider::directionTo(const Vec2d& to) const
 {
-  Vec2d worldSize = getApp().getWorldSize();
-  double width = worldSize.x;
-  double height = worldSize.y;
-  double max_x = width / 2;
-  double max_y = height / 2;
+  double max_x = world_size_.x / 2;
+  double max_y = world_size_.y / 2;
 
   Vec2d direction;
 
   direction.x = to.x - position_.x;
   if (direction.x < -max_x)
-    direction.x = to.x - position_.x + width;
+    direction.x = to.x - position_.x + world_size_.x;
 
   if (direction.x > max_x)
-    direction.x = to.x - position_.x - width;
+    direction.x = to.x - position_.x - world_size_.x;
 
   direction.y = to.y - position_.y;
   if (direction.y < -max_y)
-    direction.y = to.y - position_.y + height;
+    direction.y = to.y - position_.y + world_size_.y;
 
   if (direction.y > max_y)
-    direction.y = to.y - position_.y - height;
+    direction.y = to.y - position_.y - world_size_.y;
 
   return direction;
 }

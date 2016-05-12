@@ -261,8 +261,12 @@ public:
   bool
   isInWorld(const Vec2d& position) const;
 
+  const Vec2d&
+  getWorldSize() const;
+
 private:
 
+  Vec2d world_size_;
   /// number of cells in a row
   size_t number_columns_;
   /// number of pixels in a cell

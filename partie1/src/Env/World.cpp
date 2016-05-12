@@ -35,6 +35,9 @@ World::reloadConfig()
   // cellSize : size of a cell in 'pixels'
   cell_size_ = simulationWorld()["size"].toDouble() / number_columns_;
 
+  world_size_ = Vec2d(number_columns_ * cell_size_,
+                      number_columns_ * cell_size_);
+
   // make a vector representing a square grid of Kind::Rock
   cells_ = std::vector<Kind>(number_columns_ * number_columns_, Kind::Rock);
 
@@ -793,5 +796,11 @@ World::isInWorld(const Vec2d& position) const
     {
       return true;
     }
+}
+
+const Vec2d&
+World::getWorldSize() const
+{
+  return world_size_;
 }
 

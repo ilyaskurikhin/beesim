@@ -97,6 +97,9 @@ public:
   void
   saveWorldToFile() const;
 
+  const Vec2d&
+  getWorldSize() const;
+
   /**
    * @brief Get humidity for position.
    *
@@ -143,6 +146,9 @@ public:
    */
   bool
   isFlyable(const Vec2d& position) const;
+
+  bool
+  canAddFlower();
 
   /**
    * @brief Add a Flower at position.

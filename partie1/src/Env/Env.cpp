@@ -35,8 +35,8 @@ void
 Env::update(sf::Time dt)
 {
   // update du generateur
-  if ((getAppConfig()["simulation"]["flower generator"]["active"].toBool())
-      && (flowers_.size() < max_flowers_))
+  if ((flowers_.size() < max_flowers_)
+      && (getAppConfig()["simulation"]["flower generator"]["active"].toBool()))
     {
       flower_generator_->update(dt);
     }
@@ -177,6 +177,12 @@ Env::saveWorldToFile() const
   world_->saveToFile();
 }
 
+const Vec2d&
+Env::getWorldSize() const
+{
+  return world_->getWorldSize();
+}
+
 double
 Env::getHumidity(const Vec2d& position) const
 {
@@ -209,6 +215,15 @@ Env::isPlaceable(const Vec2d& position, double radius) const
         }
     }
   return false;
+}
+
+bool
+Env::canAddFlower()
+{
+  if (flowers_.size() < max_flowers_)
+    return true;
+  else
+    return false;
 }
 
 bool
