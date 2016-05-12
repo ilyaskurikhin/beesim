@@ -3,7 +3,9 @@
 FlowerGenerator::FlowerGenerator() :
     counter_(sf::Time::Zero)
 {
-  delay_ = sf::seconds((float) getAppConfig()["simulation"]["flower generator"]["delay"].toDouble());
+  delay_ =
+      sf::seconds(
+          (float) getAppConfig()["simulation"]["flower generator"]["delay"].toDouble());
 }
 
 void

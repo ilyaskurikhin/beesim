@@ -129,7 +129,7 @@ public:
 
   void
   interactingBees();
-  
+
 private:
 
   double nectar_;

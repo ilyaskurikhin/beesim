@@ -151,17 +151,17 @@ Hive::interactingBees()
 {
   std::vector<Bee*> beesInHive;
   for (size_t i(0); i < bees_.size(); ++i)
-  {
-    if (bees_[i]->isInHive())
     {
-      beesInHive.push_back(bees_[i]);
+      if (bees_[i]->isInHive())
+        {
+          beesInHive.push_back(bees_[i]);
+        }
     }
-  }
   for (size_t i(0); i < beesInHive.size(); ++i)
-  {
-    for (size_t j(0); j < beesInHive.size(); ++j)
     {
-      beesInHive[i]->interact(beesInHive[j]);
+      for (size_t j(0); j < beesInHive.size(); ++j)
+        {
+          beesInHive[i]->interact(beesInHive[j]);
+        }
     }
-  }
 }

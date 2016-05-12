@@ -64,13 +64,13 @@ public:
 
   void
   interact(Bee* other) override;
-  
+
   void
   interactWith(ScoutBee* scouting) override;
-  
+
   void
   interactWith(WorkerBee* working) override;
-  
+
   // TODO make private
 
   State static const TO_FLOWER;

@@ -225,19 +225,18 @@ WorkerBee::targetMove(sf::Time dt)
   Bee::targetMove(dt);
 }
 
-
 void
 WorkerBee::interact(Bee* other)
 {
   other->interactWith(this);
 }
-  
+
 void
 WorkerBee::interactWith(ScoutBee* scouting)
 {
-  
+
 }
-  
+
 void
 WorkerBee::interactWith(WorkerBee* working)
 {

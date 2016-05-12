@@ -81,7 +81,7 @@ World::reloadCacheStructure()
   logEvent("World", "loading\tcache structure");
 
   grass_vertexes_ = generateVertexes(simulationWorld()["textures"],
-                                    number_columns_, cell_size_);
+                                     number_columns_, cell_size_);
   water_vertexes_ = grass_vertexes_;
   rock_vertexes_ = grass_vertexes_;
 
@@ -89,8 +89,9 @@ World::reloadCacheStructure()
 
   // create a cache of all the pixels to display
   rendering_cache_.create(number_columns_ * cell_size_,
+                          number_columns_ * cell_size_);
+  humidity_cache_.create(number_columns_ * cell_size_,
                          number_columns_ * cell_size_);
-  humidity_cache_.create(number_columns_ * cell_size_, number_columns_ * cell_size_);
 }
 
 void
@@ -167,22 +168,22 @@ World::updateCache()
 
           // set humidity levels
           humidity_vertexes_[positionIndexes[j]].color = sf::Color(0, 0,
-                                                                  blueLevel);
+                                                                   blueLevel);
         }
     }
 
   rendering_cache_.clear();
   humidity_cache_.clear();
 
-  rendering_cache_.draw(grass_vertexes_.data(), grass_vertexes_.size(), sf::Quads,
-                       rsGrass);
-  rendering_cache_.draw(water_vertexes_.data(), water_vertexes_.size(), sf::Quads,
-                       rsWater);
+  rendering_cache_.draw(grass_vertexes_.data(), grass_vertexes_.size(),
+                        sf::Quads, rsGrass);
+  rendering_cache_.draw(water_vertexes_.data(), water_vertexes_.size(),
+                        sf::Quads, rsWater);
   rendering_cache_.draw(rock_vertexes_.data(), rock_vertexes_.size(), sf::Quads,
-                       rsRock);
+                        rsRock);
   // draw the humidity on a new cache
   humidity_cache_.draw(humidity_vertexes_.data(), humidity_vertexes_.size(),
-                      sf::Quads, rsHumidity);
+                       sf::Quads, rsHumidity);
   humidity_cache_.display();
 
   rendering_cache_.display();
