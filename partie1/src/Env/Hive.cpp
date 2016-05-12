@@ -133,17 +133,30 @@ Hive::dropPollen(double nectar)
 double
 Hive::takeNectar(double nectar)
 {
-  if ((nectar > 0) && (nectar_ - nectar > 0))
+  double taken(0);
+  if (nectar_ - nectar > 0)
     {
       nectar_ = nectar_ - nectar;
+      taken = nectar;
     }
-  return nectar_;
+  else
+    {
+      nectar_ = 0;
+      taken = nectar_;
+    }
+  return taken;
 }
 
 double
-Hive::getNectar()
+Hive::getNectar() const
 {
   return nectar_;
+}
+
+int
+Hive::getNumberBees() const
+{
+  return bees_.size();
 }
 
 void

@@ -114,7 +114,7 @@ public:
    *
    * @param amount amount of nectar to take.
    *
-   * @return new amount to nextar_ in Hive. 
+   * @return amount of nectar taken
    */
   double
   takeNectar(double amount);
@@ -125,7 +125,10 @@ public:
    * @return current amount of nectar.
    */
   double
-  getNectar();
+  getNectar() const;
+
+  int
+  getNumberBees() const;
 
   void
   interactingBees();

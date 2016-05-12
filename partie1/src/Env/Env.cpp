@@ -63,7 +63,17 @@ Env::update(sf::Time dt)
   for (size_t i = 0; i < hives_.size(); ++i)
     {
       hives_[i]->update(dt);
+
+      if (hives_[i]->getNectar() == 0
+          && hives_[i]->getNumberBees() == 0)
+        {
+          delete hives_[i];
+          hives_[i] = nullptr;
+        }
     }
+
+  hives_.erase(std::remove(hives_.begin(), hives_.end(), nullptr),
+                 hives_.end());
 
 }
 
