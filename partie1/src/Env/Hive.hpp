@@ -46,6 +46,9 @@ public:
   operator=(const Hive&) = delete;
 
   ~Hive();
+  
+  void
+  reloadConfig();
 
   /**
    * @brief Add a new ScoutBee.
@@ -136,10 +139,14 @@ public:
 private:
 
   double nectar_;
+  double nectar_thresold_;
+  double max_bees_;
+  double reproduction_probability_;
   std::vector<Bee*> bees_;
   std::vector<WorkerBee*> workers_;
   std::vector<ScoutBee*> scouts_;
   sf::Texture hive_texture_;
+  
 
 };
 

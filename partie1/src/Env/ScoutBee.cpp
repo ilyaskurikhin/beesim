@@ -213,7 +213,6 @@ ScoutBee::interactWith(WorkerBee* working)
   if ((flower_location_ != empty) && number_times_shared_ < max_sharing_)
     {
       working->learnFlowerLocation(this->flower_location_);
-      std::cout << "interacting" << std::endl;
       number_times_shared_ += 1;
     }
 

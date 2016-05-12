@@ -9,6 +9,7 @@ Hive::Hive(const Vec2d& position, double radius) :
         getAppTexture(
             getAppConfig()["simulation"]["hive"]["texture"].toString()))
 {
+  reloadConfig();
 }
 
 Hive::~Hive()
@@ -19,6 +20,15 @@ Hive::~Hive()
     }
   bees_.clear();
 }
+
+void
+Hive::reloadConfig()
+{
+  nectar_thresold_ = getAppConfig()["simulation"]["hive"]["reproduction"]["nectar threshold"].toDouble();
+  max_bees_ = getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
+  reproduction_probability_ = getAppConfig()["simulation"]["hive"]["reproduction"]["scout probability"].toDouble();
+}
+
 
 ScoutBee*
 Hive::addScout()
@@ -75,6 +85,19 @@ Hive::getBeeAt(const Vec2d& position)
 void
 Hive::update(sf::Time dt)
 {
+  
+  if (bees_.size() < max_bees_ && nectar_ > nectar_thresold_)
+  {
+    if (bernoulli(reproduction_probability_))
+    {
+      this->addWorker();
+    }
+    else
+    {
+      this-> addScout();
+    }
+  }
+    
   for (size_t i = 0; i < bees_.size(); ++i)
     {
       bees_[i]->update(dt);
