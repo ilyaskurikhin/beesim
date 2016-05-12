@@ -20,8 +20,8 @@ FlowerGenerator::update(sf::Time dt)
       // reset the counter
       counter_ = sf::Time::Zero;
       Vec2d position;
-      position.x = uniform((float) 0, (float) getApp().getWorldSize().x);
-      position.y = uniform((float) 0, (float) getApp().getWorldSize().y);
+      position.x = uniform(0.0, getApp().getWorldSize().x);
+      position.y = uniform(0.0, getApp().getWorldSize().y);
       getAppEnv().addFlowerAt(position);
     }
 
