@@ -1,5 +1,5 @@
 {
-    "debug" : false,
+    "debug" : true,
     "simulation" : {
         "time" : {
             "factor" : 5,
@@ -16,7 +16,7 @@
                 "texture" : "scout1.png"
             },
             "scout" : {
-                "visibility range" : 1,
+                "visibility range" : 50,
                 "moving behaviour" : {
                     "random" : {
                         "rotation probability" : 0.02,
@@ -26,25 +26,25 @@
                         "avoidance delay" : 0.2
                     }
                 },
-                "size" : 10,
+                "size" : 5,
                 "energy" : {
-                    "initial" : 10,
-                    "to leave hive" : 3,
-                    "to seek flowers" : 2,
+                    "initial" : 60,
+                    "to leave hive" : 60,
+                    "to seek flowers" : 30,
                     "consumption rates" : {
-                       "idle" :  0.01,
-                       "moving": 0.05,
-                       "eating": 0.1
+                       "idle" :  0.1,
+                       "moving": 0.5,
+                       "eating": 20
                     }
                 },
                 "sharing" : {
                     "max" : 2
                 },
                 "speed" : 20,
-                "texture" : "scout3.png"
+                "texture" : "scout1.png"
             },
             "worker" : {
-                "visibility range" : 1,
+                "visibility range" : 20,
                 "moving behaviour" : {
                     "random" : {
                         "comment" : "not relevant"
@@ -53,18 +53,18 @@
                         "avoidance delay" : 0.2
                     }
                 },
-                "size" : 15,
+                "size" : 10,
                 "energy" : {
-                    "initial" : 20,
-                    "to leave hive" : 22,
+                    "initial" : 100,
+                    "to leave hive" : 40,
                     "consumption rates" : {
-                       "idle" :  0.015,
-                       "moving": 0.06,
-                       "eating": 0.1
+                       "idle" :  0.15,
+                       "moving": 0.6,
+                       "eating": 20
                     }
                 },
-                "transfer rate" : 12,
-                "harvest rate" : 8,
+                "transfer rate" : 5,
+                "harvest rate" : 4,
                 "max pollen capacity" : 100,
                 "speed" : 10,
                 "texture" : "worker1.png"
@@ -73,8 +73,8 @@
         "flower" : {
             "textures" : [ "flowerA.png", "flowerB.png", "flowerC.png" ],
             "growth" : {
-                "threshold" : 200,
-                "split" : 400
+                "threshold" : 500,
+                "split" : 300
             }
         },
         "flower generator" : {
@@ -86,26 +86,26 @@
                 "nectar" : 1000
             },
             "reproduction" : {
-                "nectar threshold" : 800,
-                "scout probability" : 0.7,
+                "nectar threshold" : 200,
+                "scout probability" : 0.5,
                 "max bees" : 25
             },
             "texture" : "hive.png"
         },
         "world" : {
-            "size" : 400,
-            "cells" : 200,
+            "size" : 5000,
+            "cells" : 500,
             "seeds" : {
-                "grass" :15,
-                "water" : 1,
+                "grass" : 50,
+                "water" : 5,
                 "water teleport probability" : 0.0001
             },
             "generation" : {
                 "steps" : 20000,
                 "smoothness" : {
-                    "level" : 10,
+                    "level" : 5,
                     "grass neighbourhood ratio" : 0.5,
-                    "water neighbourhood ratio" : 0.95
+                    "water neighbourhood ratio" : 0.75
                 },
                 "humidity" : {
                     "decay rate" : 20,
@@ -119,12 +119,12 @@
                 "water" : "water.jpg"
             },
             "show humidity" : false,
-            "file" : "world3.map"
+            "file" : "world.map"
         },
         "env" : {
             "initial" : {
                 "flower" : {
-                    "count" : 0,
+                    "count" : 300,
                     "max failures" : 1000,
                     "size" : {
                         "min" : 5,
@@ -137,17 +137,17 @@
                     }
                 },
                 "hive" : {
-                    "count" : 0,
+                    "count" : 10,
                     "max failures" : 1000,
                     "size" : {
                         "min" : 20,
                         "max" : 40,
-                        "manual" : 16
+                        "manual" : 30
                     },
                     "hiveable factor" : 3
                 }
             },
-            "max flowers" : 300
+            "max flowers" : 1000
         }
     },
     "stats" : {
@@ -157,6 +157,6 @@
         "antialiasing level" : 4,
         "title" : "INFOSV Simulation",
         "simulation" : { "size" : 900 },
-        "stats" : { "height" : 100 }
+        "stats" : { "height" : 200 }
     }
 }

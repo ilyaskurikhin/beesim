@@ -8,7 +8,7 @@
 #define INFOSV_APPLICATION_HPP
 
 #include <JSON/JSON.hpp>
-
+//#include <Utility/BeeTracker.hpp>
 #include <Utility/Vec2d.hpp>
 
 #include <SFML/Graphics.hpp>
@@ -72,6 +72,13 @@ public:
     Env& getEnv();
     Env const& getEnv() const;
 
+    /*!
+     * @brief Get the bee tracker helper
+     *
+     * @return the app's bee tracker
+     */
+    //BeeTracker& getBeeTracker();
+    //BeeTracker const& getBeeTracker() const;
 
     /*!
      * @brief Get access to the application's configuration
@@ -286,7 +293,7 @@ private:
     bool         mIsDragging;        ///< Tells whether or not the user is dragging the view
     sf::Vector2i mLastCursorPosition;///< For handling dragging logic
 
-
+    //BeeTracker   mBeeTracker;        ///< Helper to keep track of a bee (optional)
 };
 
 /*!
@@ -307,7 +314,12 @@ Application& getApp();
  */
 Env& getAppEnv();
 
-
+/*!
+ * @brief Get the bee tracker helper for the current application
+ *
+ * @return the app's bee tracker
+ */
+//BeeTracker& getAppBeeTracker();
 
 /*!
  * @brief Get the config of the current application
