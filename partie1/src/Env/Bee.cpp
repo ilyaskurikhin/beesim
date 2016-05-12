@@ -5,7 +5,7 @@
 
 Bee::Bee(Hive* hive, const Vec2d& position, std::vector<State> states) :
     Collider(position), CFSM(states), hive_(hive), debug_thickness_random_(5), debug_thickness_target_(
-        3), vision_range_(position)
+        3), vision_range_(position), move_state_(AT_REST)
 {
   // This constructor can not take care of its members
   // since it does not know what kind of bee it is
