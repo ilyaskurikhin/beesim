@@ -15,7 +15,7 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
-#include <Interface/DrawableInteraface.hpp>
+#include <Interface/DrawableInterface.hpp>
 
 class Graph : public DrawableInterface
 {

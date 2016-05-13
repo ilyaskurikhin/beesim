@@ -18,7 +18,7 @@
 #include <Random/Random.hpp>
 
 #include <Interface/ConfigurableInterface.hpp>
-#include <Interface/DrawableInteraface.hpp>
+#include <Interface/DrawableInterface.hpp>
 #include <Interface/UpdatableInterface.hpp>
 
 #include <Env/Bee.hpp>

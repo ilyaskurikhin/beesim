@@ -15,7 +15,7 @@
 #include <Utility/Constants.hpp>
 #include <Utility/Vec2d.hpp>
 
-#include <Interface/DrawableInteraface.hpp>
+#include <Interface/DrawableInterface.hpp>
 #include <Interface/UpdatableInterface.hpp>
 
 #include <Stats/Graph.hpp>

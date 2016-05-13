@@ -17,7 +17,7 @@
 #include <Application.hpp>
 #include <Utility/Logging.hpp>
 
-#include <Interface/DrawableInteraface.hpp>
+#include <Interface/DrawableInterface.hpp>
 #include <Interface/UpdatableInterface.hpp>
 
 class Bee;

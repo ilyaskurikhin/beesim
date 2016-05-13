@@ -19,7 +19,7 @@
 #include <JSON/JSON.hpp>
 
 #include <Interface/ConfigurableInterface.hpp>
-#include <Interface/DrawableInteraface.hpp>
+#include <Interface/DrawableInterface.hpp>
 
 #include <vector>
 #include <array>
