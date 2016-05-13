@@ -17,7 +17,9 @@
 #include <Application.hpp>
 #include <Random/Random.hpp>
 #include <JSON/JSON.hpp>
+
 #include <Interface/Drawable.hpp>
+#include <Interface/ConfigurableInterface.hpp>
 
 #include <vector>
 #include <array>
@@ -41,7 +43,7 @@ struct Seed
   Kind texture;
 };
 
-class World : public Drawable
+class World : public Drawable, public virtual ConfigurableInterface
 {
 public:
 
@@ -59,7 +61,7 @@ public:
    * of seeds and fill a blank Rock world.
    */
   void
-  reloadConfig();
+  reloadConfig() override;
 
   /**
    * @brief Generate the texture cache.

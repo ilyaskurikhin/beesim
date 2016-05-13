@@ -5,6 +5,12 @@ Flower::Flower(const Vec2d& position, double radius, double pollen) :
         getAppEnv().getHumidity(position))
 {
   loadTexture();
+  reloadConfig();
+}
+
+void
+Flower::reloadConfig()
+{
   split_threshold_ =
       getAppConfig()["simulation"]["flower"]["growth"]["split"].toDouble();
   humidity_threshold_ =

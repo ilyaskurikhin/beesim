@@ -19,6 +19,7 @@
 
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
+#include <Interface/ConfigurableInterface.hpp>
 
 #include <Env/Bee.hpp>
 #include <Env/Hive.hpp>
@@ -38,7 +39,7 @@ class Bee;
 /**
  * @brief Simulation Environment
  */
-class Env : public Drawable, public Updatable
+class Env : public Drawable, public Updatable, public ConfigurableInterface
 {
 public:
   /**
@@ -92,7 +93,7 @@ public:
    * @brief Reload the config file
    */
   void
-  reloadConfig();
+  reloadConfig() override;
 
   /**
    * @brief Load the world_ from file.

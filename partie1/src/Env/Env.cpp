@@ -211,6 +211,8 @@ Env::reset()
 void
 Env::reloadConfig()
 {
+  logEvent("Env","reloading config");
+
   // get variables from configuration
   flower_manual_radius_ =
       getAppConfig()["simulation"]["env"]["initial"]["flower"]["size"]["manual"].toDouble();

@@ -11,16 +11,18 @@
 #define COLLIDER_H
 
 #include <Utility/Vec2d.hpp>
+
 #include <Application.hpp>
 #include <iostream>
 #include <cassert>
 #include <vector>
+#include "../Interface/ConfigurableInterface.hpp"
 
 /**
  * Allows checking for object collisions.
  * Methods allow checking for collisions in between class implementations.
  */
-class Collider
+class Collider : public virtual ConfigurableInterface
 {
 public:
 
@@ -57,7 +59,7 @@ public:
   Collider(const Collider& collider);
 
   void
-  reloadConfig();
+  reloadConfig() override;
 
   //
   // OPERATORS

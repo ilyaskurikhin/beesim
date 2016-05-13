@@ -19,11 +19,12 @@
 
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
+#include <Interface/ConfigurableInterface.hpp>
 
 /**
  * @brief Class simulating a Flower.
  */
-class Flower : public Collider, public Drawable, public Updatable
+class Flower : public Collider, public Drawable, public Updatable, public virtual ConfigurableInterface
 {
 
 public:
@@ -40,6 +41,9 @@ public:
    * @param pollen initial pollen of Flower.
    */
   Flower(const Vec2d& position, double radius, double pollen);
+
+  void
+  reloadConfig() override;
 
   /**
    * @brief Remove given quantity of pollen from Flower.

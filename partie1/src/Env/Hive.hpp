@@ -27,7 +27,7 @@ class ScoutBee;
 /**
  * @brief Class simulating a Hive.
  */
-class Hive : public Collider, public Drawable, public Updatable
+class Hive : public Collider, public Drawable, public Updatable, public virtual ConfigurableInterface
 {
 
 public:
@@ -48,7 +48,7 @@ public:
   ~Hive();
 
   void
-  reloadConfig();
+  reloadConfig() override;
 
   /**
    * @brief Add a new ScoutBee.

@@ -23,7 +23,7 @@
 
 #include <Interface/Drawable.hpp>
 #include <Interface/Updatable.hpp>
-
+#include <Interface/ConfigurableInterface.hpp>
 #include <Application.hpp>
 
 #include <cmath>
@@ -36,7 +36,7 @@ class Flower;
 /**
  * @brief Abstract class Bee.
  */
-class Bee : public Collider, public Drawable, public Updatable, public CFSM
+class Bee : public Collider, public Drawable, public Updatable, public CFSM, public virtual ConfigurableInterface
 {
 public:
 
@@ -53,7 +53,15 @@ public:
    * @brief Reload the configuration of attributes from JSON. 
    */
   void
-  reloadConfig();
+  reloadConfig() override;
+
+  /**
+   * @brief Get Bee configuration by type.
+   *
+   * @return Configuration values.
+   */
+  virtual j::Value const&
+  getConfig() =0;
 
   /**
    * @brief Move the bee.
@@ -152,15 +160,6 @@ public:
    */
   Hive*
   getHive() const;
-
-  /**
-   * @brief Get Bee configuration by type.
-   *
-   * @return Configuration values.
-   */
-  virtual j::Value
-  const&
-  getConfig() =0;
 
   /**
    * @brief Load the Bee texture.

@@ -17,6 +17,8 @@ Bee::Bee(Hive* hive, const Vec2d& position, std::vector<State> states) :
 void
 Bee::reloadConfig()
 {
+  Collider::reloadConfig();
+
   // TODO resolve function calls to subclass
   this->setRadius(getConfig()["size"].toDouble());
 
