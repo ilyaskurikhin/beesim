@@ -225,6 +225,18 @@ WorkerBee::targetMove(sf::Time dt)
   Bee::targetMove(dt);
 }
 
+bool
+WorkerBee::isScout() const
+{
+  return false;
+}
+
+bool
+WorkerBee::isWorker() const
+{
+  return true;
+}
+
 void
 WorkerBee::interact(Bee* other)
 {

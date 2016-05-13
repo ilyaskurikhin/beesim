@@ -192,6 +192,18 @@ ScoutBee::targetMove(sf::Time dt)
   Bee::targetMove(dt);
 }
 
+bool
+ScoutBee::isScout() const
+{
+  return true;
+}
+
+bool
+ScoutBee::isWorker() const
+{
+  return false;
+}
+
 void
 ScoutBee::interact(Bee* other)
 {

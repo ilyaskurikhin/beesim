@@ -77,7 +77,7 @@ public:
      *
      * @return the app's bee tracker
      */
-    //BeeTracker& getBeeTracker();
+	// BeeTracker& getBeeTracker();
     //BeeTracker const& getBeeTracker() const;
 
     /*!
@@ -152,8 +152,7 @@ protected:
      *  @param min    y-axis: min value expected
      *  @param max    y-axis: max value expected
      */
-    // TODO step5 uncomment me
-    //void addGraph(std::string const& title, std::vector<std::string> const& series, double min, double max);
+    void addGraph(std::string const& title, std::vector<std::string> const& series, double min, double max);
 
 private:
     /*!
@@ -276,9 +275,8 @@ private:
 
     Stats*   mStats;                 ///< Statistic manager
     sf::View mStatsView;             ///< View for the stats area
-    // TODO step5 uncomment me
-    //int      mNextGraphId;           ///< Next ID to be used for the next new graph
-    //int      mCurrentGraphId;        ///< Current graph ID
+    int      mNextGraphId;           ///< Next ID to be used for the next new graph
+    int      mCurrentGraphId;        ///< Current graph ID
 
     using TexturePool = std::map<std::string, sf::Texture*>;
     TexturePool mTextures;           ///< Pool of textures

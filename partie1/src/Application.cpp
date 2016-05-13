@@ -8,7 +8,7 @@
 #include <Config.hpp>
 #include <Env/Env.hpp>
 #include <JSON/JSONSerialiser.hpp>
-// #include <Stats/Stats.hpp> TODO step5 uncomment me
+#include <Stats/Stats.hpp>
 #include <Utility/Constants.hpp>
 
 #include <algorithm>
@@ -111,9 +111,8 @@ Application::Application(int argc, char const** argv)
 , mConfig(j::readFromFile(mAppDirectory + mCfgFile))
 , mEnv(nullptr)
 , mStats(nullptr)
-// TODO step5 uncomment me
-//, mNextGraphId(0)
-//, mCurrentGraphId(-1)
+, mNextGraphId(0)
+, mCurrentGraphId(-1)
 , mPaused(false)
 , mIsResetting(false)
 , mIsDragging(false)
@@ -133,7 +132,7 @@ Application::Application(int argc, char const** argv)
 Application::~Application()
 {
     // Destroy lab and stats, in reverse order
-    //delete mStats; TODO step5 uncomment me
+    delete mStats;
     delete mEnv;
 
     // Release textures
@@ -151,11 +150,7 @@ void Application::run()
 {
     // Load lab and stats
     mEnv   = new Env;
-    // generate new objects
-    // this method needs to be called after construction
-    // since the construction of its attributes requires its construction to have completed
-    mEnv->regenerate();
-    //mStats = new Stats;  TODO step5 uncomment me
+    mStats = new Stats;
 
     // Set up subclasses
     onRun();
@@ -193,9 +188,8 @@ void Application::run()
         }
 
         // Set active graph
-        // TODO step5 uncomment me
-        //auto activeIndex = mCurrentGraphId;
-        //getStats().setActive(activeIndex);
+        auto activeIndex = mCurrentGraphId;
+        getStats().setActive(activeIndex);
 
         // Update logics
         auto const& timeCfg = getConfig()["simulation"]["time"];
@@ -215,7 +209,7 @@ void Application::run()
                 elapsedTime -= dt;
 
                 getEnv().update(dt);
-                //getStats().update(dt);  TODO step5 uncomment me
+                getStats().update(dt);
                 onUpdate(dt);
             }
         }
@@ -254,8 +248,7 @@ BeeTracker& Application::getBeeTracker()
 {
     return mBeeTracker;
 }
-*/
-/*
+
 BeeTracker const& Application::getBeeTracker() const
 {
     return mBeeTracker;
@@ -284,10 +277,9 @@ sf::Texture& Application::getTexture(std::string const& name)
     else {
         // The texture is not yet in memory so we load it now
         sf::Texture* newTexture = new sf::Texture;
-	
         if (newTexture->loadFromFile(getResPath() + name)) {
             // The texture was correctly loaded so we save it
-			newTexture->setRepeated(true);
+			newTexture->setRepeated(true); 
             mTextures[name] = newTexture;
             // And return the texture
             return *newTexture;
@@ -330,7 +322,11 @@ void Application::onEvent(sf::Event, sf::RenderWindow&)
 
 void Application::onSimulationStart()
 {
-    // By default nothing is done here
+  // generate new objects
+  // this method needs to be called after construction
+  // since the construction of its attributes requires i
+  // ts construction to have completed
+  getEnv().regenerate();
 }
 
 void Application::onUpdate(sf::Time)
@@ -348,14 +344,11 @@ Vec2d Application::getCursorPositionInView() const
     return mRenderWindow.mapPixelToCoords(sf::Mouse::getPosition(mRenderWindow), mSimulationView);
 }
 
-/*
- *  TODO step5 uncomment me
- *void Application::addGraph(std::string const& title, std::vector<std::string> const& series, double min, double max)
- *{
- *    getStats().addGraph(++mNextGraphId, title, series, min, max, getStatsSize() );
- *    mCurrentGraphId = mNextGraphId;
- *}
- */
+void Application::addGraph(std::string const& title, std::vector<std::string> const& series, double min, double max)
+{
+    getStats().addGraph(++mNextGraphId, title, series, min, max, getStatsSize() );
+    mCurrentGraphId = mNextGraphId;
+}
 
 void Application::createWindow(Vec2d const& size)
 {
@@ -426,7 +419,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
         case sf::Keyboard::I:
             mIsResetting = true;
             getEnv().loadWorldFromFile();
-            //getStats().reset();            TODO step5 uncomment me
+            getStats().reset();
             onSimulationStart();
             createViews();
             break;
@@ -450,7 +443,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
         case sf::Keyboard::R:
             mIsResetting = true;
             getEnv().reset();
-            //getStats().reset();            TODO step5 uncomment me
+            getStats().reset();
             onSimulationStart();
             createViews();
             break;
@@ -508,14 +501,16 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
             mLastCursorPosition = { event.mouseButton.x, event.mouseButton.y };
         } else if (event.mouseButton.button == sf::Mouse::Right) {
             auto pos  = getCursorPositionInView();
+			/*
             auto* bee = getEnv().getBeeAt(pos);
-            // if (bee == nullptr) {
-            //     // Stop tracking bee
-            //     getBeeTracker().stopTrackingBee();
-            // } else {
-            //     // Track the bee
-            //     getBeeTracker().startTrackingBee(bee);
-            // }
+            if (bee == nullptr) {
+                // Stop tracking bee
+                getBeeTracker().stopTrackingBee();
+            } else {
+                // Track the bee
+                getBeeTracker().startTrackingBee(bee);
+            }
+			*/
         }
         break;
 
@@ -560,7 +555,7 @@ void Application::render(sf::Drawable const& simulationBackground, sf::Drawable 
     // Render the stats
     mRenderWindow.setView(mStatsView);
     mRenderWindow.draw(statsBackground);
-    //getStats().drawOn(mRenderWindow);  TODO step5 uncomment me
+    getStats().drawOn(mRenderWindow);
 
     // Finally, publish everything onto the screen
     mRenderWindow.display();
@@ -595,16 +590,15 @@ void Application::zoomViewAt(sf::Vector2i const& pixel, float zoomFactor)
     view.zoom(zoomFactor);
     mRenderWindow.setView(view);
 
-	//if (!getBeeTracker().isTrackingBee())  {
+    // if (!getBeeTracker().isTrackingBee())  {
         // If no bee is selected, center on the cursor position
         auto afterCoord = mRenderWindow.mapPixelToCoords(pixel);
         auto offsetCoords = beforeCoord - afterCoord;
 
         view.move(offsetCoords);
         mRenderWindow.setView(view);
-		//}
+		// }
 }
-
 
 void Application::dragView(sf::Vector2i const& srcPixel, sf::Vector2i const& destPixel)
 {
@@ -621,10 +615,12 @@ void Application::dragView(sf::Vector2i const& srcPixel, sf::Vector2i const& des
 
 void Application::updateSimulationView()
 {
-    // if (getBeeTracker().isTrackingBee()) {
-    //     auto pos = getBeeTracker().getTrackedBeePosition();
-    //     mSimulationView.setCenter(pos);
-    // }
+	/*
+    if (getBeeTracker().isTrackingBee()) {
+        auto pos = getBeeTracker().getTrackedBeePosition();
+        mSimulationView.setCenter(pos);
+    }
+	*/
 }
 
 Application& getApp()
@@ -639,10 +635,12 @@ Env& getAppEnv()
     return getApp().getEnv();
 }
 
-// BeeTracker& getAppBeeTracker()
-// {
-//     return getApp().getBeeTracker();
-// }
+/*
+BeeTracker& getAppBeeTracker()
+{
+    return getApp().getBeeTracker();
+}
+*/
 
 j::Value& getAppConfig()
 {

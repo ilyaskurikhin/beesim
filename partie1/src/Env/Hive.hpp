@@ -46,7 +46,7 @@ public:
   operator=(const Hive&) = delete;
 
   ~Hive();
-  
+
   void
   reloadConfig();
 
@@ -131,7 +131,13 @@ public:
   getNectar() const;
 
   int
-  getNumberBees() const;
+  getNumBees() const;
+
+  int
+  getNumScouts() const;
+
+  int
+  getNumWorkers() const;
 
   void
   interactingBees();
@@ -146,7 +152,6 @@ private:
   std::vector<WorkerBee*> workers_;
   std::vector<ScoutBee*> scouts_;
   sf::Texture hive_texture_;
-  
 
 };
 

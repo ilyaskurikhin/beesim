@@ -48,6 +48,12 @@ public:
   // TODO make private
   State static const SEARCH_FLOWER;
 
+  bool
+  isScout() const override;
+
+  bool
+  isWorker() const override;
+
   void
   interact(Bee* other) override;
 

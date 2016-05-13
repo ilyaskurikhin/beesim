@@ -15,8 +15,7 @@ IMPLEMENT_MAIN(FinalApplication);
 void FinalApplication::onRun()
 {
     // Setup stats
-    // TODO step5 uncomment me
-    //addGraph(s::GENERAL, { s::FLOWERS, s::HIVES, s::SCOUTS, s::WORKERS, }, 0, 300);
+    addGraph(s::GENERAL, { s::FLOWERS, s::HIVES, s::SCOUTS, s::WORKERS, }, 0, 100);
 }
 
 void FinalApplication::onEvent(sf::Event event, sf::RenderWindow&)
