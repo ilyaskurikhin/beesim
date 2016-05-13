@@ -24,11 +24,13 @@ Hive::~Hive()
 void
 Hive::reloadConfig()
 {
-  nectar_thresold_ = getAppConfig()["simulation"]["hive"]["reproduction"]["nectar threshold"].toDouble();
-  max_bees_ = getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
-  reproduction_probability_ = getAppConfig()["simulation"]["hive"]["reproduction"]["scout probability"].toDouble();
+  nectar_thresold_ =
+      getAppConfig()["simulation"]["hive"]["reproduction"]["nectar threshold"].toDouble();
+  max_bees_ =
+      getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
+  reproduction_probability_ =
+      getAppConfig()["simulation"]["hive"]["reproduction"]["scout probability"].toDouble();
 }
-
 
 ScoutBee*
 Hive::addScout()
@@ -85,19 +87,19 @@ Hive::getBeeAt(const Vec2d& position)
 void
 Hive::update(sf::Time dt)
 {
-  
+
   if (bees_.size() < max_bees_ && nectar_ > nectar_thresold_)
-  {
-    if (bernoulli(reproduction_probability_))
     {
-      this->addWorker();
+      if (bernoulli(reproduction_probability_))
+        {
+          this->addWorker();
+        }
+      else
+        {
+          this->addScout();
+        }
     }
-    else
-    {
-      this-> addScout();
-    }
-  }
-    
+
   for (size_t i = 0; i < bees_.size(); ++i)
     {
       bees_[i]->update(dt);
@@ -186,7 +188,7 @@ int
 Hive::getNumScouts() const
 {
   int numScouts(0);
-  for (size_t i=0; i < bees_.size(); ++i)
+  for (size_t i = 0; i < bees_.size(); ++i)
     {
       if (bees_[i]->isScout())
         {
@@ -200,7 +202,7 @@ int
 Hive::getNumWorkers() const
 {
   int numWorkers(0);
-  for (size_t i=0; i < bees_.size(); ++i)
+  for (size_t i = 0; i < bees_.size(); ++i)
     {
       if (bees_[i]->isWorker())
         {

@@ -25,7 +25,7 @@
 #include <memory>
 #include <map>
 
-class Stats: public Drawable, public Updatable
+class Stats : public Drawable, public Updatable
 {
 public:
 
@@ -52,8 +52,8 @@ public:
   setActive(int currentGraphID);
 
   void
-  addGraph(int graphId, std::string title, std::vector<std::string> series, double min, double max, const Vec2d& size);
-
+  addGraph(int graphId, std::string title, std::vector<std::string> series,
+           double min, double max, const Vec2d& size);
 
 private:
   struct TitledGraph
@@ -71,7 +71,5 @@ private:
   int active_;
 
 };
-
-
 
 #endif /* STATS_HPP */

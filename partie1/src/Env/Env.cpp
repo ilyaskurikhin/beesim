@@ -37,7 +37,7 @@ Env::~Env()
 void
 Env::regenerate()
 {
-  logEvent("Env","regenerating objects");
+  logEvent("Env", "regenerating objects");
   auto const& initial = getAppConfig()["simulation"]["env"]["initial"];
 
   int num_hives(initial["hive"]["count"].toInt());
@@ -52,38 +52,38 @@ Env::regenerate()
   double flower_min_size(initial["flower"]["size"]["min"].toDouble());
   double flower_max_size(initial["flower"]["size"]["max"].toDouble());
 
-  for (int i=0; i < num_hives; ++i)
+  for (int i = 0; i < num_hives; ++i)
     {
       int num_tries(0);
       bool placed(false);
       while (!placed && num_tries < num_tries_hives)
         {
           Vec2d position;
-          position.x = uniform(0.0,getWorldSize().x);
-          position.y = uniform(0.0,getWorldSize().y);
+          position.x = uniform(0.0, getWorldSize().x);
+          position.y = uniform(0.0, getWorldSize().y);
 
-          if (addHiveAt(position,uniform(hive_min_size,hive_max_size)))
+          if (addHiveAt(position, uniform(hive_min_size, hive_max_size)))
             placed = true;
           else
             ++num_tries;
         }
     }
 
-  for (int i=0; i < num_flowers; ++i)
+  for (int i = 0; i < num_flowers; ++i)
     {
       int num_tries(0);
       bool placed(false);
       while (!placed && num_tries < num_tries_flowers)
         {
-      Vec2d position;
-      position.x = uniform(0.0,getWorldSize().x);
-      position.y = uniform(0.0,getWorldSize().y);
+          Vec2d position;
+          position.x = uniform(0.0, getWorldSize().x);
+          position.y = uniform(0.0, getWorldSize().y);
 
-      int num_tries(0);
-      if (addFlowerAt(position, uniform(flower_min_size,flower_max_size)))
-        placed = true;
-      else
-        ++num_tries;
+          int num_tries(0);
+          if (addFlowerAt(position, uniform(flower_min_size, flower_max_size)))
+            placed = true;
+          else
+            ++num_tries;
         }
     }
 }
@@ -121,8 +121,7 @@ Env::update(sf::Time dt)
     {
       hives_[i]->update(dt);
 
-      if (hives_[i]->getNectar() == 0
-          && hives_[i]->getNumBees() == 0)
+      if (hives_[i]->getNectar() == 0 && hives_[i]->getNumBees() == 0)
         {
           delete hives_[i];
           hives_[i] = nullptr;
@@ -130,7 +129,7 @@ Env::update(sf::Time dt)
     }
 
   hives_.erase(std::remove(hives_.begin(), hives_.end(), nullptr),
-                 hives_.end());
+               hives_.end());
 
 }
 
@@ -306,8 +305,7 @@ bool
 Env::addFlowerAt(const Vec2d& position, double size)
 {
   // check if flower can be made at position
-  if ((flowers_.size() < max_flowers_)
-      && (isPlaceable(position, size)))
+  if ((flowers_.size() < max_flowers_) && (isPlaceable(position, size)))
     {
       // set a random number of pollen
       double pollen = uniform(flower_min_nectar_, flower_max_nectar_);
@@ -487,7 +485,7 @@ int
 Env::getNumScouts() const
 {
   int numScouts(0);
-  for (size_t i=0; i < hives_.size(); ++i)
+  for (size_t i = 0; i < hives_.size(); ++i)
     {
       numScouts += hives_[i]->getNumScouts();
     }
@@ -498,7 +496,7 @@ int
 Env::getNumWorkers() const
 {
   int numWorkers(0);
-  for (size_t i=0; i < hives_.size(); ++i)
+  for (size_t i = 0; i < hives_.size(); ++i)
     {
       numWorkers += hives_[i]->getNumWorkers();
     }

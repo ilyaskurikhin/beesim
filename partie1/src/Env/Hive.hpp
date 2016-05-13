@@ -46,7 +46,7 @@ public:
   operator=(const Hive&) = delete;
 
   ~Hive();
-  
+
   void
   reloadConfig();
 
@@ -152,7 +152,6 @@ private:
   std::vector<WorkerBee*> workers_;
   std::vector<ScoutBee*> scouts_;
   sf::Texture hive_texture_;
-  
 
 };
 
