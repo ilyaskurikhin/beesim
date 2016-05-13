@@ -150,10 +150,6 @@ void Application::run()
 {
     // Load lab and stats
     mEnv   = new Env;
-    // generate new objects
-    // this method needs to be called after construction
-    // since the construction of its attributes requires its construction to have completed
-    mEnv->regenerate();
     mStats = new Stats;
 
     // Set up subclasses
@@ -326,7 +322,11 @@ void Application::onEvent(sf::Event, sf::RenderWindow&)
 
 void Application::onSimulationStart()
 {
-    // By default nothing is done here
+  // generate new objects
+  // this method needs to be called after construction
+  // since the construction of its attributes requires i
+  // ts construction to have completed
+  getEnv().regenerate();
 }
 
 void Application::onUpdate(sf::Time)
