@@ -12,11 +12,12 @@
 
 #include <Utility/Vec2d.hpp>
 
+#include <Interface/ConfigurableInterface.hpp>
+
 #include <Application.hpp>
 #include <iostream>
 #include <cassert>
 #include <vector>
-#include "../Interface/ConfigurableInterface.hpp"
 
 /**
  * Allows checking for object collisions.

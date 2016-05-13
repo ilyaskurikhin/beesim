@@ -17,14 +17,13 @@
 #include <Utility/Logging.hpp>
 #include <Random/Random.hpp>
 
-#include <Interface/Updatable.hpp>
-
 #include <Env/Env.hpp>
+#include <Interface/UpdatableInterface.hpp>
 
 /**
  * @brief Class generating Flower s in an Env ironment
  */
-class FlowerGenerator : public Updatable
+class FlowerGenerator : public UpdatableInterface
 {
 public:
 

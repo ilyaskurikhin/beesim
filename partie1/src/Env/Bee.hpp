@@ -21,9 +21,10 @@
 #include <Env/Env.hpp>
 #include <Env/CFSM.hpp>
 
-#include <Interface/Drawable.hpp>
-#include <Interface/Updatable.hpp>
 #include <Interface/ConfigurableInterface.hpp>
+#include <Interface/DrawableInteraface.hpp>
+#include <Interface/UpdatableInterface.hpp>
+
 #include <Application.hpp>
 
 #include <cmath>
@@ -36,7 +37,7 @@ class Flower;
 /**
  * @brief Abstract class Bee.
  */
-class Bee : public Collider, public Drawable, public Updatable, public CFSM, public virtual ConfigurableInterface
+class Bee : public Collider, public DrawableInterface, public UpdatableInterface, public CFSM, public virtual ConfigurableInterface
 {
 public:
 

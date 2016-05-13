@@ -17,14 +17,14 @@
 #include <Application.hpp>
 #include <Utility/Logging.hpp>
 
-#include <Interface/Drawable.hpp>
-#include <Interface/Updatable.hpp>
 #include <Interface/ConfigurableInterface.hpp>
+#include <Interface/DrawableInteraface.hpp>
+#include <Interface/UpdatableInterface.hpp>
 
 /**
  * @brief Class simulating a Flower.
  */
-class Flower : public Collider, public Drawable, public Updatable, public virtual ConfigurableInterface
+class Flower : public Collider, public DrawableInterface, public UpdatableInterface, public virtual ConfigurableInterface
 {
 
 public:

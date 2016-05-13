@@ -14,10 +14,10 @@
  *
  * @brief Represents an entity that evolves with time
  */
-class Updatable
+class UpdatableInterface
 {
 public:
-    virtual ~Updatable() = default;
+    virtual ~UpdatableInterface() = default;
 
     virtual void update(sf::Time dt) = 0;
 };

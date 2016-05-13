@@ -17,8 +17,8 @@
 #include <Application.hpp>
 #include <Utility/Logging.hpp>
 
-#include <Interface/Drawable.hpp>
-#include <Interface/Updatable.hpp>
+#include <Interface/DrawableInteraface.hpp>
+#include <Interface/UpdatableInterface.hpp>
 
 class Bee;
 class WorkerBee;
@@ -27,7 +27,7 @@ class ScoutBee;
 /**
  * @brief Class simulating a Hive.
  */
-class Hive : public Collider, public Drawable, public Updatable, public virtual ConfigurableInterface
+class Hive : public Collider, public DrawableInterface, public UpdatableInterface, public virtual ConfigurableInterface
 {
 
 public:

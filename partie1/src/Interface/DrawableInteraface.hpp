@@ -14,10 +14,10 @@
  *
  * @brief Represents an entity that can be represented graphically
  */
-class Drawable
+class DrawableInterface
 {
 public:
-    virtual ~Drawable() = default;
+    virtual ~DrawableInterface() = default;
 
     virtual void drawOn(sf::RenderTarget& target) const = 0;
 };

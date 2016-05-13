@@ -17,9 +17,9 @@
 
 #include <Random/Random.hpp>
 
-#include <Interface/Drawable.hpp>
-#include <Interface/Updatable.hpp>
 #include <Interface/ConfigurableInterface.hpp>
+#include <Interface/DrawableInteraface.hpp>
+#include <Interface/UpdatableInterface.hpp>
 
 #include <Env/Bee.hpp>
 #include <Env/Hive.hpp>
@@ -31,6 +31,7 @@
 #include <string>
 #include <unordered_map>
 
+
 class Flower;
 class FlowerGenerator;
 class Hive;
@@ -39,7 +40,7 @@ class Bee;
 /**
  * @brief Simulation Environment
  */
-class Env : public Drawable, public Updatable, public ConfigurableInterface
+class Env : public DrawableInterface, public UpdatableInterface, public ConfigurableInterface
 {
 public:
   /**

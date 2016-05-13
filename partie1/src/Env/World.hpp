@@ -18,8 +18,8 @@
 #include <Random/Random.hpp>
 #include <JSON/JSON.hpp>
 
-#include <Interface/Drawable.hpp>
 #include <Interface/ConfigurableInterface.hpp>
+#include <Interface/DrawableInteraface.hpp>
 
 #include <vector>
 #include <array>
@@ -32,6 +32,7 @@
 #include <string>
 #include <cmath>
 
+
 enum class Kind
   : short
     { Grass, Water, Rock
@@ -43,7 +44,7 @@ struct Seed
   Kind texture;
 };
 
-class World : public Drawable, public virtual ConfigurableInterface
+class World : public DrawableInterface, public virtual ConfigurableInterface
 {
 public:
 
