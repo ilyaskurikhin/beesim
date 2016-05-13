@@ -20,6 +20,7 @@
 #include <Env/Collider.hpp>
 #include <Env/Env.hpp>
 #include <Env/CFSM.hpp>
+#include <Env/Movable.hpp>
 
 #include <Interface/ConfigurableInterface.hpp>
 #include <Interface/DrawableInteraface.hpp>
@@ -37,7 +38,7 @@ class Flower;
 /**
  * @brief Abstract class Bee.
  */
-class Bee : public Collider, public DrawableInterface, public UpdatableInterface, public CFSM, public virtual ConfigurableInterface
+class Bee : public DrawableInterface, public UpdatableInterface, public virtual ConfigurableInterface, public Movable, public CFSM
 {
 public:
 
@@ -73,40 +74,6 @@ public:
   move(sf::Time dt);
 
   /**
-   * @brief Set a target to move towards
-   *
-   * @param target graphic position.
-   */
-  void
-  setMoveTarget(const Vec2d& target);
-
-  /**
-   * @brief Get the current move target
-   *
-   * @return graphic position of target.
-   */
-  const Vec2d&
-  getMoveTarget() const;
-
-  /**
-   * @brief Move the bee towards a target defined by the type of bee.
-   *
-   * @param dt Time for the counter.
-   */
-  virtual void
-  targetMove(sf::Time dt);
-
-  /**
-   * @brief Move the bee randomly.
-   *
-   * Currently only implemented in ScoutBee.
-   *
-   * @param dt
-   */
-  virtual void
-  randomMove(sf::Time dt);
-
-  /**
    * @brief Check if Bee is dead.
    *
    * @return true is energy is zero.
@@ -131,14 +98,6 @@ public:
    */
   void
   drawOn(sf::RenderTarget& target) const override;
-
-  /**
-   * @brief Get current speed.
-   *
-   * @return speed
-   */
-  double
-  getSpeed() const;
 
   /**
    * @brief Get the energy of the Bee.
@@ -196,12 +155,6 @@ public:
   const std::string&
   getDebugStatus() const;
 
-  const Vec2d&
-  getMoveVec() const;
-
-  void
-  rotateMoveVec(double angle);
-
   bool
   isInHive();
 
@@ -226,22 +179,16 @@ public:
 private:
 
   Hive* hive_;
-  Vec2d move_vec_;
-  Vec2d move_target_;
-  double speed_;
+
   double energy_;
   double energy_rate_idle_;
   double energy_rate_moving_;
   double energy_rate_eating_;
 
-  double max_angle_;
 
   sf::Texture texture_;
   double debug_thickness_random_;
   double debug_thickness_target_;
-
-  sf::Time avoidance_clock_;
-  sf::Time delay_;
 
   Collider vision_range_;
   double visibility_;

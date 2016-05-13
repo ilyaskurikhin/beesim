@@ -4,7 +4,7 @@
 #include <Env/Flower.hpp>
 
 Bee::Bee(Hive* hive, const Vec2d& position, std::vector<State> states) :
-    Collider(position), CFSM(states), hive_(hive), debug_thickness_random_(5), debug_thickness_target_(
+    Movable(position), CFSM(states), hive_(hive), debug_thickness_random_(5), debug_thickness_target_(
         3), vision_range_(position), move_state_(AT_REST)
 {
   // This constructor can not take care of its members
@@ -17,10 +17,14 @@ Bee::Bee(Hive* hive, const Vec2d& position, std::vector<State> states) :
 void
 Bee::reloadConfig()
 {
-  Collider::reloadConfig();
-
-  // TODO resolve function calls to subclass
+  // configure Collider
   this->setRadius(getConfig()["size"].toDouble());
+
+  // configure Moveable
+  this->setDelay(sf::seconds(
+      getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble()));
+  this->setSpeed(getConfig()["speed"].toDouble());
+  this->setMoveVec(Vec2d::fromRandomAngle() * this->getSpeed());
 
   energy_ = getConfig()["energy"]["initial"].toDouble();
   energy_rate_idle_ =
@@ -30,15 +34,8 @@ Bee::reloadConfig()
   energy_rate_eating_ =
       getConfig()["energy"]["consumption rates"]["eating"].toDouble();
 
-  delay_ = sf::seconds(
-      getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble());
-
   visibility_ = getConfig()["visibility range"].toDouble();
   vision_range_.setRadius(visibility_ + this->getRadius());
-
-  speed_ = getConfig()["speed"].toDouble();
-
-  move_vec_ = Vec2d::fromRandomAngle() * speed_;
 }
 
 void
@@ -59,69 +56,6 @@ Bee::move(sf::Time dt)
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
   vision_range_.setPosition(this->getPosition());
-}
-
-void
-Bee::setMoveTarget(const Vec2d& position)
-{
-  move_target_ = position;
-}
-
-const Vec2d&
-Bee::getMoveTarget() const
-{
-  return move_target_;
-}
-
-double
-Bee::getSpeed() const
-{
-  return speed_;
-}
-
-void
-Bee::randomMove(sf::Time)
-{
-}
-
-void
-Bee::targetMove(sf::Time dt)
-{
-  Vec2d target(this->getMoveTarget());
-  Vec2d direction(this->directionTo(target));
-
-  direction = direction.normalised();
-
-  if (avoidance_clock_ < sf::Time::Zero)
-    {
-      move_vec_ = direction * move_vec_.length();
-    }
-  else
-    {
-      avoidance_clock_ -= dt;
-    }
-
-  Vec2d move(move_vec_);
-  move *= dt.asSeconds();
-
-  this->Collider::move(move);
-
-  if (!getAppEnv().isFlyable(this->getPosition()))
-    {
-      double angleB;
-      if (bernoulli(0.5))
-        {
-          angleB = PI / 4;
-        }
-      else
-        {
-          angleB = -PI / 4;
-        }
-      move_vec_.rotate(angleB);
-      avoidance_clock_ = delay_;
-
-      this->Collider::move(-move);
-    }
 }
 
 bool
@@ -169,7 +103,7 @@ Bee::drawOn(sf::RenderTarget& target) const
   double radius(this->getRadius());
 
   auto beeSprite = buildSprite(position, radius, texture_);
-  double angle(move_vec_.Vec2d::angle());
+  double angle(this->getMoveVec().Vec2d::angle());
   if ((angle >= PI / 2) or (angle <= -PI / 2))
     {
       beeSprite.scale(1, -1);
@@ -239,18 +173,6 @@ const std::string&
 Bee::getDebugStatus() const
 {
   return debug_status_;
-}
-
-const Vec2d&
-Bee::getMoveVec() const
-{
-  return move_vec_;
-}
-
-void
-Bee::rotateMoveVec(double angle)
-{
-  move_vec_.rotate(angle);
 }
 
 bool
