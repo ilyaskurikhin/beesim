@@ -122,7 +122,7 @@ Env::update(sf::Time dt)
       hives_[i]->update(dt);
 
       if (hives_[i]->getNectar() == 0
-          && hives_[i]->getNumberBees() == 0)
+          && hives_[i]->getNumBees() == 0)
         {
           delete hives_[i];
           hives_[i] = nullptr;
@@ -483,8 +483,44 @@ Env::getBeeAt(const Vec2d& position) const
   return nullptr;
 }
 
+int
+Env::getNumScouts() const
+{
+  int numScouts(0);
+  for (size_t i=0; i < hives_.size(); ++i)
+    {
+      numScouts += hives_[i]->getNumScouts();
+    }
+  return numScouts;
+}
+
+int
+Env::getNumWorkers() const
+{
+  int numWorkers(0);
+  for (size_t i=0; i < hives_.size(); ++i)
+    {
+      numWorkers += hives_[i]->getNumWorkers();
+    }
+  return numWorkers;
+}
+
 double
 Env::getTextSize()
 {
   return debug_text_size_;
+}
+
+std::unordered_map<std::string, double>
+Env::fetchData(std::string graph) const
+{
+  std::unordered_map<std::string, double> new_data;
+  if (graph == s::GENERAL)
+    {
+      new_data[s::FLOWERS] = flowers_.size();
+      new_data[s::HIVES] = hives_.size();
+      new_data[s::SCOUTS] = getNumScouts();
+      new_data[s::WORKERS] = getNumWorkers();
+    }
+  return new_data;
 }

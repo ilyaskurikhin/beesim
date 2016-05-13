@@ -131,7 +131,13 @@ public:
   getNectar() const;
 
   int
-  getNumberBees() const;
+  getNumBees() const;
+
+  int
+  getNumScouts() const;
+
+  int
+  getNumWorkers() const;
 
   void
   interactingBees();

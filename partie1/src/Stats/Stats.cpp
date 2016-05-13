@@ -6,6 +6,7 @@
  */
 
 #include <Stats/Stats.hpp>
+#include <Env/Env.hpp>
 
 Stats::Stats()
 
@@ -33,13 +34,22 @@ Stats::getConfig()
 void
 Stats::reset()
 {
-
+  for (size_t i=0; i < titled_graphs_.size(); ++i)
+    {
+      titled_graphs_[i].graph->reset();
+    }
 }
 
 void
 Stats::drawOn(sf::RenderTarget& target) const
 {
-  getActiveGraph().drawOn(target);
+  for (size_t i=0; i < titled_graphs_.size(); ++i)
+    {
+      if (titled_graphs_[i].id == active_)
+        {
+           titled_graphs_[i].graph->drawOn(target);
+        }
+    }
 }
 
 void
@@ -49,7 +59,10 @@ Stats::update(sf::Time dt)
 
   if (counter_ > delay_)
     {
-
+      for (size_t i=0; i < titled_graphs_.size(); ++i)
+        {
+          titled_graphs_[i].graph->updateData(dt,getAppEnv().fetchData(titled_graphs_[i].title));
+        }
     }
 
 }
@@ -58,18 +71,6 @@ void
 Stats::setActive(int currentGraphId)
 {
   active_ = currentGraphId;
-}
-
-const Graph&
-Stats::getActiveGraph() const
-{
-  for (size_t i=0; i < titled_graphs_.size(); ++i)
-    {
-      if (titled_graphs_[i].id == active_)
-        {
-           return *titled_graphs_[i].graph;
-        }
-    }
 }
 
 void

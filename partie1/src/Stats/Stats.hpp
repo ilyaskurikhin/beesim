@@ -23,7 +23,7 @@
 #include <Application.hpp>
 
 #include <memory>
-#include <vector>
+#include <map>
 
 class Stats: public Drawable, public Updatable
 {
@@ -50,9 +50,6 @@ public:
 
   void
   setActive(int currentGraphID);
-
-  const Graph&
-  getActiveGraph() const;
 
   void
   addGraph(int graphId, std::string title, std::vector<std::string> series, double min, double max, const Vec2d& size);

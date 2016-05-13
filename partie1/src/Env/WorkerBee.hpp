@@ -62,6 +62,12 @@ public:
   void
   targetMove(sf::Time dt);
 
+  bool
+  isScout() const override;
+
+  bool
+  isWorker() const override;
+
   void
   interact(Bee* other) override;
 

@@ -177,9 +177,37 @@ Hive::getNectar() const
 }
 
 int
-Hive::getNumberBees() const
+Hive::getNumBees() const
 {
   return bees_.size();
+}
+
+int
+Hive::getNumScouts() const
+{
+  int numScouts(0);
+  for (size_t i=0; i < bees_.size(); ++i)
+    {
+      if (bees_[i]->isScout())
+        {
+          ++numScouts;
+        }
+    }
+  return numScouts;
+}
+
+int
+Hive::getNumWorkers() const
+{
+  int numWorkers(0);
+  for (size_t i=0; i < bees_.size(); ++i)
+    {
+      if (bees_[i]->isWorker())
+        {
+          ++numWorkers;
+        }
+    }
+  return numWorkers;
 }
 
 void

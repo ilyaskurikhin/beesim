@@ -205,6 +205,12 @@ public:
   bool
   isInHive();
 
+  virtual bool
+  isScout() const =0;
+
+  virtual bool
+  isWorker() const =0;
+
   virtual void
   interact(Bee* other)=0;
 

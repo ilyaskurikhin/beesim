@@ -26,6 +26,9 @@
 #include <Env/World.hpp>
 
 #include <memory>
+#include <vector>
+#include <string>
+#include <unordered_map>
 
 class Flower;
 class FlowerGenerator;
@@ -230,6 +233,12 @@ public:
   Bee*
   getBeeAt(const Vec2d& position) const;
 
+  int
+  getNumScouts() const;
+
+  int
+  getNumWorkers() const;
+
   /**
    * @brief Get text size for env.
    *
@@ -237,6 +246,9 @@ public:
    */
   double
   getTextSize();
+
+  std::unordered_map<std::string, double>
+  fetchData(std::string graph) const;
 
 private:
 
