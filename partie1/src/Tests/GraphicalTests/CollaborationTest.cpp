@@ -107,7 +107,7 @@ void CollaborationTest::onDraw(sf::RenderTarget& target)
 
     if (mShowHiveableZone) {
         auto pos = getCursorPositionInView();
-        //getEnv().drawHiveableZone(target, pos); // uncomment me if coded
+        getEnv().drawHiveableZone(target, pos); // uncomment me if coded
     }
 }
 

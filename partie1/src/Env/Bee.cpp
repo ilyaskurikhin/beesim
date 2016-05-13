@@ -78,7 +78,7 @@ Bee::getSpeed() const
 }
 
 void
-Bee::randomMove(sf::Time dt)
+Bee::randomMove(sf::Time)
 {
 }
 

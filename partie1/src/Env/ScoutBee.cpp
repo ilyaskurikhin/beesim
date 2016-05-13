@@ -211,7 +211,7 @@ ScoutBee::interact(Bee* other)
 }
 
 void
-ScoutBee::interactWith(ScoutBee* scouting)
+ScoutBee::interactWith(ScoutBee*)
 {
 }
 

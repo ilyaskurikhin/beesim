@@ -244,13 +244,13 @@ WorkerBee::interact(Bee* other)
 }
 
 void
-WorkerBee::interactWith(ScoutBee* scouting)
+WorkerBee::interactWith(ScoutBee*)
 {
 
 }
 
 void
-WorkerBee::interactWith(WorkerBee* working)
+WorkerBee::interactWith(WorkerBee*)
 {
 }
 
