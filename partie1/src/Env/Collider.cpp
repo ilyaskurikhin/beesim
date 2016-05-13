@@ -33,7 +33,7 @@ Collider::Collider(const Collider& collider)
 void
 Collider::reloadConfig()
 {
-  world_size_ = getAppEnv().getWorldSize();
+  world_size_ = getApp().getWorldSize();
 }
 
 bool
