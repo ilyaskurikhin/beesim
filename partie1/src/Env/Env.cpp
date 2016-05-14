@@ -204,8 +204,6 @@ Env::reset()
       delete hives_[i];
     }
   hives_.clear();
-
-  regenerate();
 }
 
 void
