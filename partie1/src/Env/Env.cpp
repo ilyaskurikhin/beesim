@@ -127,10 +127,13 @@ Env::update(sf::Time dt)
           hives_[i] = nullptr;
         }
     }
-
   hives_.erase(std::remove(hives_.begin(), hives_.end(), nullptr),
                hives_.end());
-
+               
+  for (size_t i = 0; i < caves_.size(); ++i)
+    {
+      caves_[i]->update(dt);
+    }
 }
 
 void
@@ -147,7 +150,14 @@ Env::drawOn(sf::RenderTarget& target) const
       hives_[i]->drawOn(target);
 
     }
+  
+  for (size_t i = 0; i < caves_.size(); ++i)
+    {
+      caves_[i]->drawOn(target);
 
+    }
+  
+  
   // if debug is on, show values
   if (isDebugOn())
     {
@@ -278,11 +288,26 @@ Env::isPlaceable(const Vec2d& position, double radius) const
       Collider object(position, radius);
 
       // check if object can be made at position
-      if (getCollidingHive(object) == nullptr)
+      if (getCollidingHive(object) == nullptr && getCollidingCave(object) ==nullptr)
         {
           return true;
         }
     }
+  return false;
+}
+
+bool
+Env::isCavePlaceable(const Vec2d& position, double radius) const
+{
+  if (world ->isGrass(position) or world->isRock(position))
+  {
+    Collider object(position, radius);
+    
+    if (getCollidingHive(object) == nullptr && getCollidingCave(object) == nullptr)
+    {
+      return true;
+    }
+  }
   return false;
 }
 
@@ -440,6 +465,20 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
   target.draw(d_shape);
 }
 
+bool
+Env::addCaveAt(const Vec2d& position, double size)
+{
+  if (caves_.size() < 1)
+  {
+    if (isCavePlaceable(position, size)))
+    {
+      caves_.push_back(new Cave(position, size));
+      return true;
+    }
+  }
+  return false;
+}
+
 Hive*
 Env::getCollidingHive(const Collider& body) const
 {
@@ -467,8 +506,21 @@ Env::getCollidingFlower(const Collider& body) const
         }
     }
   return nullptr;
-
 }
+
+Cave*
+Env::getCollidingCave(const Collider& body) const
+{
+  for (size_t i(0); i < caves_.size(); ++i)
+    {
+      if (caves_[i]->isColliding(body))
+        {
+          return caves_[i];
+        }
+    }
+  return nullptr;
+}
+
 
 Bee*
 Env::getBeeAt(const Vec2d& position) const

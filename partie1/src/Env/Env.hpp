@@ -184,6 +184,8 @@ public:
   bool
   addFlowerAt(const Vec2d& position, double size);
 
+  bool
+  addCaveAt(const Vec2d& position, double size);
   /**
    * @brief Draw zone occupied by flower.
    *
@@ -235,6 +237,11 @@ public:
   Flower*
   getCollidingFlower(const Collider& body) const;
 
+  
+  Cave*
+  getCollidingCave(const Collider& body) const;
+  
+  
   /**
    * @brief Check for Bee at position.
    *
