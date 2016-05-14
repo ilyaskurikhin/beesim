@@ -27,7 +27,10 @@ class ScoutBee;
 /**
  * @brief Class simulating a Hive.
  */
-class Hive : public Collider, public DrawableInterface, public UpdatableInterface, public virtual ConfigurableInterface
+class Hive : public Collider,
+    public DrawableInterface,
+    public UpdatableInterface,
+    public virtual ConfigurableInterface
 {
 
 public:

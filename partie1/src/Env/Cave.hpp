@@ -18,9 +18,12 @@ class Bear;
 /**
  * @brief Class simulating a Hive.
  */
-class Cave : public Collider, public DrawableInterface, public UpdatableInterface, public virtual ConfigurableInterface
+class Cave : public Collider,
+    public DrawableInterface,
+    public UpdatableInterface,
+    public virtual ConfigurableInterface
 {
-  public:
+public:
 
   /**
    * @brief Constructor.
@@ -47,7 +50,6 @@ class Cave : public Collider, public DrawableInterface, public UpdatableInterfac
    */
   Bear*
   addBear();
-
 
   /**
    * @brief Check is there is a Bear with such position.
@@ -83,13 +85,10 @@ class Cave : public Collider, public DrawableInterface, public UpdatableInterfac
    * @return new amont of pollen (nectar) in Hive.
    */
 
-
 private:
 
   Bear* bear_;
   sf::Texture texture_;
 
-  
-  
 };
 #endif

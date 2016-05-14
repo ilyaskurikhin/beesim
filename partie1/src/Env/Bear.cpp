@@ -9,8 +9,8 @@
 
 #include <Env/Env.hpp>
 
-Bear::Bear(Cave* cave, const Vec2d& position, std::vector<State> states)
-: Movable(position), CFSM(states), cave_(cave), debug_thickness_random_(5), debug_thickness_target_(
+Bear::Bear(Cave* cave, const Vec2d& position, std::vector<State> states) :
+    Movable(position), CFSM(states), cave_(cave), debug_thickness_random_(5), debug_thickness_target_(
         3), vision_range_(position), move_state_(AT_REST)
 {
   reloadConfig();
@@ -27,26 +27,27 @@ Bear::reloadConfig()
   this->setRadius(getConfig()["size"].toDouble());
 
   // configure Moveable
-  this->setDelay(sf::seconds(
-      getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble()));
+  this->setDelay(
+      sf::seconds(
+          getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble()));
   this->setSpeed(getConfig()["speed"].toDouble());
   this->setMoveVec(Vec2d::fromRandomAngle() * this->getSpeed());
 
   energy_ = getConfig()["energy"]["initial"].toDouble();
   energy_rate_idle_ =
       getConfig()["energy"]["consumption rates"]["idle"].toDouble();
-  energy_leave_cave_ =
-      getConfig()["energy"]["leaving"].toDouble();
+  energy_leave_cave_ = getConfig()["energy"]["leaving"].toDouble();
   energy_rate_moving_ =
       getConfig()["energy"]["consumption rates"]["moving"].toDouble();
   energy_rate_eating_ =
       getConfig()["energy"]["consumption rates"]["eating"].toDouble();
   energy_seek_hives_ =
       getConfig()["energy"]["consumption rates"]["seeking hive"].toDouble();
-      
+
   max_hibernation_ =
-      sf::seconds(static_cast<float>(getConfig()["hibernation"]["maximum time"].toDouble()));
-      
+      sf::seconds(
+          static_cast<float>(getConfig()["hibernation"]["maximum time"].toDouble()));
+
   visibility_ = getConfig()["visibility range"].toDouble();
   vision_range_.setRadius(visibility_ + this->getRadius());
 }
@@ -99,11 +100,11 @@ Bear::getEnergy() const
 void
 Bear::eatHoney(Hive* hive, sf::Time dt)
 {
-  while (hive->getNectar() > 0 )
-  {
-    Hive* hive (getAppEnv().getCollidingHive(hive_location_));
-    energy_ += hive->takeNectar(energy_rate_eating_ * dt.asSeconds());
-  }
+  while (hive->getNectar() > 0)
+    {
+      Hive* hive(getAppEnv().getCollidingHive(hive_location_));
+      energy_ += hive->takeNectar(energy_rate_eating_ * dt.asSeconds());
+    }
 }
 
 Cave*
@@ -154,21 +155,22 @@ Bear::loadTexture()
   texture_ = getAppTexture(this->getConfig()["texture"].toString());
 }
 
-
 void
 Bear::onState(State state, sf::Time dt)
 {
   // first state
   if (state == HIBERNATION)
     {
-      if (hibernation_length_ < max_hibernation_ && this->getEnergy() > energy_leave_cave_) 
+      if (hibernation_length_ < max_hibernation_
+          && this->getEnergy() > energy_leave_cave_)
         {
           std::string status = "in_cave_hibernating_";
           this->setDebugStatus(status);
           hibernation_length_ += dt;
         }
 
-      if (hibernation_length_ >= max_hibernation_ && this->getEnergy() > energy_leave_cave_)
+      if (hibernation_length_ >= max_hibernation_
+          && this->getEnergy() > energy_leave_cave_)
         {
           this->setDebugStatus("in_cave_leaving");
           this->nextState();
@@ -193,9 +195,9 @@ Bear::onState(State state, sf::Time dt)
           this->nextState();
         }
     }
-   
-   // third state
-   else if (state == EAT_HONEY)
+
+  // third state
+  else if (state == EAT_HONEY)
     {
       this->setDebugStatus("eating_honey");
       Hive* hive(getAppEnv().getCollidingHive(this->getCollider()));
@@ -208,7 +210,7 @@ Bear::onState(State state, sf::Time dt)
           this->nextState();
         }
     }
-  
+
   // fourth state
   else if (state == RETURN_CAVE)
     {
@@ -237,7 +239,6 @@ Bear::onEnterState(State state)
       this->setMoveStateTARGET();
     }
 }
-
 
 bool
 Bear::isDead()
@@ -305,5 +306,4 @@ State const Bear::HIBERNATION = createUid();
 State const Bear::SEARCH_HIVE = createUid();
 State const Bear::EAT_HONEY = createUid();
 State const Bear::RETURN_CAVE = createUid();
-
 

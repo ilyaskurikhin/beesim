@@ -1,6 +1,5 @@
 #include <Env/Cave.hpp>
 
-
 Cave::Cave(const Vec2d& position, double radius) :
     Collider(position, radius)
 
@@ -12,7 +11,7 @@ void
 Cave::reloadConfig()
 {
   texture_ = getAppTexture(
-              getAppConfig()["simulation"]["cave"]["texture"].toString());
+      getAppConfig()["simulation"]["cave"]["texture"].toString());
 }
 
 Cave::~Cave()
@@ -30,15 +29,14 @@ Cave::addBear()
   return bear;
 }
 
-
 Bear*
 Cave::getBearAt(const Vec2d& position)
 {
 
-      if (bear_->isPointInside(position))
-        {
-          return bear_;
-        }
+  if (bear_->isPointInside(position))
+    {
+      return bear_;
+    }
   return nullptr;
 }
 
@@ -68,5 +66,4 @@ Cave::drawOn(sf::RenderTarget& target) const
   target.draw(caveSprite);
   bear_->drawOn(target);
 }
-
 

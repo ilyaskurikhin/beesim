@@ -24,7 +24,10 @@
 /**
  * @brief Class simulating a Flower.
  */
-class Flower : public Collider, public DrawableInterface, public UpdatableInterface, public virtual ConfigurableInterface
+class Flower : public Collider,
+    public DrawableInterface,
+    public UpdatableInterface,
+    public virtual ConfigurableInterface
 {
 
 public:

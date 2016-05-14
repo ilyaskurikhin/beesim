@@ -7,17 +7,16 @@
 
 #include <Env/Movable.hpp>
 
-
 #include <Env/Env.hpp>
 
-Movable::Movable(const Vec2d& position)
-: Collider(position)
+Movable::Movable(const Vec2d& position) :
+    Collider(position)
 {
 
 }
 
-Movable::Movable(const Vec2d& position, double radius)
-: Collider(position, radius)
+Movable::Movable(const Vec2d& position, double radius) :
+    Collider(position, radius)
 {
 
 }
@@ -48,7 +47,7 @@ Movable::getSpeed() const
 void
 Movable::randomMove(sf::Time dt)
 {
-    if (bernoulli(rotation_probability_))
+  if (bernoulli(rotation_probability_))
     {
       double angleA(uniform(-max_angle_, max_angle_));
       this->rotateMoveVec(angleA);
@@ -164,5 +163,4 @@ Movable::setMaxAngle(double maxAngle)
 {
   max_angle_ = maxAngle;
 }
-
 

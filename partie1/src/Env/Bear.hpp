@@ -21,7 +21,11 @@
 
 class Cave;
 
-class Bear : public DrawableInterface, public UpdatableInterface, public virtual ConfigurableInterface, public Movable, public CFSM
+class Bear : public DrawableInterface,
+    public UpdatableInterface,
+    public virtual ConfigurableInterface,
+    public Movable,
+    public CFSM
 {
 public:
 
@@ -31,18 +35,17 @@ public:
 
   void
   reloadConfig() override;
-  
+
   j::Value const&
   getConfig();
-  
-  void 
+
+  void
   move(sf::Time dt);
 
   bool
   isMovablePosition(const Vec2d& position) const override;
 
-
- void
+  void
   update(sf::Time dt) override;
 
   /**
@@ -118,9 +121,9 @@ public:
   const std::string&
   getDebugStatus() const;
 
-  Hive* 
+  Hive*
   getHive() const;
-  
+
   void
   setHive(Hive* hive);
 
@@ -129,14 +132,12 @@ public:
   State static const RETURN_CAVE;
   State static const HIBERNATION;
 
-
-
 private:
 
   Cave* cave_;
-  
+
   Vec2d hive_location_;
-  
+
   double energy_;
   double energy_leave_cave_;
   double energy_rate_idle_;
@@ -162,7 +163,5 @@ private:
   sf::Time max_hibernation_;
 
 };
-
-
 
 #endif /* BEAR_HPP_ */

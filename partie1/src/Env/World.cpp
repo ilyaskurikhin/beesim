@@ -15,15 +15,15 @@ World::World()
 
   // try to load a new world from file
   /*
-  try
-    {
-      loadFromFile();
-    }
-  catch (const std::runtime_error& e)
-    {
-      reset(true);
-    }
-    */
+   try
+   {
+   loadFromFile();
+   }
+   catch (const std::runtime_error& e)
+   {
+   reset(true);
+   }
+   */
   reset(true);
 }
 
@@ -48,9 +48,10 @@ World::reloadConfig()
   num_water_seeds_ = simulationWorld()["seeds"]["water"].toInt();
   num_grass_seeds_ = simulationWorld()["seeds"]["grass"].toInt();
 
-  water_neighbour_ratio_ = simulationWorld()["generation"]["smoothness"]["water neighbourhood ratio"].toDouble();
-  grass_neighbour_ratio_ = simulationWorld()["generation"]["smoothness"]["grass neighbourhood ratio"].toDouble();
-
+  water_neighbour_ratio_ =
+      simulationWorld()["generation"]["smoothness"]["water neighbourhood ratio"].toDouble();
+  grass_neighbour_ratio_ =
+      simulationWorld()["generation"]["smoothness"]["grass neighbourhood ratio"].toDouble();
 
   teleport_probability_ =
       simulationWorld()["seeds"]["water teleport probability"].toDouble();
@@ -755,8 +756,7 @@ World::isFlyable(Vec2d const& position) const
     }
 }
 
-
-bool 
+bool
 World::isWalkable(const Vec2d& position) const
 {
   if (cells_[getCellIndex(position)] != Kind::Water)
@@ -768,7 +768,6 @@ World::isWalkable(const Vec2d& position) const
       return false;
     }
 }
-
 
 Vec2d
 World::getCellPosition(const Vec2d& position) const

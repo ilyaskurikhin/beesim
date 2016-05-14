@@ -21,8 +21,9 @@ Bee::reloadConfig()
   this->setRadius(getConfig()["size"].toDouble());
 
   // configure Moveable
-  this->setDelay(sf::seconds(
-      getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble()));
+  this->setDelay(
+      sf::seconds(
+          getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble()));
   this->setSpeed(getConfig()["speed"].toDouble());
   this->setMoveVec(Vec2d::fromRandomAngle() * this->getSpeed());
 

@@ -58,10 +58,11 @@ ScoutBee::reloadConfig()
 
   max_sharing_ = getConfig()["sharing"]["max"].toDouble();
 
-  this->setRotationProbability(getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble());
-  this->setMaxAngle(getConfig()["moving behaviour"]["random"]["rotation angle max"].toDouble());
+  this->setRotationProbability(
+      getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble());
+  this->setMaxAngle(
+      getConfig()["moving behaviour"]["random"]["rotation angle max"].toDouble());
 }
-
 
 j::Value const&
 ScoutBee::getConfig()

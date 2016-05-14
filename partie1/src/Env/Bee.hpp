@@ -39,7 +39,11 @@ class Flower;
 /**
  * @brief Abstract class Bee.
  */
-class Bee : public DrawableInterface, public UpdatableInterface, public virtual ConfigurableInterface, public Movable, public CFSM
+class Bee : public DrawableInterface,
+    public UpdatableInterface,
+    public virtual ConfigurableInterface,
+    public Movable,
+    public CFSM
 {
 public:
 
@@ -188,7 +192,6 @@ private:
   double energy_rate_idle_;
   double energy_rate_moving_;
   double energy_rate_eating_;
-
 
   sf::Texture texture_;
   double debug_thickness_random_;

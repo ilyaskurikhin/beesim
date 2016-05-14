@@ -58,7 +58,7 @@ public:
 
   void
   setPollen(double amount);
-  
+
   bool
   isScout() const override;
 

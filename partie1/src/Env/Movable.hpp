@@ -15,7 +15,6 @@
 #include <Utility/Vec2d.hpp>
 #include <Random/Random.hpp>
 
-
 class Movable : public Collider
 {
 public:
@@ -63,7 +62,6 @@ public:
   virtual bool
   isMovablePosition(const Vec2d& position) const;
 
-
   const Vec2d&
   getMoveVec() const;
 
@@ -106,6 +104,5 @@ private:
   sf::Time delay_;
 
 };
-
 
 #endif /* MOVABLE_HPP_ */

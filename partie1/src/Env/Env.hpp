@@ -31,7 +31,6 @@
 #include <string>
 #include <unordered_map>
 
-
 class Flower;
 class FlowerGenerator;
 class Hive;
@@ -40,7 +39,9 @@ class Bee;
 /**
  * @brief Simulation Environment
  */
-class Env : public DrawableInterface, public UpdatableInterface, public ConfigurableInterface
+class Env : public DrawableInterface,
+    public UpdatableInterface,
+    public ConfigurableInterface
 {
 public:
   /**
@@ -157,8 +158,8 @@ public:
    */
   bool
   isFlyable(const Vec2d& position) const;
-  
-  bool 
+
+  bool
   isWalkable(const Vec2d& position) const;
 
   bool
