@@ -20,7 +20,7 @@ CFSM::~CFSM()
 }
 
 State
-CFSM::getState()
+CFSM::getState() const
 {
   return state_;
 }

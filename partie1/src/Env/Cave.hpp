@@ -4,6 +4,7 @@
 #include <Env/World.hpp>
 #include <Env/Collider.hpp>
 #include <Env/CFSM.hpp>
+#include <Env/Bear.hpp>
 
 #include <Utility/Utility.hpp>
 #include <Application.hpp>
@@ -85,9 +86,8 @@ class Cave : public Collider, public DrawableInterface, public UpdatableInterfac
 
 private:
 
-  double max_bears_;
   Bear* bear_;
-  sf::Texture cave_texture_;
+  sf::Texture texture_;
 
   
   

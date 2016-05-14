@@ -30,9 +30,6 @@ public:
   void
   reloadConfig();
 
-  void
-  randomMove(sf::Time dt, string animal) override;
-
   j::Value const&
   getConfig() override;
 
@@ -66,9 +63,6 @@ private:
 
   double energy_leave_hive_;
   double energy_seek_flowers_;
-
-  double max_angle_;
-  double rotation_probability_;
 
   double max_sharing_;
 

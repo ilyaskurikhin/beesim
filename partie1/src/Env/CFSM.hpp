@@ -43,7 +43,7 @@ public:
    * @return current state
    */
   State
-  getState();
+  getState() const;
 
   /**
    * @brief Move to next state.

@@ -21,6 +21,7 @@
 #include <Env/Env.hpp>
 #include <Env/CFSM.hpp>
 #include <Env/Movable.hpp>
+#include <Env/Cave.hpp>
 
 #include <Interface/ConfigurableInterface.hpp>
 #include <Interface/DrawableInterface.hpp>

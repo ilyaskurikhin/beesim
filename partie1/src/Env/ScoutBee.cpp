@@ -58,15 +58,8 @@ ScoutBee::reloadConfig()
 
   max_sharing_ = getConfig()["sharing"]["max"].toDouble();
 
-  rotation_probability_ =
-      getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble();
-  max_angle_ =
-      getConfig()["moving behaviour"]["random"]["rotation angle max"].toDouble();
-}
-
-void
-ScoutBee::randomMove(sf::Time dt, string animal)
-{
+  this->setRotationProbability(getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble());
+  this->setMaxAngle(getConfig()["moving behaviour"]["random"]["rotation angle max"].toDouble());
 }
 
 

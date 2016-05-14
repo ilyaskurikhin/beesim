@@ -6,8 +6,8 @@
  */
 
 #include <Env/Bear.hpp>
-#include <Env/CFSM.hpp>
-#include <Env/Cave.hpp>
+
+#include <Env/Env.hpp>
 
 Bear::Bear(Cave* cave, const Vec2d& position, std::vector<State> states)
 : Movable(position), CFSM(states), cave_(cave), debug_thickness_random_(5), debug_thickness_target_(
@@ -45,7 +45,7 @@ Bear::reloadConfig()
       getConfig()["energy"]["consumption rates"]["seeking hive"].toDouble();
       
   max_hibernation_ =
-      getConfig()["hibernation"]["maximum time"].toDouble(); 
+      sf::seconds(static_cast<float>(getConfig()["hibernation"]["maximum time"].toDouble()));
       
   visibility_ = getConfig()["visibility range"].toDouble();
   vision_range_.setRadius(visibility_ + this->getRadius());
@@ -97,11 +97,11 @@ Bear::getEnergy() const
 }
 
 void
-Bear::eatHoney(sf::Time dt)
+Bear::eatHoney(Hive* hive, sf::Time dt)
 {
-  while (this->getHive()->getNectar() > 0 )
+  while (hive->getNectar() > 0 )
   {
-    Hive* hive (getAppEnv.getCollidingHive(hive_location_));
+    Hive* hive (getAppEnv().getCollidingHive(hive_location_));
     energy_ += hive->takeNectar(energy_rate_eating_ * dt.asSeconds());
   }
 }
@@ -161,15 +161,14 @@ Bear::onState(State state, sf::Time dt)
   // first state
   if (state == HIBERNATION)
     {
-      if (hibernationLength_ < max_hibernation_ && this->getEnergy() > energy_leave_cave_) 
+      if (hibernation_length_ < max_hibernation_ && this->getEnergy() > energy_leave_cave_) 
         {
-          std::string status = "in_cave_hibernating_"
-              + std::to_string(number_times_shared_);
+          std::string status = "in_cave_hibernating_";
           this->setDebugStatus(status);
-          hibernationLength_ += dt;
+          hibernation_length_ += dt;
         }
 
-      if (hibernationLength_ >= max_hibernation_ && this->getEnergy() > energy_leave_cave_)
+      if (hibernation_length_ >= max_hibernation_ && this->getEnergy() > energy_leave_cave_)
         {
           this->setDebugStatus("in_cave_leaving");
           this->nextState();
@@ -202,7 +201,7 @@ Bear::onState(State state, sf::Time dt)
       Hive* hive(getAppEnv().getCollidingHive(this->getCollider()));
       if (hive != nullptr)
         {
-          eatHive(hive, dt);
+          eatHoney(hive, dt);
         }
       else
         {
@@ -233,7 +232,7 @@ Bear::onEnterState(State state)
     {
       this->setMoveStateRANDOM();
     }
-  else if (state == RETURN_HIVE)
+  else if (state == RETURN_CAVE)
     {
       this->setMoveStateTARGET();
     }

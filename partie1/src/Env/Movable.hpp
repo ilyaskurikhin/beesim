@@ -87,6 +87,12 @@ public:
   void
   setMoveVec(const Vec2d& move_vec);
 
+  void
+  setRotationProbability(double rotationProbability);
+
+  void
+  setMaxAngle(double maxAngle);
+
 private:
 
   Vec2d move_vec_;
@@ -94,6 +100,7 @@ private:
   double speed_;
 
   double max_angle_;
+  double rotation_probability_;
 
   sf::Time avoidance_clock_;
   sf::Time delay_;

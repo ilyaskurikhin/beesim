@@ -14,6 +14,7 @@
 
 #include <Env/Movable.hpp>
 #include <Env/CFSM.hpp>
+#include <Env/Hive.hpp>
 
 #include <Utility/Vec2d.hpp>
 #include <Utility/Logging.hpp>
@@ -24,7 +25,7 @@ class Bear : public DrawableInterface, public UpdatableInterface, public virtual
 {
 public:
 
-  Bear(const Vec2d& position, std::vector<State> states);
+  Bear(Cave* cave, const Vec2d& position, std::vector<State> states);
 
   ~Bear();
 
@@ -64,7 +65,7 @@ public:
    * @brief Eat some nectar.
    */
   void
-  eatHoney(sf::Time dt);
+  eatHoney(Hive* hive, sf::Time dt);
 
   /**
    * @brief Get bear cave.
@@ -96,8 +97,11 @@ public:
   bool
   isDead();
 
-  virtual void
-  onEnterState(State state);
+  void
+  onState(State state, sf::Time dt) override;
+
+  void
+  onEnterState(State state) override;
 
   void
   setMoveStateAT_REST();
@@ -135,10 +139,10 @@ private:
   
   double energy_;
   double energy_leave_cave_;
+  double energy_rate_idle_;
   double energy_rate_eating_;
   double energy_rate_moving_;
   double energy_seek_hives_;
-  double max_hibernation_;
 
   sf::Texture texture_;
   double debug_thickness_random_;
@@ -154,7 +158,8 @@ private:
 
   std::string debug_status_;
 
-  sf::Time hibernationLength_;
+  sf::Time hibernation_length_;
+  sf::Time max_hibernation_;
 
 };
 

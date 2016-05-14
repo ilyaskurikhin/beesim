@@ -757,7 +757,7 @@ World::isFlyable(Vec2d const& position) const
 
 
 bool 
-isWalkable(const Vec2d& position) const
+World::isWalkable(const Vec2d& position) const
 {
   if (cells_[getCellIndex(position)] != Kind::Water)
     {

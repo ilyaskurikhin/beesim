@@ -1,19 +1,18 @@
 #include <Env/Cave.hpp>
-#include <Env/Bear.hpp>
+
 
 Cave::Cave(const Vec2d& position, double radius) :
-    Collider(position, radius),
-        getAppTexture(
-            getAppConfig()["simulation"]["cave"]["texture"].toString()))
+    Collider(position, radius)
+
 {
-  reloadConfig()
+  reloadConfig();
 }
 
 void
 Cave::reloadConfig()
 {
-  max_bees_ =
-        getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
+  texture_ = getAppTexture(
+              getAppConfig()["simulation"]["cave"]["texture"].toString());
 }
 
 Cave::~Cave()
@@ -33,22 +32,21 @@ Cave::addBear()
 
 
 Bear*
-Hive::getBearAt(const Vec2d& position)
+Cave::getBearAt(const Vec2d& position)
 {
 
       if (bear_->isPointInside(position))
         {
           return bear_;
         }
-    }
   return nullptr;
 }
 
 void
-Hive::update(sf::Time dt)
+Cave::update(sf::Time dt)
 {
 
-  if (bear_ = nullptr)
+  if (bear_ == nullptr)
     {
       this->addBear();
     }
@@ -60,14 +58,13 @@ Hive::update(sf::Time dt)
       delete bear_;
       bear_ = nullptr;
     }
-  }
 }
 
 void
 Cave::drawOn(sf::RenderTarget& target) const
 {
   auto caveSprite = buildSprite(this->getPosition(), this->getRadius(),
-                                cave_texture_);
+                                texture_);
   target.draw(caveSprite);
   bear_->drawOn(target);
 }

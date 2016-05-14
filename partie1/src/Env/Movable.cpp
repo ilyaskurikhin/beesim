@@ -118,7 +118,7 @@ Movable::targetMove(sf::Time dt)
 }
 
 bool
-Movable::isMovablePosition(const Vec2d& position) const
+Movable::isMovablePosition(const Vec2d&) const
 {
   return true;
 }
@@ -151,6 +151,18 @@ void
 Movable::setMoveVec(const Vec2d& move_vec)
 {
   move_vec_ = move_vec;
+}
+
+void
+Movable::setRotationProbability(double rotationProbability)
+{
+  rotation_probability_ = rotationProbability;
+}
+
+void
+Movable::setMaxAngle(double maxAngle)
+{
+  max_angle_ = maxAngle;
 }
 
 
