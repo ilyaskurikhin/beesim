@@ -286,6 +286,13 @@ Env::isPlaceable(const Vec2d& position, double radius) const
   return false;
 }
 
+bool 
+Env::isWalkable(const Vec2d& position) const
+{
+  return world_->isWalkable(position);
+}
+
+
 bool
 Env::canAddFlower()
 {

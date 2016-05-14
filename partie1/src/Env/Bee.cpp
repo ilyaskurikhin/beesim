@@ -47,12 +47,12 @@ Bee::move(sf::Time dt)
     }
   else if (move_state_ == RANDOM)
     {
-      randomMove(dt);
+      randomMove(dt, "Bee");
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
   else if (move_state_ == TARGET)
     {
-      targetMove(dt);
+      targetMove(dt, "Bee");
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
   vision_range_.setPosition(this->getPosition());

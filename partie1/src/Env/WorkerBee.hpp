@@ -58,10 +58,7 @@ public:
 
   void
   setPollen(double amount);
-
-  void
-  targetMove(sf::Time dt);
-
+  
   bool
   isScout() const override;
 

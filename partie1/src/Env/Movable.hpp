@@ -9,7 +9,7 @@
 #define MOVABLE_HPP_
 
 #include <SFML/System.hpp>
-
+#include <string>
 #include <Env/Collider.hpp>
 
 #include <Utility/Vec2d.hpp>
@@ -47,8 +47,8 @@ public:
    *
    * @param dt Time for the counter.
    */
-  virtual void
-  targetMove(sf::Time dt);
+  void
+  targetMove(sf::Time dt, string animal);
 
   /**
    * @brief Move the bee randomly.
@@ -57,8 +57,8 @@ public:
    *
    * @param dt
    */
-  virtual void
-  randomMove(sf::Time dt);
+  void
+  randomMove(sf::Time dt, string animal);
 
 
   const Vec2d&

@@ -748,6 +748,21 @@ World::isFlyable(Vec2d const& position) const
     }
 }
 
+
+bool 
+isWalkable(const Vec2d& position) const
+{
+  if (cells_[getCellIndex(position)] != Kind::Water)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
+
 Vec2d
 World::getCellPosition(const Vec2d& position) const
 {

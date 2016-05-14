@@ -157,6 +157,9 @@ public:
    */
   bool
   isFlyable(const Vec2d& position) const;
+  
+  bool 
+  isWalkable(const Vec2d& position) const;
 
   bool
   canAddFlower();

@@ -67,16 +67,6 @@ public:
   addWorker();
 
   /**
-   * @brief Get a WorkerBee ready to get nectar.
-   *
-   * Get a WorkerBee that is in the hive and not busy.
-   *
-   * @return pointer to a WorkerBee.
-   */
-  WorkerBee*
-  getWorker() const;
-
-  /**
    * @brief Check is there is a Bee with such position.
    *
    * @param position graphic position

@@ -6,22 +6,299 @@
  */
 
 #include <Env/Bear.hpp>
+#include <Env/CFSM.hpp>
+#include <Env/Cave.hpp>
 
-Bear::Bear(const Vec2d& position, std::vector<State> states)
-: Movable(position), CFSM(states)
+Bear::Bear(Cave* cave, const Vec2d& position, std::vector<State> states)
+: Movable(position), CFSM(states), cave_(cave), debug_thickness_random_(5), debug_thickness_target_(
+        3), vision_range_(position), move_state_(AT_REST)
 {
-
+  reloadConfig();
 }
 
 Bear::~Bear()
 {
-
 }
 
 void
 Bear::reloadConfig()
 {
+  // configure Collider
+  this->setRadius(getConfig()["size"].toDouble());
 
+  // configure Moveable
+  this->setDelay(sf::seconds(
+      getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble()));
+  this->setSpeed(getConfig()["speed"].toDouble());
+  this->setMoveVec(Vec2d::fromRandomAngle() * this->getSpeed());
+
+  energy_ = getConfig()["energy"]["initial"].toDouble();
+  energy_rate_idle_ =
+      getConfig()["energy"]["consumption rates"]["idle"].toDouble();
+  energy_leave_cave_ =
+      getConfig()["energy"]["leaving"].toDouble();
+  energy_rate_moving_ =
+      getConfig()["energy"]["consumption rates"]["moving"].toDouble();
+  energy_rate_eating_ =
+      getConfig()["energy"]["consumption rates"]["eating"].toDouble();
+  energy_seek_hives_ =
+      getConfig()["energy"]["consumption rates"]["seeking hive"].toDouble();
+      
+  max_hibernation_ =
+      getConfig()["hibernation"]["maximum time"].toDouble(); 
+      
+  visibility_ = getConfig()["visibility range"].toDouble();
+  vision_range_.setRadius(visibility_ + this->getRadius());
 }
+
+j::Value const&
+Bear::getConfig()
+{
+  return getAppConfig()["simulation"]["bear"];
+}
+
+void
+Bear::move(sf::Time dt)
+{
+  if (move_state_ == AT_REST)
+    {
+      energy_ = energy_ - energy_rate_idle_ * dt.asSeconds();
+    }
+  else if (move_state_ == RANDOM)
+    {
+      randomMove(dt. "Bear");
+      energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
+    }
+  else if (move_state_ == TARGET)
+    {
+      targetMove(dt, "Bear");
+      energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
+    }
+  vision_range_.setPosition(this->getPosition());
+}
+
+void
+Bee::update(sf::Time dt)
+{
+  this->action(dt);
+  this->move(dt);
+}
+
+double
+Bee::getEnergy() const
+{
+  return energy_;
+}
+
+void
+Bear::eatHoney(sf::Time dt)
+{
+  while (this->getHive()->getNectar() > 0 )
+  {
+    Hive* hive (getAppEnv.getCollidingHive(hive_location_));
+    energy_ += hive->takeNectar(energy_rate_eating_ * dt.asSeconds());
+  }
+}
+
+Cave*
+Bear::getCave() const
+{
+  return cave_;
+}
+
+void
+Bear::drawOn(sf::RenderTarget& target) const
+{
+  Vec2d position(this->getPosition());
+  double radius(this->getRadius());
+
+  auto bearSprite = buildSprite(position, radius, texture_);
+  double angle(this->getMoveVec().Vec2d::angle());
+  if ((angle >= PI / 2) or (angle <= -PI / 2))
+    {
+      bearSprite.scale(1, -1);
+    }
+  bearSprite.rotate(angle / DEG_TO_RAD);
+  target.draw(bearSprite);
+
+  if (isDebugOn())
+    {
+      double thickness(0);
+      if (move_state_ == RANDOM)
+        {
+          thickness = debug_thickness_random_;
+          sf::CircleShape shape = buildAnnulus(position, radius,
+                                               sf::Color::Black, thickness);
+          target.draw(shape);
+        }
+      else if (move_state_ == TARGET)
+        {
+          thickness = debug_thickness_target_;
+          sf::CircleShape shape = buildAnnulus(position, radius,
+                                               sf::Color::Blue, thickness);
+          target.draw(shape);
+        }
+
+    }
+}
+
+void
+Bear::loadTexture()
+{
+  texture_ = getAppTexture(this->getConfig()["texture"].toString());
+}
+
+
+void
+Bear::onState(State state, sf::Time dt)
+{
+  // first state
+  if (state == HIBERNATION)
+    {
+      if (hibernationLength_ < max_hibernation_ && this->getEnergy() > energy_leave_cave_) 
+        {
+          std::string status = "in_cave_hibernating_"
+              + std::to_string(number_times_shared_);
+          this->setDebugStatus(status);
+          hibernationLength_ += dt;
+        }
+
+      if (hibernationLength_ >= max_hibernation_ && this->getEnergy() > energy_leave_cave_)
+        {
+          this->setDebugStatus("in_cave_leaving");
+          this->nextState();
+        }
+    }
+
+  // second state
+  else if (state == SEARCH_HIVE)
+    {
+      if (this->getEnergy() > energy_seek_hives_)
+        {
+          this->setDebugStatus("seeking_hives");
+          Hive* hive = this->findVisibleHive();
+          if (hive != nullptr)
+            {
+              hive_location_ = hive->getPosition();
+              this->nextState();
+            }
+        }
+      else
+        {
+          this->nextState();
+        }
+    }
+   
+   // third state
+   else if (state == EAT_HONEY)
+    {
+      this->setDebugStatus("eating_honey");
+      Hive* hive(getAppEnv().getCollidingHive(this->getCollider()));
+      if (hive != nullptr)
+        {
+          eatHive(hive, dt);
+        }
+      else
+        {
+          this->nextState();
+        }
+    }
+  
+  // fourth state
+  else if (state == RETURN_CAVE)
+    {
+      this->setDebugStatus("back_to_cave");
+      this->setMoveTarget(this->getCave()->getPosition());
+      if (this->getCave()->isColliderInside(this->getCollider()))
+        {
+          this->nextState();
+        }
+    }
+}
+
+void
+Bear::onEnterState(State state)
+{
+  if (state == HIBERNATION or state == EAT_HONEY)
+    {
+      this->setMoveStateAT_REST();
+    }
+  else if (state == SEARCH_HIVE)
+    {
+      this->setMoveStateRANDOM();
+    }
+  else if (state == RETURN_HIVE)
+    {
+      this->setMoveStateTARGET();
+    }
+}
+
+
+bool
+Bear::isDead()
+{
+  if (energy_ <= 0)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
+Hive*
+Bear::findVisibleHive() const
+{
+  return getAppEnv().getCollidingHive(vision_range_);
+}
+
+void
+Bear::setMoveStateAT_REST()
+{
+  move_state_ = AT_REST;
+}
+
+void
+Bear::setMoveStateRANDOM()
+{
+  move_state_ = RANDOM;
+}
+
+void
+Bear::setMoveStateTARGET()
+{
+  move_state_ = TARGET;
+}
+
+void
+Bear::setDebugStatus(const std::string& status)
+{
+  debug_status_ = status;
+}
+
+const std::string&
+Bear::getDebugStatus() const
+{
+  return debug_status_;
+}
+
+bool
+Bear::isInCave()
+{
+  if (this->getState() == IN_CAVE)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
+State const Bear::HIBERNATION = createUid();
+State const Bear::SEARCH_HIVE = createUid();
+State const Bear::EAT_HONEY = createUid();
+State const Bear::RETURN_CAVE = createUid();
 
 

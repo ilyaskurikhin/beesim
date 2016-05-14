@@ -31,7 +31,7 @@ public:
   reloadConfig();
 
   void
-  randomMove(sf::Time dt) override;
+  randomMove(sf::Time dt, string animal) override;
 
   j::Value const&
   getConfig() override;
@@ -41,9 +41,6 @@ public:
 
   void
   onEnterState(State state) override;
-
-  void
-  targetMove(sf::Time dt) override;
 
   // TODO make private
   State static const SEARCH_FLOWER;

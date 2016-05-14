@@ -46,12 +46,61 @@ Movable::getSpeed() const
 }
 
 void
-Movable::randomMove(sf::Time)
+Movable::randomMove(sf::Time, string animal)
 {
+    if (bernoulli(rotation_probability_))
+    {
+      double angleA(uniform(-max_angle_, max_angle_));
+      this->rotateMoveVec(angleA);
+    }
+
+  Vec2d move(this->getMoveVec());
+
+  move *= dt.asSeconds();
+
+  this->Collider::move(move);
+
+  if (animal == "Bee")
+  {
+  if (!getAppEnv().isFlyable(this->getPosition()))
+    {
+      double angleB;
+      if (bernoulli(0.5))
+        {
+          angleB = PI / 4;
+        }
+      else
+        {
+          angleB = -PI / 4;
+        }
+
+      this->rotateMoveVec(angleB);
+      this->Collider::move(-move);
+    }
+  }
+  else if (animal == "Bear")
+  {
+  if (!getAppEnv().isWalkable(this->getPosition()))
+    {
+      double angleB;
+      if (bernoulli(0.5))
+        {
+          angleB = PI / 4;
+        }
+      else
+        {
+          angleB = -PI / 4;
+        }
+
+      this->rotateMoveVec(angleB);
+      this->Collider::move(-move);
+    }
+  }
+    
 }
 
 void
-Movable::targetMove(sf::Time dt)
+Movable::targetMove(sf::Time dt, string animal)
 {
   Vec2d target(this->getMoveTarget());
   Vec2d direction(this->directionTo(target));
@@ -72,6 +121,8 @@ Movable::targetMove(sf::Time dt)
 
   this->Collider::move(move);
 
+  if (animal == "Bee")
+  {
   if (!getAppEnv().isFlyable(this->getPosition()))
     {
       double angleB;
@@ -88,6 +139,26 @@ Movable::targetMove(sf::Time dt)
 
       this->Collider::move(-move);
     }
+  }
+  else if (animal == "Bear")
+  {
+    if (!getAppEnv().isWalkable(this->getPosition()))
+    {
+      double angleB;
+      if (bernoulli(0.5))
+        {
+          angleB = PI / 4;
+        }
+      else
+        {
+          angleB = -PI / 4;
+        }
+      move_vec_.rotate(angleB);
+      avoidance_clock_ = delay_;
+
+      this->Collider::move(-move);
+    }
+  }
 }
 
 const Vec2d&

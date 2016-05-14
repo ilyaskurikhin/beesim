@@ -65,36 +65,10 @@ ScoutBee::reloadConfig()
 }
 
 void
-ScoutBee::randomMove(sf::Time dt)
+ScoutBee::randomMove(sf::Time dt, string animal)
 {
-  if (bernoulli(rotation_probability_))
-    {
-      double angleA(uniform(-max_angle_, max_angle_));
-      this->rotateMoveVec(angleA);
-    }
-
-  Vec2d move(this->getMoveVec());
-
-  move *= dt.asSeconds();
-
-  this->Collider::move(move);
-
-  if (!getAppEnv().isFlyable(this->getPosition()))
-    {
-      double angleB;
-      if (bernoulli(0.5))
-        {
-          angleB = PI / 4;
-        }
-      else
-        {
-          angleB = -PI / 4;
-        }
-
-      this->rotateMoveVec(angleB);
-      this->Collider::move(-move);
-    }
 }
+
 
 j::Value const&
 ScoutBee::getConfig()
@@ -184,12 +158,6 @@ ScoutBee::onEnterState(State state)
     {
       this->setMoveStateTARGET();
     }
-}
-
-void
-ScoutBee::targetMove(sf::Time dt)
-{
-  Bee::targetMove(dt);
 }
 
 bool

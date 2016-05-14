@@ -57,20 +57,6 @@ Hive::addWorker()
   return worker;
 }
 
-WorkerBee*
-Hive::getWorker() const
-{
-  for (size_t i = 0; i < workers_.size(); ++i)
-    {
-      if (workers_[i]->getState() == WorkerBee::IN_HIVE
-          && workers_[i]->getFlower() == Vec2d(-1, -1))
-        {
-          return workers_[i];
-        }
-    }
-  return nullptr;
-}
-
 Bee*
 Hive::getBeeAt(const Vec2d& position)
 {

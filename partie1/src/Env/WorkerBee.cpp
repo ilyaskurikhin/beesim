@@ -219,12 +219,6 @@ WorkerBee::drawOn(sf::RenderTarget& target) const
     }
 }
 
-void
-WorkerBee::targetMove(sf::Time dt)
-{
-  Bee::targetMove(dt);
-}
-
 bool
 WorkerBee::isScout() const
 {

@@ -231,6 +231,10 @@ public:
    *
    * @return grid coordinates in world vector.
    */
+   
+  bool
+  isWalkable(Vec2d const& position) const;
+  
   Vec2d
   getCellPosition(const Vec2d& position) const;
 
