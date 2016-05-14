@@ -1,4 +1,3 @@
-
                @@@@@@   @@@  @@@  @@@@@@@   @@@@@@@    @@@@@@    @@@@@@@@  
              @@@@@@@   @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@@@  
             !@@       @@!  @@@  @@!  @@@  @@!  @@@  @@!  @@@  !@@        
@@ -121,7 +120,7 @@ interfaces.
 
 #### Drawable
 
-Guarantees the implementation of a `void drawOn(sf::RenderTexture) method.
+Guarantees the implementation of a `void drawOn(sf::RenderTexture)` method.
 
 #### Updatable
 
