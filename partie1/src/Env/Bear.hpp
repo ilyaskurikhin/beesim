@@ -37,6 +37,9 @@ public:
   void 
   move(sf::Time dt);
 
+  bool
+  isMovablePosition(const Vec2d& position) const override;
+
 
  void
   update(sf::Time dt) override;
@@ -70,6 +73,9 @@ public:
    */
   Cave*
   getCave() const;
+
+  bool
+  isInCave() const;
 
   /**
    * @brief Load the Bear texture.

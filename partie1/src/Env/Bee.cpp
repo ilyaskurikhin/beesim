@@ -47,15 +47,21 @@ Bee::move(sf::Time dt)
     }
   else if (move_state_ == RANDOM)
     {
-      randomMove(dt, "Bee");
+      randomMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
   else if (move_state_ == TARGET)
     {
-      targetMove(dt, "Bee");
+      targetMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
   vision_range_.setPosition(this->getPosition());
+}
+
+bool
+Bee::isMovablePosition(const Vec2d& position) const
+{
+  return getAppEnv().isFlyable(position);
 }
 
 bool
@@ -176,7 +182,7 @@ Bee::getDebugStatus() const
 }
 
 bool
-Bee::isInHive()
+Bee::isInHive() const
 {
   if (this->getState() == IN_HIVE)
     {

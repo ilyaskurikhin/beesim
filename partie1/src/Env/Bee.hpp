@@ -73,6 +73,9 @@ public:
   void
   move(sf::Time dt);
 
+  bool
+  isMovablePosition(const Vec2d& position) const override;
+
   /**
    * @brief Check if Bee is dead.
    *
@@ -156,7 +159,7 @@ public:
   getDebugStatus() const;
 
   bool
-  isInHive();
+  isInHive() const;
 
   virtual bool
   isScout() const =0;

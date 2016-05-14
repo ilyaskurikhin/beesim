@@ -66,26 +66,32 @@ Bear::move(sf::Time dt)
     }
   else if (move_state_ == RANDOM)
     {
-      randomMove(dt. "Bear");
+      randomMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
   else if (move_state_ == TARGET)
     {
-      targetMove(dt, "Bear");
+      targetMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
   vision_range_.setPosition(this->getPosition());
 }
 
+bool
+Bear::isMovablePosition(const Vec2d& position) const
+{
+  return getAppEnv().isWalkable(position);
+}
+
 void
-Bee::update(sf::Time dt)
+Bear::update(sf::Time dt)
 {
   this->action(dt);
   this->move(dt);
 }
 
 double
-Bee::getEnergy() const
+Bear::getEnergy() const
 {
   return energy_;
 }
@@ -284,9 +290,9 @@ Bear::getDebugStatus() const
 }
 
 bool
-Bear::isInCave()
+Bear::isInCave() const
 {
-  if (this->getState() == IN_CAVE)
+  if (this->getState() == HIBERNATION)
     {
       return true;
     }

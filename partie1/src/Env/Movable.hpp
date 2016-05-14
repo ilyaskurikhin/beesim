@@ -48,7 +48,7 @@ public:
    * @param dt Time for the counter.
    */
   void
-  targetMove(sf::Time dt, string animal);
+  targetMove(sf::Time dt);
 
   /**
    * @brief Move the bee randomly.
@@ -58,7 +58,10 @@ public:
    * @param dt
    */
   void
-  randomMove(sf::Time dt, string animal);
+  randomMove(sf::Time dt);
+
+  virtual bool
+  isMovablePosition(const Vec2d& position) const;
 
 
   const Vec2d&
