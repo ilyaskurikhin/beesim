@@ -455,10 +455,7 @@ Env::getCollidingFlower(const Collider& body) const
 {
   for (size_t i(0); i < flowers_.size(); ++i)
     {
-      Collider collidingFlower(flowers_[i]->getPosition(),
-                               flowers_[i]->getRadius());
-
-      if (collidingFlower.isColliding(body))
+      if (flowers_[i]->isColliding(body))
         {
           return flowers_[i];
         }
