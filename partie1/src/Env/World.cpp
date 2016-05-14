@@ -744,6 +744,19 @@ World::isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight)
 }
 
 bool
+World::isRock(const Vec2d& position) const
+{
+  if (cells_[getCellIndex(position)] == Kind::Rock)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
+bool
 World::isFlyable(Vec2d const& position) const
 {
   if (cells_[getCellIndex(position)] != Kind::Rock)

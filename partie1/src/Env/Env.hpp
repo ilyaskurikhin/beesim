@@ -25,6 +25,8 @@
 #include <Env/Hive.hpp>
 #include <Env/Collider.hpp>
 #include <Env/World.hpp>
+#include <Env/Bear.hpp>
+#include <Env/Cave.hpp>
 
 #include <memory>
 #include <vector>
@@ -146,6 +148,10 @@ public:
    */
   bool
   isPlaceable(const Vec2d& position, double radius) const;
+  
+  
+  bool 
+  isCavePlaceable(const Vec2d& position, double radius) const;
 
   /**
    * @brief Check is can be flown.
@@ -259,10 +265,12 @@ public:
 private:
 
   World* world_;
+  
   std::vector<Flower*> flowers_;
   FlowerGenerator* flower_generator_;
   std::vector<Hive*> hives_;
-
+  std::vector<Cave*> caves_;
+  
   double flower_min_nectar_;
   double flower_max_nectar_;
   double flower_manual_radius_;

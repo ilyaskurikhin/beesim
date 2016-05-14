@@ -36,7 +36,8 @@ Bear::reloadConfig()
   energy_ = getConfig()["energy"]["initial"].toDouble();
   energy_rate_idle_ =
       getConfig()["energy"]["consumption rates"]["idle"].toDouble();
-  energy_leave_cave_ = getConfig()["energy"]["leaving"].toDouble();
+  energy_leave_cave_ = 
+      getConfig()["energy"]["consumption rates"]["to leave cave"].toDouble();
   energy_rate_moving_ =
       getConfig()["energy"]["consumption rates"]["moving"].toDouble();
   energy_rate_eating_ =
@@ -180,6 +181,7 @@ Bear::onState(State state, sf::Time dt)
   // second state
   else if (state == SEARCH_HIVE)
     {
+      hibernation_length_ = sf::Time::Zero;
       if (this->getEnergy() > energy_seek_hives_)
         {
           this->setDebugStatus("seeking_hives");

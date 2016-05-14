@@ -5,12 +5,12 @@ Cave::Cave(const Vec2d& position, double radius) :
 
 {
   reloadConfig();
-  addBear();
 }
 
 void
 Cave::reloadConfig()
 {
+  this->setRadius(getAppConfig()["simulation"]["cave"]["size"].toDouble());
   texture_ = getAppTexture(
       getAppConfig()["simulation"]["cave"]["texture"].toString());
 }

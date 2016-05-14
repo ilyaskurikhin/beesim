@@ -211,6 +211,9 @@ public:
   bool
   isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight);
 
+  bool
+  isRock(const Vec2d& position) const;
+  
   /**
    * @brief Check if Bee can be flown.
    *
