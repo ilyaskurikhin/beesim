@@ -14,6 +14,7 @@ World::World()
   reloadCacheStructure();
 
   // try to load a new world from file
+  /*
   try
     {
       loadFromFile();
@@ -22,6 +23,8 @@ World::World()
     {
       reset(true);
     }
+    */
+  reset(true);
 }
 
 void
@@ -575,6 +578,10 @@ World::smooth()
             }
           break;
         case Kind::Water:
+          if (grassRatio > grass_neighbour_ratio_)
+            {
+              localCells[i] = Kind::Grass;
+            }
           break;
         default:
           break;
