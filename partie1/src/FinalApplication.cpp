@@ -32,6 +32,9 @@ void FinalApplication::onEvent(sf::Event event, sf::RenderWindow&)
         case sf::Keyboard::H:
             mShowHiveableZone = true;
             break;
+
+        case sf::Keyboard::C:
+            mShowCaveableZone = true;
         }
     } else if (event.type == sf::Event::KeyReleased) {
         switch (event.key.code) {
@@ -56,6 +59,15 @@ void FinalApplication::onEvent(sf::Event event, sf::RenderWindow&)
                 std::cout << "Couldn't create new hive\n";
             }
             break;
+
+        // Add Cave
+        case sf::Keyboard::C:
+            mShowCaveableZone = false;
+            if (getEnv().addCaveAt(getCursorPositionInView())) {
+                logEvent("Application","Added cave");
+            } else {
+                logEvent("Application","Could not added");
+            }
         }
     }
 }
@@ -71,5 +83,12 @@ void FinalApplication::onDraw(sf::RenderTarget& target)
         auto pos = getCursorPositionInView();
         getEnv().drawHiveableZone(target, pos);
     }
+    // TODO implement
+    /*
+    if (mShowCaveableZone) {
+        auto pos = getCursorPositionInView();
+        getEnv().drawCaveableZone(target, pos);
+    }
+    */
 }
 

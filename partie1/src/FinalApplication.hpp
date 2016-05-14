@@ -21,6 +21,7 @@ public:
 private:
     bool mShowFlowerZone   = false; ///< Enable/disable flower zone visualisation
     bool mShowHiveableZone = false; ///< Enable/disable hiveable zone visualisation
+    bool mShowCaveableZone  = false;
 };
 
 #endif // INFOSV_FINAL_APPLICATION_HPP
