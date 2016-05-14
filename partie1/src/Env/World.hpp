@@ -289,6 +289,8 @@ private:
   std::vector<Seed> seeds_;
   unsigned int num_water_seeds_;
   unsigned int num_grass_seeds_;
+  double water_neighbour_ratio_;
+  double grass_neighbour_ratio_;
 
   double teleport_probability_;
 

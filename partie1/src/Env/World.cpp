@@ -45,6 +45,10 @@ World::reloadConfig()
   num_water_seeds_ = simulationWorld()["seeds"]["water"].toInt();
   num_grass_seeds_ = simulationWorld()["seeds"]["grass"].toInt();
 
+  water_neighbour_ratio_ = simulationWorld()["generation"]["smoothness"]["water neighbourhood ratio"].toDouble();
+  grass_neighbour_ratio_ = simulationWorld()["generation"]["smoothness"]["grass neighbourhood ratio"].toDouble();
+
+
   teleport_probability_ =
       simulationWorld()["seeds"]["water teleport probability"].toDouble();
 
@@ -490,10 +494,6 @@ World::smooth()
   // copy cells_ so as to not have directional bias
   // decisions are made on original, written in copy
   std::vector<Kind> localCells = cells_;
-  double sWaterRatio(
-      simulationWorld()["generation"]["smoothness"]["water neighbourhood ratio"].toDouble());
-  double sGrassRatio(
-      simulationWorld()["generation"]["smoothness"]["grass neighbourhood ratio"].toDouble());
 
   for (size_t i = 0; i < number_columns_ * number_columns_; ++i)
     {
@@ -559,17 +559,17 @@ World::smooth()
       switch (cells_[i])
         {
         case Kind::Rock:
-          if (waterRatio > sWaterRatio)
+          if (waterRatio > water_neighbour_ratio_)
             {
               localCells[i] = Kind::Water;
             }
-          else if (grassRatio > sGrassRatio)
+          else if (grassRatio > grass_neighbour_ratio_)
             {
               localCells[i] = Kind::Grass;
             }
           break;
         case Kind::Grass:
-          if (waterRatio > sWaterRatio)
+          if (waterRatio > water_neighbour_ratio_)
             {
               localCells[i] = Kind::Water;
             }
