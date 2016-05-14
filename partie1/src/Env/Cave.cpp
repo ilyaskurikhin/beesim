@@ -26,9 +26,9 @@ Cave::addBear()
 {
   std::vector<State> states =
     { Bear::HIBERNATION, Bear::SEARCH_HIVE, Bear::EAT_HONEY, Bear::RETURN_CAVE };
-  Bear* bear(new Bear(this, this->getPosition(), states));
-  bear->reloadConfig();
-  return bear;
+  bear_ = new Bear(this, this->getPosition(), states);
+  bear_->reloadConfig();
+  return bear_;
 }
 
 Bear*
@@ -51,14 +51,7 @@ Cave::getBear()
 void
 Cave::update(sf::Time dt)
 {
-  if (getBear())
-  {
-    std::cout << "There is a bear" << std::endl;
-  }
-  
   getBear()->update(dt);
-
-  std::cout << "updated" << std::endl;
 
   if (bear_->isDead())
     {
