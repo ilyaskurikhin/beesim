@@ -302,7 +302,7 @@ Env::isPlaceable(const Vec2d& position, double radius) const
 bool
 Env::isCavePlaceable(const Vec2d& position, double radius) const
 {
-  if (world ->isGrass(position) or world->isRock(position))
+  if (world_->isGrass(position) or world_->isRock(position))
   {
     Collider object(position, radius);
     

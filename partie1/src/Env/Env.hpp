@@ -185,6 +185,9 @@ public:
   addFlowerAt(const Vec2d& position, double size);
 
   bool
+  addCaveAt(const Vec2d& position);
+
+  bool
   addCaveAt(const Vec2d& position, double size);
   /**
    * @brief Draw zone occupied by flower.

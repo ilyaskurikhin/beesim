@@ -75,31 +75,32 @@
           "size" : 100
         },
         "bear" : {
-          "size" : 60,
-          "texture" : "walkingbear.gif",
-          "energy" : {
-            "initial": 800,
-            "to leave cave": 100,
-            "consumption rates" : {
-              "idle" : 0.03,
-              "moving" : 0.12,
-              "eating" : 0.5,
-              "seeking hive" : 0.12,
-            }
+	    "visibility range" : 20,
+            "moving behaviour" : {
+	        "random" : {
+                    "rotation probability" : 0.02,
+                    "roation angle max" : 0.785398163 
+                },
+                "target" : {
+                    "avoidance delay" : 0.2
+                }
+            },
+            "size" : 60,
+            "energy" : {
+                "initial": 800,
+                "to leave cave": 100,
+                "consumption rates" : {
+                    "idle" : 0.03,
+                    "moving" : 0.12,
+                    "eating" : 0.5,
+                    "seeking hive" : 0.12,
+                }
           }
           "hibernation" {
-            "maximum time" : 500,
+              "maximum time" : 500,
           },
           "speed" : 2,
-          "visibility range" : 2,
-          "moving behaviour" : {
-                    "random" : {
-                        "comment" : "not relevant"
-                    },
-                    "target" : {
-                        "avoidance delay" : 0.2
-                    }
-          }
+          "texture" : "walkingbear.gif",
         },
         "flower" : {
             "textures" : [ "flowerA.png", "flowerB.png", "flowerC.png" ],
