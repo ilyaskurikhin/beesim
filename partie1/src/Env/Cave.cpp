@@ -5,6 +5,7 @@ Cave::Cave(const Vec2d& position, double radius) :
 
 {
   reloadConfig();
+  addBear();
 }
 
 void
@@ -41,10 +42,23 @@ Cave::getBearAt(const Vec2d& position)
   return nullptr;
 }
 
+Bear*
+Cave::getBear()
+{
+  return bear_;
+}
+
 void
 Cave::update(sf::Time dt)
 {
-  bear_->update(dt);
+  if (getBear())
+  {
+    std::cout << "There is a bear" << std::endl;
+  }
+  
+  getBear()->update(dt);
+
+  std::cout << "updated" << std::endl;
 
   if (bear_->isDead())
     {

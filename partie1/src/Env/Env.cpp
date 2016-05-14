@@ -133,7 +133,14 @@ Env::update(sf::Time dt)
   for (size_t i = 0; i < caves_.size(); ++i)
     {
       caves_[i]->update(dt);
+      if (caves_[i]->getBear() == nullptr)
+      {
+        delete caves_[i];
+        caves_[i] = nullptr;
+      }
     }
+  caves_.erase(std::remove(caves_.begin(), caves_.end(), nullptr),
+               caves_.end());
 }
 
 void
@@ -476,6 +483,7 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
   target.draw(shape);
   sf::RectangleShape h_shape(
       buildRectangle(Vec2d(h_left, top), Vec2d(h_right, bottom), color, 5.0,
+  
                      fillColor));
   target.draw(h_shape);
   sf::RectangleShape v_shape(

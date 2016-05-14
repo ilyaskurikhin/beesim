@@ -100,7 +100,7 @@
 				"maximum time" : 500
 			},
 			"speed" : 2,
-			"texture" : "walkingbear.gif"
+			"texture" : "walkingbear.png"
 		},
 		"flower" : {
 			"textures" : [ "flowerA.png", "flowerB.png", "flowerC.png" ],

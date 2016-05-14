@@ -61,6 +61,10 @@ public:
   Bear*
   getBearAt(const Vec2d& position);
 
+
+  Bear*
+  getBear();
+  
   /**
    * @brief Evolve Cave.
    *

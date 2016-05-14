@@ -14,6 +14,7 @@ Bear::Bear(Cave* cave, const Vec2d& position, std::vector<State> states) :
         3), vision_range_(position), move_state_(AT_REST)
 {
   reloadConfig();
+  loadTexture();
 }
 
 Bear::~Bear()
@@ -37,7 +38,7 @@ Bear::reloadConfig()
   energy_rate_idle_ =
       getConfig()["energy"]["consumption rates"]["idle"].toDouble();
   energy_leave_cave_ = 
-      getConfig()["energy"]["consumption rates"]["to leave cave"].toDouble();
+      getConfig()["energy"]["to leave cave"].toDouble();
   energy_rate_moving_ =
       getConfig()["energy"]["consumption rates"]["moving"].toDouble();
   energy_rate_eating_ =
@@ -146,7 +147,23 @@ Bear::drawOn(sf::RenderTarget& target) const
                                                sf::Color::Blue, thickness);
           target.draw(shape);
         }
+      std::string valueString;
+      sf::Color color(sf::Color::White);
+      Vec2d position;
+      double text_size(getAppEnv().getTextSize());
 
+      position = this->getPosition();
+      position.y += text_size;
+
+      valueString = "Bear: energy " + to_nice_string(this->getEnergy());
+      sf::Text text = buildText(valueString, position, getAppFont(), text_size,
+                                color);
+      target.draw(text);
+
+      position.y += text_size;
+      sf::Text status = buildText(this->getDebugStatus(), position,
+                                  getAppFont(), text_size, color);
+      target.draw(status);
     }
 }
 
