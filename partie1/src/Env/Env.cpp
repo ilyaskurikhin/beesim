@@ -390,7 +390,7 @@ Env::addHiveAt(const Vec2d& position, double size)
 }
 
 bool
-Env::addCaveAt(const Vec2d& position, double size)
+Env::addCaveAt(const Vec2d& position)
 {
   return addCaveAt(position, cave_manual_radius_);
 }
