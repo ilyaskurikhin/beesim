@@ -241,6 +241,9 @@ Env::reloadConfig()
 
   hiveable_factor_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble();
+
+  cave_manual_radius_ =
+      getAppConfig()["simulation"]["env"]["initial"]["cave"]["size"]["manual"].toDouble();
 }
 
 void
@@ -386,6 +389,26 @@ Env::addHiveAt(const Vec2d& position, double size)
     }
 }
 
+bool
+Env::addCaveAt(const Vec2d& position, double size)
+{
+  return addCaveAt(position, cave_manual_radius_);
+}
+
+bool
+Env::addCaveAt(const Vec2d& position, double size)
+{
+  if (caves_.size() < 1)
+  {
+    if (isCavePlaceable(position, size))
+    {
+      caves_.push_back(new Cave(position, size));
+      return true;
+    }
+  }
+  return false;
+}
+
 void
 Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
 {
@@ -463,20 +486,6 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
       buildRectangle(Vec2d(h_left, v_top), Vec2d(h_right, v_bottom), color, 5.0,
                      fillColor));
   target.draw(d_shape);
-}
-
-bool
-Env::addCaveAt(const Vec2d& position, double size)
-{
-  if (caves_.size() < 1)
-  {
-    if (isCavePlaceable(position, size)))
-    {
-      caves_.push_back(new Cave(position, size));
-      return true;
-    }
-  }
-  return false;
 }
 
 Hive*

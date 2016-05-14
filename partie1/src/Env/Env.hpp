@@ -286,6 +286,8 @@ private:
   double hive_manual_radius_;
   double hiveable_factor_;
 
+  double cave_manual_radius_;
+
   double debug_text_size_;
 };
 #endif
