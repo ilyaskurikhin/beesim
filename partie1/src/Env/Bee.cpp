@@ -85,6 +85,12 @@ Bee::update(sf::Time dt)
   this->move(dt);
 }
 
+void
+Bee::setEnergy(double energy)
+{
+  energy_ = energy;
+}
+
 double
 Bee::getEnergy() const
 {

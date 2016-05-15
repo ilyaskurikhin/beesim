@@ -164,6 +164,12 @@ Hive::getNectar() const
   return nectar_;
 }
 
+std::vector <Bee*>
+Hive::getBees() const
+{
+  return bees_;
+}
+
 int
 Hive::getNumBees() const
 {

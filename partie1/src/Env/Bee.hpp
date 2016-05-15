@@ -115,6 +115,9 @@ public:
   double
   getEnergy() const;
 
+  void
+  setEnergy(double energy);
+  
   /**
    * @brief Eat some nectar.
    */

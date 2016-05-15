@@ -64,6 +64,10 @@ public:
   double
   getEnergy() const;
 
+
+  double 
+  getHibernationLength() const;
+  
   /**
    * @brief Eat some nectar.
    */

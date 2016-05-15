@@ -99,6 +99,12 @@ Bear::getEnergy() const
   return energy_;
 }
 
+double 
+Bear::getHibernationLength() const
+{
+  return hibernation_length_.asSeconds();
+}
+
 void
 Bear::eatHoney(Hive* hive, sf::Time dt)
 {
@@ -107,6 +113,7 @@ Bear::eatHoney(Hive* hive, sf::Time dt)
       Hive* hive(getAppEnv().getCollidingHive(hive_location_));
       energy_ += hive->takeNectar(energy_rate_eating_ * dt.asSeconds());
     }
+  std::cout<< "finished eating" << std::endl;
 }
 
 Cave*
@@ -148,14 +155,15 @@ Bear::drawOn(sf::RenderTarget& target) const
           target.draw(shape);
         }
       std::string valueString;
-      sf::Color color(sf::Color::White);
+      sf::Color color(sf::Color::Red);
       Vec2d position;
       double text_size(getAppEnv().getTextSize());
 
       position = this->getPosition();
       position.y += text_size;
 
-      valueString = "Bear: energy " + to_nice_string(this->getEnergy());
+      valueString = "Bear: energy " + to_nice_string(this->getEnergy())
+       + " Bear: hibernation length " + to_nice_string(this->getHibernationLength());
       sf::Text text = buildText(valueString, position, getAppFont(), text_size,
                                 color);
       target.draw(text);

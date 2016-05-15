@@ -121,8 +121,16 @@ Env::update(sf::Time dt)
     {
       hives_[i]->update(dt);
 
-      if (hives_[i]->getNectar() == 0 && hives_[i]->getNumBees() == 0)
+      if (hives_[i]->getNectar() == 0) 
         {
+          for (size_t j(0); j < hives_[i]->getBees().size(); ++j)
+          {
+            delete hives_[i]->getBees()[j];
+            hives_[i]->getBees()[j] = nullptr;
+          }
+          hives_[i]->getBees().erase(std::remove(hives_[i]->getBees().begin(), hives_[i]->getBees().end(), nullptr),
+               hives_[i]->getBees().end());
+          
           delete hives_[i];
           hives_[i] = nullptr;
         }
@@ -242,7 +250,7 @@ Env::reloadConfig()
   hive_manual_radius_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble();
 
-  debug_text_size_ = 2
+  debug_text_size_ = 10
       * (getAppConfig()["simulation"]["world"]["size"].toDouble()
           / getAppConfig()["simulation"]["world"]["cells"].toDouble());
 
