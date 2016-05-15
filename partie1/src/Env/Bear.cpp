@@ -25,7 +25,7 @@ void
 Bear::reloadConfig()
 {
   // configure Collider
-  this->setRadius(getConfig()["size"].toDouble());
+  this->setRadius(getConfig()["size"].toDouble() / 1.5);
 
   // configure Moveable
   this->setDelay(
@@ -113,7 +113,6 @@ Bear::eatHoney(Hive* hive, sf::Time dt)
       Hive* hive(getAppEnv().getCollidingHive(hive_location_));
       energy_ += hive->takeNectar(energy_rate_eating_ * dt.asSeconds());
     }
-  std::cout<< "finished eating" << std::endl;
 }
 
 Cave*
@@ -128,7 +127,7 @@ Bear::drawOn(sf::RenderTarget& target) const
   Vec2d position(this->getPosition());
   double radius(this->getRadius());
 
-  auto bearSprite = buildSprite(position, radius, texture_);
+  auto bearSprite = buildSprite(position, 2*radius, texture_);
   double angle(this->getMoveVec().Vec2d::angle());
   if ((angle >= PI / 2) or (angle <= -PI / 2))
     {
@@ -154,6 +153,7 @@ Bear::drawOn(sf::RenderTarget& target) const
                                                sf::Color::Blue, thickness);
           target.draw(shape);
         }
+        
       std::string valueString;
       sf::Color color(sf::Color::Red);
       Vec2d position;
@@ -230,6 +230,7 @@ Bear::onState(State state, sf::Time dt)
       Hive* hive(getAppEnv().getCollidingHive(this->getCollider()));
       if (hive != nullptr)
         {
+          std::cout << "miam"<< std::endl;
           eatHoney(hive, dt);
         }
       else

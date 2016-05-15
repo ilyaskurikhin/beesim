@@ -75,7 +75,7 @@
 			"size" : 100
 		},
 		"bear" : {
-			"visibility range" : 2,
+			"visibility range" : 1,
 			"moving behaviour" : {
 				"random" : {
 					"rotation probability" : 0.01,
@@ -92,7 +92,7 @@
 				"consumption rates" : {
 					"idle" : 0.03,
 					"moving" : 0.12,
-					"eating" : 0.5,
+					"eating" : 0.1,
 					"seeking hive" : 0.12
 				}
 			},
