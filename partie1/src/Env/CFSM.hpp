@@ -35,7 +35,7 @@ public:
    * It's here because c++ guidelines say so
    */
   virtual
-  ~CFSM();
+  ~CFSM() = default;
 
   /**
    * @brief Get current state.

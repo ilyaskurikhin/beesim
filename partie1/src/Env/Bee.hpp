@@ -56,6 +56,9 @@ public:
    */
   Bee(Hive* hive, const Vec2d& position, std::vector<State> states);
 
+  virtual
+  ~Bee() = default;
+
   /**
    * @brief Reload the configuration of attributes from JSON. 
    */

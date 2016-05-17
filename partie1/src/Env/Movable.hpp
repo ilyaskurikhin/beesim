@@ -23,7 +23,8 @@ public:
 
   Movable(const Vec2d& position, double radius);
 
-  ~Movable();
+  virtual
+  ~Movable() = default;
 
   /**
    * @brief Set a target to move towards

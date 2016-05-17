@@ -14,11 +14,6 @@ CFSM::CFSM(std::vector<State> states) :
 {
 }
 
-CFSM::~CFSM()
-{
-
-}
-
 State
 CFSM::getState() const
 {

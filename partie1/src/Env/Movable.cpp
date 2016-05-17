@@ -21,11 +21,6 @@ Movable::Movable(const Vec2d& position, double radius) :
 
 }
 
-Movable::~Movable()
-{
-
-}
-
 void
 Movable::setMoveTarget(const Vec2d& position)
 {
