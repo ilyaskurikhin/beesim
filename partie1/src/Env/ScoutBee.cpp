@@ -109,19 +109,12 @@ ScoutBee::onState(State state, sf::Time dt)
   // second state
   else if (state == SEARCH_FLOWER)
     {
-      if (this->getEnergy() > energy_seek_flowers_)
+      Flower* flower = this->findVisibleFlower();
+      this->setDebugStatus("seeking_flower");
+      if (this->getEnergy() > energy_seek_flowers_ && flower != nullptr)
         {
-          this->setDebugStatus("seeking_flower");
-          Flower* flower = this->findVisibleFlower();
-          if (flower != nullptr)
-            {
-              flower_location_ = flower->getPosition();
-              number_times_shared_ = 0;
-              this->nextState();
-            }
-        }
-      else
-        {
+          flower_location_ = flower->getPosition();
+          number_times_shared_ = 0;
           this->nextState();
         }
     }

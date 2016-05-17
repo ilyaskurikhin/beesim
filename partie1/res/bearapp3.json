@@ -96,6 +96,7 @@
 					"seeking hive" : 0.12
 				}
 			},
+			"honey eating rate" : 10,
 			"hibernation" : {
 				"maximum time" : 10
 			},

@@ -50,7 +50,7 @@ public:
   double
   transferPollen(sf::Time dt);
 
-  void
+  double
   eatPollen(Flower* flower, sf::Time dt);
 
   void

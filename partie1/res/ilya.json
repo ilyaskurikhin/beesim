@@ -75,11 +75,11 @@
 			"size" : 100
 		},
 		"bear" : {
-			"visibility range" : 1,
+			"visibility range" : 60,
 			"moving behaviour" : {
 				"random" : {
 					"rotation probability" : 0.01,
-					"roation angle max" : 0.485398163 
+					"rotation angle max" : 0.485398163 
 				},
 				"target" : {
 					"avoidance delay" : 0.2
@@ -96,6 +96,7 @@
 					"seeking hive" : 0.12
 				}
 			},
+			"honey eating rate" : 10,
 			"hibernation" : {
 				"maximum time" : 10
 			},

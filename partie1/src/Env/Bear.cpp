@@ -49,6 +49,9 @@ Bear::reloadConfig()
   energy_seek_hives_ =
       getConfig()["energy"]["consumption rates"]["seeking hive"].toDouble();
 
+  honey_eating_rate_ =
+      getConfig()["honey eating rate"].toDouble();
+
   max_hibernation_ =
       sf::seconds(
           static_cast<float>(getConfig()["hibernation"]["maximum time"].toDouble()));
@@ -216,21 +219,14 @@ Bear::onState(State state, sf::Time dt)
   // second state
   else if (state == SEARCH_HIVE)
     {
-      hibernation_length_ = sf::Time::Zero;
-      if (this->getEnergy() > energy_seek_hives_)
+      this->setDebugStatus("seeking_hives");
+      Hive* hive = this->findVisibleHive();
+      if (this->getEnergy() > energy_seek_hives_ && hive != nullptr)
         {
-          this->setDebugStatus("seeking_hives");
-          Hive* hive = this->findVisibleHive();
-          if (hive != nullptr)
-            {
-
-              hive_location_ = hive->getPosition();
-              this->nextState();
-            }
-        }
-      else
-        {
-          this->nextState();
+          this->setMoveTarget(hive->getPosition());
+          this->setMoveStateTARGET();
+          if (this->isColliderInside(hive->getCollider()))
+            this->nextState();
         }
     }
 
@@ -242,6 +238,8 @@ Bear::onState(State state, sf::Time dt)
       if (hive != nullptr)
         {
           eatHoney(hive, dt);
+          if (hive->getNectar() <= 0)
+            this->nextState();
         }
       else
         {
@@ -271,6 +269,7 @@ Bear::onEnterState(State state)
   else if (state == SEARCH_HIVE)
     {
       this->setMoveStateRANDOM();
+      hibernation_length_ = sf::Time::Zero;
     }
   else if (state == RETURN_CAVE)
     {
