@@ -33,6 +33,8 @@ Bear::reloadConfig()
           getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble()));
   this->setSpeed(getConfig()["speed"].toDouble());
   this->setMoveVec(Vec2d::fromRandomAngle() * this->getSpeed());
+  this->setMaxAngle(getConfig()["moving behaviour"]["random"]["rotation angle max"].toDouble());
+  this->setRotationProbability(getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble());
 
   energy_ = getConfig()["energy"]["initial"].toDouble();
   energy_rate_idle_ =
