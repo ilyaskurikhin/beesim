@@ -77,13 +77,6 @@ public:
   void
   interactWith(WorkerBee* working) override;
 
-  // TODO make private
-
-  State static const TO_FLOWER;
-  State static const COLLECT_POLLEN;
-  State static const IN_HIVE;
-  State static const RETURN_HIVE;
-
 private:
 
   Vec2d flower_location_;
@@ -92,6 +85,11 @@ private:
   double pollen_collecting_rate_;
   double energy_leave_hive_;
   double pollen_transfer_rate_;
+
+  State static const TO_FLOWER;
+  State static const COLLECT_POLLEN;
+  State static const IN_HIVE;
+  State static const RETURN_HIVE;
 
 };
 

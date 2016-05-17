@@ -39,11 +39,6 @@ public:
   void
   onEnterState(State state) override;
 
-  // TODO make private
-  State static const SEARCH_FLOWER;
-  State static const IN_HIVE;
-  State static const RETURN_HIVE;
-
   bool
   isScout() const override;
 
@@ -70,6 +65,10 @@ private:
   double energy_seek_flowers_;
 
   double max_sharing_;
+
+  State static const SEARCH_FLOWER;
+  State static const IN_HIVE;
+  State static const RETURN_HIVE;
 
 };
 
