@@ -71,7 +71,7 @@ public:
   /**
    * @brief Eat some nectar.
    */
-  void
+  double
   eatHoney(Hive* hive, sf::Time dt);
 
   /**
@@ -143,6 +143,8 @@ private:
   double energy_rate_eating_;
   double energy_rate_moving_;
   double energy_seek_hives_;
+
+  double honey_eating_rate_;
 
   sf::Texture texture_;
   double debug_thickness_random_;

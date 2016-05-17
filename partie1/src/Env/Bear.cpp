@@ -108,14 +108,21 @@ Bear::getHibernationLength() const
   return hibernation_length_.asSeconds();
 }
 
-void
+double
 Bear::eatHoney(Hive* hive, sf::Time dt)
 {
-  while (hive->getNectar() > 0)
+  double eaten(honey_eating_rate_ * dt.asSeconds());
+  if (hive)
     {
-      Hive* hive(getAppEnv().getCollidingHive(hive_location_));
-      energy_ += hive->takeNectar(energy_rate_eating_ * dt.asSeconds());
+      eaten = hive->takeNectar(eaten);
     }
+  else
+    {
+      eaten = 0;
+    }
+  energy_ += eaten;
+
+  return eaten;
 }
 
 Cave*
@@ -216,6 +223,7 @@ Bear::onState(State state, sf::Time dt)
           Hive* hive = this->findVisibleHive();
           if (hive != nullptr)
             {
+
               hive_location_ = hive->getPosition();
               this->nextState();
             }
