@@ -24,9 +24,7 @@ Cave::~Cave()
 Bear*
 Cave::addBear()
 {
-  std::vector<State> states =
-    { Bear::HIBERNATION, Bear::SEARCH_HIVE, Bear::EAT_HONEY, Bear::RETURN_CAVE };
-  bear_ = new Bear(this, this->getPosition(), states);
+  bear_ = new Bear(this, this->getPosition());
   bear_->reloadConfig();
   return bear_;
 }

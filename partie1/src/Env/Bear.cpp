@@ -9,8 +9,9 @@
 
 #include <Env/Env.hpp>
 
-Bear::Bear(Cave* cave, const Vec2d& position, std::vector<State> states) :
-    Movable(position), CFSM(states), cave_(cave), debug_thickness_random_(5), debug_thickness_target_(
+Bear::Bear(Cave* cave, const Vec2d& position) :
+    Movable(position), CFSM(std::vector<State> ({HIBERNATION, SEARCH_HIVE, EAT_HONEY, RETURN_CAVE})), 
+    cave_(cave), debug_thickness_random_(5), debug_thickness_target_(
         3), vision_range_(position), move_state_(AT_REST)
 {
   reloadConfig();

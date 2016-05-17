@@ -29,7 +29,7 @@ class Bear : public DrawableInterface,
 {
 public:
 
-  Bear(Cave* cave, const Vec2d& position, std::vector<State> states);
+  Bear(Cave* cave, const Vec2d& position);
 
   ~Bear();
 
@@ -131,11 +131,6 @@ public:
   void
   setHive(Hive* hive);
 
-  State static const SEARCH_HIVE;
-  State static const EAT_HONEY;
-  State static const RETURN_CAVE;
-  State static const HIBERNATION;
-
 private:
 
   Cave* cave_;
@@ -165,6 +160,11 @@ private:
 
   sf::Time hibernation_length_;
   sf::Time max_hibernation_;
+  
+  State static const SEARCH_HIVE;
+  State static const EAT_HONEY;
+  State static const RETURN_CAVE;
+  State static const HIBERNATION;
 
 };
 
