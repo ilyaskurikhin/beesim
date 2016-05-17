@@ -25,7 +25,7 @@ void
 Bear::reloadConfig()
 {
   // configure Collider
-  this->setRadius(getConfig()["size"].toDouble() / 1.5);
+  this->setRadius(getConfig()["size"].toDouble());
 
   // configure Moveable
   this->setDelay(
@@ -129,7 +129,7 @@ Bear::drawOn(sf::RenderTarget& target) const
   Vec2d position(this->getPosition());
   double radius(this->getRadius());
 
-  auto bearSprite = buildSprite(position, 2*radius, texture_);
+  auto bearSprite = buildSprite(position, radius, texture_);
   double angle(this->getMoveVec().Vec2d::angle());
   if ((angle >= PI / 2) or (angle <= -PI / 2))
     {
