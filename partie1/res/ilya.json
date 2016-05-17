@@ -70,6 +70,38 @@
                 "texture" : "worker1.png"
             }
         },
+        		"cave" : {
+			"texture" : "cave.png",
+			"size" : 100
+		},
+		"bear" : {
+			"visibility range" : 1,
+			"moving behaviour" : {
+				"random" : {
+					"rotation probability" : 0.01,
+					"roation angle max" : 0.485398163 
+				},
+				"target" : {
+					"avoidance delay" : 0.2
+				}
+			},
+			"size" : 60,
+			"energy" : {
+				"initial": 500,
+				"to leave cave": 100,
+				"consumption rates" : {
+					"idle" : 0.03,
+					"moving" : 0.12,
+					"eating" : 0.1,
+					"seeking hive" : 0.12
+				}
+			},
+			"hibernation" : {
+				"maximum time" : 10
+			},
+			"speed" : 3,
+			"texture" : "walkingbear.png"
+		},
         "flower" : {
             "textures" : [ "flowerA.png", "flowerB.png", "flowerC.png" ],
             "growth" : {
@@ -145,7 +177,16 @@
                         "manual" : 30
                     },
                     "hiveable factor" : 3
-                }
+                },
+                "cave" : {
+					"count" : 0,
+					"max failures" : 1000,
+					"size" : {
+						"min" : 50,
+						"max" : 100,
+						"manual" : 75
+					}
+				}
             },
             "max flowers" : 1000
         }
