@@ -35,9 +35,7 @@ Hive::reloadConfig()
 ScoutBee*
 Hive::addScout()
 {
-  std::vector<State> states =
-    { ScoutBee::IN_HIVE, ScoutBee::SEARCH_FLOWER, ScoutBee::RETURN_HIVE };
-  ScoutBee* scout(new ScoutBee(this, this->getPosition(), states));
+  ScoutBee* scout(new ScoutBee(this, this->getPosition()));
   scout->reloadConfig();
   bees_.push_back(scout);
   scouts_.push_back(scout);
@@ -47,10 +45,7 @@ Hive::addScout()
 WorkerBee*
 Hive::addWorker()
 {
-  std::vector<State> states =
-    { WorkerBee::IN_HIVE, WorkerBee::TO_FLOWER, WorkerBee::COLLECT_POLLEN,
-        WorkerBee::RETURN_HIVE };
-  WorkerBee* worker(new WorkerBee(this, this->getPosition(), states));
+  WorkerBee* worker(new WorkerBee(this, this->getPosition()));
   worker->reloadConfig();
   bees_.push_back(worker);
   workers_.push_back(worker);

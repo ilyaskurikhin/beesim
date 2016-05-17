@@ -9,8 +9,9 @@
 
 #include <Env/ScoutBee.hpp>
 
-ScoutBee::ScoutBee(Hive* hive, const Vec2d& position, std::vector<State> states) :
-    Bee(hive, position, states), flower_location_(-1, -1), number_times_shared_(
+ScoutBee::ScoutBee(Hive* hive, const Vec2d& position) :
+    Bee(hive, position, std::vector<State> ({IN_HIVE, SEARCH_FLOWER, RETURN_HIVE})),
+    flower_location_(-1, -1), number_times_shared_(
         -1)
 {
   reloadConfig();

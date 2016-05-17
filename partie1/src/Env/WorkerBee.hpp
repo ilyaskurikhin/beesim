@@ -16,7 +16,7 @@ class WorkerBee : public Bee
 {
 public:
 
-  WorkerBee(Hive* hive, const Vec2d& position, std::vector<State> states);
+  WorkerBee(Hive* hive, const Vec2d& position);
 
   ~WorkerBee();
 

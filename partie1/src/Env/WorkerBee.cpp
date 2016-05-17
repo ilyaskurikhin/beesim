@@ -7,9 +7,9 @@
 
 #include <Env/WorkerBee.hpp>
 
-WorkerBee::WorkerBee(Hive* hive, const Vec2d& position,
-                     std::vector<State> states) :
-    Bee(hive, position, states), flower_location_(-1, -1), pollen_(0.0)
+WorkerBee::WorkerBee(Hive* hive, const Vec2d& position) :
+    Bee(hive, position, std::vector<State> ({IN_HIVE, TO_FLOWER, COLLECT_POLLEN, RETURN_HIVE})),
+    flower_location_(-1, -1), pollen_(0.0)
 {
   reloadConfig();
   loadTexture();

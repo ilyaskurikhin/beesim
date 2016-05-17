@@ -20,7 +20,7 @@ class ScoutBee : public Bee
 {
 public:
 
-  ScoutBee(Hive* hive, const Vec2d& position, std::vector<State> states);
+  ScoutBee(Hive* hive, const Vec2d& position);
 
   ~ScoutBee();
 
