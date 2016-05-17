@@ -171,14 +171,23 @@ WorkerBee::transferPollen(sf::Time dt)
   return pollen;
 }
 
-void
+double
 WorkerBee::eatPollen(Flower* flower, sf::Time dt)
 {
   double pollen(pollen_collecting_rate_ * dt.asSeconds());
+
   if (pollen + this->getPollen() > max_pollen_)
     pollen = max_pollen_ - this->getPollen();
-
-  setPollen(this->getPollen() + flower->takePollen(pollen));
+ 
+  if (!flower)
+  {
+    pollen = 0;
+  }
+  else
+  {
+    setPollen(this->getPollen() + flower->takePollen(pollen));
+  }
+  return pollen;
 }
 
 void
