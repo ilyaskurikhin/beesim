@@ -230,7 +230,6 @@ Bear::onState(State state, sf::Time dt)
       Hive* hive(getAppEnv().getCollidingHive(this->getCollider()));
       if (hive != nullptr)
         {
-          std::cout << "miam"<< std::endl;
           eatHoney(hive, dt);
         }
       else
