@@ -169,8 +169,8 @@ public:
   const std::string&
   getDebugStatus() const;
 
-  bool
-  isInHive() const;
+  virtual bool
+  isInHive() const =0;
 
   virtual bool
   isScout() const =0;
@@ -186,9 +186,6 @@ public:
 
   virtual void
   interactWith(WorkerBee* working)=0;
-
-  State static const IN_HIVE;
-  State static const RETURN_HIVE;
 
 private:
 

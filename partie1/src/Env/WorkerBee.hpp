@@ -65,6 +65,9 @@ public:
   bool
   isWorker() const override;
 
+  bool
+  isInHive() const override;
+
   void
   interact(Bee* other) override;
 
@@ -78,6 +81,8 @@ public:
 
   State static const TO_FLOWER;
   State static const COLLECT_POLLEN;
+  State static const IN_HIVE;
+  State static const RETURN_HIVE;
 
 private:
 

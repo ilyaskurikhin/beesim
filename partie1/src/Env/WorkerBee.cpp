@@ -231,6 +231,19 @@ WorkerBee::isWorker() const
   return true;
 }
 
+bool
+WorkerBee::isInHive() const
+{
+  if (this->getState() == IN_HIVE)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
 void
 WorkerBee::interact(Bee* other)
 {
@@ -250,3 +263,5 @@ WorkerBee::interactWith(WorkerBee*)
 
 State const WorkerBee::TO_FLOWER = createUid();
 State const WorkerBee::COLLECT_POLLEN = createUid();
+State const WorkerBee::IN_HIVE = createUid();
+State const WorkerBee::RETURN_HIVE = createUid();

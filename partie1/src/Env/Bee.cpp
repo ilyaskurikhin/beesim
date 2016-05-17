@@ -188,19 +188,3 @@ Bee::getDebugStatus() const
   return debug_status_;
 }
 
-bool
-Bee::isInHive() const
-{
-  if (this->getState() == IN_HIVE)
-    {
-      return true;
-    }
-  else
-    {
-      return false;
-    }
-}
-
-State const Bee::IN_HIVE = createUid();
-State const Bee::RETURN_HIVE = createUid();
-

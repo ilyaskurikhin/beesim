@@ -166,6 +166,19 @@ ScoutBee::isWorker() const
   return false;
 }
 
+bool
+ScoutBee::isInHive() const
+{
+  if (this->getState() == IN_HIVE)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
 void
 ScoutBee::interact(Bee* other)
 {
@@ -192,5 +205,7 @@ ScoutBee::interactWith(WorkerBee* working)
 
 }
 
+State const ScoutBee::IN_HIVE = createUid();
 State const ScoutBee::SEARCH_FLOWER = createUid();
+State const ScoutBee::RETURN_HIVE = createUid();
 
