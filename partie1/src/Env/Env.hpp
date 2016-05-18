@@ -11,15 +11,14 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <Utility/Vec2d.hpp>
-#include <Utility/Utility.hpp>
-#include <Utility/Logging.hpp>
-
-#include <Random/Random.hpp>
-
 #include <Interface/ConfigurableInterface.hpp>
 #include <Interface/DrawableInterface.hpp>
 #include <Interface/UpdatableInterface.hpp>
+
+#include <Utility/Vec2d.hpp>
+#include <Utility/Utility.hpp>
+#include <Utility/Logging.hpp>
+#include <Random/Random.hpp>
 
 #include <Env/Bee.hpp>
 #include <Env/Hive.hpp>

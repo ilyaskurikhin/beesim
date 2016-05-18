@@ -10,11 +10,14 @@
 #ifndef BEE_H
 #define BEE_H
 
-#include <Random/Random.hpp>
+#include <Interface/ConfigurableInterface.hpp>
+#include <Interface/DrawableInterface.hpp>
+#include <Interface/UpdatableInterface.hpp>
 
 #include <Utility/Vec2d.hpp>
 #include <Utility/Utility.hpp>
 #include <Utility/Logging.hpp>
+#include <Random/Random.hpp>
 
 #include <Env/World.hpp>
 #include <Env/Collider.hpp>
@@ -22,10 +25,6 @@
 #include <Env/CFSM.hpp>
 #include <Env/Movable.hpp>
 #include <Env/Cave.hpp>
-
-#include <Interface/ConfigurableInterface.hpp>
-#include <Interface/DrawableInterface.hpp>
-#include <Interface/UpdatableInterface.hpp>
 
 #include <Application.hpp>
 

@@ -15,12 +15,12 @@
 #include <Interface/UpdatableInterface.hpp>
 #include <Interface/ConfigurableInterface.hpp>
 
+#include <Utility/Vec2d.hpp>
+#include <Utility/Logging.hpp>
+
 #include <Env/Movable.hpp>
 #include <Env/CFSM.hpp>
 #include <Env/Hive.hpp>
-
-#include <Utility/Vec2d.hpp>
-#include <Utility/Logging.hpp>
 
 class Cave;
 

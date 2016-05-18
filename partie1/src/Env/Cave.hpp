@@ -1,17 +1,18 @@
 #ifndef CAVE_H
 #define CAVE_H
 
+#include <Interface/DrawableInterface.hpp>
+#include <Interface/UpdatableInterface.hpp>
+
+#include <Utility/Logging.hpp>
+#include <Utility/Utility.hpp>
+
 #include <Env/World.hpp>
 #include <Env/Collider.hpp>
 #include <Env/CFSM.hpp>
 #include <Env/Bear.hpp>
 
-#include <Utility/Utility.hpp>
 #include <Application.hpp>
-#include <Utility/Logging.hpp>
-
-#include <Interface/DrawableInterface.hpp>
-#include <Interface/UpdatableInterface.hpp>
 
 class Bear;
 

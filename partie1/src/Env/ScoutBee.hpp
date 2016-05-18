@@ -8,12 +8,13 @@
 #ifndef SCOUTBEE_HPP
 #define SCOUTBEE_HPP
 
+#include <JSON/JSON.hpp>
+
 #include <Env/Bee.hpp>
 #include <Env/Flower.hpp>
 #include <Env/WorkerBee.hpp>
 #include <Env/Env.hpp>
 
-#include <JSON/JSON.hpp>
 #include <Application.hpp>
 
 class ScoutBee : public Bee

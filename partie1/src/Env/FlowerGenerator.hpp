@@ -12,13 +12,14 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
-#include <Application.hpp>
+#include <Interface/UpdatableInterface.hpp>
 
 #include <Utility/Logging.hpp>
 #include <Random/Random.hpp>
 
 #include <Env/Env.hpp>
-#include <Interface/UpdatableInterface.hpp>
+
+#include <Application.hpp>
 
 /**
  * @brief Class generating Flower s in an Env ironment

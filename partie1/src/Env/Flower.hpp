@@ -10,16 +10,20 @@
 #define FLOWER_H
 
 #include <SFML/Graphics.hpp>
-#include <Random/Random.hpp>
-#include <Env/Collider.hpp>
-#include <Env/Env.hpp>
-#include <Utility/Utility.hpp>
-#include <Application.hpp>
-#include <Utility/Logging.hpp>
 
 #include <Interface/ConfigurableInterface.hpp>
 #include <Interface/DrawableInterface.hpp>
 #include <Interface/UpdatableInterface.hpp>
+
+#include <Utility/Utility.hpp>
+#include <Utility/Logging.hpp>
+#include <Random/Random.hpp>
+
+#include <Env/Collider.hpp>
+#include <Env/Env.hpp>
+
+#include <Application.hpp>
+
 
 /**
  * @brief Class simulating a Flower.

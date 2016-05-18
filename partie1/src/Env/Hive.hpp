@@ -9,16 +9,18 @@
 #ifndef HIVE_H
 #define HIVE_H
 
+#include <Interface/DrawableInterface.hpp>
+#include <Interface/UpdatableInterface.hpp>
+
+#include <Utility/Logging.hpp>
+#include <Utility/Utility.hpp>
+
 #include <Env/World.hpp>
 #include <Env/Collider.hpp>
 #include <Env/CFSM.hpp>
 
-#include <Utility/Utility.hpp>
 #include <Application.hpp>
-#include <Utility/Logging.hpp>
 
-#include <Interface/DrawableInterface.hpp>
-#include <Interface/UpdatableInterface.hpp>
 
 class Bee;
 class WorkerBee;

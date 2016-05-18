@@ -9,11 +9,13 @@
 #define MOVABLE_HPP_
 
 #include <SFML/System.hpp>
-#include <string>
-#include <Env/Collider.hpp>
 
 #include <Utility/Vec2d.hpp>
 #include <Random/Random.hpp>
+
+#include <Env/Collider.hpp>
+
+#include <string>
 
 class Movable : public Collider
 {

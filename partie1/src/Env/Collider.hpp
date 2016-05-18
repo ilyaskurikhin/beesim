@@ -10,11 +10,12 @@
 #ifndef COLLIDER_H
 #define COLLIDER_H
 
-#include <Utility/Vec2d.hpp>
-
 #include <Interface/ConfigurableInterface.hpp>
 
+#include <Utility/Vec2d.hpp>
+
 #include <Application.hpp>
+
 #include <iostream>
 #include <cassert>
 #include <vector>

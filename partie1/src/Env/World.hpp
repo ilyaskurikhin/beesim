@@ -10,16 +10,18 @@
 #define WORLD_H
 
 #include <SFML/Graphics.hpp>
+
+#include <Interface/ConfigurableInterface.hpp>
+#include <Interface/DrawableInterface.hpp>
+
 #include <Utility/Vertex.hpp>
 #include <Utility/Utility.hpp>
 #include <Utility/Vec2d.hpp>
 #include <Utility/Logging.hpp>
-#include <Application.hpp>
-#include <Random/Random.hpp>
 #include <JSON/JSON.hpp>
+#include <Random/Random.hpp>
 
-#include <Interface/ConfigurableInterface.hpp>
-#include <Interface/DrawableInterface.hpp>
+#include <Application.hpp>
 
 #include <vector>
 #include <array>

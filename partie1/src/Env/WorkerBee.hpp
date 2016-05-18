@@ -8,9 +8,10 @@
 #ifndef WORKERBEE_HPP
 #define WORKERBEE_HPP
 
+#include <JSON/JSON.hpp>
+
 #include <Env/Bee.hpp>
 #include <Env/Flower.hpp>
-#include <JSON/JSON.hpp>
 
 class WorkerBee : public Bee
 {
