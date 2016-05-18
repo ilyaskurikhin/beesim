@@ -36,11 +36,12 @@ env.Append(CPPPATH = '../src/') # pwd is the build directory
 app_src         = Glob('Application.cpp')
 cfg_src         = Glob('JSON/*.cpp')
 env_src         = Glob('Env/*.cpp')
+bee_src			= Glob('Env/Bee/*.cpp')
 rand_src        = Glob('Random/*.cpp')
 stats_src       = Glob('Stats/*.cpp')
 utility_src     = Glob('Utility/*.cpp')
 
-src_files = app_src + cfg_src + env_src + rand_src + stats_src + utility_src
+src_files = app_src + cfg_src + env_src + bee_src + rand_src + stats_src + utility_src
 objects=env.Object(source=src_files)
 
 

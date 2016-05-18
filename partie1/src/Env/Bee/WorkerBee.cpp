@@ -5,7 +5,7 @@
  *      Author: ilya
  */
 
-#include <Env/WorkerBee.hpp>
+#include <Env/Bee/WorkerBee.hpp>
 
 WorkerBee::WorkerBee(Hive* hive, const Vec2d& position) :
     Bee(hive, position, std::vector<State>(

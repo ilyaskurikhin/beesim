@@ -7,7 +7,7 @@
 #include <Application.hpp>
 #include <Env/Env.hpp>
 #include <Env/Hive.hpp>
-#include <Env/WorkerBee.hpp>
+#include <Env/Bee/WorkerBee.hpp>
 
 #include <cassert>
 

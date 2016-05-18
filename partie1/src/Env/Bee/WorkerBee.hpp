@@ -10,7 +10,7 @@
 
 #include <JSON/JSON.hpp>
 
-#include <Env/Bee.hpp>
+#include <Env/Bee/Bee.hpp>
 #include <Env/Flower.hpp>
 
 class WorkerBee : public Bee

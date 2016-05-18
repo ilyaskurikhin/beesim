@@ -7,7 +7,7 @@
  * @date 2016-05-05
  */
 
-#include <Env/ScoutBee.hpp>
+#include <Env/Bee/ScoutBee.hpp>
 
 ScoutBee::ScoutBee(Hive* hive, const Vec2d& position) :
     Bee(hive, position, std::vector<State>(

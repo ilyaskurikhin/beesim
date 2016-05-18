@@ -20,7 +20,7 @@
 #include <Utility/Logging.hpp>
 #include <Random/Random.hpp>
 
-#include <Env/Bee.hpp>
+#include <Env/Bee/Bee.hpp>
 #include <Env/Hive.hpp>
 #include <Env/Collider.hpp>
 #include <Env/World.hpp>

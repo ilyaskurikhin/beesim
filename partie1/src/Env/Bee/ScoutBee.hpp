@@ -10,9 +10,9 @@
 
 #include <JSON/JSON.hpp>
 
-#include <Env/Bee.hpp>
+#include <Env/Bee/Bee.hpp>
+#include <Env/Bee/WorkerBee.hpp>
 #include <Env/Flower.hpp>
-#include <Env/WorkerBee.hpp>
 #include <Env/Env.hpp>
 
 #include <Application.hpp>

@@ -1,7 +1,7 @@
 #include <Env/Hive.hpp>
-#include <Env/Bee.hpp>
-#include <Env/WorkerBee.hpp>
-#include <Env/ScoutBee.hpp>
+#include <Env/Bee/Bee.hpp>
+#include <Env/Bee/WorkerBee.hpp>
+#include <Env/Bee/ScoutBee.hpp>
 
 Hive::Hive(const Vec2d& position, double radius) :
     Collider(position, radius), nectar_(
