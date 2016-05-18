@@ -257,7 +257,7 @@ Bear::onState(State state, sf::Time dt)
       if (this->getEnergy() > energy_seek_hives_ && hive != nullptr)
         {
           this->setMoveTarget(hive->getPosition());
-          this->setMoveStateTARGET();
+          this->setMoveState(TARGET);
           if (this->isColliderInside(hive->getCollider()))
             this->nextState();
         }

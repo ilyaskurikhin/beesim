@@ -55,13 +55,8 @@ public:
    */
   Bee(Hive* hive, const Vec2d& position, std::vector<State> states);
 
-  Bee(const Bee& bee) = delete;
-
   virtual
   ~Bee() = default;
-
-  Bee
-  operator=(const Bee& bee) = delete;
 
   /**
    * @brief Get Bee configuration by type.
