@@ -187,6 +187,27 @@ public:
   virtual void
   interactWith(WorkerBee* working)=0;
 
+  void
+  setHive(const Hive*& hive);
+
+  State
+  getMoveState() const;
+
+  void
+  setMoveState(State moveState);
+
+  double
+  getVisibility() const;
+
+  void
+  setVisibility(double visibility);
+
+  const Collider&
+  getVisionRange() const;
+
+  void
+  setVisionRange(const Collider& visionRange);
+
 private:
 
   Hive* hive_;

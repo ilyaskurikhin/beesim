@@ -188,3 +188,44 @@ Bee::getDebugStatus() const
   return debug_status_;
 }
 
+void
+Bee::setHive(const Hive*& hive)
+{
+  hive_ = hive;
+}
+
+State
+Bee::getMoveState() const
+{
+  return move_state_;
+}
+
+void
+Bee::setMoveState(State moveState)
+{
+  move_state_ = moveState;
+}
+
+double
+Bee::getVisibility() const
+{
+  return visibility_;
+}
+
+void
+Bee::setVisibility(double visibility)
+{
+  visibility_ = visibility;
+}
+
+const Collider&
+Bee::getVisionRange() const
+{
+  return vision_range_;
+}
+
+void
+Bee::setVisionRange(const Collider& visionRange)
+{
+  vision_range_ = visionRange;
+}

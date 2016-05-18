@@ -159,3 +159,32 @@ Movable::setMaxAngle(double maxAngle)
   max_angle_ = maxAngle;
 }
 
+sf::Time
+Movable::getAvoidanceClock() const
+{
+  return avoidance_clock_;
+}
+
+void
+Movable::setAvoidanceClock(sf::Time avoidanceClock)
+{
+  avoidance_clock_ = avoidanceClock;
+}
+
+sf::Time
+Movable::getDelay() const
+{
+  return delay_;
+}
+
+double
+Movable::getMaxAngle() const
+{
+  return max_angle_;
+}
+
+double
+Movable::getRotationProbability() const
+{
+  return rotation_probability_;
+}

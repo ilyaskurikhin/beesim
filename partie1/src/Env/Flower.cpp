@@ -101,3 +101,8 @@ Flower::getPollen()
   return pollen_;
 }
 
+void
+Flower::setPollen(double pollen)
+{
+  pollen_ = pollen;
+}

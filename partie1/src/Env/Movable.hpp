@@ -91,6 +91,16 @@ public:
 
   void
   setMaxAngle(double maxAngle);
+  sf::Time
+  getAvoidanceClock() const;
+  void
+  setAvoidanceClock(sf::Time avoidanceClock);
+  sf::Time
+  getDelay() const;
+  double
+  getMaxAngle() const;
+  double
+  getRotationProbability() const;
 
 private:
 

@@ -275,3 +275,15 @@ State const WorkerBee::TO_FLOWER = createUid();
 State const WorkerBee::COLLECT_POLLEN = createUid();
 State const WorkerBee::IN_HIVE = createUid();
 State const WorkerBee::RETURN_HIVE = createUid();
+
+const Vec2d&
+WorkerBee::getFlowerLocation() const
+{
+  return flower_location_;
+}
+
+void
+WorkerBee::setFlowerLocation(const Vec2d& flowerLocation)
+{
+  flower_location_ = flowerLocation;
+}

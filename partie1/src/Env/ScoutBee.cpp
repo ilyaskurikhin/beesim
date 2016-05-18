@@ -203,3 +203,20 @@ State const ScoutBee::IN_HIVE = createUid();
 State const ScoutBee::SEARCH_FLOWER = createUid();
 State const ScoutBee::RETURN_HIVE = createUid();
 
+const Vec2d&
+ScoutBee::getFlowerLocation() const
+{
+  return flower_location_;
+}
+
+void
+ScoutBee::setFlowerLocation(const Vec2d& flowerLocation)
+{
+  flower_location_ = flowerLocation;
+}
+
+int
+ScoutBee::getNumberTimesShared() const
+{
+  return number_times_shared_;
+}

@@ -87,6 +87,8 @@ public:
    */
   double
   getPollen();
+  void
+  setPollen(double pollen);
 
 private:
 

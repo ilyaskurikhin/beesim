@@ -369,3 +369,74 @@ State const Bear::SEARCH_HIVE = createUid();
 State const Bear::EAT_HONEY = createUid();
 State const Bear::RETURN_CAVE = createUid();
 
+void
+Bear::setCave(const Cave*& cave)
+{
+  cave_ = cave;
+}
+
+void
+Bear::setEnergy(double energy)
+{
+  energy_ = energy;
+}
+
+double
+Bear::getEnergyLeaveCave() const
+{
+  return energy_leave_cave_;
+}
+
+void
+Bear::setEnergyLeaveCave(double energyLeaveCave)
+{
+  energy_leave_cave_ = energyLeaveCave;
+}
+
+const Vec2d&
+Bear::getHiveLocation() const
+{
+  return hive_location_;
+}
+
+void
+Bear::setHiveLocation(const Vec2d& hiveLocation)
+{
+  hive_location_ = hiveLocation;
+}
+
+State
+Bear::getMoveState() const
+{
+  return move_state_;
+}
+
+void
+Bear::setMoveState(State moveState)
+{
+  move_state_ = moveState;
+}
+
+double
+Bear::getVisibility() const
+{
+  return visibility_;
+}
+
+void
+Bear::setVisibility(double visibility)
+{
+  visibility_ = visibility;
+}
+
+const Collider&
+Bear::getVisionRange() const
+{
+  return vision_range_;
+}
+
+void
+Bear::setVisionRange(const Collider& visionRange)
+{
+  vision_range_ = visionRange;
+}

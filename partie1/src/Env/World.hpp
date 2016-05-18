@@ -272,6 +272,10 @@ public:
 
   const Vec2d&
   getWorldSize() const;
+  float
+  getCellSize() const;
+  size_t
+  getNumberColumns() const;
 
 private:
 

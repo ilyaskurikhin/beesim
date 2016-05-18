@@ -133,6 +133,42 @@ public:
   void
   setHive(Hive* hive);
 
+  void
+  setCave(const Cave*& cave);
+
+  void
+  setEnergy(double energy);
+
+  double
+  getEnergyLeaveCave() const;
+
+  void
+  setEnergyLeaveCave(double energyLeaveCave);
+
+  const Vec2d&
+  getHiveLocation() const;
+
+  void
+  setHiveLocation(const Vec2d& hiveLocation);
+
+  State
+  getMoveState() const;
+
+  void
+  setMoveState(State moveState);
+
+  double
+  getVisibility() const;
+
+  void
+  setVisibility(double visibility);
+
+  const Collider&
+  getVisionRange() const;
+
+  void
+  setVisionRange(const Collider& visionRange);
+
 private:
 
   Cave* cave_;

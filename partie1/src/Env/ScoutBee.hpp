@@ -56,6 +56,12 @@ public:
 
   void
   interactWith(WorkerBee* working) override;
+  const Vec2d&
+  getFlowerLocation() const;
+  void
+  setFlowerLocation(const Vec2d& flowerLocation);
+  int
+  getNumberTimesShared() const;
 
 private:
   Vec2d flower_location_;

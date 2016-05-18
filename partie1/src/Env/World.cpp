@@ -838,3 +838,14 @@ World::getWorldSize() const
   return world_size_;
 }
 
+float
+World::getCellSize() const
+{
+  return cell_size_;
+}
+
+size_t
+World::getNumberColumns() const
+{
+  return number_columns_;
+}
