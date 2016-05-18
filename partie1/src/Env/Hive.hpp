@@ -47,13 +47,10 @@ public:
 
   Hive(const Hive&) = delete;
 
-  Hive
-  operator=(const Hive&) = delete;
-
   ~Hive();
 
-  void
-  reloadConfig() override;
+  Hive
+  operator=(const Hive&) = delete;
 
   /**
    * @brief Add a new ScoutBee.
@@ -81,21 +78,8 @@ public:
   Bee*
   getBeeAt(const Vec2d& position);
 
-  /**
-   * @brief Evolve Hive.
-   *
-   * @param dt
-   */
   void
-  update(sf::Time dt) override;
-
-  /**
-   * @brief Draw hive on a target.
-   *
-   * @param target where to draw
-   */
-  void
-  drawOn(sf::RenderTarget& target) const override;
+  interactingBees();
 
   /**
    * @brief Drop pollen into Hive.
@@ -118,6 +102,25 @@ public:
   takeNectar(double amount);
 
   /**
+   * @brief Evolve Hive.
+   *
+   * @param dt
+   */
+  void
+  update(sf::Time dt) override;
+
+  /**
+   * @brief Draw hive on a target.
+   *
+   * @param target where to draw
+   */
+  void
+  drawOn(sf::RenderTarget& target) const override;
+
+  void
+  reloadConfig() override;
+
+  /**
    * @brief Get amount to nectar in Hive.
    *
    * @return current amount of nectar.
@@ -137,9 +140,6 @@ public:
   int
   getNumWorkers() const;
 
-  void
-  interactingBees();
-
 private:
 
   double nectar_;
@@ -147,8 +147,6 @@ private:
   double max_bees_;
   double reproduction_probability_;
   std::vector<Bee*> bees_;
-  std::vector<WorkerBee*> workers_;
-  std::vector<ScoutBee*> scouts_;
   sf::Texture hive_texture_;
 
 };

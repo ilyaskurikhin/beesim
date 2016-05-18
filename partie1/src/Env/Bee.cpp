@@ -189,7 +189,7 @@ Bee::getDebugStatus() const
 }
 
 void
-Bee::setHive(const Hive*& hive)
+Bee::setHive(Hive* hive)
 {
   hive_ = hive;
 }

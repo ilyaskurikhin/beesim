@@ -36,53 +36,19 @@ public:
 
   ~Bear();
 
-  void
-  reloadConfig() override;
+  Bear(const Bear& bear) = delete;
+
+  Bear
+  operator=(const Bear& bear) = delete;
 
   j::Value const&
   getConfig();
-
-  void
-  move(sf::Time dt);
-
-  bool
-  isMovablePosition(const Vec2d& position) const override;
-
-  void
-  update(sf::Time dt) override;
-
-  /**
-   * @brief Draw the Bear onto target.
-   *
-   * @param target
-   */
-  void
-  drawOn(sf::RenderTarget& target) const override;
-
-  /**
-   * @brief Get the energy of the Bear.
-   *
-   * @return Energy of the Bear.
-   */
-  double
-  getEnergy() const;
-
-  double
-  getHibernationLength() const;
 
   /**
    * @brief Eat some nectar.
    */
   double
   eatHoney(Hive* hive, sf::Time dt);
-
-  /**
-   * @brief Get bear cave.
-   *
-   * @return pointer to current bear cave.
-   */
-  Cave*
-  getCave() const;
 
   bool
   isInCave() const;
@@ -107,19 +73,34 @@ public:
   isDead();
 
   void
+  setMoveState(const State& state);
+
+  void
+  update(sf::Time dt) override;
+
+  /**
+   * @brief Draw the Bear onto target.
+   *
+   * @param target
+   */
+  void
+  drawOn(sf::RenderTarget& target) const override;
+
+
+  void
+  reloadConfig() override;
+
+  void
   onState(State state, sf::Time dt) override;
 
   void
   onEnterState(State state) override;
 
   void
-  setMoveStateAT_REST();
+  move(sf::Time dt) override;
 
-  void
-  setMoveStateRANDOM();
-
-  void
-  setMoveStateTARGET();
+  bool
+  isMovablePosition(const Vec2d& position) const override;
 
   void
   setDebugStatus(const std::string& status);
@@ -133,17 +114,20 @@ public:
   void
   setHive(Hive* hive);
 
+  Cave*
+  getCave() const;
+
   void
-  setCave(const Cave*& cave);
+  setCave(Cave* cave);
+
+  double
+  getEnergy() const;
 
   void
   setEnergy(double energy);
 
   double
-  getEnergyLeaveCave() const;
-
-  void
-  setEnergyLeaveCave(double energyLeaveCave);
+  getHibernationLength() const;
 
   const Vec2d&
   getHiveLocation() const;
@@ -154,20 +138,11 @@ public:
   State
   getMoveState() const;
 
-  void
-  setMoveState(State moveState);
-
   double
   getVisibility() const;
 
-  void
-  setVisibility(double visibility);
-
   const Collider&
   getVisionRange() const;
-
-  void
-  setVisionRange(const Collider& visionRange);
 
 private:
 

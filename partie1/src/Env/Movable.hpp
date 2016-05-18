@@ -62,6 +62,9 @@ public:
   void
   randomMove(sf::Time dt);
 
+  virtual void
+  move(sf::Time dt) =0;
+
   virtual bool
   isMovablePosition(const Vec2d& position) const;
 

@@ -21,24 +21,12 @@ Hive::~Hive()
   bees_.clear();
 }
 
-void
-Hive::reloadConfig()
-{
-  nectar_thresold_ =
-      getAppConfig()["simulation"]["hive"]["reproduction"]["nectar threshold"].toDouble();
-  max_bees_ =
-      getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
-  reproduction_probability_ =
-      getAppConfig()["simulation"]["hive"]["reproduction"]["scout probability"].toDouble();
-}
-
 ScoutBee*
 Hive::addScout()
 {
   ScoutBee* scout(new ScoutBee(this, this->getPosition()));
   scout->reloadConfig();
   bees_.push_back(scout);
-  scouts_.push_back(scout);
   return scout;
 }
 
@@ -48,7 +36,6 @@ Hive::addWorker()
   WorkerBee* worker(new WorkerBee(this, this->getPosition()));
   worker->reloadConfig();
   bees_.push_back(worker);
-  workers_.push_back(worker);
   return worker;
 }
 
@@ -63,6 +50,53 @@ Hive::getBeeAt(const Vec2d& position)
         }
     }
   return nullptr;
+}
+
+void
+Hive::interactingBees()
+{
+  std::vector<Bee*> beesInHive;
+  for (size_t i(0); i < bees_.size(); ++i)
+    {
+      if (bees_[i]->isInHive())
+        {
+          beesInHive.push_back(bees_[i]);
+        }
+    }
+  for (size_t i(0); i < beesInHive.size(); ++i)
+    {
+      for (size_t j(0); j < beesInHive.size(); ++j)
+        {
+          beesInHive[i]->interact(beesInHive[j]);
+        }
+    }
+}
+
+double
+Hive::dropPollen(double nectar)
+{
+  if (nectar > 0)
+    {
+      nectar_ = nectar_ + nectar;
+    }
+  return nectar_;
+}
+
+double
+Hive::takeNectar(double nectar)
+{
+  double taken(0);
+  if (nectar_ - nectar > 0)
+    {
+      nectar_ = nectar_ - nectar;
+      taken = nectar;
+    }
+  else
+    {
+      nectar_ = 0;
+      taken = nectar_;
+    }
+  return taken;
 }
 
 void
@@ -126,31 +160,15 @@ Hive::drawOn(sf::RenderTarget& target) const
     }
 }
 
-double
-Hive::dropPollen(double nectar)
+void
+Hive::reloadConfig()
 {
-  if (nectar > 0)
-    {
-      nectar_ = nectar_ + nectar;
-    }
-  return nectar_;
-}
-
-double
-Hive::takeNectar(double nectar)
-{
-  double taken(0);
-  if (nectar_ - nectar > 0)
-    {
-      nectar_ = nectar_ - nectar;
-      taken = nectar;
-    }
-  else
-    {
-      nectar_ = 0;
-      taken = nectar_;
-    }
-  return taken;
+  nectar_thresold_ =
+      getAppConfig()["simulation"]["hive"]["reproduction"]["nectar threshold"].toDouble();
+  max_bees_ =
+      getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
+  reproduction_probability_ =
+      getAppConfig()["simulation"]["hive"]["reproduction"]["scout probability"].toDouble();
 }
 
 double
@@ -197,24 +215,4 @@ Hive::getNumWorkers() const
         }
     }
   return numWorkers;
-}
-
-void
-Hive::interactingBees()
-{
-  std::vector<Bee*> beesInHive;
-  for (size_t i(0); i < bees_.size(); ++i)
-    {
-      if (bees_[i]->isInHive())
-        {
-          beesInHive.push_back(bees_[i]);
-        }
-    }
-  for (size_t i(0); i < beesInHive.size(); ++i)
-    {
-      for (size_t j(0); j < beesInHive.size(); ++j)
-        {
-          beesInHive[i]->interact(beesInHive[j]);
-        }
-    }
 }

@@ -55,14 +55,13 @@ public:
    */
   Bee(Hive* hive, const Vec2d& position, std::vector<State> states);
 
+  Bee(const Bee& bee) = delete;
+
   virtual
   ~Bee() = default;
 
-  /**
-   * @brief Reload the configuration of attributes from JSON. 
-   */
-  void
-  reloadConfig() override;
+  Bee
+  operator=(const Bee& bee) = delete;
 
   /**
    * @brief Get Bee configuration by type.
@@ -78,7 +77,7 @@ public:
    * @param dt Time for the counter.
    */
   void
-  move(sf::Time dt);
+  move(sf::Time dt) override;
 
   bool
   isMovablePosition(const Vec2d& position) const override;
@@ -108,6 +107,12 @@ public:
    */
   void
   drawOn(sf::RenderTarget& target) const override;
+
+  /**
+   * @brief Reload the configuration of attributes from JSON.
+   */
+  void
+  reloadConfig() override;
 
   /**
    * @brief Get the energy of the Bee.
@@ -187,7 +192,7 @@ public:
   interactWith(WorkerBee* working)=0;
 
   void
-  setHive(const Hive*& hive);
+  setHive(Hive* hive);
 
   State
   getMoveState() const;
