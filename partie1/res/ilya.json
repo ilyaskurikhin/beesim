@@ -101,7 +101,9 @@
 				"maximum time" : 10
 			},
 			"speed" : 3,
-			"texture" : "walkingbear.png"
+			"texture walking 1" : "walkingbear.png",
+			"texture walking 2" : "walkingbear2.png",
+			"texture delay" : 1.0
 		},
         "flower" : {
             "textures" : [ "flowerA.png", "flowerB.png", "flowerC.png" ],

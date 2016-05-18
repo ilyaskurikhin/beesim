@@ -8,6 +8,9 @@
 #ifndef BEAR_HPP_
 #define BEAR_HPP_
 
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+
 #include <Interface/DrawableInterface.hpp>
 #include <Interface/UpdatableInterface.hpp>
 #include <Interface/ConfigurableInterface.hpp>
@@ -146,7 +149,12 @@ private:
 
   double honey_eating_rate_;
 
-  sf::Texture texture_;
+  sf::Texture texture_walking_1_;
+  sf::Texture texture_walking_2_;
+
+  sf::Clock texture_counter_;
+  sf::Time texture_delay_;
+
   double debug_thickness_random_;
   double debug_thickness_target_;
 

@@ -49,6 +49,10 @@ Bear::reloadConfig()
   energy_seek_hives_ =
       getConfig()["energy"]["consumption rates"]["seeking hive"].toDouble();
 
+  texture_delay_ =
+      sf::seconds(static_cast<float>(getConfig()["texture delay"].toDouble()));
+  texture_counter_.restart();
+
   honey_eating_rate_ =
       getConfig()["honey eating rate"].toDouble();
 
@@ -139,15 +143,31 @@ Bear::drawOn(sf::RenderTarget& target) const
 {
   Vec2d position(this->getPosition());
   double radius(this->getRadius());
+  sf::Time elapsedTime(texture_counter_.getElapsedTime());
+  sf::Time delay(texture_delay_);
 
-  auto bearSprite = buildSprite(position, radius, texture_);
+  sf::Texture texture;
+  if ((elapsedTime % delay) > (delay/2.f))
+    {
+      texture = texture_walking_1_;
+    }
+  else
+    {
+      texture = texture_walking_2_;
+    }
+
+  auto bearSprite = buildSprite(position, radius, texture);
   double angle(this->getMoveVec().Vec2d::angle());
   if ((angle >= PI / 2) or (angle <= -PI / 2))
     {
       bearSprite.scale(1, -1);
     }
   bearSprite.rotate(angle / DEG_TO_RAD);
-  target.draw(bearSprite);
+
+  if (!isInCave())
+    {
+      target.draw(bearSprite);
+    }
 
   if (isDebugOn())
     {
@@ -191,7 +211,8 @@ Bear::drawOn(sf::RenderTarget& target) const
 void
 Bear::loadTexture()
 {
-  texture_ = getAppTexture(this->getConfig()["texture"].toString());
+  texture_walking_1_ = getAppTexture(this->getConfig()["texture walking 1"].toString());
+  texture_walking_2_ = getAppTexture(this->getConfig()["texture walking 2"].toString());
 }
 
 void
