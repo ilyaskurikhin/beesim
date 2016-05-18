@@ -82,6 +82,8 @@ World::reloadConfig()
     }
   appendLog("World\tset\thumidityRange_ = " + std::to_string(humidity_range_));
 
+  // calculate matrix of possible humidity values as a function of distance
+  
   humidity_matrix_ = std::vector<double>(humidity_range_ * humidity_range_);
   calculateHumidityMatrix();
 }
@@ -91,6 +93,7 @@ World::reloadCacheStructure()
 {
   logEvent("World", "loading\tcache structure");
 
+  // generate vertexes for each cell texture
   grass_vertexes_ = generateVertexes(simulationWorld()["textures"],
                                      number_columns_, cell_size_);
   water_vertexes_ = grass_vertexes_;
@@ -185,6 +188,8 @@ World::updateCache()
 
   rendering_cache_.clear();
   humidity_cache_.clear();
+  
+  // draw water grass and rock cells on different caches
 
   rendering_cache_.draw(grass_vertexes_.data(), grass_vertexes_.size(),
                         sf::Quads, rsGrass);
@@ -613,6 +618,7 @@ void
 World::clear()
 {
   size_t size(number_columns_ * number_columns_);
+  // sets rock texture for each cell
   for (size_t i(0); i < size; ++i)
     {
       cells_[i] = Kind::Rock;
@@ -646,6 +652,7 @@ World::humidify()
 {
   logEvent("World", "calculating\tglobal humidity");
 
+  // if the cell is a water cell calculate it's humidity
   size_t size(number_columns_ * number_columns_);
   for (size_t i(0); i < size; ++i)
     {
@@ -662,15 +669,15 @@ World::humidify(size_t index)
   size_t x(index % number_columns_);
   size_t y(index / number_columns_);
 
-  sf::Vector2i loc_pos;
+  sf::Vector2i local_position;
   for (int i = -humidity_range_ + 1; i < humidity_range_; ++i)
     {
       for (int j = -humidity_range_ + 1; j < humidity_range_; ++j)
         {
-          loc_pos.x = x + i;
-          loc_pos.y = y + j;
-          clamping(loc_pos);
-          humidity_levels_[loc_pos.y * number_columns_ + loc_pos.x] +=
+          local_position.x = x + i;
+          local_position.y = y + j;
+          clamping(local_position);
+          humidity_levels_[local_position.y * number_columns_ + local_position.x] +=
               humidity_matrix_[std::abs(j) * humidity_range_ + std::abs(i)];
         }
     }
@@ -702,26 +709,18 @@ bool
 World::isGrass(const Vec2d& position) const
 {
   if (cells_[getCellIndex(position)] == Kind::Grass)
-    {
-      return true;
-    }
+    return true;
   else
-    {
-      return false;
-    }
+    return false;
 }
 
 bool
 World::isGrass(size_t x, size_t y) const
 {
   if (cells_[y * number_columns_ + x] == Kind::Grass)
-    {
-      return true;
-    }
+    return true;
   else
-    {
-      return false;
-    }
+    return false;
 }
 
 bool
@@ -747,39 +746,27 @@ bool
 World::isRock(const Vec2d& position) const
 {
   if (cells_[getCellIndex(position)] == Kind::Rock)
-    {
-      return true;
-    }
+    return true;
   else
-    {
-      return false;
-    }
+    return false;
 }
 
 bool
 World::isFlyable(Vec2d const& position) const
 {
   if (cells_[getCellIndex(position)] != Kind::Rock)
-    {
-      return true;
-    }
+    return true;
   else
-    {
-      return false;
-    }
+    return false;
 }
 
 bool
 World::isWalkable(const Vec2d& position) const
 {
   if (cells_[getCellIndex(position)] != Kind::Water)
-    {
-      return true;
-    }
+    return true;
   else
-    {
-      return false;
-    }
+    return false;
 }
 
 Vec2d
@@ -823,13 +810,9 @@ World::isInWorld(const Vec2d& position) const
   if ((position.x > getApp().getWorldSize().x - 1)
       || (position.y > getApp().getWorldSize().y - 1) || (position.x < 0)
       || (position.y < 0))
-    {
-      return false;
-    }
+    return false;
   else
-    {
-      return true;
-    }
+    return true;
 }
 
 const Vec2d&
