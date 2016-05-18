@@ -42,6 +42,7 @@ Movable::getSpeed() const
 void
 Movable::randomMove(sf::Time dt)
 {
+  // make the move vector rotate randomly
   if (bernoulli(rotation_probability_))
     {
       double angleA(uniform(-max_angle_, max_angle_));
@@ -54,17 +55,14 @@ Movable::randomMove(sf::Time dt)
 
   this->Collider::move(move);
 
+  // if walk to the new position impossible make move vector rotate again
   if (!isMovablePosition(this->getPosition()))
     {
       double angleB;
       if (bernoulli(0.5))
-        {
-          angleB = PI / 4;
-        }
+        angleB = PI / 4;
       else
-        {
-          angleB = -PI / 4;
-        }
+        angleB = -PI / 4;
 
       this->rotateMoveVec(angleB);
       this->Collider::move(-move);
@@ -77,33 +75,28 @@ Movable::targetMove(sf::Time dt)
   Vec2d target(this->getMoveTarget());
   Vec2d direction(this->directionTo(target));
 
+  // normalise the direction
   direction = direction.normalised();
 
   if (avoidance_clock_ < sf::Time::Zero)
-    {
-      move_vec_ = direction * move_vec_.length();
-    }
+    move_vec_ = direction * move_vec_.length();
   else
-    {
-      avoidance_clock_ -= dt;
-    }
+    avoidance_clock_ -= dt;
 
   Vec2d move(move_vec_);
   move *= dt.asSeconds();
 
   this->Collider::move(move);
 
+  // if walk to the new position impossible make move vector rotate
   if (!isMovablePosition(this->getPosition()))
     {
       double angleB;
       if (bernoulli(0.5))
-        {
-          angleB = PI / 4;
-        }
+        angleB = PI / 4;
       else
-        {
-          angleB = -PI / 4;
-        }
+        angleB = -PI / 4;
+        
       move_vec_.rotate(angleB);
       avoidance_clock_ = delay_;
 

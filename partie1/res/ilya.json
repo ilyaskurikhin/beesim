@@ -181,7 +181,8 @@
                     },
                     "hiveable factor" : 3
                 },
-                "cave" : {
+                "cave" : {		
+
 					"count" : 0,
 					"max failures" : 1000,
 					"size" : {
@@ -191,7 +192,8 @@
 					}
 				}
             },
-            "max flowers" : 1000
+            "max flowers" : 1000,
+	    "max caves" :1,
         }
     },
     "stats" : {

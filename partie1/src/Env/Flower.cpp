@@ -11,6 +11,7 @@ Flower::Flower(const Vec2d& position, double radius, double pollen) :
 void
 Flower::reloadConfig()
 {
+  // intialises attributes from the json file
   split_threshold_ =
       getAppConfig()["simulation"]["flower"]["growth"]["split"].toDouble();
   humidity_threshold_ =

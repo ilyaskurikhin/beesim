@@ -14,6 +14,7 @@ Hive::Hive(const Vec2d& position, double radius) :
 
 Hive::~Hive()
 {
+  // delete all the bees that belong to the hive
   for (size_t i = 0; i < bees_.size(); ++i)
     {
       delete bees_[i];
@@ -42,6 +43,7 @@ Hive::addWorker()
 Bee*
 Hive::getBeeAt(const Vec2d& position)
 {
+  // check for each bee of the hive if they are at position
   for (size_t i = 0; i < bees_.size(); ++i)
     {
       if (bees_[i]->isPointInside(position))
@@ -55,14 +57,19 @@ Hive::getBeeAt(const Vec2d& position)
 void
 Hive::interactingBees()
 {
+  // create a new vector that will contain bees in hive
   std::vector<Bee*> beesInHive;
+  
   for (size_t i(0); i < bees_.size(); ++i)
     {
+      // if bee is in hive add it to the vector
       if (bees_[i]->isInHive())
         {
           beesInHive.push_back(bees_[i]);
         }
     }
+  
+  // make each bee in hive interact with every other bee in hive
   for (size_t i(0); i < beesInHive.size(); ++i)
     {
       for (size_t j(0); j < beesInHive.size(); ++j)
@@ -76,9 +83,8 @@ double
 Hive::dropPollen(double nectar)
 {
   if (nectar > 0)
-    {
-      nectar_ = nectar_ + nectar;
-    }
+    nectar_ = nectar_ + nectar;
+    
   return nectar_;
 }
 
@@ -86,6 +92,7 @@ double
 Hive::takeNectar(double nectar)
 {
   double taken(0);
+
   if (nectar_ - nectar > 0)
     {
       nectar_ = nectar_ - nectar;
@@ -102,23 +109,22 @@ Hive::takeNectar(double nectar)
 void
 Hive::update(sf::Time dt)
 {
-
+  // check if there is enough nectar and not too much bees to add a new one
   if (bees_.size() < max_bees_ && nectar_ > nectar_thresold_)
     {
+      // add randomly a workerbee or a scoutbee
       if (bernoulli(reproduction_probability_))
-        {
-          this->addWorker();
-        }
+        this->addWorker();
       else
-        {
-          this->addScout();
-        }
+        this->addScout();
     }
 
   for (size_t i = 0; i < bees_.size(); ++i)
     {
+      // update each bee of the hive
       bees_[i]->update(dt);
-
+      
+      // if one bee is dead delete it 
       if (bees_[i]->isDead())
         {
           delete bees_[i];
@@ -138,6 +144,7 @@ Hive::drawOn(sf::RenderTarget& target) const
                                 hive_texture_);
   target.draw(hiveSprite);
 
+  // call function drawOn for each bee of the hive
   for (size_t i = 0; i < bees_.size(); ++i)
     {
       bees_[i]->drawOn(target);
@@ -153,6 +160,7 @@ Hive::drawOn(sf::RenderTarget& target) const
       position = this->getPosition();
       position.y -= text_size;
 
+      // if debug mode is on, shows the amount of nectar
       valueString = "Nectar: " + to_nice_string(nectar_);
       sf::Text text = buildText(valueString, position, getAppFont(), text_size,
                                 color);
