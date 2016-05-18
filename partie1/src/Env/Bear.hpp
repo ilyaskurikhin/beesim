@@ -67,10 +67,9 @@ public:
   double
   getEnergy() const;
 
-
-  double 
+  double
   getHibernationLength() const;
-  
+
   /**
    * @brief Eat some nectar.
    */
@@ -170,7 +169,7 @@ private:
 
   sf::Time hibernation_length_;
   sf::Time max_hibernation_;
-  
+
   State static const SEARCH_HIVE;
   State static const EAT_HONEY;
   State static const RETURN_CAVE;

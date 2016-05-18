@@ -8,8 +8,9 @@
 #include <Env/WorkerBee.hpp>
 
 WorkerBee::WorkerBee(Hive* hive, const Vec2d& position) :
-    Bee(hive, position, std::vector<State> ({IN_HIVE, TO_FLOWER, COLLECT_POLLEN, RETURN_HIVE})),
-    flower_location_(-1, -1), pollen_(0.0)
+    Bee(hive, position, std::vector<State>(
+      { IN_HIVE, TO_FLOWER, COLLECT_POLLEN, RETURN_HIVE })), flower_location_(
+        -1, -1), pollen_(0.0)
 {
   reloadConfig();
   loadTexture();
@@ -178,15 +179,15 @@ WorkerBee::eatPollen(Flower* flower, sf::Time dt)
 
   if (pollen + this->getPollen() > max_pollen_)
     pollen = max_pollen_ - this->getPollen();
- 
+
   if (!flower)
-  {
-    pollen = 0;
-  }
+    {
+      pollen = 0;
+    }
   else
-  {
-    setPollen(this->getPollen() + flower->takePollen(pollen));
-  }
+    {
+      setPollen(this->getPollen() + flower->takePollen(pollen));
+    }
   return pollen;
 }
 

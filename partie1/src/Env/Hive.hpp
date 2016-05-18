@@ -122,10 +122,10 @@ public:
    */
   double
   getNectar() const;
-  
-  std::vector <Bee*>
+
+  std::vector<Bee*>
   getBees() const;
-  
+
   int
   getNumBees() const;
 

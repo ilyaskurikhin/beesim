@@ -10,9 +10,10 @@
 #include <Env/Env.hpp>
 
 Bear::Bear(Cave* cave, const Vec2d& position) :
-    Movable(position), CFSM(std::vector<State> ({HIBERNATION, SEARCH_HIVE, EAT_HONEY, RETURN_CAVE})), 
-    cave_(cave), debug_thickness_random_(5), debug_thickness_target_(
-        3), vision_range_(position), move_state_(AT_REST)
+    Movable(position), CFSM(std::vector<State>(
+      { HIBERNATION, SEARCH_HIVE, EAT_HONEY, RETURN_CAVE })), cave_(cave), debug_thickness_random_(
+        5), debug_thickness_target_(3), vision_range_(position), move_state_(
+        AT_REST)
 {
   reloadConfig();
   loadTexture();
@@ -34,14 +35,15 @@ Bear::reloadConfig()
           getConfig()["moving behaviour"]["target"]["avoidance delay"].toDouble()));
   this->setSpeed(getConfig()["speed"].toDouble());
   this->setMoveVec(Vec2d::fromRandomAngle() * this->getSpeed());
-  this->setMaxAngle(getConfig()["moving behaviour"]["random"]["rotation angle max"].toDouble());
-  this->setRotationProbability(getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble());
+  this->setMaxAngle(
+      getConfig()["moving behaviour"]["random"]["rotation angle max"].toDouble());
+  this->setRotationProbability(
+      getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble());
 
   energy_ = getConfig()["energy"]["initial"].toDouble();
   energy_rate_idle_ =
       getConfig()["energy"]["consumption rates"]["idle"].toDouble();
-  energy_leave_cave_ = 
-      getConfig()["energy"]["to leave cave"].toDouble();
+  energy_leave_cave_ = getConfig()["energy"]["to leave cave"].toDouble();
   energy_rate_moving_ =
       getConfig()["energy"]["consumption rates"]["moving"].toDouble();
   energy_rate_eating_ =
@@ -49,12 +51,11 @@ Bear::reloadConfig()
   energy_seek_hives_ =
       getConfig()["energy"]["consumption rates"]["seeking hive"].toDouble();
 
-  texture_delay_ =
-      sf::seconds(static_cast<float>(getConfig()["texture delay"].toDouble()));
+  texture_delay_ = sf::seconds(
+      static_cast<float>(getConfig()["texture delay"].toDouble()));
   texture_counter_.restart();
 
-  honey_eating_rate_ =
-      getConfig()["honey eating rate"].toDouble();
+  honey_eating_rate_ = getConfig()["honey eating rate"].toDouble();
 
   max_hibernation_ =
       sf::seconds(
@@ -109,7 +110,7 @@ Bear::getEnergy() const
   return energy_;
 }
 
-double 
+double
 Bear::getHibernationLength() const
 {
   return hibernation_length_.asSeconds();
@@ -147,7 +148,7 @@ Bear::drawOn(sf::RenderTarget& target) const
   sf::Time delay(texture_delay_);
 
   sf::Texture texture;
-  if ((elapsedTime % delay) > (delay/2.f))
+  if ((elapsedTime % delay) > (delay / 2.f))
     {
       texture = texture_walking_1_;
     }
@@ -186,7 +187,7 @@ Bear::drawOn(sf::RenderTarget& target) const
                                                sf::Color::Blue, thickness);
           target.draw(shape);
         }
-        
+
       std::string valueString;
       sf::Color color(sf::Color::Red);
       Vec2d position;
@@ -196,7 +197,8 @@ Bear::drawOn(sf::RenderTarget& target) const
       position.y += text_size;
 
       valueString = "Bear: energy " + to_nice_string(this->getEnergy())
-       + " Bear: hibernation length " + to_nice_string(this->getHibernationLength());
+          + " Bear: hibernation length "
+          + to_nice_string(this->getHibernationLength());
       sf::Text text = buildText(valueString, position, getAppFont(), text_size,
                                 color);
       target.draw(text);
@@ -211,8 +213,10 @@ Bear::drawOn(sf::RenderTarget& target) const
 void
 Bear::loadTexture()
 {
-  texture_walking_1_ = getAppTexture(this->getConfig()["texture walking 1"].toString());
-  texture_walking_2_ = getAppTexture(this->getConfig()["texture walking 2"].toString());
+  texture_walking_1_ = getAppTexture(
+      this->getConfig()["texture walking 1"].toString());
+  texture_walking_2_ = getAppTexture(
+      this->getConfig()["texture walking 2"].toString());
 }
 
 void

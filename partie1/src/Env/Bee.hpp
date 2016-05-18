@@ -120,7 +120,7 @@ public:
 
   void
   setEnergy(double energy);
-  
+
   /**
    * @brief Eat some nectar.
    */

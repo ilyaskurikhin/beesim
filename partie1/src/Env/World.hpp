@@ -213,7 +213,7 @@ public:
 
   bool
   isRock(const Vec2d& position) const;
-  
+
   /**
    * @brief Check if Bee can be flown.
    *

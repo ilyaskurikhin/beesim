@@ -129,15 +129,15 @@ Env::update(sf::Time dt)
     }
   hives_.erase(std::remove(hives_.begin(), hives_.end(), nullptr),
                hives_.end());
-               
+
   for (size_t i = 0; i < caves_.size(); ++i)
     {
       caves_[i]->update(dt);
       if (caves_[i]->getBear() == nullptr)
-      {
-        delete caves_[i];
-        caves_[i] = nullptr;
-      }
+        {
+          delete caves_[i];
+          caves_[i] = nullptr;
+        }
     }
   caves_.erase(std::remove(caves_.begin(), caves_.end(), nullptr),
                caves_.end());
@@ -157,14 +157,13 @@ Env::drawOn(sf::RenderTarget& target) const
       hives_[i]->drawOn(target);
 
     }
-  
+
   for (size_t i = 0; i < caves_.size(); ++i)
     {
       caves_[i]->drawOn(target);
 
     }
-  
-  
+
   // if debug is on, show values
   if (isDebugOn())
     {
@@ -298,7 +297,8 @@ Env::isPlaceable(const Vec2d& position, double radius) const
       Collider object(position, radius);
 
       // check if object can be made at position
-      if (getCollidingHive(object) == nullptr && getCollidingCave(object) ==nullptr)
+      if (getCollidingHive(object) == nullptr
+          && getCollidingCave(object) == nullptr)
         {
           return true;
         }
@@ -310,14 +310,15 @@ bool
 Env::isCavePlaceable(const Vec2d& position, double radius) const
 {
   if (world_->isGrass(position) or world_->isRock(position))
-  {
-    Collider object(position, radius);
-    
-    if (getCollidingHive(object) == nullptr && getCollidingCave(object) == nullptr)
     {
-      return true;
+      Collider object(position, radius);
+
+      if (getCollidingHive(object) == nullptr
+          && getCollidingCave(object) == nullptr)
+        {
+          return true;
+        }
     }
-  }
   return false;
 }
 
@@ -406,13 +407,13 @@ bool
 Env::addCaveAt(const Vec2d& position, double size)
 {
   if (caves_.size() < 1)
-  {
-    if (isCavePlaceable(position, size))
     {
-      caves_.push_back(new Cave(position, size));
-      return true;
+      if (isCavePlaceable(position, size))
+        {
+          caves_.push_back(new Cave(position, size));
+          return true;
+        }
     }
-  }
   return false;
 }
 
@@ -483,8 +484,8 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
   target.draw(shape);
   sf::RectangleShape h_shape(
       buildRectangle(Vec2d(h_left, top), Vec2d(h_right, bottom), color, 5.0,
-  
-                     fillColor));
+
+      fillColor));
   target.draw(h_shape);
   sf::RectangleShape v_shape(
       buildRectangle(Vec2d(left, v_top), Vec2d(right, v_bottom), color, 5.0,
@@ -537,7 +538,6 @@ Env::getCollidingCave(const Collider& body) const
     }
   return nullptr;
 }
-
 
 Bee*
 Env::getBeeAt(const Vec2d& position) const

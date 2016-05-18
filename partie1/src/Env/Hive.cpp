@@ -159,7 +159,7 @@ Hive::getNectar() const
   return nectar_;
 }
 
-std::vector <Bee*>
+std::vector<Bee*>
 Hive::getBees() const
 {
   return bees_;

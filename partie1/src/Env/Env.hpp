@@ -148,9 +148,8 @@ public:
    */
   bool
   isPlaceable(const Vec2d& position, double radius) const;
-  
-  
-  bool 
+
+  bool
   isCavePlaceable(const Vec2d& position, double radius) const;
 
   /**
@@ -240,11 +239,9 @@ public:
   Flower*
   getCollidingFlower(const Collider& body) const;
 
-  
   Cave*
   getCollidingCave(const Collider& body) const;
-  
-  
+
   /**
    * @brief Check for Bee at position.
    *
@@ -275,12 +272,12 @@ public:
 private:
 
   World* world_;
-  
+
   std::vector<Flower*> flowers_;
   FlowerGenerator* flower_generator_;
   std::vector<Hive*> hives_;
   std::vector<Cave*> caves_;
-  
+
   double flower_min_nectar_;
   double flower_max_nectar_;
   double flower_manual_radius_;
