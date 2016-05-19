@@ -404,6 +404,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
     case sf::Event::Resized:
         mSimulationView.setSize(event.size.width, event.size.height - getStatsSize().y);
         mStatsView.setSize(event.size.width, getStatsSize().y);
+        break;
 
     case sf::Event::KeyPressed:
         switch (event.key.code) {
