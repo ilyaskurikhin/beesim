@@ -123,7 +123,7 @@ Bear::drawOn(sf::RenderTarget& target) const
   sf::Time delay(texture_delay_);
 
   sf::Texture texture;
-  if ((elapsedTime % delay) > (delay / 2.f))
+      if ((elapsedTime.asMilliseconds()  % delay.asMilliseconds()) > (delay.asMilliseconds() / 2.f))
     {
       texture = texture_walking_1_;
     }
