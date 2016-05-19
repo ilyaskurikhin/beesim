@@ -53,6 +53,9 @@ public:
   bool
   isInCave() const;
 
+  bool
+  isWalking() const;
+
   /**
    * @brief Load the Bear texture.
    *

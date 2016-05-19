@@ -83,6 +83,15 @@ Bear::isInCave() const
     return false;
 }
 
+bool
+Bear::isWalking() const
+{
+  if (this->getState() == SEARCH_HIVE || this->getState() == RETURN_CAVE)
+    return true;
+  else
+    return false;
+}
+
 Hive*
 Bear::findVisibleHive() const
 {
@@ -123,7 +132,8 @@ Bear::drawOn(sf::RenderTarget& target) const
   sf::Time delay(texture_delay_);
 
   sf::Texture texture;
-      if ((elapsedTime.asMilliseconds()  % delay.asMilliseconds()) > (delay.asMilliseconds() / 2.f))
+      if ((elapsedTime.asMilliseconds()  % delay.asMilliseconds()) > (delay.asMilliseconds() / 2.f)
+          && isWalking())
     {
       texture = texture_walking_1_;
     }
