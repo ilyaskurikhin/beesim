@@ -149,9 +149,11 @@ Hive::drawOn(sf::RenderTarget& target) const
     {
       bees_[i]->drawOn(target);
     }
+}
 
-  if (isDebugOn())
-    {
+void
+Hive::drawDebug(sf::RenderTarget& target) const
+{
       std::string valueString;
       sf::Color color(sf::Color::Blue);
       Vec2d position;
@@ -165,7 +167,12 @@ Hive::drawOn(sf::RenderTarget& target) const
       sf::Text text = buildText(valueString, position, getAppFont(), text_size,
                                 color);
       target.draw(text);
-    }
+
+      // call function drawOn for each bee of the hive
+      for (size_t i = 0; i < bees_.size(); ++i)
+        {
+          bees_[i]->drawDebug(target);
+        }
 }
 
 void

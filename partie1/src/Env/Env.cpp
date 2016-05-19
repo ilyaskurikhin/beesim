@@ -185,43 +185,51 @@ Env::drawOn(sf::RenderTarget& target) const
       caves_[i]->drawOn(target);
 
     }
+}
 
-  // if debug is on, show values
-  if (isDebugOn())
+void
+Env::drawDebug(sf::RenderTarget& target) const
+{
+  // draw hives
+  for (size_t i = 0; i < hives_.size(); ++i)
     {
-      // get cursor position
-      Vec2d position = getApp().getCursorPositionInView();
-      if (world_->isInWorld(position))
-        {
-          bool isFlower(false);
-          std::string valueString("empty");
-          sf::Color color(sf::Color::White);
+      hives_[i]->drawDebug(target);
 
-          // check for flowers
-          for (size_t i = 0; i < flowers_.size(); ++i)
-            {
-              if (*(flowers_[i]) > position)
-                {
-                  isFlower = true;
-                  valueString = to_nice_string(flowers_[i]->getPollen());
-                  color = sf::Color::Yellow;
-                }
-            }
-
-          // otherwise show ambient humidity
-          if (!isFlower)
-            {
-              valueString = to_nice_string(world_->getHumidity(position));
-              color = sf::Color::Red;
-            }
-
-          sf::Text text = buildText(valueString, position, getAppFont(),
-                                    debug_text_size_, color);
-          target.draw(text);
-
-        }
     }
 
+
+
+  // get cursor position
+  Vec2d position = getApp().getCursorPositionInView();
+  if (world_->isInWorld(position))
+    {
+      bool isFlower(false);
+      std::string valueString("empty");
+      sf::Color color(sf::Color::White);
+
+      // check for flowers
+      for (size_t i = 0; i < flowers_.size(); ++i)
+        {
+          if (*(flowers_[i]) > position)
+            {
+              isFlower = true;
+              valueString = to_nice_string(flowers_[i]->getPollen());
+              color = sf::Color::Yellow;
+            }
+        }
+
+      // otherwise show ambient humidity
+      if (!isFlower)
+        {
+          valueString = to_nice_string(world_->getHumidity(position));
+          color = sf::Color::Red;
+        }
+
+      sf::Text text = buildText(valueString, position, getAppFont(),
+                                debug_text_size_, color);
+      target.draw(text);
+
+    }
 }
 
 void

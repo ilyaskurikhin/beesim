@@ -118,6 +118,9 @@ public:
   drawOn(sf::RenderTarget& target) const override;
 
   void
+  drawDebug(sf::RenderTarget& target) const;
+
+  void
   reloadConfig() override;
 
   /**

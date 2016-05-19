@@ -86,6 +86,9 @@ public:
   void
   drawOn(sf::RenderTarget& target) const override;
 
+  void
+  drawDebug(sf::RenderTarget& target) const;
+
   /**
    * @brief Reset the environment by regenerating.
    */

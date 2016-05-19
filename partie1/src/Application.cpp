@@ -384,6 +384,9 @@ void Application::createViews()
     mSimulationView = setupView(getWorldSize(),
                                 getSimulationPosition(), getSimulationSize(),
                                 mRenderWindow.getSize());
+    mDebugView = setupView(getWorldSize(),
+                           getSimulationPosition(), getSimulationSize(),
+                           mRenderWindow.getSize());
     mStatsView = setupView(getStatsSize(),
                            getStatsPosition(), getStatsSize(),
                            mRenderWindow.getSize());
@@ -403,6 +406,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 
     case sf::Event::Resized:
         mSimulationView.setSize(event.size.width, event.size.height - getStatsSize().y);
+        mDebugView.setSize(event.size.width, event.size.height - getStatsSize().y);
         mStatsView.setSize(event.size.width, getStatsSize().y);
         break;
 
@@ -555,7 +559,12 @@ void Application::render(sf::Drawable const& simulationBackground, sf::Drawable 
 
     getEnv().drawOn(mRenderWindow);
 
-    onDraw(mRenderWindow);
+    if (isDebugOn()) {
+        mRenderWindow.setView(mDebugView);
+        getEnv().drawDebug(mRenderWindow);
+    }
+
+
 
     // Render the stats
     mRenderWindow.setView(mStatsView);
