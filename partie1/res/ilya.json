@@ -13,7 +13,7 @@
                         "rotation angle max" : 0.785398163
                     }
                 },
-                "texture" : "scout1.png"
+                "texture" : "bee/scout1.png"
             },
             "scout" : {
                 "visibility range" : 50,
@@ -41,7 +41,7 @@
                     "max" : 2
                 },
                 "speed" : 20,
-                "texture" : "scout1.png"
+                "texture" : "bee/scout1.png"
             },
             "worker" : {
                 "visibility range" : 20,
@@ -67,7 +67,7 @@
                 "harvest rate" : 4,
                 "max pollen capacity" : 100,
                 "speed" : 10,
-                "texture" : "worker1.png"
+                "texture" : "bee/worker1.png"
             }
         },
         		"cave" : {
