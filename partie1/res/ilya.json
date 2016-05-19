@@ -193,7 +193,7 @@
 				}
             },
             "max flowers" : 1000,
-	    "max caves" :1,
+	    "max caves" :1
         }
     },
     "stats" : {

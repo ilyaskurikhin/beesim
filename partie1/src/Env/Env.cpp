@@ -268,7 +268,7 @@ Env::reloadConfig()
       getAppConfig()["simulation"]["env"]["initial"]["flower"]["nectar"]["min"].toDouble();
 
   max_flowers_ = getAppConfig()["simulation"]["env"]["max flowers"].toInt();
-  max_caves = getAppConfig()["simulation"]["env"]["cave"]["max caves"].toInt();
+  max_caves_ = getAppConfig()["simulation"]["env"]["max caves"].toInt();
 
   hive_manual_radius_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble();
