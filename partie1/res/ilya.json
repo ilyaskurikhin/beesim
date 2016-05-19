@@ -100,11 +100,11 @@
 			"hibernation" : {
 				"maximum time" : 10
 			},
-			"speed" : 5,
+			"speed" : 4,
 			"textures" : {
 				"walking" : {
 					"file name" : "bear/bear_walking_",
-					"number files" : 19
+					"number files" : 20
 				},
 				"delay" : 0.1
 			}
