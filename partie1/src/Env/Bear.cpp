@@ -32,10 +32,33 @@ Bear::getConfig()
 void
 Bear::loadTexture()
 {
-  texture_walking_1_ = getAppTexture(
-      this->getConfig()["texture walking 1"].toString());
-  texture_walking_2_ = getAppTexture(
-      this->getConfig()["texture walking 2"].toString());
+  current_texture_index_ = 0;
+  int number_files = getConfig()["textures"]["walking"]["number files"].toInt();
+  for (int i=0; i < number_files; ++i)
+    {
+      std::string file_name = getConfig()["textures"]["walking"]["file name"].toString();
+      file_name.append(std::to_string(i));
+      file_name.append(".png");
+      walking_textures_.push_back(getAppTexture(file_name));
+    }
+}
+
+void
+Bear::chooseTexture()
+{
+  if (isWalking() && texture_counter_.getElapsedTime() > texture_delay_)
+    {
+      texture_counter_.restart();
+      if (current_texture_index_ < walking_textures_.size() - 1)
+        {
+          ++current_texture_index_;
+        }
+      else
+        {
+          current_texture_index_ = 0;
+        }
+    }
+    //  if ((texture_counter_.getElapsedTime() > texture_delay_))
 }
 
 void
@@ -128,21 +151,8 @@ Bear::drawOn(sf::RenderTarget& target) const
 {
   Vec2d position(this->getPosition());
   double radius(this->getRadius());
-  sf::Time elapsedTime(texture_counter_.getElapsedTime());
-  sf::Time delay(texture_delay_);
 
-  sf::Texture texture;
-      if ((elapsedTime.asMilliseconds()  % delay.asMilliseconds()) > (delay.asMilliseconds() / 2.f)
-          && isWalking())
-    {
-      texture = texture_walking_1_;
-    }
-  else
-    {
-      texture = texture_walking_2_;
-    }
-
-  auto bearSprite = buildSprite(position, radius, texture);
+  auto bearSprite = buildSprite(position, radius, walking_textures_[current_texture_index_]);
   double angle(this->getMoveVec().Vec2d::angle());
   if ((angle >= PI / 2) or (angle <= -PI / 2))
     {
@@ -224,7 +234,7 @@ Bear::reloadConfig()
       getConfig()["energy"]["consumption rates"]["seeking hive"].toDouble();
 
   texture_delay_ = sf::seconds(
-      static_cast<float>(getConfig()["texture delay"].toDouble()));
+      static_cast<float>(getConfig()["textures"]["delay"].toDouble()));
   texture_counter_.restart();
 
   honey_eating_rate_ = getConfig()["honey eating rate"].toDouble();
@@ -300,6 +310,9 @@ Bear::onState(State state, sf::Time dt)
           this->nextState();
         }
     }
+
+  // choose texture appropriate for state
+  chooseTexture();
 }
 
 void

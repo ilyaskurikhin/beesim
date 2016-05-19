@@ -100,10 +100,14 @@
 			"hibernation" : {
 				"maximum time" : 10
 			},
-			"speed" : 3,
-			"texture walking 1" : "walkingbear.png",
-			"texture walking 2" : "walkingbear2.png",
-			"texture delay" : 1.0
+			"speed" : 5,
+			"textures" : {
+				"walking" : {
+					"file name" : "bear/bear_walking_",
+					"number files" : 19
+				},
+				"delay" : 0.1
+			}
 		},
         "flower" : {
             "textures" : [ "flowerA.png", "flowerB.png", "flowerC.png" ],

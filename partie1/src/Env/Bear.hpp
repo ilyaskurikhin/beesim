@@ -64,6 +64,9 @@ public:
   void
   loadTexture();
 
+  void
+  chooseTexture();
+
   /**
    * @brief Find Hive in visible range.
    *
@@ -162,6 +165,8 @@ private:
 
   double honey_eating_rate_;
 
+  size_t current_texture_index_;
+  std::vector<sf::Texture> walking_textures_;
   sf::Texture texture_walking_1_;
   sf::Texture texture_walking_2_;
 
