@@ -167,8 +167,6 @@ private:
 
   size_t current_texture_index_;
   std::vector<sf::Texture> walking_textures_;
-  sf::Texture texture_walking_1_;
-  sf::Texture texture_walking_2_;
 
   sf::Clock texture_counter_;
   sf::Time texture_delay_;
