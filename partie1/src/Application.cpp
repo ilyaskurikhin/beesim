@@ -360,7 +360,7 @@ void Application::createWindow(Vec2d const& size)
     contextSettings.antialiasingLevel = getConfig()["window"]["antialiasing level"].toInt();
 
     // Create the window
-    mRenderWindow.create(vm, title, sf::Style::Close, contextSettings);
+    mRenderWindow.create(vm, title, sf::Style::Default, contextSettings);
     mRenderWindow.setKeyRepeatEnabled(true);
     mRenderWindow.setFramerateLimit(60);
 }
@@ -400,6 +400,10 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
     case sf::Event::Closed:
         window.close();
         break;
+
+    case sf::Event::Resized:
+        mSimulationView.setSize(event.size.width, event.size.height - getStatsSize().y);
+        mStatsView.setSize(event.size.width, getStatsSize().y);
 
     case sf::Event::KeyPressed:
         switch (event.key.code) {
