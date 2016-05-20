@@ -82,7 +82,7 @@
 					"rotation angle max" : 0.485398163 
 				},
 				"target" : {
-					"avoidance delay" : 0.2
+					"avoidance delay" : 2
 				}
 			},
 			"size" : 60,
@@ -97,6 +97,7 @@
 				}
 			},
 			"honey eating rate" : 10,
+			"max honey capacity" : 500,
 			"hibernation" : {
 				"maximum time" : 10
 			},
@@ -197,7 +198,7 @@
 				}
             },
             "max flowers" : 1000,
-	    "max caves" :1
+	    "max caves" :2
         }
     },
     "stats" : {

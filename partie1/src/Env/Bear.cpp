@@ -125,18 +125,20 @@ Bear::findVisibleHive() const
 double
 Bear::eatHoney(Hive* hive, sf::Time dt)
 {
-  double eaten(honey_eating_rate_ * dt.asSeconds());
+  setEatenHoney(honey_eating_rate_ * dt.asSeconds());
   if (hive)
     {
-      eaten = hive->takeNectar(eaten);
+      setEatenHoney(hive->takeNectar(this->getEatenHoney()));
     }
   else
     {
-      eaten = 0;
+      setEatenHoney(0);
+      std::cout << "to 0" << std::endl;
     }
-  energy_ += eaten;
+  energy_ += this->getEatenHoney();
 
-  return eaten;
+  std::cout << this->getEatenHoney() << std::endl;
+  return this->getEatenHoney();
 }
 
 void
@@ -243,6 +245,8 @@ Bear::reloadConfig()
       sf::seconds(
           static_cast<float>(getConfig()["hibernation"]["maximum time"].toDouble()));
 
+  max_honey_capacity_ = getConfig()["max honey capacity"].toDouble();
+  
   visibility_ = getConfig()["visibility range"].toDouble();
   vision_range_.setRadius(visibility_ + this->getRadius());
 }
@@ -291,8 +295,10 @@ Bear::onState(State state, sf::Time dt)
       if (hive != nullptr)
         {
           eatHoney(hive, dt);
-          if (hive->getNectar() <= 0)
-            this->nextState();
+          if (hive->getNectar() <= 0 or this->getEatenHoney() < max_honey_capacity_)
+            {
+              this->nextState();
+            }
         }
       else
         {
@@ -303,6 +309,7 @@ Bear::onState(State state, sf::Time dt)
   // fourth state
   else if (state == RETURN_CAVE)
     {
+      setEatenHoney(0);
       this->setDebugStatus("back_to_cave");
       this->setMoveTarget(this->getCave()->getPosition());
       if (this->getCave()->isColliderInside(this->getCollider()))
@@ -361,6 +368,18 @@ double
 Bear::getEnergy() const
 {
   return energy_;
+}
+
+void 
+Bear::setEatenHoney(double honey)
+{
+  eaten_honey_ = honey;
+}
+
+double 
+Bear::getEatenHoney() const
+{
+  return eaten_honey_;
 }
 
 void
