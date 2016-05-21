@@ -207,8 +207,12 @@ void
 WorkerBee::drawOn(sf::RenderTarget& target) const
 {
   Bee::drawOn(target);
-  if (isDebugOn())
-    {
+
+}
+
+void
+WorkerBee::drawDebug(sf::RenderTarget& target) const
+{
       std::string valueString;
       sf::Color color(sf::Color::Magenta);
       Vec2d position;
@@ -226,7 +230,7 @@ WorkerBee::drawOn(sf::RenderTarget& target) const
       sf::Text status = buildText(this->getDebugStatus(), position,
                                   getAppFont(), text_size, color);
       target.draw(status);
-    }
+
 }
 
 bool

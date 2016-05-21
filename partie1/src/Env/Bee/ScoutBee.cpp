@@ -27,8 +27,13 @@ void
 ScoutBee::drawOn(sf::RenderTarget& target) const
 {
   Bee::drawOn(target);
-  if (isDebugOn())
-    {
+
+}
+
+void
+ScoutBee::drawDebug(sf::RenderTarget& target) const
+{
+
       std::string valueString;
       sf::Color color(sf::Color::Yellow);
       Vec2d position;
@@ -46,7 +51,7 @@ ScoutBee::drawOn(sf::RenderTarget& target) const
       sf::Text status = buildText(this->getDebugStatus(), position,
                                   getAppFont(), text_size, color);
       target.draw(status);
-    }
+
 }
 
 void

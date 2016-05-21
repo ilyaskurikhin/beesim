@@ -272,6 +272,7 @@ private:
 
     sf::RenderWindow mRenderWindow;  ///< SFML window / render target
     sf::View mSimulationView;        ///< View for simulation area
+    sf::View mDebugView;
 
     Stats*   mStats;                 ///< Statistic manager
     sf::View mStatsView;             ///< View for the stats area

@@ -103,6 +103,9 @@ public:
   void
   drawOn(sf::RenderTarget& target) const override;
 
+  virtual void
+  drawDebug(sf::RenderTarget& target) const=0;
+
   /**
    * @brief Reload the configuration of attributes from JSON.
    */

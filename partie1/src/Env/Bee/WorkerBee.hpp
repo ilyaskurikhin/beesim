@@ -36,6 +36,9 @@ public:
   drawOn(sf::RenderTarget& target) const;
 
   void
+  drawDebug(sf::RenderTarget& target) const override;
+
+  void
   onState(State state, sf::Time dt) override;
 
   void
