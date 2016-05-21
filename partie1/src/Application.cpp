@@ -243,17 +243,16 @@ Env const& Application::getEnv() const
     return *mEnv;
 }
 
-/*
-BeeTracker& Application::getBeeTracker()
+AnimalTracker& Application::getBeeTracker()
 {
-    return mBeeTracker;
+    return mTracker;
 }
 
-BeeTracker const& Application::getBeeTracker() const
+AnimalTracker const& Application::getBeeTracker() const
 {
-    return mBeeTracker;
+    return mTracker;
 }
-*/
+
 j::Value& Application::getConfig()
 {
     return mConfig;
@@ -505,17 +504,17 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
             mIsDragging = true;
             mLastCursorPosition = { event.mouseButton.x, event.mouseButton.y };
         } else if (event.mouseButton.button == sf::Mouse::Right) {
-            /*
+
             auto pos  = getCursorPositionInView();
-            auto* bee = getEnv().getBeeAt(pos);
-            if (bee == nullptr) {
+            Movable* animal = getEnv().getAnimalAt(pos);
+            if (animal == nullptr) {
                 // Stop tracking bee
-                getBeeTracker().stopTrackingBee();
+                getBeeTracker().stopTracking();
             } else {
                 // Track the bee
-                getBeeTracker().startTrackingBee(bee);
+                getBeeTracker().startTracking(animal);
             }
-             */
+
         }
         break;
 
@@ -595,14 +594,14 @@ void Application::zoomViewAt(sf::Vector2i const& pixel, float zoomFactor)
     view.zoom(zoomFactor);
     mRenderWindow.setView(view);
 
-    // if (!getBeeTracker().isTrackingBee())  {
+    if (!getBeeTracker().isTracking())  {
         // If no bee is selected, center on the cursor position
         auto afterCoord = mRenderWindow.mapPixelToCoords(pixel);
         auto offsetCoords = beforeCoord - afterCoord;
 
         view.move(offsetCoords);
         mRenderWindow.setView(view);
-		// }
+    }
 }
 
 void Application::dragView(sf::Vector2i const& srcPixel, sf::Vector2i const& destPixel)
@@ -620,12 +619,12 @@ void Application::dragView(sf::Vector2i const& srcPixel, sf::Vector2i const& des
 
 void Application::updateSimulationView()
 {
-	/*
-    if (getBeeTracker().isTrackingBee()) {
-        auto pos = getBeeTracker().getTrackedBeePosition();
+
+    if (getBeeTracker().isTracking()) {
+        auto pos = getBeeTracker().getTrackedPosition();
         mSimulationView.setCenter(pos);
     }
-	*/
+
 }
 
 Application& getApp()

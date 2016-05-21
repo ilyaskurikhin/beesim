@@ -40,7 +40,7 @@ void
 Env::regenerate()
 {
   logEvent("Env", "regenerating objects");
-  
+
   // initialises attributes from the json file
   auto const& initial = getAppConfig()["simulation"]["env"]["initial"];
 
@@ -147,7 +147,7 @@ Env::update(sf::Time dt)
     {
       // update the caves
       caves_[i]->update(dt);
-      
+
       // check if there is still a bear in it 
       if (caves_[i]->getBear() == nullptr)
         {
@@ -165,13 +165,13 @@ void
 Env::drawOn(sf::RenderTarget& target) const
 {
   world_->drawOn(target);
-  
+
   // draw flowers
   for (size_t i = 0; i < flowers_.size(); ++i)
     {
       flowers_[i]->drawOn(target);
     }
-  
+
   // draw hives
   for (size_t i = 0; i < hives_.size(); ++i)
     {
@@ -230,7 +230,7 @@ Env::reset()
   logEvent("Env", "resetting environment");
 
   world_->reset(true);
-  
+
   // iterate on flowers and delete them
   for (size_t i = 0; i < flowers_.size(); ++i)
     {
@@ -245,7 +245,7 @@ Env::reset()
       delete hives_[i];
     }
   hives_.clear();
-  
+
   // iterate on caves and delete them
   for (size_t i = 0; i < caves_.size(); ++i)
     {
@@ -591,6 +591,33 @@ Env::getBeeAt(const Vec2d& position) const
           return bee;
         }
     }
+  return nullptr;
+}
+
+Bear*
+Env::getBearAt(const Vec2d& position) const
+{
+  for (size_t i = 0; i < caves_.size(); ++i)
+    {
+      Bear* bear = caves_[i]->getBearAt(position);
+      if (bear)
+        return bear;
+    }
+  return nullptr;
+}
+
+Movable*
+Env::getAnimalAt(const Vec2d& position) const
+{
+  Movable* tracked;
+  tracked = getBeeAt(position);
+  if (tracked)
+    return tracked;
+
+  tracked = getBearAt(position);
+  if (tracked)
+    return tracked;
+
   return nullptr;
 }
 

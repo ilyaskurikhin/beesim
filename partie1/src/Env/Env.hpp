@@ -251,6 +251,12 @@ public:
   Bee*
   getBeeAt(const Vec2d& position) const;
 
+  Bear*
+  getBearAt(const Vec2d& position) const;
+
+  Movable*
+  getAnimalAt(const Vec2d& position) const;
+
   int
   getNumScouts() const;
 
@@ -282,13 +288,12 @@ private:
   double flower_manual_radius_;
   size_t max_flowers_;
 
-  
   double hive_manual_radius_;
   double hiveable_factor_;
 
   double cave_manual_radius_;
   size_t max_caves_;
-  
+
   double debug_text_size_;
 };
 #endif
