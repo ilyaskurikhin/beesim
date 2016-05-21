@@ -190,6 +190,7 @@ Env::drawOn(sf::RenderTarget& target) const
 void
 Env::drawDebug(sf::RenderTarget& target) const
 {
+
   // draw hives
   for (size_t i = 0; i < hives_.size(); ++i)
     {
@@ -203,7 +204,7 @@ Env::drawDebug(sf::RenderTarget& target) const
   Vec2d position = getApp().getCursorPositionInView();
   if (world_->isInWorld(position))
     {
-      bool isFlower(false);
+      bool isShowing(false);
       std::string valueString("empty");
       sf::Color color(sf::Color::White);
 
@@ -212,22 +213,26 @@ Env::drawDebug(sf::RenderTarget& target) const
         {
           if (*(flowers_[i]) > position)
             {
-              isFlower = true;
+              isShowing = true;
               valueString = to_nice_string(flowers_[i]->getPollen());
               color = sf::Color::Yellow;
             }
         }
 
       // otherwise show ambient humidity
-      if (!isFlower)
+      if (!isShowing && getAppConfig()["simulation"]["world"]["show humidity"].toBool())
         {
           valueString = to_nice_string(world_->getHumidity(position));
           color = sf::Color::Red;
+          isShowing = true;
         }
 
-      sf::Text text = buildText(valueString, position, getAppFont(),
-                                debug_text_size_, color);
-      target.draw(text);
+      if (isShowing)
+        {
+          sf::Text text = buildText(valueString, position, getAppFont(),
+                                    debug_text_size_, color);
+          target.draw(text);
+        }
 
     }
 }

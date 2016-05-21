@@ -597,11 +597,15 @@ void Application::zoomViewAt(sf::Vector2i const& pixel, float zoomFactor)
 {
     // Note: we know that the simulation view is active
     sf::View& view = mSimulationView;
+    sf::View& debug_view = mDebugView;
 
     auto beforeCoord = mRenderWindow.mapPixelToCoords(pixel);
 
     view.zoom(zoomFactor);
     mRenderWindow.setView(view);
+
+    debug_view.setSize(debug_view.getSize() * zoomFactor);
+    mRenderWindow.setView(debug_view);
 
     if (!getBeeTracker().isTracking())  {
         // If no bee is selected, center on the cursor position
@@ -610,6 +614,9 @@ void Application::zoomViewAt(sf::Vector2i const& pixel, float zoomFactor)
 
         view.move(offsetCoords);
         mRenderWindow.setView(view);
+
+        debug_view.move(offsetCoords);
+        mRenderWindow.setView(debug_view);
     }
 }
 
@@ -617,13 +624,21 @@ void Application::dragView(sf::Vector2i const& srcPixel, sf::Vector2i const& des
 {
     // Note: we know that the simulation view is active
     sf::View& view = mSimulationView;
+    sf::View& debug_view = mDebugView;
 
-    auto src = mRenderWindow.mapPixelToCoords(srcPixel);
-    auto dest = mRenderWindow.mapPixelToCoords(destPixel);
+    auto src = mRenderWindow.mapPixelToCoords(srcPixel, view);
+    auto dest = mRenderWindow.mapPixelToCoords(destPixel, view);
     auto dx = src - dest;
 
     view.move(dx);
     mRenderWindow.setView(view);
+
+    auto src_d = mRenderWindow.mapPixelToCoords(srcPixel, debug_view);
+    auto dest_d = mRenderWindow.mapPixelToCoords(destPixel, debug_view);
+    auto dx_d = src_d - dest_d;
+
+    debug_view.move(dx_d);
+    mRenderWindow.setView(debug_view);
 }
 
 void Application::updateSimulationView()

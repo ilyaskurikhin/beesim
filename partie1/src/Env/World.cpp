@@ -263,7 +263,7 @@ World::reset(bool regenerate)
 void
 World::drawOn(sf::RenderTarget& target) const
 {
-  if (simulationWorld()["show humidity"].toBool() || isDebugOn())
+  if (simulationWorld()["show humidity"].toBool())
     {
       sf::Sprite cache(humidity_cache_.getTexture());
       target.draw(cache);
