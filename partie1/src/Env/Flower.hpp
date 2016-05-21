@@ -40,6 +40,8 @@ public:
    */
   Flower();
 
+  Flower(const Flower& flower) = delete;
+
   /**
    * @brief Detailed constructor.
    *
@@ -48,6 +50,9 @@ public:
    * @param pollen initial pollen of Flower.
    */
   Flower(const Vec2d& position, double radius, double pollen);
+
+  const Flower&
+  operator=(const Flower& flower) = delete;
 
   void
   reloadConfig() override;

@@ -25,8 +25,13 @@ public:
 
   Movable(const Vec2d& position, double radius);
 
+  Movable(const Movable& movable) = delete;
+
   virtual
   ~Movable() = default;
+
+  const Movable&
+  operator=(const Movable& movable) = delete;
 
   /**
    * @brief Set a target to move towards

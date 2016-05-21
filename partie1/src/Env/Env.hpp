@@ -55,10 +55,15 @@ public:
    */
   Env();
 
+  Env(const Env& env) = delete;
+
   /**
    * @brief Class destructor
    */
   ~Env();
+
+  const Env&
+  operator=(const Env& env) = delete;
 
   void
   regenerate();

@@ -33,6 +33,13 @@ public:
    */
   FlowerGenerator();
 
+  FlowerGenerator(const FlowerGenerator& flowerGenerator) = delete;
+
+  ~FlowerGenerator() = default;
+
+  const FlowerGenerator&
+  operator=(const FlowerGenerator& flowerGenerator) = delete;
+
   /**
    * @brief Evolve FlowerGeneratr.
    *

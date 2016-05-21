@@ -56,6 +56,11 @@ public:
    */
   World();
 
+  World(const World& world) = delete;
+
+  const World&
+  operator=(const World& world) = delete;
+
   /**
    * @brief Load the app configuration from the config file.
    *

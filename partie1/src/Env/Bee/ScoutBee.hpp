@@ -23,7 +23,12 @@ public:
 
   ScoutBee(Hive* hive, const Vec2d& position);
 
+  ScoutBee(const ScoutBee& scoutbee) = delete;
+
   ~ScoutBee();
+
+  const ScoutBee&
+  operator=(const ScoutBee& scoutbee) = delete;
 
   void
   drawOn(sf::RenderTarget& target) const override;

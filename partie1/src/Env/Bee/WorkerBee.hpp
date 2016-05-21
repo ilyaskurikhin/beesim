@@ -19,7 +19,12 @@ public:
 
   WorkerBee(Hive* hive, const Vec2d& position);
 
+  WorkerBee(const WorkerBee& workerbee) = delete;
+
   ~WorkerBee();
+
+  const WorkerBee&
+  operator=(const WorkerBee& workerbee) = delete;
 
   void
   reloadConfig();
