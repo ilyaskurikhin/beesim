@@ -1,4 +1,3 @@
-
        .d8888b. 888     888      8888888b. 8888888b.  .d88888b.  .d8888b.  
       d88P  Y88b888     888      888   Y88b888   Y88bd88P" "Y88bd88P  Y88b 
       Y88b.     888     888      888    888888    888888     888888    888 
@@ -14,8 +13,8 @@
 Introduction
 ================================================================================
 
-This program aims to simulate an environment in bees, living in hives, collect
-pollen from flowers to keep the other bees in their hive alive.
+This program aims to simulate an environment in which bees, living in hives, 
+collect pollen from flowers to keep the other bees in their hive alive.
 
 Installation
 ================================================================================
@@ -30,7 +29,8 @@ In order to use the documentation, you will need Doxygen.
 
 ## Generating documentation
 
-Documentation can be generated with doxygen, from the /doc directory.
+Documentation can be generated with doxygen, from the /doc directory with the 
+provided Doxyfile.
 
 
 Usage
@@ -40,6 +40,9 @@ The default run command is `scons application-run`, which will build and run the
 code in default configuration, using the app.json config file in the /res 
 directory. You can change the configuration file used with the `--cfg=<file>`
 argument.
+
+We have extended the configuration file to include new features, as well as to 
+tweak previous features.
 
 ## Environment
 
@@ -55,9 +58,14 @@ Press `r` to generate a new environment.
 
 Press `i` to load world to file.
 
-Press `s` to save world to file
+Press `s` to save world to file.
 
 Press `d` to enter debug mode.
+
+Press `w` to display humidity levels.
+
+You can move around by dragging the world and scrolling to zoom in and out. 
+If you right click an animal, you the camera will follow it around the world.
 
 
 Documentation
