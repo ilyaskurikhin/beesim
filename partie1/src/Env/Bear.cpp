@@ -32,10 +32,12 @@ Bear::getConfig()
 void
 Bear::loadTexture()
 {
+  // intialises texture index at 0
   current_texture_index_ = 0;
   int number_files = getConfig()["textures"]["walking"]["number files"].toInt();
   for (int i=0; i < number_files; ++i)
     {
+      // iterates on the texture files and add them in a vector of sf::Textures
       std::string file_name = getConfig()["textures"]["walking"]["file name"].toString();
       file_name.append(std::to_string(i));
       file_name.append(".png");

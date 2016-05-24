@@ -42,20 +42,26 @@ Bee::reloadConfig()
 void
 Bee::move(sf::Time dt)
 {
+  // bee at rest loses its energy at a certain rate
   if (move_state_ == AT_REST)
     {
       energy_ = energy_ - energy_rate_idle_ * dt.asSeconds();
     }
+    
+  // bee moving randomly loses its energy at a certain rate
   else if (move_state_ == RANDOM)
     {
       randomMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
+    
+  // bee moving to a target loses its energy at a certain rate
   else if (move_state_ == TARGET)
     {
       targetMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
+  // sets current bee position to the vision range position
   vision_range_.setPosition(this->getPosition());
 }
 
@@ -100,6 +106,7 @@ Bee::getEnergy() const
 void
 Bee::eatFromHive(sf::Time dt)
 {
+  // energy increases by the amount of nectar taken from hive
   energy_ += this->getHive()->takeNectar(energy_rate_eating_ * dt.asSeconds());
 }
 
@@ -115,30 +122,35 @@ Bee::drawOn(sf::RenderTarget& target) const
   Vec2d position(this->getPosition());
   double radius(this->getRadius());
 
+  // creates the bee sprite
   auto beeSprite = buildSprite(position, radius, texture_);
   double angle(this->getMoveVec().Vec2d::angle());
+  
+  // if it is not in the correct angle moves the sprite
   if ((angle >= PI / 2) or (angle <= -PI / 2))
     {
       beeSprite.scale(1, -1);
     }
   beeSprite.rotate(angle / DEG_TO_RAD);
+  
+  // draw the sprite
   target.draw(beeSprite);
 
   if (isDebugOn())
     {
-      double thickness(0);
+      // if bee moves randomly draw a black annulus around it
       if (move_state_ == RANDOM)
         {
-          thickness = debug_thickness_random_;
           sf::CircleShape shape = buildAnnulus(position, radius,
-                                               sf::Color::Black, thickness);
+                                               sf::Color::Black, debug_thickness_random_);
           target.draw(shape);
         }
+      
+      // if bee moves to a target draw a blue annulus around it
       else if (move_state_ == TARGET)
         {
-          thickness = debug_thickness_target_;
           sf::CircleShape shape = buildAnnulus(position, radius,
-                                               sf::Color::Blue, thickness);
+                                               sf::Color::Blue, debug_thickness_target_);
           target.draw(shape);
         }
 

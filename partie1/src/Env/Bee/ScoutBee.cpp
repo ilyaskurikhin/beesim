@@ -34,23 +34,23 @@ void
 ScoutBee::drawDebug(sf::RenderTarget& target) const
 {
 
-      std::string valueString;
-      sf::Color color(sf::Color::Yellow);
-      Vec2d position;
-      double text_size(getAppEnv().getTextSize());
+  std::string valueString;
+  sf::Color color(sf::Color::Yellow);
+  Vec2d position;
+  double text_size(getAppEnv().getTextSize());
+  
+  position = this->getPosition();
+  position.y += text_size;
 
-      position = this->getPosition();
-      position.y += text_size;
+  valueString = "Scout: energy " + to_nice_string(this->getEnergy());
+  sf::Text text = buildText(valueString, position, getAppFont(), text_size,
+                              color);
+  target.draw(text);
 
-      valueString = "Scout: energy " + to_nice_string(this->getEnergy());
-      sf::Text text = buildText(valueString, position, getAppFont(), text_size,
-                                color);
-      target.draw(text);
-
-      position.y += text_size;
-      sf::Text status = buildText(this->getDebugStatus(), position,
+  position.y += text_size;
+  sf::Text status = buildText(this->getDebugStatus(), position,
                                   getAppFont(), text_size, color);
-      target.draw(status);
+  target.draw(status);
 
 }
 
