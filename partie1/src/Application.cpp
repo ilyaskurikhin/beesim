@@ -604,7 +604,7 @@ void Application::zoomViewAt(sf::Vector2i const& pixel, float zoomFactor)
     view.zoom(zoomFactor);
     mRenderWindow.setView(view);
 
-    debug_view.setSize(debug_view.getSize() * zoomFactor);
+    debug_view.zoom(zoomFactor);
     mRenderWindow.setView(debug_view);
 
     if (!getBeeTracker().isTracking())  {
@@ -647,6 +647,7 @@ void Application::updateSimulationView()
     if (getBeeTracker().isTracking()) {
         auto pos = getBeeTracker().getTrackedPosition();
         mSimulationView.setCenter(pos);
+        mDebugView.setCenter(pos);
     }
 
 }
