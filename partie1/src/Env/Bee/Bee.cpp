@@ -4,7 +4,7 @@
 #include <Env/Flower.hpp>
 
 Bee::Bee(Hive* hive, const Vec2d& position, std::vector<State> states) :
-    Movable(position), CFSM(states), hive_(hive), debug_thickness_random_(5), debug_thickness_target_(
+    Movable(position), CFSM(states), hive_(hive), debug_thickness_random_(3), debug_thickness_target_(
         3), vision_range_(position), move_state_(AT_REST)
 {
   // This constructor can not take care of its members
