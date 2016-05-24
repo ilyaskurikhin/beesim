@@ -29,6 +29,7 @@
 
 #include <memory>
 #include <vector>
+#include <array>
 #include <string>
 #include <unordered_map>
 
@@ -157,6 +158,9 @@ public:
   isPlaceable(const Vec2d& position, double radius) const;
 
   bool
+  isHiveable(const Vec2d& position, double radius) const;
+
+  bool
   isCavePlaceable(const Vec2d& position, double radius) const;
 
   /**
@@ -224,7 +228,11 @@ public:
    * @param position where new Hive would be.
    */
   void
-  drawHiveableZone(sf::RenderTarget& target, const Vec2d& position);
+  drawHiveableZone(sf::RenderTarget& target, const Vec2d& position,
+		   double radius) const;
+
+  void
+  drawHiveableZone(sf::RenderTarget& target, const Vec2d& position) const;
 
   /**
    * @brief Check for Hive collision, return if exists.
@@ -278,6 +286,13 @@ public:
    */
   double
   getTextSize();
+
+  // order of return :
+  // left (0), right (1), top (2), bottom (3)
+  // h_left (4), h_right (5)
+  // v_top (6), v_bottom (7)
+  std::array<double, 8>
+  calculateScanRange(const Vec2d& position, double radius) const;
 
   std::unordered_map<std::string, double>
   fetchData(std::string graph) const;

@@ -353,6 +353,24 @@ Env::isPlaceable(const Vec2d& position, double radius) const
 }
 
 bool
+Env::isHiveable(const Vec2d& position, double radius) const
+{
+    std::array<double, 8> v(calculateScanRange(position, radius));
+
+    if (!world_->isGrassArea(Vec2d(v[0], v[2]), Vec2d(v[1], v[3]))
+        || !world_->isGrassArea(Vec2d(v[4], v[2]), Vec2d(v[5], v[3]))
+        || !world_->isGrassArea(Vec2d(v[0], v[6]), Vec2d(v[1], v[7]))
+        || !world_->isGrassArea(Vec2d(v[4], v[6]), Vec2d(v[5], v[7])))
+      {
+        return false;
+      }
+    else
+      {
+        return true;
+      }
+}
+
+bool
 Env::isCavePlaceable(const Vec2d& position, double radius) const
 {
   // check if there is grass or rock at position
@@ -435,7 +453,7 @@ bool
 Env::addHiveAt(const Vec2d& position, double size)
 {
   // check if there is grass at position and object is placeabl
-  if (isPlaceable(position, size))
+  if (isPlaceable(position, size) && isHiveable(position,size))
     {
       hives_.push_back(new Hive(position, size));
       return true;
@@ -468,52 +486,14 @@ Env::addCaveAt(const Vec2d& position, double size)
 }
 
 void
-Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
+Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position,
+		      double radius) const
 {
-  Vec2d worldSize = getWorldSize();
-
   sf::Color color;
   sf::Color fillColor;
   fillColor.a = 0;
-  double left, right, top, bottom;
-  double h_left(-5), h_right(-5); // horizontal
-  double v_top(-5), v_bottom(-5); // vertical
 
-  if (!world_->isInWorld(position))
-    return;
-
-  left = position.x - hive_manual_radius_;
-  if (left < 0)
-    {
-      h_right = left + worldSize.x;
-      h_left = worldSize.x;
-    }
-
-  right = position.x + hive_manual_radius_;
-  if (right > worldSize.x)
-    {
-      h_right = right - worldSize.x;
-      h_left = 0;
-    }
-
-  top = position.y - hive_manual_radius_;
-  if (top < 0)
-    {
-      v_bottom = worldSize.y;
-      v_top = top + worldSize.y;
-    }
-
-  bottom = position.y + hive_manual_radius_;
-  if (bottom > worldSize.y)
-    {
-      v_bottom = 0;
-      v_top = bottom - worldSize.y;
-    }
-
-  if (!world_->isGrassArea(Vec2d(left, top), Vec2d(right, bottom))
-      || !world_->isGrassArea(Vec2d(h_left, top), Vec2d(h_right, bottom))
-      || !world_->isGrassArea(Vec2d(left, v_top), Vec2d(right, v_bottom))
-      || !world_->isGrassArea(Vec2d(h_left, v_top), Vec2d(h_right, v_bottom)))
+  if (!isHiveable(position, hive_manual_radius_))
     {
       color = sf::Color::Blue;
     }
@@ -526,23 +506,31 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
       color = sf::Color::Green;
     }
 
+  std::array<double, 8> v(calculateScanRange(position, radius));
+
   sf::RectangleShape shape(
-      buildRectangle(Vec2d(left, top), Vec2d(right, bottom), color, 5.0,
+      buildRectangle(Vec2d(v[0], v[2]), Vec2d(v[1], v[3]), color, 5.0,
                      fillColor));
   target.draw(shape);
   sf::RectangleShape h_shape(
-      buildRectangle(Vec2d(h_left, top), Vec2d(h_right, bottom), color, 5.0,
+      buildRectangle(Vec2d(v[4], v[2]), Vec2d(v[5], v[3]), color, 5.0,
 
       fillColor));
   target.draw(h_shape);
   sf::RectangleShape v_shape(
-      buildRectangle(Vec2d(left, v_top), Vec2d(right, v_bottom), color, 5.0,
+      buildRectangle(Vec2d(v[0], v[6]), Vec2d(v[1], v[7]), color, 5.0,
                      fillColor));
   target.draw(v_shape);
   sf::RectangleShape d_shape(
-      buildRectangle(Vec2d(h_left, v_top), Vec2d(h_right, v_bottom), color, 5.0,
+      buildRectangle(Vec2d(v[4], v[6]), Vec2d(v[5], v[7]), color, 5.0,
                      fillColor));
   target.draw(d_shape);
+}
+
+void
+Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position) const
+{
+  drawHiveableZone(target, position, hive_manual_radius_);
 }
 
 Hive*
@@ -660,6 +648,49 @@ double
 Env::getTextSize()
 {
   return debug_text_size_;
+}
+
+std::array<double, 8>
+Env::calculateScanRange(const Vec2d& position, double radius) const
+{
+  Vec2d worldSize = getWorldSize();
+
+  double left, right, top, bottom;
+  double h_left(-5), h_right(-5); // horizontal
+  double v_top(-5), v_bottom(-5); // vertical
+
+  if (!world_->isInWorld(position))
+    return {0,0,0,0};
+
+  left = position.x - radius;
+  if (left < 0)
+    {
+      h_right = left + worldSize.x;
+      h_left = worldSize.x;
+    }
+
+  right = position.x + radius;
+  if (right > worldSize.x)
+    {
+      h_right = right - worldSize.x;
+      h_left = 0;
+    }
+
+  top = position.y - radius;
+  if (top < 0)
+    {
+      v_bottom = worldSize.y;
+      v_top = top + worldSize.y;
+    }
+
+  bottom = position.y + radius;
+  if (bottom > worldSize.y)
+    {
+      v_bottom = 0;
+      v_top = bottom - worldSize.y;
+    }
+
+  return {left, right, top, bottom, h_left, h_right, v_top, v_bottom};
 }
 
 std::unordered_map<std::string, double>
