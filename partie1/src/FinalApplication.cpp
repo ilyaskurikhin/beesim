@@ -83,7 +83,6 @@ void FinalApplication::onDraw(sf::RenderTarget& target)
     if (mShowHiveableZone) {
         auto pos = getCursorPositionInView();
         getEnv().drawHiveableZone(target, pos);
-        std::cout << "hello" << std::endl;
     }
     // TODO implement
     /*
