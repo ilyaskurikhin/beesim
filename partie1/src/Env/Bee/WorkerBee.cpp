@@ -95,7 +95,9 @@ WorkerBee::onState(State state, sf::Time dt)
       this->setDebugStatus("collecting_pollen");
       this->setMoveTarget(empty);
       Flower* flower(getAppEnv().getCollidingFlower(this->getCollider()));
-      if ((this->getPollen() < max_pollen_) && (flower != nullptr))
+      if ((this->getPollen() < max_pollen_)
+	  && (flower != nullptr)
+	  && (flower->getPollen() > 0))
         {
           eatPollen(flower, dt);
         }

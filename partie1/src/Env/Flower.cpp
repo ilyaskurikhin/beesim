@@ -67,7 +67,10 @@ void
 Flower::update(sf::Time dt)
 {
   // set the new pollen value
-  pollen_ = pollen_ + dt.asSeconds() * humidity_factor_;
+  if (getPollen() > 0)
+    {
+      pollen_ = pollen_ + dt.asSeconds() * humidity_factor_;
+    }
 
   // split flower if has enough pollen
   if ((pollen_ > split_threshold_) && getAppEnv().canAddFlower())
