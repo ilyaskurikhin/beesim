@@ -655,13 +655,42 @@ Env::calculateScanRange(const Vec2d& position, double radius) const
 {
   Vec2d worldSize = getWorldSize();
 
+  //
+  //
+  //        ---------------------------------------------
+  //        |     | 2|                                  |
+  //        |     ----                                  |
+  //        |     v_bottom     top                      |
+  //        | top             -----               top   |
+  //        |-                |   |               ------|
+  //        | |          left | 3 | right         |     |
+  //        |1| h_left        |   |         right |  1  | left
+  //        | |               -----               |     |
+  //        |-                bottom              ------|
+  //        |bottom                              bottom |
+  //        |      top                                  |
+  //        |     ----                                  |
+  //        |     | 2|                                  |
+  //        ---------------------------------------------
+  //
+  //        1 : wrapping on side
+  //        2 : wrapping on top / bottom
+  //        3 : no wrappin
+  //        4 : wrapping on both side and top / bottom
+  //
+
+
+  // boundaries of the middle box
   double left, right, top, bottom;
+
+  // overflow boundaries for extra boxes
   double h_left(-5), h_right(-5); // horizontal
   double v_top(-5), v_bottom(-5); // vertical
 
   if (!world_->isInWorld(position))
     return {0,0,0,0};
 
+  // get left boundary
   left = position.x - radius;
   if (left < 0)
     {
@@ -669,6 +698,7 @@ Env::calculateScanRange(const Vec2d& position, double radius) const
       h_left = worldSize.x;
     }
 
+  // get right boundary
   right = position.x + radius;
   if (right > worldSize.x)
     {
@@ -676,6 +706,7 @@ Env::calculateScanRange(const Vec2d& position, double radius) const
       h_left = 0;
     }
 
+  // get top boundary
   top = position.y - radius;
   if (top < 0)
     {
@@ -683,6 +714,7 @@ Env::calculateScanRange(const Vec2d& position, double radius) const
       v_top = top + worldSize.y;
     }
 
+  // get bottom boundary
   bottom = position.y + radius;
   if (bottom > worldSize.y)
     {
@@ -697,6 +729,8 @@ std::unordered_map<std::string, double>
 Env::fetchData(std::string graph) const
 {
   std::unordered_map<std::string, double> new_data;
+
+  // get relevant data for graph(s)
   if (graph == s::GENERAL)
     {
       new_data[s::FLOWERS] = flowers_.size();
