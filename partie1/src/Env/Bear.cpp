@@ -191,9 +191,7 @@ Bear::drawOn(sf::RenderTarget& target) const
       position = this->getPosition();
       position.y += text_size;
 
-      valueString = "Bear: energy " + to_nice_string(this->getEnergy())
-          + " Bear: hibernation length "
-          + to_nice_string(this->getHibernationLength());
+      valueString = "Bear: energy " + to_nice_string(this->getEnergy());
       sf::Text text = buildText(valueString, position, getAppFont(), text_size,
                                 color);
       target.draw(text);
@@ -258,7 +256,8 @@ Bear::onState(State state, sf::Time dt)
       if (hibernation_length_ < max_hibernation_
           && this->getEnergy() > energy_leave_cave_)
         {
-          std::string status = "in_cave_hibernating_";
+          std::string status = "in_cave_hibernating_ : "
+          + to_nice_string(this->getHibernationLength());
           this->setDebugStatus(status);
           hibernation_length_ += dt;
         }
