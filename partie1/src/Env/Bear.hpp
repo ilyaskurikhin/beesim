@@ -132,11 +132,13 @@ public:
   void
   setEnergy(double energy);
 
+  /*
   double 
   getEatenHoney() const;
   
   void 
   setEatenHoney(double honey);
+  */
   
   double
   getHibernationLength() const;
@@ -171,7 +173,6 @@ private:
 
   double honey_eating_rate_;
   double max_honey_capacity_;
-  double eaten_honey_;
 
   size_t current_texture_index_;
   std::vector<sf::Texture> walking_textures_;

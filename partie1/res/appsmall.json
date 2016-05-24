@@ -23,10 +23,10 @@
 						"rotation angle max" : 0.785398163
 					},
 					"target" : {
-						"avoidance delay" : 0.2
+						"avoidance delay" : 0.5
 					}
 				},
-				"size" : 10,
+				"size" : 8,
 				"energy" : {
 					"initial" : 10,
 					"to leave hive" : 3,
@@ -50,10 +50,10 @@
 						"comment" : "not relevant"
 					},
 					"target" : {
-						"avoidance delay" : 0.2
+						"avoidance delay" : 0.5
 					}
 				},
-				"size" : 15,
+				"size" : 13,
 				"energy" : {
 					"initial" : 20,
 					"to leave hive" : 22,
@@ -97,7 +97,7 @@
 				}
 			},
 			"honey eating rate" : 10,
-			"max honey capacity" : 1000,
+			"max honey capacity" : 950,
 			"hibernation" : {
 				"maximum time" : 10
 			},
@@ -180,9 +180,9 @@
 					"count" : 0,
 					"max failures" : 1000,
 					"size" : {
-						"min" : 20,
-						"max" : 40,
-						"manual" : 30
+						"min" : 12,
+						"max" : 32,
+						"manual" : 22
 					},
 					"hiveable factor" : 3
 				},
