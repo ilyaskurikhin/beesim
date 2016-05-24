@@ -217,6 +217,7 @@ void Application::run()
         // Render everything
         render(simulationBackground, statsBackground);
 
+
         // In case we were resetting the simulation
         mIsResetting = false;
 
@@ -557,6 +558,7 @@ void Application::render(sf::Drawable const& simulationBackground, sf::Drawable 
     mRenderWindow.draw(simulationBackground);
 
     getEnv().drawOn(mRenderWindow);
+    onDraw(mRenderWindow);
 
     if (isDebugOn()) {
         mRenderWindow.setView(mDebugView);
