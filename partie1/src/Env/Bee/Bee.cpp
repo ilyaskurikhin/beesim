@@ -166,7 +166,6 @@ Bee::loadTexture()
 Flower*
 Bee::findVisibleFlower() const
 {
-  //what if two flowers are colliding?  
   return getAppEnv().getCollidingFlower(vision_range_);
 }
 

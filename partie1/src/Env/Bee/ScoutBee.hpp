@@ -31,9 +31,6 @@ public:
   operator=(const ScoutBee& scoutbee) = delete;
 
   void
-  drawOn(sf::RenderTarget& target) const override;
-
-  void
   drawDebug(sf::RenderTarget& target) const override;
 
   void
