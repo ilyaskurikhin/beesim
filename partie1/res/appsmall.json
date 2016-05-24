@@ -145,7 +145,7 @@
 				"smoothness" : {
 					"level" : 10,
 					"grass neighbourhood ratio" : 0.5,
-					"water neighbourhood ratio" : 0.95
+					"water neighbourhood ratio" : 0.75
 				},
 				"humidity" : {
 					"decay rate" : 20,
