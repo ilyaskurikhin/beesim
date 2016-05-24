@@ -518,19 +518,10 @@ World::smooth()
       // set the radius of neighborhood
       unsigned int radius(1);
 
-      /*
-       size_t left (std::max ((int) x - 1, 0));
-       size_t right (std::min ((int) x + 2, (int) numberColumns_ - 1));
-       size_t top (std::max ((int) y - 1, 0));
-       size_t bottom (std::min ((int) y + 2, (int) numberColumns_ - 1));
-       */
 
       // SET THE START AND END OF NEIGHBORHOOD
       // POSSIBILITY OF ADJUSTING TO TORIC HERE
       std::array<size_t, 4> scanRange = calculateScanRange(x, y, radius);
-
-      assert(scanRange[0] < scanRange[1]);
-      assert(scanRange[2] < scanRange[3]);
 
       for (size_t column(scanRange[0]); column < scanRange[1]; ++column)
         {
