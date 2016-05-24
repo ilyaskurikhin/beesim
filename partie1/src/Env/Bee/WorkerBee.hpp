@@ -33,9 +33,6 @@ public:
   getConfig() override;
 
   void
-  drawOn(sf::RenderTarget& target) const;
-
-  void
   drawDebug(sf::RenderTarget& target) const override;
 
   void
