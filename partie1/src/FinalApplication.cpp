@@ -35,6 +35,7 @@ void FinalApplication::onEvent(sf::Event event, sf::RenderWindow&)
 
         case sf::Keyboard::C:
             mShowCaveableZone = true;
+            break;
         }
     } else if (event.type == sf::Event::KeyReleased) {
         switch (event.key.code) {
@@ -82,6 +83,7 @@ void FinalApplication::onDraw(sf::RenderTarget& target)
     if (mShowHiveableZone) {
         auto pos = getCursorPositionInView();
         getEnv().drawHiveableZone(target, pos);
+        std::cout << "hello" << std::endl;
     }
     // TODO implement
     /*
