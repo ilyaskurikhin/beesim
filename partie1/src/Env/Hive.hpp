@@ -21,7 +21,7 @@
 
 #include <Application.hpp>
 
-
+enum class BeeType : short;
 class Bee;
 class WorkerBee;
 class ScoutBee;
@@ -138,10 +138,7 @@ public:
   getNumBees() const;
 
   int
-  getNumScouts() const;
-
-  int
-  getNumWorkers() const;
+  getNumBees(BeeType beeType) const;
 
 private:
 

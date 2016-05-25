@@ -205,29 +205,15 @@ Hive::getNumBees() const
 }
 
 int
-Hive::getNumScouts() const
+Hive::getNumBees(BeeType beeType) const
 {
   int numScouts(0);
   for (size_t i = 0; i < bees_.size(); ++i)
     {
-      if (bees_[i]->getBeeType() == BeeType::Scout)
+      if (bees_[i]->getBeeType() == beeType)
         {
           ++numScouts;
         }
     }
   return numScouts;
-}
-
-int
-Hive::getNumWorkers() const
-{
-  int numWorkers(0);
-  for (size_t i = 0; i < bees_.size(); ++i)
-    {
-      if (bees_[i]->getBeeType() == BeeType::Worker)
-        {
-          ++numWorkers;
-        }
-    }
-  return numWorkers;
 }
