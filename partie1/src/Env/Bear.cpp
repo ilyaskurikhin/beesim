@@ -277,7 +277,7 @@ Bear::onState(State state, sf::Time dt)
         {
           this->setMoveTarget(hive->getPosition());
           this->setMoveState(MoveState::TARGET);
-          if (this->isColliderInside(hive->getCollider()))
+          if (this->isColliding(hive->getCollider()))
             this->nextState();
         }
     }

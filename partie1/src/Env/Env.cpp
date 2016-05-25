@@ -313,9 +313,9 @@ Env::reloadConfig()
   hive_manual_radius_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble();
 
-  debug_text_size_ = 2
-        * (getAppConfig()["simulation"]["world"]["size"].toDouble()
-          / getAppConfig()["simulation"]["world"]["cells"].toDouble());
+  debug_text_size_ = 1
+        * (getAppConfig()["simulation"]["world"]["size"].toInt()
+          / getAppConfig()["simulation"]["world"]["cells"].toInt());
 
   hiveable_factor_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble();

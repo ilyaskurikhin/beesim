@@ -56,7 +56,7 @@
                 "size" : 10,
                 "energy" : {
                     "initial" : 100,
-                    "to leave hive" : 40,
+                    "to leave hive" : 50,
                     "to collect pollen" : 20,
                     "consumption rates" : {
                        "idle" :  0.15,
@@ -229,7 +229,7 @@
 					}
 				}
             },
-            "max flowers" : 1500,
+            "max flowers" : 1000,
             "max hives" : 30,
 	    	"max caves" : 4
         }

@@ -67,7 +67,8 @@ WorkerBee::onState(State state, sf::Time dt)
             }
           // if there is a flower in memory and enough energy, target move
           // to this flower
-          else if (flower_location_ != empty)
+          else if (flower_location_ != empty
+                  && getEnergy() > energy_collect_pollen_)
             {
               setDebugStatus("in_hive_leaving");
               setMoveTarget(flower_location_);
@@ -92,25 +93,29 @@ WorkerBee::onState(State state, sf::Time dt)
           nextState();
         }
 
+      Flower* flower  = getAppEnv().getCollidingFlower(getVisionRange());
 
-      // if bee inside the flower
-      if (getCollider().isPointInside(flower_location_))
+      if (flower)
         {
-          if (getAppEnv().getCollidingFlower(getCollider()) == nullptr)
+          setMoveTarget(flower->getPosition());
+          setMoveState(MoveState::TARGET);
+          if (isPointInside(flower->getPosition()))
             {
-              // skip collection if no flower present
               nextState();
             }
-          // change state to collect pollen
+        }
+      else if (isPointInside(flower_location_))
+        {
+          // go back to hive and clear location
           nextState();
+          nextState();
+          setFlowerLocation(Vec2d(-1,-1));
         }
     }
 
   // third state
   else if (state == COLLECT_POLLEN)
     {
-      setDebugStatus("collecting_pollen");
-      setMoveTarget(empty);
       // if there is a flower at flower location and it has pollen and 
       // bee has not enough pollen, eat pollen from flower
       Flower* flower(getAppEnv().getCollidingFlower(getCollider()));
@@ -128,8 +133,6 @@ WorkerBee::onState(State state, sf::Time dt)
     }
   else if (state == RETURN_HIVE)
     {
-      setDebugStatus("back_to_hive");
-      setMoveTarget(getHive().getPosition());
       // if bee is in hive change state to in hive
       if (getHive().isColliderInside(getCollider()))
         {
@@ -141,11 +144,25 @@ WorkerBee::onState(State state, sf::Time dt)
 void
 WorkerBee::onEnterState(State state)
 {
-  if (state == IN_HIVE or state == COLLECT_POLLEN)
+  if (state == IN_HIVE)
+    {
       setMoveState(MoveState::AT_REST);
-      
-  else if (state == TO_FLOWER or state == RETURN_HIVE)
+    }
+  else if (state == COLLECT_POLLEN)
+    {
+      setDebugStatus("collecting_pollen");
+      setMoveState(MoveState::AT_REST);
+    }
+  else if (state == TO_FLOWER)
+    {
       setMoveState(MoveState::TARGET);
+    }
+  else if (state == RETURN_HIVE)
+    {
+      setDebugStatus("back_to_hive");
+      setMoveTarget(getHive().getPosition());
+      setMoveState(MoveState::TARGET);
+    }
 }
 
 void
