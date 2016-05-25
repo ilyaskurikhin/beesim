@@ -204,7 +204,11 @@ Hive::reloadConfig()
   migration_threshold_ =
       getAppConfig()["simulation"]["hive"]["migration threshold"].toDouble();
   max_bees_ =
-      getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
+      getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toInt();
+
+
+  max_hives_ = getAppConfig()["simulation"]["env"]["max hives"].toInt();
+
 
   hive_texture_ =
           getAppTexture(
@@ -215,7 +219,7 @@ bool
 Hive::canMigrate() const
 {
   if (getNectar() > migration_threshold_
-      && getAppEnv().getNumHives())
+      && getAppEnv().getNumHives() < max_hives_)
     return true;
   else
     return false;

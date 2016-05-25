@@ -157,7 +157,8 @@ private:
   double nectar_;
   double nectar_threshold_;
   double migration_threshold_;
-  double max_bees_;
+  int max_bees_;
+  int max_hives_;
   double reproduction_probability_;
   std::vector<Bee*> bees_;
   sf::Texture hive_texture_;
