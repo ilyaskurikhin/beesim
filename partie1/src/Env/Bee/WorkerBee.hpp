@@ -30,7 +30,7 @@ public:
   reloadConfig();
 
   j::Value const&
-  getConfig() const override;
+  getConfig() override;
 
   void
   drawDebug(sf::RenderTarget& target) const override;
@@ -64,6 +64,15 @@ public:
 
   void
   setPollen(double amount);
+
+  bool
+  isScout() const override;
+
+  bool
+  isWorker() const override;
+
+  bool
+  isInHive() const override;
 
   void
   interact(Bee* other) override;

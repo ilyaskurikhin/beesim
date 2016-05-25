@@ -35,11 +35,6 @@ class WorkerBee;
 class Hive;
 class Flower;
 
-enum class BeeType : short
-{
-  Worker, Scout, Queen, Soldier
-};
-
 /**
  * @brief Abstract class Bee.
  */
@@ -58,7 +53,7 @@ public:
    * @param position  The starting position of the bee.
    * @param states    The possible CFSM states of the bee.
    */
-  Bee(Hive* hive, const Vec2d& position, std::vector<State> states, BeeType beeType);
+  Bee(Hive* hive, const Vec2d& position, std::vector<State> states);
 
   virtual
   ~Bee() = default;
@@ -69,7 +64,7 @@ public:
    * @return Configuration values.
    */
   virtual j::Value const&
-  getConfig() const =0;
+  getConfig() =0;
 
   /**
    * @brief Move the bee.
@@ -88,15 +83,7 @@ public:
    * @return true is energy is zero.
    */
   bool
-  isDead() const;
-
-  /**
-   * @brief Check if this Bee is in its Hive
-   *
-   * @return true is it is in the Hive
-   */
-  bool
-  isInHive() const;
+  isDead();
 
   /**
    * @brief Evolve the Bee for a given time.
@@ -147,7 +134,7 @@ public:
    *
    * @return pointer to current Bee Hive.
    */
-  Hive&
+  Hive*
   getHive() const;
 
   /**
@@ -175,6 +162,15 @@ public:
   const std::string&
   getDebugStatus() const;
 
+  virtual bool
+  isInHive() const =0;
+
+  virtual bool
+  isScout() const =0;
+
+  virtual bool
+  isWorker() const =0;
+
   virtual void
   interact(Bee* other)=0;
 
@@ -199,14 +195,9 @@ public:
   void
   setVisionRange(const Collider& visionRange);
 
-  const BeeType&
-  getBeeType() const;
-
 private:
 
   Hive* hive_;
-
-  BeeType bee_type_;
 
   double energy_;
   double energy_rate_idle_;

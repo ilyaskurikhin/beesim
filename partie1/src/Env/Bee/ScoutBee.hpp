@@ -37,13 +37,22 @@ public:
   reloadConfig();
 
   j::Value const&
-  getConfig() const override;
+  getConfig() override;
 
   void
   onState(State state, sf::Time dt) override;
 
   void
   onEnterState(State state) override;
+
+  bool
+  isScout() const override;
+
+  bool
+  isWorker() const override;
+
+  bool
+  isInHive() const override;
 
   void
   interact(Bee* other) override;

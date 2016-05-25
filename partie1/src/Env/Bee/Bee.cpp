@@ -3,8 +3,9 @@
 #include <Env/Hive.hpp>
 #include <Env/Flower.hpp>
 
-Bee::Bee(Hive* hive, const Vec2d& position, std::vector<State> states, BeeType beeType) :
-    Movable(position), CFSM(states), hive_(hive), bee_type_(beeType), vision_range_(position)
+Bee::Bee(Hive* hive, const Vec2d& position, std::vector<State> states) :
+    Movable(position), CFSM(states), hive_(hive), debug_thickness_random_(3), debug_thickness_target_(
+        3), vision_range_(position)
 {
   // This constructor can not take care of its members
   // since it does not know what kind of bee it is
@@ -33,9 +34,6 @@ Bee::reloadConfig()
       getConfig()["energy"]["consumption rates"]["moving"].toDouble();
   energy_rate_eating_ =
       getConfig()["energy"]["consumption rates"]["eating"].toDouble();
-
-  debug_thickness_random_ = 3.0;
-  debug_thickness_target_ = 3.0;
 
   visibility_ = getConfig()["visibility range"].toDouble();
   vision_range_.setRadius(visibility_ + this->getRadius());
@@ -74,21 +72,16 @@ Bee::isMovablePosition(const Vec2d& position) const
 }
 
 bool
-Bee::isDead() const
+Bee::isDead()
 {
   if (energy_ <= 0)
+    {
       return true;
+    }
   else
+    {
       return false;
-}
-
-bool
-Bee::isInHive() const
-{
-  if (getHive().isColliderInside(*this))
-    return true;
-  else
-    return false;
+    }
 }
 
 void
@@ -114,13 +107,13 @@ void
 Bee::eatFromHive(sf::Time dt)
 {
   // energy increases by the amount of nectar taken from hive
-  energy_ += this->getHive().takeNectar(energy_rate_eating_ * dt.asSeconds());
+  energy_ += this->getHive()->takeNectar(energy_rate_eating_ * dt.asSeconds());
 }
 
-Hive&
+Hive*
 Bee::getHive() const
 {
-  return *hive_;
+  return hive_;
 }
 
 void
@@ -216,10 +209,4 @@ void
 Bee::setVisionRange(const Collider& visionRange)
 {
   vision_range_ = visionRange;
-}
-
-const BeeType&
-Bee::getBeeType() const
-{
-  return bee_type_;
 }
