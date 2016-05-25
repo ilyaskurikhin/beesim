@@ -214,7 +214,8 @@ Hive::reloadConfig()
 bool
 Hive::canMigrate() const
 {
-  if (getNectar() > migration_threshold_)
+  if (getNectar() > migration_threshold_
+      && getAppEnv().getNumHives())
     return true;
   else
     return false;
@@ -231,7 +232,7 @@ Hive::canReproduce() const
 }
 
 void
-Hive::removeQueen()
+Hive::removeBee(Bee* beeRemove)
 {
   if (getNumBees(BeeType::Queen) > 0)
     {
@@ -239,13 +240,13 @@ Hive::removeQueen()
       int remove(-1);
       for (Bee* bee : bees_)
         {
-          if (bee->getBeeType() == BeeType::Queen)
+          if (bee == beeRemove)
             {
               remove = i;
             }
           ++i;
         }
-      if (remove > 0)
+      if (remove >= 0)
         {
           bees_.erase(bees_.begin() + remove);
         }

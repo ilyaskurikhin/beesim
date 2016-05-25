@@ -644,6 +644,12 @@ Env::getAnimalAt(const Vec2d& position) const
 }
 
 int
+Env::getNumHives() const
+{
+  return hives_.size();
+}
+
+int
 Env::getNumScouts() const
 {
   int numScouts(0);
@@ -680,7 +686,7 @@ Env::fetchData(std::string graph) const
   if (graph == s::GENERAL)
     {
       new_data[s::FLOWERS] = flowers_.size();
-      new_data[s::HIVES] = hives_.size();
+      new_data[s::HIVES] = getNumHives();
       new_data[s::SCOUTS] = getNumScouts();
       new_data[s::WORKERS] = getNumWorkers();
     }

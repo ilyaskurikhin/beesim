@@ -8,7 +8,7 @@
 #include <Env/Bee/QueenBee.hpp>
 
 QueenBee::QueenBee(Hive* hive, const Vec2d& position)
-: Bee(hive, position, std::vector<State>({IN_HIVE, MIGRATING}), BeeType::Queen)
+: Bee(hive, position, std::vector<State>({IN_HIVE, MIGRATING, RETURN_HIVE}), BeeType::Queen)
 {
   reloadConfig();
   loadTexture();
@@ -102,16 +102,30 @@ QueenBee::onState(State state, sf::Time dt)
   if (state == MIGRATING)
     {
       setDebugStatus("migrating");
-      if (distanceTo(getHive()) > migration_distance_)
+      if (distanceTo(getHive()) > migration_distance_
+          && getEnergy() > energy_create_hive_)
         {
           if (getAppEnv().addHiveAt(getPosition()))
             {
-              getHive().removeQueen();
+              getHive().removeBee(this);
               setHive(getAppEnv().getCollidingHive(getPosition()));
               getHive().addBee(this);
               setEnergy(getEnergy() - energy_create_hive_);
               nextState();
             }
+        }
+      else if (getEnergy() < energy_create_hive_)
+        {
+          nextState();
+        }
+    }
+
+  if (state == RETURN_HIVE)
+    {
+      setDebugStatus("return_hive");
+      if (getAppEnv().getCollidingHive(getPosition()) == &getHive())
+        {
+          nextState();
         }
     }
 }
@@ -120,9 +134,18 @@ void
 QueenBee::onEnterState(State state)
 {
   if (state == IN_HIVE)
-    setMoveState(MoveState::AT_REST);
+    {
+      setMoveState(MoveState::AT_REST);
+    }
   else if (state == MIGRATING)
-    setMoveState(MoveState::RANDOM);
+    {
+      setMoveState(MoveState::RANDOM);
+    }
+  else if (state == RETURN_HIVE)
+    {
+      setMoveTarget(getHive().getPosition());
+      setMoveState(MoveState::TARGET);
+    }
 }
 
 void
@@ -148,3 +171,4 @@ QueenBee::giveBirthTo(BeeType beeType) const
 
 State const QueenBee::IN_HIVE = createUid();
 State const QueenBee::MIGRATING = createUid();
+State const QueenBee::RETURN_HIVE = createUid();

@@ -133,7 +133,7 @@ public:
   canReproduce() const;
 
   void
-  removeQueen();
+  removeBee(Bee* bee);
 
   /**
    * @brief Get amount to nectar in Hive.

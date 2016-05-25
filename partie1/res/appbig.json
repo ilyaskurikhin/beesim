@@ -106,7 +106,7 @@
 			"size" : 100
 		},
 		"bear" : {
-			"visibility range" : 60,
+			"visibility range" : 200,
 			"moving behaviour" : {
 				"random" : {
 					"rotation probability" : 0.01,

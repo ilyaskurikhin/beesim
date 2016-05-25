@@ -95,11 +95,16 @@ ScoutBee::onState(State state, sf::Time dt)
       
       // if there is a flower in visibility range and there is enough 
       // energy to leave search flower, remember the flower location
-      if (getEnergy() > energy_seek_flowers_ && flower != nullptr)
+      if (flower != nullptr)
         {
           flower_location_ = flower->getPosition();
           number_times_shared_ = 0;
           // change state to return hive
+          nextState();
+        }
+
+      if (getEnergy() < energy_seek_flowers_)
+        {
           nextState();
         }
     }

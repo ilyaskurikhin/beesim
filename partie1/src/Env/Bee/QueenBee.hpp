@@ -63,6 +63,7 @@ private:
 
   State static const IN_HIVE;
   State static const MIGRATING;
+  State static const RETURN_HIVE;
 };
 
 #endif /* QUEENBEE_HPP_ */

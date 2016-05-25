@@ -272,6 +272,9 @@ public:
   getAnimalAt(const Vec2d& position) const;
 
   int
+  getNumHives() const;
+
+  int
   getNumScouts() const;
 
   int
