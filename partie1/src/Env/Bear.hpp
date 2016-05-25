@@ -79,9 +79,6 @@ public:
   isDead();
 
   void
-  setMoveState(const State& state);
-
-  void
   update(sf::Time dt) override;
 
   /**
@@ -149,9 +146,6 @@ public:
   void
   setHiveLocation(const Vec2d& hiveLocation);
 
-  State
-  getMoveState() const;
-
   double
   getVisibility() const;
 
@@ -185,11 +179,6 @@ private:
 
   Collider vision_range_;
   double visibility_;
-
-  State const AT_REST = 0;
-  State const RANDOM = 1;
-  State const TARGET = 2;
-  State move_state_;
 
   std::string debug_status_;
 

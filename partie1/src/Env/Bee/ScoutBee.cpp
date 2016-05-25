@@ -120,13 +120,13 @@ void
 ScoutBee::onEnterState(State state)
 {
   if (state == IN_HIVE)
-    this->setMoveStateAT_REST();
+    this->setMoveState(MoveState::AT_REST);
     
   else if (state == SEARCH_FLOWER)
-    this->setMoveStateRANDOM();
+    this->setMoveState(MoveState::RANDOM);
 
   else if (state == RETURN_HIVE)
-    this->setMoveStateTARGET();
+    this->setMoveState(MoveState::TARGET);
 }
 
 bool

@@ -12,8 +12,7 @@
 Bear::Bear(Cave* cave, const Vec2d& position) :
     Movable(position), CFSM(std::vector<State>(
       { HIBERNATION, SEARCH_HIVE, EAT_HONEY, RETURN_CAVE })), cave_(cave), debug_thickness_random_(
-        5), debug_thickness_target_(3), vision_range_(position), move_state_(
-        AT_REST)
+        5), debug_thickness_target_(3), vision_range_(position)
 {
   reloadConfig();
   loadTexture();
@@ -60,22 +59,21 @@ Bear::chooseTexture()
           current_texture_index_ = 0;
         }
     }
-    //  if ((texture_counter_.getElapsedTime() > texture_delay_))
 }
 
 void
 Bear::move(sf::Time dt)
 {
-  if (move_state_ == AT_REST)
+  if (getMoveState() == MoveState::AT_REST)
     {
       energy_ = energy_ - energy_rate_idle_ * dt.asSeconds();
     }
-  else if (move_state_ == RANDOM)
+  else if (getMoveState() == MoveState::RANDOM)
     {
       randomMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
-  else if (move_state_ == TARGET)
+  else if (getMoveState() == MoveState::TARGET)
     {
       targetMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
@@ -168,14 +166,14 @@ Bear::drawOn(sf::RenderTarget& target) const
   if (isDebugOn())
     {
       double thickness(0);
-      if (move_state_ == RANDOM)
+      if (getMoveState() == MoveState::RANDOM)
         {
           thickness = debug_thickness_random_;
           sf::CircleShape shape = buildAnnulus(position, radius,
                                                sf::Color::Black, thickness);
           target.draw(shape);
         }
-      else if (move_state_ == TARGET)
+      else if (getMoveState() == MoveState::TARGET)
         {
           thickness = debug_thickness_target_;
           sf::CircleShape shape = buildAnnulus(position, radius,
@@ -278,7 +276,7 @@ Bear::onState(State state, sf::Time dt)
       if (this->getEnergy() > energy_seek_hives_ && hive != nullptr)
         {
           this->setMoveTarget(hive->getPosition());
-          this->setMoveState(TARGET);
+          this->setMoveState(MoveState::TARGET);
           if (this->isColliderInside(hive->getCollider()))
             this->nextState();
         }
@@ -320,16 +318,16 @@ Bear::onEnterState(State state)
 {
   if (state == HIBERNATION or state == EAT_HONEY)
     {
-      this->setMoveState(AT_REST);
+      this->setMoveState(MoveState::AT_REST);
     }
   else if (state == SEARCH_HIVE)
     {
-      this->setMoveState(RANDOM);
+      this->setMoveState(MoveState::RANDOM);
       hibernation_length_ = sf::Time::Zero;
     }
   else if (state == RETURN_CAVE)
     {
-      this->setMoveState(TARGET);
+      this->setMoveState(MoveState::TARGET);
     }
 }
 
@@ -385,18 +383,6 @@ void
 Bear::setHiveLocation(const Vec2d& hiveLocation)
 {
   hive_location_ = hiveLocation;
-}
-
-State
-Bear::getMoveState() const
-{
-  return move_state_;
-}
-
-void
-Bear::setMoveState(const State& state)
-{
-  move_state_ = state;
 }
 
 double

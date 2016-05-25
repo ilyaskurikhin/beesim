@@ -5,7 +5,7 @@
 
 Bee::Bee(Hive* hive, const Vec2d& position, std::vector<State> states) :
     Movable(position), CFSM(states), hive_(hive), debug_thickness_random_(3), debug_thickness_target_(
-        3), vision_range_(position), move_state_(AT_REST)
+        3), vision_range_(position)
 {
   // This constructor can not take care of its members
   // since it does not know what kind of bee it is
@@ -43,20 +43,20 @@ void
 Bee::move(sf::Time dt)
 {
   // bee at rest loses its energy at a certain rate
-  if (move_state_ == AT_REST)
+  if (getMoveState() == MoveState::AT_REST)
     {
       energy_ = energy_ - energy_rate_idle_ * dt.asSeconds();
     }
     
   // bee moving randomly loses its energy at a certain rate
-  else if (move_state_ == RANDOM)
+  else if (getMoveState() == MoveState::RANDOM)
     {
       randomMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
     
   // bee moving to a target loses its energy at a certain rate
-  else if (move_state_ == TARGET)
+  else if (getMoveState() == MoveState::TARGET)
     {
       targetMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
@@ -139,7 +139,7 @@ Bee::drawOn(sf::RenderTarget& target) const
   if (isDebugOn())
     {
       // if bee moves randomly draw a black annulus around it
-      if (move_state_ == RANDOM)
+      if (getMoveState() == MoveState::RANDOM)
         {
           sf::CircleShape shape = buildAnnulus(position, radius,
                                                sf::Color::Black, debug_thickness_random_);
@@ -147,7 +147,7 @@ Bee::drawOn(sf::RenderTarget& target) const
         }
       
       // if bee moves to a target draw a blue annulus around it
-      else if (move_state_ == TARGET)
+      else if (getMoveState() == MoveState::TARGET)
         {
           sf::CircleShape shape = buildAnnulus(position, radius,
                                                sf::Color::Blue, debug_thickness_target_);
@@ -170,24 +170,6 @@ Bee::findVisibleFlower() const
 }
 
 void
-Bee::setMoveStateAT_REST()
-{
-  move_state_ = AT_REST;
-}
-
-void
-Bee::setMoveStateRANDOM()
-{
-  move_state_ = RANDOM;
-}
-
-void
-Bee::setMoveStateTARGET()
-{
-  move_state_ = TARGET;
-}
-
-void
 Bee::setDebugStatus(const std::string& status)
 {
   debug_status_ = status;
@@ -203,18 +185,6 @@ void
 Bee::setHive(Hive* hive)
 {
   hive_ = hive;
-}
-
-State
-Bee::getMoveState() const
-{
-  return move_state_;
-}
-
-void
-Bee::setMoveState(State moveState)
-{
-  move_state_ = moveState;
 }
 
 double

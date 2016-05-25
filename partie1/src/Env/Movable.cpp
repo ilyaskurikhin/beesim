@@ -10,13 +10,15 @@
 #include <Env/Env.hpp>
 
 Movable::Movable(const Vec2d& position) :
-    Collider(position)
+    Collider(position),
+    move_state_(MoveState::AT_REST)
 {
 
 }
 
 Movable::Movable(const Vec2d& position, double radius) :
-    Collider(position, radius)
+    Collider(position, radius),
+    move_state_(MoveState::AT_REST)
 {
 
 }
@@ -180,4 +182,16 @@ double
 Movable::getRotationProbability() const
 {
   return rotation_probability_;
+}
+
+const MoveState&
+Movable::getMoveState() const
+{
+  return move_state_;
+}
+
+void
+Movable::setMoveState(const MoveState& moveState)
+{
+  move_state_ = moveState;
 }

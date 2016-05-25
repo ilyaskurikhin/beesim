@@ -157,15 +157,6 @@ public:
   onEnterState(State state) = 0;
 
   void
-  setMoveStateAT_REST();
-
-  void
-  setMoveStateRANDOM();
-
-  void
-  setMoveStateTARGET();
-
-  void
   setDebugStatus(const std::string& status);
 
   const std::string&
@@ -191,12 +182,6 @@ public:
 
   void
   setHive(Hive* hive);
-
-  State
-  getMoveState() const;
-
-  void
-  setMoveState(State moveState);
 
   double
   getVisibility() const;
@@ -225,11 +210,6 @@ private:
 
   Collider vision_range_;
   double visibility_;
-
-  State const AT_REST = 0;
-  State const RANDOM = 1;
-  State const TARGET = 2;
-  State move_state_;
 
   std::string debug_status_;
 

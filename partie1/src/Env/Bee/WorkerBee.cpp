@@ -132,10 +132,10 @@ void
 WorkerBee::onEnterState(State state)
 {
   if (state == IN_HIVE or state == COLLECT_POLLEN)
-      this->setMoveStateAT_REST();
+      this->setMoveState(MoveState::AT_REST);
       
   else if (state == TO_FLOWER or state == RETURN_HIVE)
-      this->setMoveStateTARGET();
+      this->setMoveState(MoveState::TARGET);
 }
 
 void

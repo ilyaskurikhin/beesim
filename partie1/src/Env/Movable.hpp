@@ -17,6 +17,11 @@
 
 #include <string>
 
+enum class MoveState : short
+{
+  AT_REST, RANDOM, TARGET
+};
+
 class Movable : public Collider
 {
 public:
@@ -112,10 +117,17 @@ public:
   double
   getRotationProbability() const;
 
+  const MoveState&
+  getMoveState() const;
+
+  void
+  setMoveState(const MoveState& moveState);
+
 private:
 
   Vec2d move_vec_;
   Vec2d move_target_;
+  MoveState move_state_;
   double speed_;
 
   double max_angle_;
