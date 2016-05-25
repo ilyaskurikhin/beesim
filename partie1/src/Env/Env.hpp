@@ -206,6 +206,9 @@ public:
   addHiveAt(const Vec2d& position);
 
   Hive*
+  addHiveWithQueenAt(const Vec2d& position);
+
+  Hive*
   addHiveAt(const Vec2d& position, double size);
 
   void

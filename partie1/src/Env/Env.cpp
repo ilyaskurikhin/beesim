@@ -437,6 +437,15 @@ Env::addHiveAt(const Vec2d& position)
 }
 
 Hive*
+Env::addHiveWithQueenAt(const Vec2d& position)
+{
+  Hive* hive(addHiveAt(position, hive_manual_radius_));
+  if (hive)
+    hive->addBee(BeeType::Queen);
+  return hive;
+}
+
+Hive*
 Env::addHiveAt(const Vec2d& position, double size)
 {
   // check if there is grass at position and object is placeabl

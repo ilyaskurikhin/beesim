@@ -54,7 +54,7 @@ void FinalApplication::onEvent(sf::Event event, sf::RenderWindow&)
         // Add hive: try to create a new one and disable "hiveable" zone
         case sf::Keyboard::H:
             mShowHiveableZone = false;
-            if (getEnv().addHiveAt(getCursorPositionInView())) {
+            if (getEnv().addHiveWithQueenAt(getCursorPositionInView())) {
                 std::cout << "New hive created\n";
             } else {
                 std::cout << "Couldn't create new hive\n";
