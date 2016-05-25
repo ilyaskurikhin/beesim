@@ -202,10 +202,10 @@ public:
    *
    * @return true if Hive can be added.
    */
-  bool
+  Hive*
   addHiveAt(const Vec2d& position);
 
-  bool
+  Hive*
   addHiveAt(const Vec2d& position, double size);
 
   void

@@ -45,6 +45,13 @@ Hive::addBee(BeeType beeType)
   return bee;
 }
 
+Bee*
+Hive::addBee(Bee* bee)
+{
+  bees_.push_back(bee);
+  return bee;
+}
+
 WorkerBee*
 Hive::addWorker()
 {
@@ -132,21 +139,6 @@ Hive::takeNectar(double nectar)
 void
 Hive::update(sf::Time dt)
 {
-  if (getNumBees(BeeType::Queen) == 0)
-    {
-      addBee(BeeType::Queen);
-    }
-
-  // check if there is enough nectar and not too much bees to add a new one
-  if (bees_.size() < max_bees_ && nectar_ > nectar_thresold_)
-    {
-      // add randomly a workerbee or a scoutbee
-      if (bernoulli(reproduction_probability_))
-        this->addBee(BeeType::Worker);
-      else
-        this->addBee(BeeType::Scout);
-    }
-
   for (size_t i = 0; i < bees_.size(); ++i)
     {
       // update each bee of the hive
@@ -161,7 +153,6 @@ Hive::update(sf::Time dt)
 
       bees_.erase(std::remove(bees_.begin(), bees_.end(), nullptr),
                   bees_.end());
-
     }
 }
 
@@ -187,11 +178,13 @@ Hive::drawDebug(sf::RenderTarget& target) const
       Vec2d position;
       double text_size(getAppEnv().getTextSize());
 
-      position = this->getPosition();
-      position.y -= text_size;
-
       // if debug mode is on, shows the amount of nectar
       valueString = "Nectar: " + to_nice_string(nectar_);
+
+
+      position = this->getPosition();
+      position.x += 75;
+
       sf::Text text = buildText(valueString, position, getAppFont(), text_size,
                                 color);
       target.draw(text);
@@ -206,14 +199,12 @@ Hive::drawDebug(sf::RenderTarget& target) const
 void
 Hive::reloadConfig()
 {
-  nectar_thresold_ =
+  nectar_threshold_ =
       getAppConfig()["simulation"]["hive"]["reproduction"]["nectar threshold"].toDouble();
   migration_threshold_ =
       getAppConfig()["simulation"]["hive"]["migration threshold"].toDouble();
   max_bees_ =
       getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
-  reproduction_probability_ =
-      getAppConfig()["simulation"]["hive"]["reproduction"]["scout probability"].toDouble();
 
   hive_texture_ =
           getAppTexture(
@@ -224,6 +215,16 @@ bool
 Hive::canMigrate() const
 {
   if (getNectar() > migration_threshold_)
+    return true;
+  else
+    return false;
+}
+
+bool
+Hive::canReproduce() const
+{
+  if ((getNectar() > nectar_threshold_)
+      && (getNumBees() < max_bees_))
     return true;
   else
     return false;

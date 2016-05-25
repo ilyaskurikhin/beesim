@@ -62,6 +62,9 @@ public:
   Bee*
   addBee(BeeType beeType);
 
+  Bee*
+  addBee(Bee* bee);
+
   // methods for compatibility with tests
   ScoutBee*
   addScout();
@@ -126,6 +129,9 @@ public:
   bool
   canMigrate() const;
 
+  bool
+  canReproduce() const;
+
   void
   removeQueen();
 
@@ -149,7 +155,7 @@ public:
 private:
 
   double nectar_;
-  double nectar_thresold_;
+  double nectar_threshold_;
   double migration_threshold_;
   double max_bees_;
   double reproduction_probability_;

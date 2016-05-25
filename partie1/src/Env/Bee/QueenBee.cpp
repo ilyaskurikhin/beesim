@@ -28,6 +28,8 @@ QueenBee::reloadConfig()
   energy_create_hive_ = getConfig()["energy"]["create hive"].toDouble();
   migration_distance_ = getConfig()["migration distance"].toDouble();
 
+  reproduction_probability_ = getConfig()["reproduction"]["scout probability"].toDouble();
+
   this->setRotationProbability(
       getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble());
   this->setMaxAngle(
@@ -49,7 +51,7 @@ QueenBee::drawDebug(sf::RenderTarget& target) const
   double text_size(getAppEnv().getTextSize());
 
   position = this->getPosition();
-  position.y += text_size;
+  position.y -= text_size;
 
   valueString = "Queen: energy " + to_nice_string(this->getEnergy());
   sf::Text text = buildText(valueString, position, getAppFont(), text_size,
@@ -82,8 +84,17 @@ QueenBee::onState(State state, sf::Time dt)
             }
           else
             {
+              giveBirthTo(BeeType::Queen);
               nextState();
             }
+        }
+      else if (getHive().canReproduce())
+        {
+            // add randomly a workerbee or a scoutbee
+            if (bernoulli(reproduction_probability_))
+              giveBirthTo(BeeType::Worker);
+            else
+              giveBirthTo(BeeType::Scout);
         }
     }
 
@@ -96,6 +107,7 @@ QueenBee::onState(State state, sf::Time dt)
             {
               getHive().removeQueen();
               setHive(getAppEnv().getCollidingHive(getPosition()));
+              getHive().addBee(this);
               setEnergy(getEnergy() - energy_create_hive_);
               nextState();
             }
@@ -130,7 +142,7 @@ QueenBee::interactWith(WorkerBee*)
 Bee*
 QueenBee::giveBirthTo(BeeType beeType) const
 {
-  getHive().addBee(beeType);
+  return getHive().addBee(beeType);
 }
 
 State const QueenBee::IN_HIVE = createUid();

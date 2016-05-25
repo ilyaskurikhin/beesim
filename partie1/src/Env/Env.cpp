@@ -73,10 +73,14 @@ Env::regenerate()
           position.x = uniform(0.0, getWorldSize().x);
           position.y = uniform(0.0, getWorldSize().y);
 
-          if (addHiveAt(position, uniform(hive_min_size, hive_max_size)))
-            placed = true;
+          Hive* hive = addHiveAt(position, uniform(hive_min_size, hive_max_size));
+          if (hive)
+            {
+              placed = true;
+              hive->addBee(BeeType::Queen);
+            }
 
-            ++num_tries;
+          ++num_tries;
         }
     }
 
@@ -309,10 +313,10 @@ Env::reloadConfig()
   hive_manual_radius_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble();
 
-  debug_text_size_ = 12;
-     /* * (getAppConfig()["simulation"]["world"]["size"].toDouble()
+  debug_text_size_ = 2
+        * (getAppConfig()["simulation"]["world"]["size"].toDouble()
           / getAppConfig()["simulation"]["world"]["cells"].toDouble());
-    */
+
   hiveable_factor_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble();
 
@@ -426,13 +430,13 @@ Env::drawFlowerZone(sf::RenderTarget& target, const Vec2d& position)
     }
 }
 
-bool
+Hive*
 Env::addHiveAt(const Vec2d& position)
 {
   return addHiveAt(position, hive_manual_radius_);
 }
 
-bool
+Hive*
 Env::addHiveAt(const Vec2d& position, double size)
 {
   // check if there is grass at position and object is placeabl
@@ -441,11 +445,11 @@ Env::addHiveAt(const Vec2d& position, double size)
       && !existsCollidingObject(position, size))
     {
       hives_.push_back(new Hive(position, size));
-      return true;
+      return hives_.back();
     }
   else
     {
-      return false;
+      return nullptr;
     }
 }
 

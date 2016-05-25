@@ -8,6 +8,8 @@
 #ifndef QUEENBEE_HPP_
 #define QUEENBEE_HPP_
 
+#include <Random/Random.hpp>
+
 #include <Env/Bee/Bee.hpp>
 
 class QueenBee : public Bee
@@ -54,6 +56,8 @@ private:
   double energy_migrate_;
   double energy_in_hive_;
   double energy_create_hive_;
+
+  double reproduction_probability_;
 
   double migration_distance_;
 

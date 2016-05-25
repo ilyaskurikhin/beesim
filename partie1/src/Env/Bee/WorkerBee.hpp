@@ -87,6 +87,7 @@ private:
   double max_pollen_;
   double pollen_collecting_rate_;
   double energy_leave_hive_;
+  double energy_collect_pollen_;
   double pollen_transfer_rate_;
 
   State static const TO_FLOWER;

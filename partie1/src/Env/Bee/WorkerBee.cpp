@@ -36,6 +36,7 @@ WorkerBee::reloadConfig()
   max_pollen_ = getConfig()["max pollen capacity"].toDouble();
   pollen_collecting_rate_ = getConfig()["harvest rate"].toDouble();
   energy_leave_hive_ = getConfig()["energy"]["to leave hive"].toDouble();
+  energy_collect_pollen_ = getConfig()["energy"]["to collect pollen"].toDouble();
   pollen_transfer_rate_ = getConfig()["transfer rate"].toDouble();
 
 }
@@ -49,32 +50,33 @@ WorkerBee::onState(State state, sf::Time dt)
   if (state == IN_HIVE)
     {
       // if bee has pollen transfer it to hive
-      if (this->getPollen() > 0)
+      if (getPollen() > 0)
         {
           transferPollen(dt);
           flower_location_ = empty;
-          this->setDebugStatus("in_hive_leaving_pollen");
+          setDebugStatus("in_hive_leaving_pollen");
         }
       else
         {
           // if bee has not enough energy to leave hive, eat its nectar
-          if (this->getEnergy() < energy_leave_hive_)
+          if (getEnergy() < energy_leave_hive_
+              && getHive().getNectar() >= 0)
             {
-              this->setDebugStatus("in_hive_eating");
-              this->eatFromHive(dt);
+              setDebugStatus("in_hive_eating");
+              eatFromHive(dt);
             }
           // if there is a flower in memory and enough energy, target move
           // to this flower
           else if (flower_location_ != empty)
             {
-              this->setDebugStatus("in_hive_leaving");
-              this->setMoveTarget(flower_location_);
+              setDebugStatus("in_hive_leaving");
+              setMoveTarget(flower_location_);
               // change state to to flower
-              this->nextState();
+              nextState();
             }
           else
             {
-              this->setDebugStatus("in_hive_no_flower");
+              setDebugStatus("in_hive_no_flower");
             }
         }
     }
@@ -82,17 +84,25 @@ WorkerBee::onState(State state, sf::Time dt)
   // second state
   else if (state == TO_FLOWER)
     {
-      this->setDebugStatus("to_flower");
-      // if bee inside the flower 
-      if (this->getCollider().isPointInside(flower_location_))
+      setDebugStatus("to_flower");
+
+      if (getEnergy() < energy_collect_pollen_)
         {
-          if (getAppEnv().getCollidingFlower(this->getCollider()) == nullptr)
+          nextState();
+          nextState();
+        }
+
+
+      // if bee inside the flower
+      if (getCollider().isPointInside(flower_location_))
+        {
+          if (getAppEnv().getCollidingFlower(getCollider()) == nullptr)
             {
               // skip collection if no flower present
-              this->nextState();
+              nextState();
             }
           // change state to collect pollen
-          this->nextState();
+          nextState();
         }
     }
 
