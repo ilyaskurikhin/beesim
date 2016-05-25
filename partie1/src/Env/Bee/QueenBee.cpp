@@ -123,7 +123,7 @@ QueenBee::onState(State state, sf::Time dt)
   if (state == RETURN_HIVE)
     {
       setDebugStatus("return_hive");
-      if (getAppEnv().getCollidingHive(getPosition()) == &getHive())
+      if (getHive().isColliderInside(getCollider()))
         {
           nextState();
         }
