@@ -82,8 +82,10 @@
             	},
             	"size" : 20,
             	"energy" : {
-            		"initial" : 300,
-            		"to migrate" : 300,
+            		"initial" : 200,
+            		"to migrate" : 1200,
+            		"in hive" : 200,
+            		"create hive" : 1000,
             		"consumption rates" : {
             			"idle" : 0.15,
             			"moving" : 0.6,

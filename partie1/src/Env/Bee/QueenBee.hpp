@@ -52,6 +52,8 @@ public:
 private:
 
   double energy_migrate_;
+  double energy_in_hive_;
+  double energy_create_hive_;
 
   double migration_distance_;
 

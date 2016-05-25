@@ -24,6 +24,8 @@ QueenBee::reloadConfig()
   Bee::reloadConfig();
 
   energy_migrate_ = getConfig()["energy"]["to migrate"].toDouble();
+  energy_in_hive_ = getConfig()["energy"]["in hive"].toDouble();
+  energy_create_hive_ = getConfig()["energy"]["create hive"].toDouble();
   migration_distance_ = getConfig()["migration distance"].toDouble();
 
   this->setRotationProbability(
@@ -66,15 +68,22 @@ QueenBee::onState(State state, sf::Time dt)
   if (state == IN_HIVE)
     {
       setDebugStatus("in_hive");
-      if (getEnergy() < energy_migrate_)
+      if (getEnergy() < energy_in_hive_)
         {
           setDebugStatus("in_hive_eating");
           eatFromHive(dt);
         }
       else if (getHive().canMigrate())
         {
-          setDebugStatus("in_hive_leaving");
-          nextState();
+          if (getEnergy() < energy_migrate_)
+            {
+              eatFromHive(dt);
+              setDebugStatus("in_hive_leaving");
+            }
+          else
+            {
+              nextState();
+            }
         }
     }
 
@@ -87,6 +96,7 @@ QueenBee::onState(State state, sf::Time dt)
             {
               getHive().removeQueen();
               setHive(getAppEnv().getCollidingHive(getPosition()));
+              setEnergy(getEnergy() - energy_create_hive_);
               nextState();
             }
         }
