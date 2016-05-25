@@ -5,9 +5,7 @@
 
 Hive::Hive(const Vec2d& position, double radius) :
     Collider(position, radius), nectar_(
-        getAppConfig()["simulation"]["hive"]["initial"]["nectar"].toDouble()), hive_texture_(
-        getAppTexture(
-            getAppConfig()["simulation"]["hive"]["texture"].toString()))
+        getAppConfig()["simulation"]["hive"]["initial"]["nectar"].toDouble())
 {
   reloadConfig();
 }
@@ -184,6 +182,10 @@ Hive::reloadConfig()
       getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
   reproduction_probability_ =
       getAppConfig()["simulation"]["hive"]["reproduction"]["scout probability"].toDouble();
+
+  hive_texture_ =
+          getAppTexture(
+              getAppConfig()["simulation"]["hive"]["texture"].toString());
 }
 
 double
