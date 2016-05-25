@@ -88,13 +88,14 @@ QueenBee::onState(State state, sf::Time dt)
               nextState();
             }
         }
-      else if (getHive().canReproduce())
+
+      if (getHive().canReproduce())
         {
             // add randomly a workerbee or a scoutbee
             if (bernoulli(reproduction_probability_))
-              giveBirthTo(BeeType::Worker);
-            else
               giveBirthTo(BeeType::Scout);
+            else
+              giveBirthTo(BeeType::Worker);
         }
     }
 
