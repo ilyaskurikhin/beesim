@@ -60,7 +60,7 @@ WorkerBee::onState(State state, sf::Time dt)
         {
           // if bee has not enough energy to leave hive, eat its nectar
           if (getEnergy() < energy_leave_hive_
-              && getHive().getNectar() >= 0)
+              && getHive().getNectar() > 0)
             {
               setDebugStatus("in_hive_eating");
               eatFromHive(dt);

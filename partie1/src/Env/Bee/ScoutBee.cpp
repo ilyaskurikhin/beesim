@@ -71,7 +71,8 @@ ScoutBee::onState(State state, sf::Time dt)
         }
       
       // if there is not enough energy to leave hive eat nectar from it
-      if (getEnergy() < energy_leave_hive_)
+      if (getEnergy() < energy_leave_hive_
+          && getHive().getNectar() > 0)
         {
           setDebugStatus("in_hive_eating");
           eatFromHive(dt);

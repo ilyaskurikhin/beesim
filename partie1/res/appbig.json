@@ -50,7 +50,7 @@
                         "comment" : "not relevant"
                     },
                     "target" : {
-                        "avoidance delay" : 0.5
+                        "avoidance delay" : 1
                     }
                 },
                 "size" : 10,
@@ -83,9 +83,9 @@
             	},
             	"size" : 20,
             	"energy" : {
-            		"initial" : 200,
-            		"to migrate" : 1200,
-            		"in hive" : 200,
+            		"initial" : 100,
+            		"to migrate" : 1100,
+            		"in hive" : 100,
             		"create hive" : 1000,
             		"consumption rates" : {
             			"idle" : 0.15,
