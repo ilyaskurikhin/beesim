@@ -1,5 +1,4 @@
 
-
                @@@@@@   @@@  @@@  @@@@@@@   @@@@@@@    @@@@@@    @@@@@@@@  
              @@@@@@@   @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@@@  
             !@@       @@!  @@@  @@!  @@@  @@!  @@@  @@!  @@@  !@@        
@@ -16,8 +15,12 @@
 Introduction
 ================================================================================
 
-This program aims to simulate an environment in bees, living in hives, collect
-pollen from flowers to keep the other bees in their hive alive.
+This program aims to simulate an environment where bees having different
+functions in their hive survive through collaborating. ScoutBees recognize 
+flowers in environment and transmit their position to WorkerBees who will 
+collect their pollen, the only energy source of bees. Bear can be added in the
+environment and after their hibernation they look for hives and eat their
+honey (corresponding to nectar).
 
 Installation
 ================================================================================
@@ -53,6 +56,8 @@ Press `h` to add a Hive at the cursor location.
 
 Press `f` to add a Flower at the cursor location.
 
+Press `c` to add a Cave at the cursor location.
+
 Press `r` to generate a new environment.
 
 Press `i` to load world to file.
@@ -79,7 +84,7 @@ The data from this class is heavy, and will therefore be saved on demand.
 
 
 
-Lisence
+Licence
 ================================================================================
 
 
