@@ -21,7 +21,7 @@
 
 #include <Application.hpp>
 
-
+enum class BeeType : short;
 class Bee;
 class WorkerBee;
 class ScoutBee;
@@ -53,18 +53,18 @@ public:
   operator=(const Hive&) = delete;
 
   /**
-   * @brief Add a new ScoutBee.
+   * @brief Add a new Bee.
+   *
+   * @param beeType type of Bee.
    *
    * @return pointer to new ScoutBee.
    */
+  Bee*
+  addBee(BeeType beeType);
+
+  // methods for compatibility with tests
   ScoutBee*
   addScout();
-
-  /**
-   * @brief Add a new WorkerBee.
-   *
-   * @return pointer to new WorkerBee.
-   */
   WorkerBee*
   addWorker();
 
@@ -123,6 +123,12 @@ public:
   void
   reloadConfig() override;
 
+  bool
+  canMigrate() const;
+
+  void
+  removeQueen();
+
   /**
    * @brief Get amount to nectar in Hive.
    *
@@ -138,15 +144,13 @@ public:
   getNumBees() const;
 
   int
-  getNumScouts() const;
-
-  int
-  getNumWorkers() const;
+  getNumBees(BeeType beeType) const;
 
 private:
 
   double nectar_;
   double nectar_thresold_;
+  double migration_threshold_;
   double max_bees_;
   double reproduction_probability_;
   std::vector<Bee*> bees_;

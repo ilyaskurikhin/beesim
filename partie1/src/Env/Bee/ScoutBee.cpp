@@ -11,7 +11,7 @@
 
 ScoutBee::ScoutBee(Hive* hive, const Vec2d& position) :
     Bee(hive, position, std::vector<State>(
-      { IN_HIVE, SEARCH_FLOWER, RETURN_HIVE })), flower_location_(-1, -1), number_times_shared_(
+      { IN_HIVE, SEARCH_FLOWER, RETURN_HIVE }), BeeType::Scout), flower_location_(-1, -1), number_times_shared_(
         -1)
 {
   // call to reloadConfig to intialise the attributes from config
@@ -43,7 +43,7 @@ ScoutBee::reloadConfig()
 }
 
 j::Value const&
-ScoutBee::getConfig()
+ScoutBee::getConfig() const
 {
   return getAppConfig()["simulation"]["bees"]["scout"];
 }
@@ -62,56 +62,56 @@ ScoutBee::onState(State state, sf::Time dt)
       // if there is a flower in memory share its position
       if (flower_location_ != empty)
         {
-          this->getHive()->interactingBees();
+          getHive().interactingBees();
           flower_location_ = empty;
           std::string status = "in_hive_sharing"
               + std::to_string(number_times_shared_);
-          this->setDebugStatus(status);
+          setDebugStatus(status);
           number_times_shared_ = 1;
         }
       
       // if there is not enough energy to leave hive eat nectar from it
-      if (this->getEnergy() < energy_leave_hive_)
+      if (getEnergy() < energy_leave_hive_)
         {
-          this->setDebugStatus("in_hive_eating");
-          this->eatFromHive(dt);
+          setDebugStatus("in_hive_eating");
+          eatFromHive(dt);
         }
       // if there is no flower in memory and there is enough energy to 
       // leave hive go search flower
       else if (flower_location_ == empty)
         {
-          this->setDebugStatus("in_hive_leaving");
+          setDebugStatus("in_hive_leaving");
           // change state to search flower
-          this->nextState();
+          nextState();
         }
     }
 
   // second state
   else if (state == SEARCH_FLOWER)
     {
-      Flower* flower = this->findVisibleFlower();
-      this->setDebugStatus("seeking_flower");
+      Flower* flower = findVisibleFlower();
+      setDebugStatus("seeking_flower");
       
       // if there is a flower in visibility range and there is enough 
       // energy to leave search flower, remember the flower location
-      if (this->getEnergy() > energy_seek_flowers_ && flower != nullptr)
+      if (getEnergy() > energy_seek_flowers_ && flower != nullptr)
         {
           flower_location_ = flower->getPosition();
           number_times_shared_ = 0;
           // change state to return hive
-          this->nextState();
+          nextState();
         }
     }
 
   // third state
   else if (state == RETURN_HIVE)
     {
-      this->setDebugStatus("back_to_hive");
-      this->setMoveTarget(this->getHive()->getPosition());
+      setDebugStatus("back_to_hive");
+      setMoveTarget(getHive().getPosition());
       // if the bee is in the hive change state to in hive
-      if (this->getHive()->isColliderInside(this->getCollider()))
+      if (getHive().isColliderInside(getCollider()))
         {
-          this->nextState();
+          nextState();
         }
     }
 }
@@ -129,27 +129,6 @@ ScoutBee::onEnterState(State state)
     this->setMoveState(MoveState::TARGET);
 }
 
-bool
-ScoutBee::isScout() const
-{
-  return true;
-}
-
-bool
-ScoutBee::isWorker() const
-{
-  return false;
-}
-
-bool
-ScoutBee::isInHive() const
-{
-  if (this->getState() == IN_HIVE)
-    return true;
-  else
-    return false;
-}
-
 void
 ScoutBee::interact(Bee* other)
 {
@@ -164,10 +143,8 @@ ScoutBee::interactWith(ScoutBee*)
 void
 ScoutBee::interactWith(WorkerBee* working)
 {
-  Vec2d empty;
-  empty.x = -1;
-  empty.y = -1;
-  
+  Vec2d empty(-1.0, -1.0);
+
   // if there is a flower in memory and it was not share too much
   // give the flower position to a working bee
 
@@ -201,7 +178,6 @@ ScoutBee::getNumberTimesShared() const
 void
 ScoutBee::drawDebug(sf::RenderTarget& target) const
 {
-
   std::string valueString;
   sf::Color color(sf::Color::Yellow);
   Vec2d position;
@@ -219,8 +195,8 @@ ScoutBee::drawDebug(sf::RenderTarget& target) const
   sf::Text status = buildText(this->getDebugStatus(), position,
                                   getAppFont(), text_size, color);
   target.draw(status);
-
 }
+
 State const ScoutBee::IN_HIVE = createUid();
 State const ScoutBee::SEARCH_FLOWER = createUid();
 State const ScoutBee::RETURN_HIVE = createUid();
