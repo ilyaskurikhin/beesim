@@ -234,15 +234,6 @@ WorkerBee::drawDebug(sf::RenderTarget& target) const
       target.draw(status);
 }
 
-bool
-WorkerBee::isInHive() const
-{
-  if (this->getState() == IN_HIVE)
-    return true;
-  else
-    return false;
-}
-
 void
 WorkerBee::interact(Bee* other)
 {

@@ -74,16 +74,21 @@ Bee::isMovablePosition(const Vec2d& position) const
 }
 
 bool
-Bee::isDead()
+Bee::isDead() const
 {
   if (energy_ <= 0)
-    {
       return true;
-    }
   else
-    {
       return false;
-    }
+}
+
+bool
+Bee::isInHive() const
+{
+  if (this->isColliderInside(*hive_))
+    return true;
+  else
+    return false;
 }
 
 void

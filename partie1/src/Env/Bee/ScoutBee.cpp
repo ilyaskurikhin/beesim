@@ -129,15 +129,6 @@ ScoutBee::onEnterState(State state)
     this->setMoveState(MoveState::TARGET);
 }
 
-bool
-ScoutBee::isInHive() const
-{
-  if (this->getState() == IN_HIVE)
-    return true;
-  else
-    return false;
-}
-
 void
 ScoutBee::interact(Bee* other)
 {

@@ -88,7 +88,15 @@ public:
    * @return true is energy is zero.
    */
   bool
-  isDead();
+  isDead() const;
+
+  /**
+   * @brief Check if this Bee is in its Hive
+   *
+   * @return true is it is in the Hive
+   */
+  bool
+  isInHive() const;
 
   /**
    * @brief Evolve the Bee for a given time.
@@ -166,9 +174,6 @@ public:
 
   const std::string&
   getDebugStatus() const;
-
-  virtual bool
-  isInHive() const =0;
 
   virtual void
   interact(Bee* other)=0;

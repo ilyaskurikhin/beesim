@@ -65,9 +65,6 @@ public:
   void
   setPollen(double amount);
 
-  bool
-  isInHive() const override;
-
   void
   interact(Bee* other) override;
 

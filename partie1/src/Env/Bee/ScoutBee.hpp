@@ -45,9 +45,6 @@ public:
   void
   onEnterState(State state) override;
 
-  bool
-  isInHive() const override;
-
   void
   interact(Bee* other) override;
 
