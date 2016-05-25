@@ -144,24 +144,11 @@ public:
   bool
   isGrowable(const Vec2d& position) const;
 
-  /**
-   * @brief Check if a Collider could be placed.
-   *
-   * Check for presence of Hives.
-   *
-   * @param position where to place.
-   * @param radius radius of Collider.
-   *
-   * @return true is placement is possible.
-   */
-  bool
-  isPlaceable(const Vec2d& position, double radius) const;
-
   bool
   isHiveable(const Vec2d& position, double radius) const;
 
   bool
-  isCavePlaceable(const Vec2d& position, double radius) const;
+  isCaveable(const Vec2d& position, double radius) const;
 
   /**
    * @brief Check is can be flown.
@@ -221,18 +208,23 @@ public:
   bool
   addHiveAt(const Vec2d& position, double size);
 
-  /**
-   * @brief Draw zone occupied by Hive. 
-   *
-   * @param target where to draw.
-   * @param position where new Hive would be.
-   */
+  void
+  drawPlacementZone(sf::RenderTarget& target, const Vec2d& position,
+		   double radius, std::vector<Kind> kinds) const;
+
   void
   drawHiveableZone(sf::RenderTarget& target, const Vec2d& position,
-		   double radius) const;
+                   double radius) const;
 
   void
   drawHiveableZone(sf::RenderTarget& target, const Vec2d& position) const;
+
+  void
+  drawCaveableZone(sf::RenderTarget& target, const Vec2d& position,
+                   double radius) const;
+
+  void
+  drawCaveableZone(sf::RenderTarget& target, const Vec2d& position) const;
 
   /**
    * @brief Check for Hive collision, return if exists.
@@ -256,6 +248,12 @@ public:
 
   Cave*
   getCollidingCave(const Collider& body) const;
+
+  bool
+  existsCollidingObject(const Vec2d& position, double radius) const;
+
+  bool
+  getCollidingObject(const Collider& body) const;
 
   /**
    * @brief Check for Bee at position.
@@ -287,13 +285,6 @@ public:
   double
   getTextSize();
 
-  // order of return :
-  // left (0), right (1), top (2), bottom (3)
-  // h_left (4), h_right (5)
-  // v_top (6), v_bottom (7)
-  std::array<double, 8>
-  calculateScanRange(const Vec2d& position, double radius) const;
-
   std::unordered_map<std::string, double>
   fetchData(std::string graph) const;
 
@@ -313,6 +304,7 @@ private:
 
   double hive_manual_radius_;
   double hiveable_factor_;
+  size_t max_hives_;
 
   double cave_manual_radius_;
   size_t max_caves_;

@@ -46,15 +46,20 @@ Env::regenerate()
 
   int num_hives(initial["hive"]["count"].toInt());
   int num_flowers(initial["flower"]["count"].toInt());
+  int num_caves(initial["cave"]["count"].toInt());
 
   int num_tries_hives(initial["hive"]["max failures"].toInt());
   int num_tries_flowers(initial["flower"]["max failures"].toInt());
+  int num_tries_caves(initial["cave"]["max failures"].toInt());
 
   double hive_min_size(initial["hive"]["size"]["min"].toDouble());
   double hive_max_size(initial["hive"]["size"]["max"].toDouble());
 
   double flower_min_size(initial["flower"]["size"]["min"].toDouble());
   double flower_max_size(initial["flower"]["size"]["max"].toDouble());
+
+  double cave_min_size(initial["cave"]["size"]["min"].toDouble());
+  double cave_max_size(initial["cave"]["size"]["max"].toDouble());
 
   // try to add a hive at a uniform position in world 
   // count the number of tries if the hive cannot be placed
@@ -70,7 +75,7 @@ Env::regenerate()
 
           if (addHiveAt(position, uniform(hive_min_size, hive_max_size)))
             placed = true;
-          else
+
             ++num_tries;
         }
     }
@@ -86,13 +91,30 @@ Env::regenerate()
           position.x = uniform(0.0, getWorldSize().x);
           position.y = uniform(0.0, getWorldSize().y);
 
-          int num_tries(0);
           if (addFlowerAt(position, uniform(flower_min_size, flower_max_size)))
             placed = true;
-          else
+
             ++num_tries;
         }
     }
+
+  for (int i = 0; i < num_caves; ++i)
+    {
+      int num_tries(0);
+      bool placed(false);
+      while (!placed && num_tries < num_tries_caves)
+        {
+          Vec2d position;
+          position.x = uniform(0.0, getWorldSize().x);
+          position.y = uniform(0.0, getWorldSize().y);
+
+          if (addCaveAt(position, uniform(cave_min_size, cave_max_size)))
+            placed = true;
+
+            ++num_tries;
+        }
+    }
+
 }
 
 void
@@ -282,6 +304,7 @@ Env::reloadConfig()
 
   max_flowers_ = getAppConfig()["simulation"]["env"]["max flowers"].toInt();
   max_caves_ = getAppConfig()["simulation"]["env"]["max caves"].toInt();
+  max_hives_ = getAppConfig()["simulation"]["env"]["max hives"].toInt();
 
   hive_manual_radius_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble();
@@ -325,7 +348,7 @@ Env::getHumidity(const Vec2d& position) const
 bool
 Env::isGrowable(const Vec2d& position) const
 {
-  return world_->isGrass(position);
+  return world_->checkCellType(position, Kind::Grass);
 }
 
 bool
@@ -335,57 +358,15 @@ Env::isFlyable(const Vec2d& position) const
 }
 
 bool
-Env::isPlaceable(const Vec2d& position, double radius) const
-{
-  // if there is grass at the position
-  if (world_->isGrass(position))
-    {
-      Collider object(position, radius);
-
-      // check if the future hive is not colliding to a hive or a cave
-      if (getCollidingHive(object) == nullptr
-          && getCollidingCave(object) == nullptr)
-        {
-          return true;
-        }
-    }
-  return false;
-}
-
-bool
 Env::isHiveable(const Vec2d& position, double radius) const
 {
-    std::array<double, 8> v(calculateScanRange(position, radius));
-
-    if (!world_->isGrassArea(Vec2d(v[0], v[2]), Vec2d(v[1], v[3]))
-        || !world_->isGrassArea(Vec2d(v[4], v[2]), Vec2d(v[5], v[3]))
-        || !world_->isGrassArea(Vec2d(v[0], v[6]), Vec2d(v[1], v[7]))
-        || !world_->isGrassArea(Vec2d(v[4], v[6]), Vec2d(v[5], v[7])))
-      {
-        return false;
-      }
-    else
-      {
-        return true;
-      }
+  return world_->checkWrappedAreaType(position, radius, std::vector<Kind>({Kind::Grass}));
 }
 
 bool
-Env::isCavePlaceable(const Vec2d& position, double radius) const
+Env::isCaveable(const Vec2d& position, double radius) const
 {
-  // check if there is grass or rock at position
-  if (world_->isGrass(position) or world_->isRock(position))
-    {
-      Collider object(position, radius);
-
-      // check if the future cave is not colliding to a hive or a cave
-      if (getCollidingHive(object) == nullptr
-          && getCollidingCave(object) == nullptr)
-        {
-          return true;
-        }
-    }
-  return false;
+  return world_->checkWrappedAreaType(position, radius, std::vector<Kind>({Kind::Grass, Kind::Rock}));
 }
 
 bool
@@ -413,7 +394,9 @@ bool
 Env::addFlowerAt(const Vec2d& position, double size)
 {
   // check if flower can be made at position
-  if ((flowers_.size() < max_flowers_) && (isPlaceable(position, size)))
+  if ((flowers_.size() < max_flowers_)
+      && isGrowable(position)
+      && !existsCollidingObject(position, size))
     {
       // set a random number of pollen
       double pollen = uniform(flower_min_nectar_, flower_max_nectar_);
@@ -429,7 +412,7 @@ Env::addFlowerAt(const Vec2d& position, double size)
 void
 Env::drawFlowerZone(sf::RenderTarget& target, const Vec2d& position)
 {
-  if (world_->isGrass(position))
+  if (world_->checkCellType(position, Kind::Grass))
     {
       sf::CircleShape shape = buildAnnulus(position, flower_manual_radius_,
                                            sf::Color::Green, 5.0);
@@ -453,7 +436,9 @@ bool
 Env::addHiveAt(const Vec2d& position, double size)
 {
   // check if there is grass at position and object is placeabl
-  if (isPlaceable(position, size) && isHiveable(position,size))
+  if (hives_.size() < max_hives_
+      && isHiveable(position,size)
+      && !existsCollidingObject(position, size))
     {
       hives_.push_back(new Hive(position, size));
       return true;
@@ -474,30 +459,32 @@ bool
 Env::addCaveAt(const Vec2d& position, double size)
 {
   // if there is not too much caves, one can be placed if the cave is placeable at position
-  if (caves_.size() < max_caves_)
+  if ((caves_.size() < max_caves_)
+      && isCaveable(position, size)
+      && !existsCollidingObject(position, size))
     {
-      if (isCavePlaceable(position, size))
-        {
-          caves_.push_back(new Cave(position, size));
-          return true;
-        }
+      caves_.push_back(new Cave(position, size));
+      return true;
     }
-  return false;
+  else
+    {
+      return false;
+    }
 }
 
 void
-Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position,
-		      double radius) const
+Env::drawPlacementZone(sf::RenderTarget& target, const Vec2d& position,
+		      double radius, std::vector<Kind> kinds) const
 {
   sf::Color color;
   sf::Color fillColor;
   fillColor.a = 0;
 
-  if (!isHiveable(position, hive_manual_radius_))
+  if (!world_->checkWrappedAreaType(position, radius, kinds))
     {
       color = sf::Color::Blue;
     }
-  else if (!isPlaceable(position, hive_manual_radius_))
+  else if (existsCollidingObject(position, radius))
     {
       color = sf::Color::Red;
     }
@@ -506,7 +493,7 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position,
       color = sf::Color::Green;
     }
 
-  std::array<double, 8> v(calculateScanRange(position, radius));
+  std::array<double, 8> v(world_->calculateScanRange(position, radius));
 
   sf::RectangleShape shape(
       buildRectangle(Vec2d(v[0], v[2]), Vec2d(v[1], v[3]), color, 5.0,
@@ -528,9 +515,29 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position,
 }
 
 void
+Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position,
+                      double radius) const
+{
+  drawPlacementZone(target, position, radius, std::vector<Kind>({Kind::Grass}));
+}
+
+void
 Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position) const
 {
   drawHiveableZone(target, position, hive_manual_radius_);
+}
+
+void
+Env::drawCaveableZone(sf::RenderTarget& target, const Vec2d& position,
+                      double radius) const
+{
+  drawPlacementZone(target, position, radius, std::vector<Kind>({Kind::Grass, Kind::Rock}));
+}
+
+void
+Env::drawCaveableZone(sf::RenderTarget& target, const Vec2d& position) const
+{
+  drawCaveableZone(target, position, cave_manual_radius_);
 }
 
 Hive*
@@ -579,6 +586,16 @@ Env::getCollidingCave(const Collider& body) const
         }
     }
   return nullptr;
+}
+
+bool
+Env::existsCollidingObject(const Vec2d& position, double radius) const
+{;
+  Collider body(position, radius);
+  if (getCollidingHive(body) || getCollidingCave(body))
+    return true;
+  else
+    return false;
 }
 
 Bee*
@@ -648,81 +665,6 @@ double
 Env::getTextSize()
 {
   return debug_text_size_;
-}
-
-std::array<double, 8>
-Env::calculateScanRange(const Vec2d& position, double radius) const
-{
-  Vec2d worldSize = getWorldSize();
-
-  //
-  //
-  //        ---------------------------------------------
-  //        |     | 2|                                  |
-  //        |     ----                                  |
-  //        |     v_bottom     top                      |
-  //        | top             -----               top   |
-  //        |-                |   |               ------|
-  //        | |          left | 3 | right         |     |
-  //        |1| h_left        |   |         right |  1  | left
-  //        | |               -----               |     |
-  //        |-                bottom              ------|
-  //        |bottom                              bottom |
-  //        |      top                                  |
-  //        |     ----                                  |
-  //        |     | 2|                                  |
-  //        ---------------------------------------------
-  //
-  //        1 : wrapping on side
-  //        2 : wrapping on top / bottom
-  //        3 : no wrappin
-  //        4 : wrapping on both side and top / bottom
-  //
-
-
-  // boundaries of the middle box
-  double left, right, top, bottom;
-
-  // overflow boundaries for extra boxes
-  double h_left(-5), h_right(-5); // horizontal
-  double v_top(-5), v_bottom(-5); // vertical
-
-  if (!world_->isInWorld(position))
-    return {0,0,0,0};
-
-  // get left boundary
-  left = position.x - radius;
-  if (left < 0)
-    {
-      h_right = left + worldSize.x;
-      h_left = worldSize.x;
-    }
-
-  // get right boundary
-  right = position.x + radius;
-  if (right > worldSize.x)
-    {
-      h_right = right - worldSize.x;
-      h_left = 0;
-    }
-
-  // get top boundary
-  top = position.y - radius;
-  if (top < 0)
-    {
-      v_bottom = worldSize.y;
-      v_top = top + worldSize.y;
-    }
-
-  // get bottom boundary
-  bottom = position.y + radius;
-  if (bottom > worldSize.y)
-    {
-      v_bottom = 0;
-      v_top = bottom - worldSize.y;
-    }
-
-  return {left, right, top, bottom, h_left, h_right, v_top, v_bottom};
 }
 
 std::unordered_map<std::string, double>
