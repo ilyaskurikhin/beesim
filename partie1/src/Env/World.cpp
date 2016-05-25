@@ -696,26 +696,89 @@ World::calculateScanRange(size_t x, size_t y, unsigned int radius)
   return scanRange;
 }
 
-bool
-World::isGrass(const Vec2d& position) const
+std::array<double, 8>
+World::calculateScanRange(const Vec2d& position, double radius) const
 {
-  if (cells_[getCellIndex(position)] == Kind::Grass)
-    return true;
-  else
-    return false;
+  Vec2d worldSize = getWorldSize();
+
+  //
+  //
+  //        ---------------------------------------------
+  //        |     | 2|                                  |
+  //        |     ----                                  |
+  //        |     v_bottom     top                      |
+  //        | top             -----               top   |
+  //        |-                |   |               ------|
+  //        | |          left | 3 | right         |     |
+  //        |1| h_left        |   |         right |  1  | left
+  //        | |               -----               |     |
+  //        |-                bottom              ------|
+  //        |bottom                              bottom |
+  //        |      top                                  |
+  //        |     ----                                  |
+  //        |     | 2|                                  |
+  //        ---------------------------------------------
+  //
+  //        1 : wrapping on side
+  //        2 : wrapping on top / bottom
+  //        3 : no wrappin
+  //        4 : wrapping on both side and top / bottom
+  //
+
+
+  // boundaries of the middle box
+  double left, right, top, bottom;
+
+  // overflow boundaries for extra boxes
+  double h_left(-5), h_right(-5); // horizontal
+  double v_top(-5), v_bottom(-5); // vertical
+
+  if (!isInWorld(position))
+    return {0,0,0,0};
+
+  // get left boundary
+  left = position.x - radius;
+  if (left < 0)
+    {
+      h_right = left + worldSize.x;
+      h_left = worldSize.x;
+    }
+
+  // get right boundary
+  right = position.x + radius;
+  if (right > worldSize.x)
+    {
+      h_right = right - worldSize.x;
+      h_left = 0;
+    }
+
+  // get top boundary
+  top = position.y - radius;
+  if (top < 0)
+    {
+      v_bottom = worldSize.y;
+      v_top = top + worldSize.y;
+    }
+
+  // get bottom boundary
+  bottom = position.y + radius;
+  if (bottom > worldSize.y)
+    {
+      v_bottom = 0;
+      v_top = bottom - worldSize.y;
+    }
+
+  return {left, right, top, bottom, h_left, h_right, v_top, v_bottom};
 }
 
 bool
-World::isGrass(size_t x, size_t y) const
+World::checkCellType(const Vec2d& position, const Kind& kind) const
 {
-  if (cells_[y * number_columns_ + x] == Kind::Grass)
-    return true;
-  else
-    return false;
+  return (cells_[getCellIndex(position)] == kind);
 }
 
 bool
-World::isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight)
+World::checkAreaType(const Vec2d& topLeft, const Vec2d& bottomRight, const std::vector<Kind>& kinds) const
 {
   Vec2d start = getCellPosition(topLeft);
   Vec2d end = getCellPosition(bottomRight);
@@ -724,22 +787,37 @@ World::isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight)
     {
       for (size_t j = start.y; j < end.y; ++j)
         {
-          if (!isGrass(i, j))
+          bool right_kind(false);
+          for (Kind kind : kinds)
             {
-              return false;
+              if (cells_[j * number_columns_ + i] == kind)
+                {
+                  right_kind = true;
+                }
             }
+          if (!right_kind)
+            return false;
         }
     }
   return true;
 }
 
 bool
-World::isRock(const Vec2d& position) const
+World::checkWrappedAreaType(const Vec2d& position, double radius, const std::vector<Kind>& kinds) const
 {
-  if (cells_[getCellIndex(position)] == Kind::Rock)
-    return true;
+  std::array<double, 8> v(calculateScanRange(position, radius));
+
+  if (!checkAreaType(Vec2d(v[0], v[2]), Vec2d(v[1], v[3]), kinds)
+      || !checkAreaType(Vec2d(v[4], v[2]), Vec2d(v[5], v[3]), kinds)
+      || !checkAreaType(Vec2d(v[0], v[6]), Vec2d(v[1], v[7]), kinds)
+      || !checkAreaType(Vec2d(v[4], v[6]), Vec2d(v[5], v[7]), kinds))
+    {
+      return false;
+    }
   else
-    return false;
+    {
+      return true;
+    }
 }
 
 bool

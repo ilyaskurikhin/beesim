@@ -84,12 +84,10 @@ void FinalApplication::onDraw(sf::RenderTarget& target)
         auto pos = getCursorPositionInView();
         getEnv().drawHiveableZone(target, pos);
     }
-    // TODO implement
-    /*
+
     if (mShowCaveableZone) {
         auto pos = getCursorPositionInView();
         getEnv().drawCaveableZone(target, pos);
     }
-    */
 }
 

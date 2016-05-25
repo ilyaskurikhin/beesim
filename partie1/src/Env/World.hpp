@@ -192,34 +192,14 @@ public:
   void
   humidify(size_t i);
 
-  /**
-   * @brief Check if a FLower can be grown.
-   *
-   * Check for Rocks, Water.
-   *
-   * @param position
-   *
-   * @return true is can be grown.  
-   * */
   bool
-  isGrass(const Vec2d& position) const;
+  checkCellType(const Vec2d& position, const Kind& kind) const;
 
   bool
-  isGrass(size_t x, size_t y) const;
-
-  /**
-   * @brief Check if the area is all grass.
-   *
-   * @param topLeft top left corner graphic position
-   * @param bottomRight bottom right corner graphic position
-   *
-   * @return true if is all grass
-   */
-  bool
-  isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight);
+  checkAreaType(const Vec2d& topLeft, const Vec2d& bottomRight, const std::vector<Kind>& kinds) const;
 
   bool
-  isRock(const Vec2d& position) const;
+  checkWrappedAreaType(const Vec2d& position, double radius, const std::vector<Kind>& kinds) const;
 
   /**
    * @brief Check if Bee can be flown.
@@ -284,6 +264,20 @@ public:
   size_t
   getNumberColumns() const;
 
+  /**
+   * Find the cells to scan for given radius.
+   * Make sure that we do not go over boundaries.
+   */
+  std::array<size_t, 4>
+  calculateScanRange(size_t x, size_t y, unsigned int radius);
+
+  // order of return :
+  // left (0), right (1), top (2), bottom (3)
+  // h_left (4), h_right (5)
+  // v_top (6), v_bottom (7)
+  std::array<double, 8>
+  calculateScanRange(const Vec2d& position, double radius) const;
+
 private:
 
   Vec2d world_size_;
@@ -320,11 +314,5 @@ private:
   double humidity_initial_level_;
   double humidity_decay_rate_;
 
-  /**
-   * Find the cells to scan for given radius.
-   * Make sure that we do not go over boundaries.
-   */
-  std::array<size_t, 4>
-  calculateScanRange(size_t x, size_t y, unsigned int radius);
 };
 #endif
