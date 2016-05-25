@@ -85,7 +85,7 @@ Bee::isDead() const
 bool
 Bee::isInHive() const
 {
-  if (this->isColliderInside(*hive_))
+  if (getHive().isColliderInside(*this))
     return true;
   else
     return false;
@@ -114,13 +114,13 @@ void
 Bee::eatFromHive(sf::Time dt)
 {
   // energy increases by the amount of nectar taken from hive
-  energy_ += this->getHive()->takeNectar(energy_rate_eating_ * dt.asSeconds());
+  energy_ += this->getHive().takeNectar(energy_rate_eating_ * dt.asSeconds());
 }
 
-Hive*
+Hive&
 Bee::getHive() const
 {
-  return hive_;
+  return *hive_;
 }
 
 void

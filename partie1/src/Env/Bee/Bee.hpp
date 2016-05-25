@@ -147,7 +147,7 @@ public:
    *
    * @return pointer to current Bee Hive.
    */
-  Hive*
+  Hive&
   getHive() const;
 
   /**

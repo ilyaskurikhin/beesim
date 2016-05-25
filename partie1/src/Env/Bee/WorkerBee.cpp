@@ -99,12 +99,12 @@ WorkerBee::onState(State state, sf::Time dt)
   // third state
   else if (state == COLLECT_POLLEN)
     {
-      this->setDebugStatus("collecting_pollen");
-      this->setMoveTarget(empty);
+      setDebugStatus("collecting_pollen");
+      setMoveTarget(empty);
       // if there is a flower at flower location and it has pollen and 
       // bee has not enough pollen, eat pollen from flower
-      Flower* flower(getAppEnv().getCollidingFlower(this->getCollider()));
-      if ((this->getPollen() < max_pollen_)
+      Flower* flower(getAppEnv().getCollidingFlower(getCollider()));
+      if ((getPollen() < max_pollen_)
 	  && (flower != nullptr)
 	  && (flower->getPollen() > 0))
         {
@@ -113,17 +113,17 @@ WorkerBee::onState(State state, sf::Time dt)
       else
         {
           // else skip collection
-          this->nextState();
+          nextState();
         }
     }
   else if (state == RETURN_HIVE)
     {
-      this->setDebugStatus("back_to_hive");
-      this->setMoveTarget(this->getHive()->getPosition());
+      setDebugStatus("back_to_hive");
+      setMoveTarget(getHive().getPosition());
       // if bee is in hive change state to in hive
-      if (this->getHive()->isColliderInside(this->getCollider()))
+      if (getHive().isColliderInside(getCollider()))
         {
-          this->nextState();
+          nextState();
         }
     }
 }
@@ -132,10 +132,10 @@ void
 WorkerBee::onEnterState(State state)
 {
   if (state == IN_HIVE or state == COLLECT_POLLEN)
-      this->setMoveState(MoveState::AT_REST);
+      setMoveState(MoveState::AT_REST);
       
   else if (state == TO_FLOWER or state == RETURN_HIVE)
-      this->setMoveState(MoveState::TARGET);
+      setMoveState(MoveState::TARGET);
 }
 
 void
@@ -179,7 +179,7 @@ WorkerBee::transferPollen(sf::Time dt)
 {
   // pollen transfered is taken from bee at a certain rate and dropped in hive
   double pollen(takePollen(pollen_transfer_rate_ * dt.asSeconds()));
-  this->getHive()->dropPollen(pollen);
+  this->getHive().dropPollen(pollen);
   return pollen;
 }
 
