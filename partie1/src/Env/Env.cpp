@@ -645,7 +645,7 @@ Env::getNumScouts() const
   int numScouts(0);
   for (size_t i = 0; i < hives_.size(); ++i)
     {
-      numScouts += hives_[i]->getNumScouts();
+      numScouts += hives_[i]->getNumBees(BeeType::Scout);
     }
   return numScouts;
 }
@@ -656,7 +656,7 @@ Env::getNumWorkers() const
   int numWorkers(0);
   for (size_t i = 0; i < hives_.size(); ++i)
     {
-      numWorkers += hives_[i]->getNumWorkers();
+      numWorkers += hives_[i]->getNumBees(BeeType::Worker);
     }
   return numWorkers;
 }

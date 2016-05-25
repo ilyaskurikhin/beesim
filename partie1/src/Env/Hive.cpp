@@ -2,12 +2,11 @@
 #include <Env/Bee/Bee.hpp>
 #include <Env/Bee/WorkerBee.hpp>
 #include <Env/Bee/ScoutBee.hpp>
+#include <Env/Bee/QueenBee.hpp>
 
 Hive::Hive(const Vec2d& position, double radius) :
     Collider(position, radius), nectar_(
-        getAppConfig()["simulation"]["hive"]["initial"]["nectar"].toDouble()), hive_texture_(
-        getAppTexture(
-            getAppConfig()["simulation"]["hive"]["texture"].toString()))
+        getAppConfig()["simulation"]["hive"]["initial"]["nectar"].toDouble())
 {
   reloadConfig();
 }
@@ -22,13 +21,28 @@ Hive::~Hive()
   bees_.clear();
 }
 
-ScoutBee*
-Hive::addScout()
+Bee*
+Hive::addBee(BeeType beeType)
 {
-  ScoutBee* scout(new ScoutBee(this, this->getPosition()));
-  scout->reloadConfig();
-  bees_.push_back(scout);
-  return scout;
+  Bee* bee;
+  switch (beeType)
+  {
+    case BeeType::Scout :
+      bee = new ScoutBee(this, getPosition());
+      break;
+    case BeeType::Worker :
+      bee = new WorkerBee(this, getPosition());
+      break;
+    case BeeType::Queen :
+      bee = new QueenBee(this, getPosition());
+      break;
+    default :
+      return nullptr;
+      break;
+  }
+  bee->reloadConfig();
+  bees_.push_back(bee);
+  return bee;
 }
 
 WorkerBee*
@@ -38,6 +52,15 @@ Hive::addWorker()
   worker->reloadConfig();
   bees_.push_back(worker);
   return worker;
+}
+
+ScoutBee*
+Hive::addScout()
+{
+  ScoutBee* scout(new ScoutBee(this, this->getPosition()));
+  scout->reloadConfig();
+  bees_.push_back(scout);
+  return scout;
 }
 
 Bee*
@@ -109,14 +132,19 @@ Hive::takeNectar(double nectar)
 void
 Hive::update(sf::Time dt)
 {
+  if (getNumBees(BeeType::Queen) == 0)
+    {
+      addBee(BeeType::Queen);
+    }
+
   // check if there is enough nectar and not too much bees to add a new one
   if (bees_.size() < max_bees_ && nectar_ > nectar_thresold_)
     {
       // add randomly a workerbee or a scoutbee
       if (bernoulli(reproduction_probability_))
-        this->addWorker();
+        this->addBee(BeeType::Worker);
       else
-        this->addScout();
+        this->addBee(BeeType::Scout);
     }
 
   for (size_t i = 0; i < bees_.size(); ++i)
@@ -180,10 +208,47 @@ Hive::reloadConfig()
 {
   nectar_thresold_ =
       getAppConfig()["simulation"]["hive"]["reproduction"]["nectar threshold"].toDouble();
+  migration_threshold_ =
+      getAppConfig()["simulation"]["hive"]["migration threshold"].toDouble();
   max_bees_ =
       getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
   reproduction_probability_ =
       getAppConfig()["simulation"]["hive"]["reproduction"]["scout probability"].toDouble();
+
+  hive_texture_ =
+          getAppTexture(
+              getAppConfig()["simulation"]["hive"]["texture"].toString());
+}
+
+bool
+Hive::canMigrate() const
+{
+  if (getNectar() > migration_threshold_)
+    return true;
+  else
+    return false;
+}
+
+void
+Hive::removeQueen()
+{
+  if (getNumBees(BeeType::Queen) > 0)
+    {
+      int i(0);
+      int remove(-1);
+      for (Bee* bee : bees_)
+        {
+          if (bee->getBeeType() == BeeType::Queen)
+            {
+              remove = i;
+            }
+          ++i;
+        }
+      if (remove > 0)
+        {
+          bees_.erase(bees_.begin() + remove);
+        }
+    }
 }
 
 double
@@ -205,29 +270,15 @@ Hive::getNumBees() const
 }
 
 int
-Hive::getNumScouts() const
+Hive::getNumBees(BeeType beeType) const
 {
   int numScouts(0);
   for (size_t i = 0; i < bees_.size(); ++i)
     {
-      if (bees_[i]->isScout())
+      if (bees_[i]->getBeeType() == beeType)
         {
           ++numScouts;
         }
     }
   return numScouts;
-}
-
-int
-Hive::getNumWorkers() const
-{
-  int numWorkers(0);
-  for (size_t i = 0; i < bees_.size(); ++i)
-    {
-      if (bees_[i]->isWorker())
-        {
-          ++numWorkers;
-        }
-    }
-  return numWorkers;
 }
