@@ -9,7 +9,7 @@
 
 WorkerBee::WorkerBee(Hive* hive, const Vec2d& position) :
     Bee(hive, position, std::vector<State>(
-      { IN_HIVE, TO_FLOWER, COLLECT_POLLEN, RETURN_HIVE })), flower_location_(
+      { IN_HIVE, TO_FLOWER, COLLECT_POLLEN, RETURN_HIVE }), BeeType::Worker), flower_location_(
         -1, -1), pollen_(0.0)
 {
   // call to reloadConfig to intialise the attributes from config
@@ -23,7 +23,7 @@ WorkerBee::~WorkerBee()
 }
 
 j::Value const&
-WorkerBee::getConfig()
+WorkerBee::getConfig() const
 {
   return getAppConfig()["simulation"]["bees"]["worker"];
 }
@@ -232,19 +232,6 @@ WorkerBee::drawDebug(sf::RenderTarget& target) const
       sf::Text status = buildText(this->getDebugStatus(), position,
                                   getAppFont(), text_size, color);
       target.draw(status);
-
-}
-
-bool
-WorkerBee::isScout() const
-{
-  return false;
-}
-
-bool
-WorkerBee::isWorker() const
-{
-  return true;
 }
 
 bool

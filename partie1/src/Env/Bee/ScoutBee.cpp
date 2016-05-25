@@ -11,7 +11,7 @@
 
 ScoutBee::ScoutBee(Hive* hive, const Vec2d& position) :
     Bee(hive, position, std::vector<State>(
-      { IN_HIVE, SEARCH_FLOWER, RETURN_HIVE })), flower_location_(-1, -1), number_times_shared_(
+      { IN_HIVE, SEARCH_FLOWER, RETURN_HIVE }), BeeType::Scout), flower_location_(-1, -1), number_times_shared_(
         -1)
 {
   // call to reloadConfig to intialise the attributes from config
@@ -43,7 +43,7 @@ ScoutBee::reloadConfig()
 }
 
 j::Value const&
-ScoutBee::getConfig()
+ScoutBee::getConfig() const
 {
   return getAppConfig()["simulation"]["bees"]["scout"];
 }
@@ -127,18 +127,6 @@ ScoutBee::onEnterState(State state)
 
   else if (state == RETURN_HIVE)
     this->setMoveState(MoveState::TARGET);
-}
-
-bool
-ScoutBee::isScout() const
-{
-  return true;
-}
-
-bool
-ScoutBee::isWorker() const
-{
-  return false;
 }
 
 bool

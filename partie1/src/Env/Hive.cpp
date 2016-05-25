@@ -210,7 +210,7 @@ Hive::getNumScouts() const
   int numScouts(0);
   for (size_t i = 0; i < bees_.size(); ++i)
     {
-      if (bees_[i]->isScout())
+      if (bees_[i]->getBeeType() == BeeType::Scout)
         {
           ++numScouts;
         }
@@ -224,7 +224,7 @@ Hive::getNumWorkers() const
   int numWorkers(0);
   for (size_t i = 0; i < bees_.size(); ++i)
     {
-      if (bees_[i]->isWorker())
+      if (bees_[i]->getBeeType() == BeeType::Worker)
         {
           ++numWorkers;
         }

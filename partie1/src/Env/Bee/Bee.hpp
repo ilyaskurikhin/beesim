@@ -35,6 +35,11 @@ class WorkerBee;
 class Hive;
 class Flower;
 
+enum class BeeType : short
+{
+  Worker, Scout, Queen, Soldier
+};
+
 /**
  * @brief Abstract class Bee.
  */
@@ -53,7 +58,7 @@ public:
    * @param position  The starting position of the bee.
    * @param states    The possible CFSM states of the bee.
    */
-  Bee(Hive* hive, const Vec2d& position, std::vector<State> states);
+  Bee(Hive* hive, const Vec2d& position, std::vector<State> states, BeeType beeType);
 
   virtual
   ~Bee() = default;
@@ -64,7 +69,7 @@ public:
    * @return Configuration values.
    */
   virtual j::Value const&
-  getConfig() =0;
+  getConfig() const =0;
 
   /**
    * @brief Move the bee.
@@ -165,12 +170,6 @@ public:
   virtual bool
   isInHive() const =0;
 
-  virtual bool
-  isScout() const =0;
-
-  virtual bool
-  isWorker() const =0;
-
   virtual void
   interact(Bee* other)=0;
 
@@ -195,9 +194,14 @@ public:
   void
   setVisionRange(const Collider& visionRange);
 
+  const BeeType&
+  getBeeType() const;
+
 private:
 
   Hive* hive_;
+
+  BeeType bee_type_;
 
   double energy_;
   double energy_rate_idle_;
