@@ -87,6 +87,7 @@
             		"to migrate" : 1100,
             		"in hive" : 100,
             		"create hive" : 1000,
+            		"nectar transfer rate" : 10,
             		"consumption rates" : {
             			"idle" : 0.15,
             			"moving" : 0.6,
@@ -118,19 +119,19 @@
 			},
 			"size" : 60,
 			"energy" : {
-				"initial": 10000,
-				"to leave cave": 1000,
+				"initial": 5000,
+				"to leave cave": 0,
 				"consumption rates" : {
-					"idle" : 1,
-					"moving" : 5,
-					"eating" : 1,
-					"seeking hive" : 5
+					"idle" : 5,
+					"moving" : 10,
+					"eating" : 5,
+					"seeking hive" : 10
 				}
 			},
 			"honey eating rate" : 10,
-			"max honey capacity" : 1500,
+			"max honey capacity" : 5000,
 			"hibernation" : {
-				"maximum time" : 10
+				"maximum time" : 30
 			},
 			"speed" : 4,
 			"textures" : {
@@ -162,6 +163,7 @@
                 "max bees" : 25
             },
             "migration threshold" : 2000,
+            "max queens" : 3,
             "texture" : "hive.png"
         },
         "world" : {

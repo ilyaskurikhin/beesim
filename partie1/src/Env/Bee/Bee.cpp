@@ -63,7 +63,8 @@ Bee::move(sf::Time dt)
       targetMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
-  // sets current bee position to the vision range position
+
+  // sets bee vision range position to the bee position
   vision_range_.setPosition(this->getPosition());
 }
 
@@ -129,11 +130,11 @@ Bee::drawOn(sf::RenderTarget& target) const
   Vec2d position(this->getPosition());
   double radius(this->getRadius());
 
-  // creates the bee sprite
+  // create bee sprite
   auto beeSprite = buildSprite(position, radius, texture_);
   double angle(this->getMoveVec().Vec2d::angle());
   
-  // if it is not in the correct angle moves the sprite
+  // if it is not in the correct angle move the sprite
   if ((angle >= PI / 2) or (angle <= -PI / 2))
     {
       beeSprite.scale(1, -1);

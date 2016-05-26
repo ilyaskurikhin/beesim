@@ -4,7 +4,9 @@ Cave::Cave(const Vec2d& position, double radius) :
     Collider(position, radius)
 
 {
+  // call to realod config to intialise attributes from config file
   reloadConfig();
+  // add a Bear (there is only one per cave)
   addBear();
 }
 
@@ -24,6 +26,7 @@ Cave::~Cave()
 Bear*
 Cave::addBear()
 {
+  // create a new bear in the cave
   bear_ = new Bear(this, this->getPosition());
   bear_->reloadConfig();
   return bear_;
@@ -32,7 +35,7 @@ Cave::addBear()
 Bear*
 Cave::getBearAt(const Vec2d& position)
 {
-
+  // if there is a bear at position return a pointer to the bear
   if (bear_->isPointInside(position))
     {
       return bear_;
@@ -49,6 +52,7 @@ Cave::getBear()
 void
 Cave::update(sf::Time dt)
 {
+  // update the bear
   getBear()->update(dt);
 
   if (bear_->isDead())
@@ -61,9 +65,13 @@ Cave::update(sf::Time dt)
 void
 Cave::drawOn(sf::RenderTarget& target) const
 {
+  // create the cave sprite
   auto caveSprite = buildSprite(this->getPosition(), this->getRadius(),
                                 texture_);
+  // draw cave sprite
   target.draw(caveSprite);
+  
+  // draw the bear
   bear_->drawOn(target);
 }
 

@@ -159,6 +159,7 @@ private:
   double migration_threshold_;
   int max_bees_;
   int max_hives_;
+  int max_queens_;
   double reproduction_probability_;
   std::vector<Bee*> bees_;
   sf::Texture hive_texture_;

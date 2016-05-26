@@ -197,6 +197,7 @@
 				}
 			},
 			"max flowers" : 300,
+ 			"max hives" : 30,
 			"max caves" :1
 		}
 	},

@@ -28,6 +28,10 @@ QueenBee::reloadConfig()
   energy_create_hive_ = getConfig()["energy"]["create hive"].toDouble();
   migration_distance_ = getConfig()["migration distance"].toDouble();
 
+  nectar_transfer_rate_ = getConfig()["energy"]["nectar transfer rate"].toDouble();
+  nectar_threshold_ =
+      getAppConfig()["simulation"]["hive"]["reproduction"]["nectar threshold"].toDouble();
+
   reproduction_probability_ = getConfig()["reproduction"]["scout probability"].toDouble();
 
   this->setRotationProbability(
@@ -97,6 +101,11 @@ QueenBee::onState(State state, sf::Time dt)
             else
               giveBirthTo(BeeType::Worker);
         }
+      else if (getEnergy() > energy_in_hive_
+              && getHive().getNectar() < nectar_threshold_)
+        {
+          transferNectar(dt);
+        }
     }
 
   if (state == MIGRATING)
@@ -107,6 +116,7 @@ QueenBee::onState(State state, sf::Time dt)
         {
           if (getAppEnv().addHiveAt(getPosition()))
             {
+              setMoveState(MoveState::AT_REST);
               getHive().removeBee(this);
               setHive(getAppEnv().getCollidingHive(getPosition()));
               getHive().addBee(this);
@@ -146,6 +156,16 @@ QueenBee::onEnterState(State state)
       setMoveTarget(getHive().getPosition());
       setMoveState(MoveState::TARGET);
     }
+}
+
+double
+QueenBee::transferNectar(sf::Time dt)
+{
+  // pollen transfered is taken from bee at a certain rate and dropped in hive
+  double pollen(nectar_transfer_rate_ * dt.asSeconds());
+  this->getHive().dropPollen(pollen);
+  setEnergy(getEnergy() - pollen);
+  return pollen;
 }
 
 void

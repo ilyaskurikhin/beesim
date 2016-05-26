@@ -39,6 +39,9 @@ public:
   void
   onEnterState(State state);
 
+  double
+  transferNectar(sf::Time dt);
+
   void
   interact(Bee* other) override;
 
@@ -56,6 +59,9 @@ private:
   double energy_migrate_;
   double energy_in_hive_;
   double energy_create_hive_;
+
+  double nectar_threshold_;
+  double nectar_transfer_rate_;
 
   double reproduction_probability_;
 

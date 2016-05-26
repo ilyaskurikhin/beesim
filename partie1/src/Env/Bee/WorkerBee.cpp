@@ -38,7 +38,6 @@ WorkerBee::reloadConfig()
   energy_leave_hive_ = getConfig()["energy"]["to leave hive"].toDouble();
   energy_collect_pollen_ = getConfig()["energy"]["to collect pollen"].toDouble();
   pollen_transfer_rate_ = getConfig()["transfer rate"].toDouble();
-
 }
 
 void

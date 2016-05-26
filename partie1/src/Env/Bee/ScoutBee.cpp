@@ -133,6 +133,7 @@ ScoutBee::onEnterState(State state)
 
   else if (state == RETURN_HIVE)
     this->setMoveState(MoveState::TARGET);
+
 }
 
 void
@@ -189,10 +190,10 @@ ScoutBee::drawDebug(sf::RenderTarget& target) const
   Vec2d position;
   double text_size(getAppEnv().getTextSize());
   
-  position = this->getPosition();
+  position = getPosition();
   position.y += text_size;
 
-  valueString = "Scout: energy " + to_nice_string(this->getEnergy());
+  valueString = "Scout: energy " + to_nice_string(getEnergy());
   sf::Text text = buildText(valueString, position, getAppFont(), text_size,
                               color);
   target.draw(text);

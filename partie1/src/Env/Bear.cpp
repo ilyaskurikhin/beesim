@@ -36,7 +36,7 @@ Bear::loadTexture()
   int number_files = getConfig()["textures"]["walking"]["number files"].toInt();
   for (int i=0; i < number_files; ++i)
     {
-      // iterates on the texture files and add them in a vector of sf::Textures
+      // iterates on the texture files and adds them in a vector of sf::Textures
       std::string file_name = getConfig()["textures"]["walking"]["file name"].toString();
       file_name.append(std::to_string(i));
       file_name.append(".png");
@@ -47,13 +47,18 @@ Bear::loadTexture()
 void
 Bear::chooseTexture()
 {
+  // if the elapsed time is longer than texture delay restart the texture
+  // counter
   if (isWalking() && texture_counter_.getElapsedTime() > texture_delay_)
     {
       texture_counter_.restart();
+      // if the current texture index is not the last one goes to the 
+      // next one
       if (current_texture_index_ < walking_textures_.size() - 1)
         {
           ++current_texture_index_;
         }
+      // if it is the last one return to the first texture index
       else
         {
           current_texture_index_ = 0;
@@ -64,20 +69,24 @@ Bear::chooseTexture()
 void
 Bear::move(sf::Time dt)
 {
+  // bear at rest loses its energy at a certain rate
   if (getMoveState() == MoveState::AT_REST)
     {
       energy_ = energy_ - energy_rate_idle_ * dt.asSeconds();
     }
+  // bear moving randomly loses its energy at a certain rate
   else if (getMoveState() == MoveState::RANDOM)
     {
       randomMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
+  // bear moving to a target loses its energy at a certain rate
   else if (getMoveState() == MoveState::TARGET)
     {
       targetMove(dt);
       energy_ = energy_ - energy_rate_moving_ * dt.asSeconds();
     }
+  // sets bear vision range position to the bee position
   vision_range_.setPosition(this->getPosition());
 }
 
@@ -126,11 +135,15 @@ double
 Bear::eatHoney(Hive* hive, sf::Time dt)
 {
   double eaten_honey(honey_eating_rate_ * dt.asSeconds());
+  
+  // if bear ate too much honey sets eaten honey to max honey capacity
   if (eaten_honey > max_honey_capacity_)
     eaten_honey = max_honey_capacity_;
       
   if (!hive)
     eaten_honey = 0;
+    
+  // add to bear energy the nectar (honey) taken from hive
   else
     this->setEnergy(this->getEnergy() + hive->takeNectar(eaten_honey));
     
@@ -149,15 +162,19 @@ Bear::drawOn(sf::RenderTarget& target) const
 {
   Vec2d position(this->getPosition());
   double radius(this->getRadius());
-
+  
+  // create bear sprite
   auto bearSprite = buildSprite(position, radius, walking_textures_[current_texture_index_]);
   double angle(this->getMoveVec().Vec2d::angle());
+  
+  // if it is not in the correct angle move the sprite
   if ((angle >= PI / 2) or (angle <= -PI / 2))
     {
       bearSprite.scale(1, -1);
     }
   bearSprite.rotate(angle / DEG_TO_RAD);
-
+  
+  // draw the sprite only if bear is not in cave
   if (!isInCave())
     {
       target.draw(bearSprite);
@@ -165,6 +182,7 @@ Bear::drawOn(sf::RenderTarget& target) const
 
   if (isDebugOn())
     {
+      // if bear moves randomly draw a black annulus around it
       double thickness(0);
       if (getMoveState() == MoveState::RANDOM)
         {
@@ -173,6 +191,8 @@ Bear::drawOn(sf::RenderTarget& target) const
                                                sf::Color::Black, thickness);
           target.draw(shape);
         }
+      
+      // if bear moves to a target draw a blue annulus around it
       else if (getMoveState() == MoveState::TARGET)
         {
           thickness = debug_thickness_target_;
@@ -251,6 +271,7 @@ Bear::onState(State state, sf::Time dt)
   // first state
   if (state == HIBERNATION)
     {
+      // if bear did not hibernate enough stay in cave hivernating
       if (hibernation_length_ < max_hibernation_
           && this->getEnergy() > energy_leave_cave_)
         {
@@ -259,7 +280,9 @@ Bear::onState(State state, sf::Time dt)
           this->setDebugStatus(status);
           hibernation_length_ += dt;
         }
-
+        
+      // if bear did hibernate enough stay in cave hivernating and has 
+      // enough energy to leave cave bear looks for hive
       if (hibernation_length_ >= max_hibernation_
           && this->getEnergy() > energy_leave_cave_)
         {
@@ -273,6 +296,9 @@ Bear::onState(State state, sf::Time dt)
     {
       this->setDebugStatus("seeking_hives");
       Hive* hive = this->findVisibleHive();
+      
+      // if there is a hive in view and enough energy to look for hive
+      // bear eats honey
       if (this->getEnergy() > energy_seek_hives_ && hive != nullptr)
         {
           this->setMoveTarget(hive->getPosition());
@@ -287,11 +313,15 @@ Bear::onState(State state, sf::Time dt)
     {
       this->setDebugStatus("eating_honey");
       Hive* hive(getAppEnv().getCollidingHive(this->getCollider()));
+      
+      // if there is a hive that has energy and bear energy is not
+      // too high eat honey
       if ((hive != nullptr) && (this->getEnergy() < max_honey_capacity_)
           && (hive->getNectar() > 0))
         {
           eatHoney(hive, dt);
         }
+      // else return to cave
       else
         {
           this->nextState();
@@ -303,6 +333,7 @@ Bear::onState(State state, sf::Time dt)
     {
       this->setDebugStatus("back_to_cave");
       this->setMoveTarget(this->getCave()->getPosition());
+      // if the bear is in cave skips to in cave state
       if (this->getCave()->isColliderInside(this->getCollider()))
         {
           this->nextState();
