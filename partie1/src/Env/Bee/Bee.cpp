@@ -17,6 +17,7 @@ void
 Bee::reloadConfig()
 {
   // configure Collider
+  
   this->setRadius(getConfig()["size"].toDouble());
 
   // configure Moveable

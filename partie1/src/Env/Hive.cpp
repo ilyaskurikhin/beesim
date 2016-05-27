@@ -219,6 +219,8 @@ Hive::reloadConfig()
 bool
 Hive::canMigrate() const
 {
+  // if there is enough nectar not not too many hives and queens
+  // hive can migrate
   if (getNectar() > migration_threshold_
       && getAppEnv().getNumHives() < max_hives_
       && getNumBees(BeeType::Queen) < max_queens_)
@@ -230,6 +232,8 @@ Hive::canMigrate() const
 bool
 Hive::canReproduce() const
 {
+  // if there is enough nectar and not too many bees
+  // hive can reproduce
   if ((getNectar() > nectar_threshold_)
       && (getNumBees() < max_bees_))
     return true;
@@ -280,13 +284,13 @@ Hive::getNumBees() const
 int
 Hive::getNumBees(BeeType beeType) const
 {
-  int numScouts(0);
+  int numBees(0);
   for (size_t i = 0; i < bees_.size(); ++i)
     {
       if (bees_[i]->getBeeType() == beeType)
         {
-          ++numScouts;
+          ++numBees;
         }
     }
-  return numScouts;
+  return numBees;
 }

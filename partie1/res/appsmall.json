@@ -57,6 +57,7 @@
 				"energy" : {
 					"initial" : 20,
 					"to leave hive" : 22,
+                   		        "to collect pollen" : 20,
 					"consumption rates" : {
 						"idle" :  0.015,
 						"moving": 0.06,
@@ -68,7 +69,38 @@
 				"max pollen capacity" : 100,
 				"speed" : 10,
 				"texture" : "bee/worker1.png"
-			}
+			},
+       "queen" : {
+            	"visibility range" : 1,
+            	"moving behaviour" : {
+            		"random" : {
+            			"rotation probability" : 0.02,
+                        "rotation angle max" : 0.785398163
+                    },
+                    "target" : {
+                        "avoidance delay" : 0.5
+            		}
+            	},
+              	"size" : 14,
+            	"energy" : {
+            		"initial" : 100,
+            		"to migrate" : 1100,
+            		"in hive" : 100,
+            		"create hive" : 1000,
+            		"nectar transfer rate" : 10,
+            		"consumption rates" : {
+            			"idle" : 0.15,
+            			"moving" : 0.6,
+            			"eating" : 20
+            		}
+            	},
+            	"reproduction" : {
+            		"scout probability" : 0.5
+            		},
+            	"speed" : 7,
+            	"migration distance" : 80,
+            	"texture" : "bee/worker2.png"
+            }
 		},
 		"cave" : {
 			"texture" : "cave.png",
@@ -130,6 +162,8 @@
 				"scout probability" : 0.7,
 				"max bees" : 25
 			},
+        		"migration threshold" : 2000,
+        		"max queens" : 3,
 			"texture" : "hive.png"
 		},
 		"world" : {
