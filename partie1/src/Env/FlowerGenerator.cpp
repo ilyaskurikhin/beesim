@@ -19,16 +19,22 @@ FlowerGenerator::update(sf::Time dt)
     {
       // reset the counter
       counter_ = sf::Time::Zero;
-      Vec2d position;
-      position.x = uniform(0.0, getAppEnv().getWorldSize().x);
-      position.y = uniform(0.0, getAppEnv().getWorldSize().y);
-      getAppEnv().addFlowerAt(position);
+      int i(0);
+      bool added;
+      while ((!added) && (i < 100))
+        {
+          Vec2d position;
+          position.x = uniform ((float) 0, (float) getApp ().getWorldSize ().x);
+          position.y = uniform ((float) 0, (float) getApp ().getWorldSize ().y);
+          added = (getAppEnv ()).addFlowerAt (position);
+          ++i;
+        }
     }
 
 }
 
 void
-FlowerGenerator::reset()
+FlowerGenerator::reset ()
 {
   counter_ = sf::Time::Zero;
 }

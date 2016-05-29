@@ -26,7 +26,7 @@ IMPLEMENT_MAIN(FlowerTest);
 void FlowerTest::onRun()
 {
     // Disable flower generator
-    getConfig()["simulation"]["flower generator"]["active"] = j::boolean(false);
+    getConfig()["simulation"]["flower generator"]["active"] = j::boolean(true);
 }
 
 void FlowerTest::onEvent(sf::Event event, sf::RenderWindow&)
