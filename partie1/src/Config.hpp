@@ -12,7 +12,7 @@
 std::string const RES_LOCATION = "../res/";
 
 // Define the location of the config file
-std::string const DEFAULT_CFG = "app.json";
+std::string const DEFAULT_CFG = "appbig.json";
 
 // Define the location of the font file (could be in the config instead of here)
 std::string const FONT_LOCATION = RES_LOCATION + "SourceHanSansCN-Regular.otf";
