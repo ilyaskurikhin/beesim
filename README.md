@@ -37,12 +37,20 @@ Usage
 ================================================================================
 
 The default run command is `scons application-run`, which will build and run the
-code in default configuration, using the app.json config file in the /res 
+code in default configuration, using the appbig.json config file in the /res 
 directory. You can change the configuration file used with the `--cfg=<file>`
 argument.
 
 We have extended the configuration file to include new features, as well as to 
 tweak previous features.
+
+There are two configuration files available for a big and a small world.
+
+Here is an overview of the program :
+	- The world is created, automatically generating the texture and the bees and bears.
+	- Hives die if they are in an area that is not optimal for the bees
+	- New hives are created if a hive is in a good location
+	- Stats are shown for the number of Bees, Hives and Flowers
 
 ## Environment
 
@@ -51,6 +59,8 @@ Hives, with Bees, as well as Flowers will be generated accoring to the
 configuration file. 
 
 Press `h` to add a Hive at the cursor location.
+
+Press `c` to add a Cave at the cursor location.
 
 Press `f` to add a Flower at the cursor location.
 
@@ -65,6 +75,7 @@ Press `d` to enter debug mode.
 Press `w` to display humidity levels.
 
 You can move around by dragging the world and scrolling to zoom in and out. 
+You can resize the window by dragging the edges.
 If you right click an animal, you the camera will follow it around the world.
 
 
@@ -119,6 +130,33 @@ world, the hives, and the flowers.
 
 This class contains methods that move objects through the world while
 interacting with the environment.
+
+It defines the ways in which objects move in the environment.
+
+### Bee
+
+There are several kinds of Bee in the project
+
+#### Queen Bee
+
+The Queen Bee gives birth to all the other Bees. It also creates the hive and 
+cares for the hive in times of need by sacrificing its energy.
+
+Each Hive is created with a Queen. The Queen will start to save energy when 
+a certain energy level is reached, and if the Queen reaches a critical level
+the Queen will give birth to a new Queen and leave to create a new Hive.
+
+The new Hive must be in an appropriate area and at least a certain distance 
+from the previous Hive of the Queen. 
+
+#### Worker Bee
+
+The Worker Bee collects nectar from flowers and drops it off at the Hive.
+
+#### Scout Bee 
+
+The Scout Bee finds Flower positions and gives those positions to Worker Bees
+when it is in the Hive.
 
 ### Interfaces
 
