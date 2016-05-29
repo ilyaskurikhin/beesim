@@ -14,7 +14,8 @@ Introduction
 ================================================================================
 
 This program aims to simulate an environment in which bees, living in hives, 
-collect pollen from flowers to keep the other bees in their hive alive.
+collect pollen from flowers to keep the other bees in their hive alive. Bears 
+interact with the environment through eating hive's nectar, endangering bees.
 
 Installation
 ================================================================================
@@ -77,7 +78,8 @@ Press `w` to display humidity levels.
 You can move around by dragging the world and scrolling to zoom in and out. 
 You can resize the window by dragging the edges.
 If you right click an animal, you the camera will follow it around the world.
-
+The debug mode will allow you to see humidity rates, animals energy rates and
+pollen and nectar rates.
 
 Documentation
 ================================================================================
@@ -123,7 +125,7 @@ settings are in the 'initial' section of the config file.
 
 ### Env
 
-The environtent contains all the elements of the simulation, including the 
+The environment contains all the elements of the simulation, including the 
 world, the hives, and the flowers. 
 
 ### Movable
@@ -133,9 +135,14 @@ interacting with the environment.
 
 It defines the ways in which objects move in the environment.
 
+### Hive
+
+There can be a limited number of hive in the environment. Each hive has a 
+limited number of bees and a level of nectar that varied.
+
 ### Bee
 
-There are several kinds of Bee in the project
+There are several kinds of Bee in the project.
 
 #### Queen Bee
 
@@ -157,6 +164,15 @@ The Worker Bee collects nectar from flowers and drops it off at the Hive.
 
 The Scout Bee finds Flower positions and gives those positions to Worker Bees
 when it is in the Hive.
+
+### Cave
+
+There can be two caves in the environment. To each cave belongs only one bear.
+
+### Bear
+
+Bears can not reproduce. They live in a cave where they hibernate for a certain
+time. Then they move randomly and if they pass by a hive they eat its nectar.
 
 ### Interfaces
 
