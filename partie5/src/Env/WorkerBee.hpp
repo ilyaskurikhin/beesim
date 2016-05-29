@@ -16,74 +16,74 @@ class WorkerBee : public Bee
 {
 public:
 
-  WorkerBee(Hive* hive, const Vec2d& position, std::vector<State> states);
+    WorkerBee(Hive* hive, const Vec2d& position, std::vector<State> states);
 
-  ~WorkerBee();
+    ~WorkerBee();
 
-  void
-  reloadConfig();
+    void
+    reloadConfig();
 
-  j::Value const&
-  getConfig() override;
+    j::Value const&
+    getConfig() override;
 
-  void
-  drawOn(sf::RenderTarget& target) const;
+    void
+    drawOn(sf::RenderTarget& target) const;
 
-  void
-  onState(State state, sf::Time dt) override;
+    void
+    onState(State state, sf::Time dt) override;
 
-  void
-  onEnterState(State state) override;
+    void
+    onEnterState(State state) override;
 
-  void
-  setFlower(const Vec2d& position);
+    void
+    setFlower(const Vec2d& position);
 
-  const Vec2d&
-  getFlower() const;
+    const Vec2d&
+    getFlower() const;
 
-  double
-  getPollen() const;
+    double
+    getPollen() const;
 
-  double
-  takePollen(double pollen);
+    double
+    takePollen(double pollen);
 
-  double
-  transferPollen(sf::Time dt);
+    double
+    transferPollen(sf::Time dt);
 
-  void
-  eatPollen(Flower* flower, sf::Time dt);
+    void
+    eatPollen(Flower* flower, sf::Time dt);
 
-  void
-  learnFlowerLocation(const Vec2d& flowerPosition);
+    void
+    learnFlowerLocation(const Vec2d& flowerPosition);
 
-  void
-  setPollen(double amount);
+    void
+    setPollen(double amount);
 
-  void
-  targetMove(sf::Time dt);
+    void
+    targetMove(sf::Time dt);
 
-  void
-  interact(Bee* other) override;
+    void
+    interact(Bee* other) override;
 
-  void
-  interactWith(ScoutBee* scouting) override;
+    void
+    interactWith(ScoutBee* scouting) override;
 
-  void
-  interactWith(WorkerBee* working) override;
+    void
+    interactWith(WorkerBee* working) override;
 
-  // TODO make private
+    // TODO make private
 
-  State static const TO_FLOWER;
-  State static const COLLECT_POLLEN;
+    State static const TO_FLOWER;
+    State static const COLLECT_POLLEN;
 
 private:
 
-  Vec2d flower_location_;
-  double pollen_;
-  double max_pollen_;
-  double pollen_collecting_rate_;
-  double energy_leave_hive_;
-  double pollen_transfer_rate_;
+    Vec2d flower_location_;
+    double pollen_;
+    double max_pollen_;
+    double pollen_collecting_rate_;
+    double energy_leave_hive_;
+    double pollen_transfer_rate_;
 
 };
 

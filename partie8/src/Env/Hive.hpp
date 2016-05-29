@@ -1,6 +1,6 @@
 /**
  * @file Hive.hpp
- * @brief 
+ * @brief
  * @author Ilya Skurikhin
  * @author Julia Besson
  * @version p5.1
@@ -37,120 +37,120 @@ class Hive : public Collider,
 
 public:
 
-  /**
-   * @brief Constructor.
-   *
-   * @param position graphic position of new Hive.
-   * @param radius size of new Hive.
-   */
-  Hive(const Vec2d& position, double radius);
+    /**
+     * @brief Constructor.
+     *
+     * @param position graphic position of new Hive.
+     * @param radius size of new Hive.
+     */
+    Hive(const Vec2d& position, double radius);
 
-  Hive(const Hive&) = delete;
+    Hive(const Hive&) = delete;
 
-  ~Hive();
+    ~Hive();
 
-  Hive
-  operator=(const Hive&) = delete;
+    Hive
+    operator=(const Hive&) = delete;
 
-  /**
-   * @brief Add a new ScoutBee.
-   *
-   * @return pointer to new ScoutBee.
-   */
-  ScoutBee*
-  addScout();
+    /**
+     * @brief Add a new ScoutBee.
+     *
+     * @return pointer to new ScoutBee.
+     */
+    ScoutBee*
+    addScout();
 
-  /**
-   * @brief Add a new WorkerBee.
-   *
-   * @return pointer to new WorkerBee.
-   */
-  WorkerBee*
-  addWorker();
+    /**
+     * @brief Add a new WorkerBee.
+     *
+     * @return pointer to new WorkerBee.
+     */
+    WorkerBee*
+    addWorker();
 
-  /**
-   * @brief Check is there is a Bee with such position.
-   *
-   * @param position graphic position
-   *
-   * @return poiter to existing Bee.
-   */
-  Bee*
-  getBeeAt(const Vec2d& position);
+    /**
+     * @brief Check is there is a Bee with such position.
+     *
+     * @param position graphic position
+     *
+     * @return poiter to existing Bee.
+     */
+    Bee*
+    getBeeAt(const Vec2d& position);
 
-  void
-  interactingBees();
+    void
+    interactingBees();
 
-  /**
-   * @brief Drop pollen into Hive.
-   *
-   * @param amount amount of pollen to add to Hive.
-   *
-   * @return new amont of pollen (nectar) in Hive.
-   */
-  double
-  dropPollen(double amount);
+    /**
+     * @brief Drop pollen into Hive.
+     *
+     * @param amount amount of pollen to add to Hive.
+     *
+     * @return new amont of pollen (nectar) in Hive.
+     */
+    double
+    dropPollen(double amount);
 
-  /**
-   * @brief Take nectar from Hive.
-   *
-   * @param amount amount of nectar to take.
-   *
-   * @return amount of nectar taken
-   */
-  double
-  takeNectar(double amount);
+    /**
+     * @brief Take nectar from Hive.
+     *
+     * @param amount amount of nectar to take.
+     *
+     * @return amount of nectar taken
+     */
+    double
+    takeNectar(double amount);
 
-  /**
-   * @brief Evolve Hive.
-   *
-   * @param dt
-   */
-  void
-  update(sf::Time dt) override;
+    /**
+     * @brief Evolve Hive.
+     *
+     * @param dt
+     */
+    void
+    update(sf::Time dt) override;
 
-  /**
-   * @brief Draw hive on a target.
-   *
-   * @param target where to draw
-   */
-  void
-  drawOn(sf::RenderTarget& target) const override;
+    /**
+     * @brief Draw hive on a target.
+     *
+     * @param target where to draw
+     */
+    void
+    drawOn(sf::RenderTarget& target) const override;
 
-  void
-  drawDebug(sf::RenderTarget& target) const;
+    void
+    drawDebug(sf::RenderTarget& target) const;
 
-  void
-  reloadConfig() override;
+    void
+    reloadConfig() override;
 
-  /**
-   * @brief Get amount to nectar in Hive.
-   *
-   * @return current amount of nectar.
-   */
-  double
-  getNectar() const;
+    /**
+     * @brief Get amount to nectar in Hive.
+     *
+     * @return current amount of nectar.
+     */
+    double
+    getNectar() const;
 
-  std::vector<Bee*>
-  getBees() const;
+    std::vector<Bee*>
+    getBees() const;
 
-  int
-  getNumBees() const;
+    int
+    getNumBees() const;
 
-  int
-  getNumScouts() const;
+    int
+    getNumScouts() const;
 
-  int
-  getNumWorkers() const;
+    int
+    getNumWorkers() const;
 
 private:
 
-  double nectar_;
-  double nectar_thresold_;
-  double max_bees_;
-  double reproduction_probability_;
-  std::vector<Bee*> bees_;
-  sf::Texture hive_texture_;
+    double nectar_;
+    double nectar_thresold_;
+    double max_bees_;
+    double reproduction_probability_;
+    std::vector<Bee*> bees_;
+    sf::Texture hive_texture_;
 
 };
 

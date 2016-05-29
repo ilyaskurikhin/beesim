@@ -98,7 +98,8 @@ sf::View setupView(Vec2d const& viewSize,
     view.setViewport({ static_cast<float>(position.x / windowSize.x),
                        static_cast<float>(position.y / windowSize.y),
                        static_cast<float>(allocation.x / windowSize.x),
-                       static_cast<float>(allocation.y / windowSize.y) });
+                       static_cast<float>(allocation.y / windowSize.y)
+                     });
 
     return view;
 }
@@ -106,17 +107,17 @@ sf::View setupView(Vec2d const& viewSize,
 } // anonymous
 
 Application::Application(int argc, char const** argv)
-: mAppDirectory(applicationDirectory(argc, argv))
-, mCfgFile(configFileRelativePath(argc, argv))
-, mConfig(j::readFromFile(mAppDirectory + mCfgFile))
-, mEnv(nullptr)
-, mStats(nullptr)
+    : mAppDirectory(applicationDirectory(argc, argv))
+    , mCfgFile(configFileRelativePath(argc, argv))
+    , mConfig(j::readFromFile(mAppDirectory + mCfgFile))
+    , mEnv(nullptr)
+    , mStats(nullptr)
 // TODO step5 uncomment me
 //, mNextGraphId(0)
 //, mCurrentGraphId(-1)
-, mPaused(false)
-, mIsResetting(false)
-, mIsDragging(false)
+    , mPaused(false)
+    , mIsResetting(false)
+    , mIsDragging(false)
 {
     // Set global singleton
     assert(currentApp == nullptr);
@@ -270,7 +271,7 @@ sf::Texture& Application::getTexture(std::string const& name)
         sf::Texture* newTexture = new sf::Texture;
         if (newTexture->loadFromFile(getResPath() + name)) {
             // The texture was correctly loaded so we save it
-			newTexture->setRepeated(true);
+            newTexture->setRepeated(true);
             mTextures[name] = newTexture;
             // And return the texture
             return *newTexture;
@@ -385,7 +386,8 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
     auto const ZOOM = 1.1f;
 
     switch (event.type) {
-    default: break;
+    default:
+        break;
 
     case sf::Event::Closed:
         window.close();
@@ -393,7 +395,8 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 
     case sf::Event::KeyPressed:
         switch (event.key.code) {
-        default: break;
+        default:
+            break;
 
         // Toggle debug mode
         case sf::Keyboard::D:
@@ -450,13 +453,14 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 
     case sf::Event::KeyReleased:
         switch (event.key.code) {
-        default: break;
+        default:
+            break;
 
         } // event.key.code switch for sf::Event::KeyReleased
         break;
 
 
-    // Handle zoom for SFML 2.3+ and older versions as well
+        // Handle zoom for SFML 2.3+ and older versions as well
 #if SFML_VERSION_MAJOR >= 2 && (SFML_VERSION_MINOR > 3 || (SFML_VERSION_MINOR == 3 && SFML_VERSION_PATCH >= 2))
     case sf::Event::MouseWheelScrolled:
         if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
@@ -578,12 +582,12 @@ void Application::zoomViewAt(sf::Vector2i const& pixel, float zoomFactor)
     view.zoom(zoomFactor);
     mRenderWindow.setView(view);
 
-    
-	auto afterCoord = mRenderWindow.mapPixelToCoords(pixel);
-	auto offsetCoords = beforeCoord - afterCoord;
-	
-	view.move(offsetCoords);
-	mRenderWindow.setView(view);
+
+    auto afterCoord = mRenderWindow.mapPixelToCoords(pixel);
+    auto offsetCoords = beforeCoord - afterCoord;
+
+    view.move(offsetCoords);
+    mRenderWindow.setView(view);
 }
 
 

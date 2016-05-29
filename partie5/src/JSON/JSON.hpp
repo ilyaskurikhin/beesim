@@ -75,11 +75,9 @@ public:
 class Value
 {
 protected:
-    static constexpr struct ObjectTag
-    {
+    static constexpr struct ObjectTag {
     } objectTag{};
-    static constexpr struct ArrayTag
-    {
+    static constexpr struct ArrayTag {
     } arrayTag{};
 
     // Construct, use factory methods

@@ -18,38 +18,38 @@ class Hive : public Collider, public Drawable, public Updatable
 
 public:
 
-  Hive (const Vec2d& position, double radius);
+    Hive (const Vec2d& position, double radius);
 
-  Hive (const Hive&) = delete;
-  
-  Hive
-  operator= (const Hive&) = delete;
+    Hive (const Hive&) = delete;
 
-  ~Hive ();
+    Hive
+    operator= (const Hive&) = delete;
 
-  void
-  addBee ();
+    ~Hive ();
 
-  void
-  update (sf::Time dt) override;
+    void
+    addBee ();
 
-  void
-  drawOn (sf::RenderTarget& targetWindow) const override;
+    void
+    update (sf::Time dt) override;
 
-  double
-  dropPollen (double amount);
+    void
+    drawOn (sf::RenderTarget& targetWindow) const override;
 
-  double
-  takeNectar (double amount);
+    double
+    dropPollen (double amount);
 
-  double
-  getNectar ();
+    double
+    takeNectar (double amount);
+
+    double
+    getNectar ();
 
 private:
 
-  double nectar_;
-  std::vector<Bee*> bees_;
-  sf::Texture hiveTexture_;
+    double nectar_;
+    std::vector<Bee*> bees_;
+    sf::Texture hiveTexture_;
 
 };
 

@@ -30,12 +30,12 @@ Value readFromStream(std::istream& s);
 void writeValue(std::ostream& s, Value const& v, std::size_t indent = 0);
 
 BadPayload::BadPayload(std::string const& msg)
-: std::runtime_error(msg)
+    : std::runtime_error(msg)
 {
 }
 
 NoSuchFile::NoSuchFile(std::string const& msg)
-: std::runtime_error(msg)
+    : std::runtime_error(msg)
 {
 }
 

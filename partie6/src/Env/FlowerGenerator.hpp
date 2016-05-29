@@ -1,6 +1,6 @@
 /**
  * @file FlowerGenerator.hpp
- * @brief 
+ * @brief
  * @author Ilya Skurikhin
  * @author Julia Besson
  * @version p5.1
@@ -28,29 +28,29 @@ class FlowerGenerator : public Updatable
 {
 public:
 
-  /**
-   * @brief Default constructor.
-   */
-  FlowerGenerator();
+    /**
+     * @brief Default constructor.
+     */
+    FlowerGenerator();
 
-  /**
-   * @brief Evolve FlowerGeneratr.
-   *
-   * @param dt
-   */
-  void
-  update(sf::Time dt);
+    /**
+     * @brief Evolve FlowerGeneratr.
+     *
+     * @param dt
+     */
+    void
+    update(sf::Time dt);
 
-  /**
-   * @brief Reset counter of FlowerGenerator.
-   */
-  void
-  reset();
+    /**
+     * @brief Reset counter of FlowerGenerator.
+     */
+    void
+    reset();
 
 private:
 
-  sf::Time counter_;
-  sf::Time delay_;
+    sf::Time counter_;
+    sf::Time delay_;
 };
 
 #endif

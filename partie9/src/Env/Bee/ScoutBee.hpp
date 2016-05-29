@@ -21,57 +21,57 @@ class ScoutBee : public Bee
 {
 public:
 
-  ScoutBee(Hive* hive, const Vec2d& position);
+    ScoutBee(Hive* hive, const Vec2d& position);
 
-  ScoutBee(const ScoutBee& scoutbee) = delete;
+    ScoutBee(const ScoutBee& scoutbee) = delete;
 
-  ~ScoutBee();
+    ~ScoutBee();
 
-  const ScoutBee&
-  operator=(const ScoutBee& scoutbee) = delete;
+    const ScoutBee&
+    operator=(const ScoutBee& scoutbee) = delete;
 
-  void
-  drawDebug(sf::RenderTarget& target) const override;
+    void
+    drawDebug(sf::RenderTarget& target) const override;
 
-  void
-  reloadConfig();
+    void
+    reloadConfig();
 
-  j::Value const&
-  getConfig() const override;
+    j::Value const&
+    getConfig() const override;
 
-  void
-  onState(State state, sf::Time dt) override;
+    void
+    onState(State state, sf::Time dt) override;
 
-  void
-  onEnterState(State state) override;
+    void
+    onEnterState(State state) override;
 
-  void
-  interact(Bee* other) override;
+    void
+    interact(Bee* other) override;
 
-  void
-  interactWith(ScoutBee* scouting) override;
+    void
+    interactWith(ScoutBee* scouting) override;
 
-  void
-  interactWith(WorkerBee* working) override;
-  const Vec2d&
-  getFlowerLocation() const;
-  void
-  setFlowerLocation(const Vec2d& flowerLocation);
-  int
-  getNumberTimesShared() const;
+    void
+    interactWith(WorkerBee* working) override;
+    const Vec2d&
+    getFlowerLocation() const;
+    void
+    setFlowerLocation(const Vec2d& flowerLocation);
+    int
+    getNumberTimesShared() const;
 
 private:
-  Vec2d flower_location_;
-  int number_times_shared_;
+    Vec2d flower_location_;
+    int number_times_shared_;
 
-  double energy_leave_hive_;
-  double energy_seek_flowers_;
+    double energy_leave_hive_;
+    double energy_seek_flowers_;
 
-  double max_sharing_;
+    double max_sharing_;
 
-  State static const SEARCH_FLOWER;
-  State static const IN_HIVE;
-  State static const RETURN_HIVE;
+    State static const SEARCH_FLOWER;
+    State static const IN_HIVE;
+    State static const RETURN_HIVE;
 
 };
 
