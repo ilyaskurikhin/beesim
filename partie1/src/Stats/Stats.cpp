@@ -9,9 +9,8 @@
 #include <Env/Env.hpp>
 
 Stats::Stats()
-
 {
-
+  reloadConfig();
 }
 
 Stats::~Stats()

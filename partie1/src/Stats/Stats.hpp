@@ -15,8 +15,8 @@
 #include <Utility/Constants.hpp>
 #include <Utility/Vec2d.hpp>
 
-#include <Interface/Drawable.hpp>
-#include <Interface/Updatable.hpp>
+#include <Interface/DrawableInterface.hpp>
+#include <Interface/UpdatableInterface.hpp>
 
 #include <Stats/Graph.hpp>
 
@@ -25,7 +25,9 @@
 #include <memory>
 #include <map>
 
-class Stats : public Drawable, public Updatable
+
+
+class Stats : public DrawableInterface, public UpdatableInterface
 {
 public:
 

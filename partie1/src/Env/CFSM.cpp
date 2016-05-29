@@ -14,15 +14,31 @@ CFSM::CFSM(std::vector<State> states) :
 {
 }
 
-CFSM::~CFSM()
+CFSM::CFSM(const CFSM& cfsm)
+: states_(cfsm.getStates()),
+  state_(cfsm.getState())
 {
 
 }
 
+CFSM&
+CFSM::operator=(const CFSM& cfsm)
+{
+  states_ = cfsm.getStates();
+  state_ = cfsm.getState();
+  return *this;
+}
+
 State
-CFSM::getState()
+CFSM::getState() const
 {
   return state_;
+}
+
+std::vector<State>
+CFSM::getStates() const
+{
+  return states_;
 }
 
 void

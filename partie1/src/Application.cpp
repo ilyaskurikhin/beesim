@@ -217,6 +217,7 @@ void Application::run()
         // Render everything
         render(simulationBackground, statsBackground);
 
+
         // In case we were resetting the simulation
         mIsResetting = false;
 
@@ -243,17 +244,16 @@ Env const& Application::getEnv() const
     return *mEnv;
 }
 
-/*
-BeeTracker& Application::getBeeTracker()
+AnimalTracker& Application::getBeeTracker()
 {
-    return mBeeTracker;
+    return mTracker;
 }
 
-BeeTracker const& Application::getBeeTracker() const
+AnimalTracker const& Application::getBeeTracker() const
 {
-    return mBeeTracker;
+    return mTracker;
 }
-*/
+
 j::Value& Application::getConfig()
 {
     return mConfig;
@@ -360,7 +360,7 @@ void Application::createWindow(Vec2d const& size)
     contextSettings.antialiasingLevel = getConfig()["window"]["antialiasing level"].toInt();
 
     // Create the window
-    mRenderWindow.create(vm, title, sf::Style::Close, contextSettings);
+    mRenderWindow.create(vm, title, sf::Style::Default, contextSettings);
     mRenderWindow.setKeyRepeatEnabled(true);
     mRenderWindow.setFramerateLimit(60);
 }
@@ -384,6 +384,9 @@ void Application::createViews()
     mSimulationView = setupView(getWorldSize(),
                                 getSimulationPosition(), getSimulationSize(),
                                 mRenderWindow.getSize());
+    mDebugView = setupView(getWorldSize(),
+                           getSimulationPosition(), getSimulationSize(),
+                           mRenderWindow.getSize());
     mStatsView = setupView(getStatsSize(),
                            getStatsPosition(), getStatsSize(),
                            mRenderWindow.getSize());
@@ -399,6 +402,12 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 
     case sf::Event::Closed:
         window.close();
+        break;
+
+    case sf::Event::Resized:
+        mSimulationView.setSize(event.size.width, event.size.height - getStatsSize().y);
+        mDebugView.setSize(event.size.width, event.size.height - getStatsSize().y);
+        mStatsView.setSize(event.size.width, getStatsSize().y);
         break;
 
     case sf::Event::KeyPressed:
@@ -500,17 +509,17 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
             mIsDragging = true;
             mLastCursorPosition = { event.mouseButton.x, event.mouseButton.y };
         } else if (event.mouseButton.button == sf::Mouse::Right) {
+
             auto pos  = getCursorPositionInView();
-			/*
-            auto* bee = getEnv().getBeeAt(pos);
-            if (bee == nullptr) {
+            Movable* animal = getEnv().getAnimalAt(pos);
+            if (animal == nullptr) {
                 // Stop tracking bee
-                getBeeTracker().stopTrackingBee();
+                getBeeTracker().stopTracking();
             } else {
                 // Track the bee
-                getBeeTracker().startTrackingBee(bee);
+                getBeeTracker().startTracking(animal);
             }
-			*/
+
         }
         break;
 
@@ -549,8 +558,14 @@ void Application::render(sf::Drawable const& simulationBackground, sf::Drawable 
     mRenderWindow.draw(simulationBackground);
 
     getEnv().drawOn(mRenderWindow);
-
     onDraw(mRenderWindow);
+
+    if (isDebugOn()) {
+        mRenderWindow.setView(mDebugView);
+        getEnv().drawDebug(mRenderWindow);
+    }
+
+
 
     // Render the stats
     mRenderWindow.setView(mStatsView);
@@ -584,43 +599,59 @@ void Application::zoomViewAt(sf::Vector2i const& pixel, float zoomFactor)
 {
     // Note: we know that the simulation view is active
     sf::View& view = mSimulationView;
+    sf::View& debug_view = mDebugView;
 
     auto beforeCoord = mRenderWindow.mapPixelToCoords(pixel);
 
     view.zoom(zoomFactor);
     mRenderWindow.setView(view);
 
-    // if (!getBeeTracker().isTrackingBee())  {
+    debug_view.zoom(zoomFactor);
+    mRenderWindow.setView(debug_view);
+
+    if (!getBeeTracker().isTracking())  {
         // If no bee is selected, center on the cursor position
         auto afterCoord = mRenderWindow.mapPixelToCoords(pixel);
         auto offsetCoords = beforeCoord - afterCoord;
 
         view.move(offsetCoords);
         mRenderWindow.setView(view);
-		// }
+
+        debug_view.move(offsetCoords);
+        mRenderWindow.setView(debug_view);
+    }
 }
 
 void Application::dragView(sf::Vector2i const& srcPixel, sf::Vector2i const& destPixel)
 {
     // Note: we know that the simulation view is active
     sf::View& view = mSimulationView;
+    sf::View& debug_view = mDebugView;
 
-    auto src = mRenderWindow.mapPixelToCoords(srcPixel);
-    auto dest = mRenderWindow.mapPixelToCoords(destPixel);
+    auto src = mRenderWindow.mapPixelToCoords(srcPixel, view);
+    auto dest = mRenderWindow.mapPixelToCoords(destPixel, view);
     auto dx = src - dest;
 
     view.move(dx);
     mRenderWindow.setView(view);
+
+    auto src_d = mRenderWindow.mapPixelToCoords(srcPixel, debug_view);
+    auto dest_d = mRenderWindow.mapPixelToCoords(destPixel, debug_view);
+    auto dx_d = src_d - dest_d;
+
+    debug_view.move(dx_d);
+    mRenderWindow.setView(debug_view);
 }
 
 void Application::updateSimulationView()
 {
-	/*
-    if (getBeeTracker().isTrackingBee()) {
-        auto pos = getBeeTracker().getTrackedBeePosition();
+
+    if (getBeeTracker().isTracking()) {
+        auto pos = getBeeTracker().getTrackedPosition();
         mSimulationView.setCenter(pos);
+        mDebugView.setCenter(pos);
     }
-	*/
+
 }
 
 Application& getApp()

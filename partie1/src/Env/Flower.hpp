@@ -10,20 +10,28 @@
 #define FLOWER_H
 
 #include <SFML/Graphics.hpp>
+
+#include <Interface/ConfigurableInterface.hpp>
+#include <Interface/DrawableInterface.hpp>
+#include <Interface/UpdatableInterface.hpp>
+
+#include <Utility/Utility.hpp>
+#include <Utility/Logging.hpp>
 #include <Random/Random.hpp>
+
 #include <Env/Collider.hpp>
 #include <Env/Env.hpp>
-#include <Utility/Utility.hpp>
-#include <Application.hpp>
-#include <Utility/Logging.hpp>
 
-#include <Interface/Drawable.hpp>
-#include <Interface/Updatable.hpp>
+#include <Application.hpp>
+
 
 /**
  * @brief Class simulating a Flower.
  */
-class Flower : public Collider, public Drawable, public Updatable
+class Flower : public Collider,
+    public DrawableInterface,
+    public UpdatableInterface,
+    public virtual ConfigurableInterface
 {
 
 public:
@@ -31,6 +39,8 @@ public:
    * @brief Default constructor.
    */
   Flower();
+
+  Flower(const Flower& flower) = delete;
 
   /**
    * @brief Detailed constructor.
@@ -40,6 +50,12 @@ public:
    * @param pollen initial pollen of Flower.
    */
   Flower(const Vec2d& position, double radius, double pollen);
+
+  const Flower&
+  operator=(const Flower& flower) = delete;
+
+  void
+  reloadConfig() override;
 
   /**
    * @brief Remove given quantity of pollen from Flower.
@@ -80,6 +96,8 @@ public:
    */
   double
   getPollen();
+  void
+  setPollen(double pollen);
 
 private:
 

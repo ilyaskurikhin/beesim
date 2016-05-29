@@ -14,14 +14,17 @@ World::World()
   reloadCacheStructure();
 
   // try to load a new world from file
-  try
-    {
-      loadFromFile();
-    }
-  catch (const std::runtime_error& e)
-    {
-      reset(true);
-    }
+  /*
+   try
+   {
+   loadFromFile();
+   }
+   catch (const std::runtime_error& e)
+   {
+   reset(true);
+   }
+   */
+  reset(true);
 }
 
 void
@@ -44,6 +47,11 @@ World::reloadConfig()
   // get the number of seeds from configd
   num_water_seeds_ = simulationWorld()["seeds"]["water"].toInt();
   num_grass_seeds_ = simulationWorld()["seeds"]["grass"].toInt();
+
+  water_neighbour_ratio_ =
+      simulationWorld()["generation"]["smoothness"]["water neighbourhood ratio"].toDouble();
+  grass_neighbour_ratio_ =
+      simulationWorld()["generation"]["smoothness"]["grass neighbourhood ratio"].toDouble();
 
   teleport_probability_ =
       simulationWorld()["seeds"]["water teleport probability"].toDouble();
@@ -74,6 +82,8 @@ World::reloadConfig()
     }
   appendLog("World\tset\thumidityRange_ = " + std::to_string(humidity_range_));
 
+  // calculate matrix of possible humidity values as a function of distance
+  
   humidity_matrix_ = std::vector<double>(humidity_range_ * humidity_range_);
   calculateHumidityMatrix();
 }
@@ -83,6 +93,7 @@ World::reloadCacheStructure()
 {
   logEvent("World", "loading\tcache structure");
 
+  // generate vertexes for each cell texture
   grass_vertexes_ = generateVertexes(simulationWorld()["textures"],
                                      number_columns_, cell_size_);
   water_vertexes_ = grass_vertexes_;
@@ -177,6 +188,8 @@ World::updateCache()
 
   rendering_cache_.clear();
   humidity_cache_.clear();
+  
+  // draw water grass and rock cells on different caches
 
   rendering_cache_.draw(grass_vertexes_.data(), grass_vertexes_.size(),
                         sf::Quads, rsGrass);
@@ -250,7 +263,7 @@ World::reset(bool regenerate)
 void
 World::drawOn(sf::RenderTarget& target) const
 {
-  if (simulationWorld()["show humidity"].toBool() || isDebugOn())
+  if (simulationWorld()["show humidity"].toBool())
     {
       sf::Sprite cache(humidity_cache_.getTexture());
       target.draw(cache);
@@ -490,10 +503,6 @@ World::smooth()
   // copy cells_ so as to not have directional bias
   // decisions are made on original, written in copy
   std::vector<Kind> localCells = cells_;
-  double sWaterRatio(
-      simulationWorld()["generation"]["smoothness"]["water neighbourhood ratio"].toDouble());
-  double sGrassRatio(
-      simulationWorld()["generation"]["smoothness"]["grass neighbourhood ratio"].toDouble());
 
   for (size_t i = 0; i < number_columns_ * number_columns_; ++i)
     {
@@ -509,19 +518,10 @@ World::smooth()
       // set the radius of neighborhood
       unsigned int radius(1);
 
-      /*
-       size_t left (std::max ((int) x - 1, 0));
-       size_t right (std::min ((int) x + 2, (int) numberColumns_ - 1));
-       size_t top (std::max ((int) y - 1, 0));
-       size_t bottom (std::min ((int) y + 2, (int) numberColumns_ - 1));
-       */
 
       // SET THE START AND END OF NEIGHBORHOOD
       // POSSIBILITY OF ADJUSTING TO TORIC HERE
       std::array<size_t, 4> scanRange = calculateScanRange(x, y, radius);
-
-      assert(scanRange[0] < scanRange[1]);
-      assert(scanRange[2] < scanRange[3]);
 
       for (size_t column(scanRange[0]); column < scanRange[1]; ++column)
         {
@@ -559,22 +559,26 @@ World::smooth()
       switch (cells_[i])
         {
         case Kind::Rock:
-          if (waterRatio > sWaterRatio)
+          if (waterRatio > water_neighbour_ratio_)
             {
               localCells[i] = Kind::Water;
             }
-          else if (grassRatio > sGrassRatio)
+          else if (grassRatio > grass_neighbour_ratio_)
             {
               localCells[i] = Kind::Grass;
             }
           break;
         case Kind::Grass:
-          if (waterRatio > sWaterRatio)
+          if (waterRatio > water_neighbour_ratio_)
             {
               localCells[i] = Kind::Water;
             }
           break;
         case Kind::Water:
+          if (grassRatio > grass_neighbour_ratio_)
+            {
+              localCells[i] = Kind::Grass;
+            }
           break;
         default:
           break;
@@ -605,6 +609,7 @@ void
 World::clear()
 {
   size_t size(number_columns_ * number_columns_);
+  // sets rock texture for each cell
   for (size_t i(0); i < size; ++i)
     {
       cells_[i] = Kind::Rock;
@@ -638,6 +643,7 @@ World::humidify()
 {
   logEvent("World", "calculating\tglobal humidity");
 
+  // if the cell is a water cell calculate it's humidity
   size_t size(number_columns_ * number_columns_);
   for (size_t i(0); i < size; ++i)
     {
@@ -654,15 +660,15 @@ World::humidify(size_t index)
   size_t x(index % number_columns_);
   size_t y(index / number_columns_);
 
-  sf::Vector2i loc_pos;
+  sf::Vector2i local_position;
   for (int i = -humidity_range_ + 1; i < humidity_range_; ++i)
     {
       for (int j = -humidity_range_ + 1; j < humidity_range_; ++j)
         {
-          loc_pos.x = x + i;
-          loc_pos.y = y + j;
-          clamping(loc_pos);
-          humidity_levels_[loc_pos.y * number_columns_ + loc_pos.x] +=
+          local_position.x = x + i;
+          local_position.y = y + j;
+          clamping(local_position);
+          humidity_levels_[local_position.y * number_columns_ + local_position.x] +=
               humidity_matrix_[std::abs(j) * humidity_range_ + std::abs(i)];
         }
     }
@@ -690,34 +696,89 @@ World::calculateScanRange(size_t x, size_t y, unsigned int radius)
   return scanRange;
 }
 
-bool
-World::isGrass(const Vec2d& position) const
+std::array<double, 8>
+World::calculateScanRange(const Vec2d& position, double radius) const
 {
-  if (cells_[getCellIndex(position)] == Kind::Grass)
+  Vec2d worldSize = getWorldSize();
+
+  //
+  //
+  //        ---------------------------------------------
+  //        |     | 2|                                  |
+  //        |     ----                                  |
+  //        |     v_bottom     top                      |
+  //        | top             -----               top   |
+  //        |-                |   |               ------|
+  //        | |          left | 3 | right         |     |
+  //        |1| h_left        |   |         right |  1  | left
+  //        | |               -----               |     |
+  //        |-                bottom              ------|
+  //        |bottom                              bottom |
+  //        |      top                                  |
+  //        |     ----                                  |
+  //        |     | 2|                                  |
+  //        ---------------------------------------------
+  //
+  //        1 : wrapping on side
+  //        2 : wrapping on top / bottom
+  //        3 : no wrappin
+  //        4 : wrapping on both side and top / bottom
+  //
+
+
+  // boundaries of the middle box
+  double left, right, top, bottom;
+
+  // overflow boundaries for extra boxes
+  double h_left(-5), h_right(-5); // horizontal
+  double v_top(-5), v_bottom(-5); // vertical
+
+  if (!isInWorld(position))
+    return {0,0,0,0};
+
+  // get left boundary
+  left = position.x - radius;
+  if (left < 0)
     {
-      return true;
+      h_right = left + worldSize.x;
+      h_left = worldSize.x;
     }
-  else
+
+  // get right boundary
+  right = position.x + radius;
+  if (right > worldSize.x)
     {
-      return false;
+      h_right = right - worldSize.x;
+      h_left = 0;
     }
+
+  // get top boundary
+  top = position.y - radius;
+  if (top < 0)
+    {
+      v_bottom = worldSize.y;
+      v_top = top + worldSize.y;
+    }
+
+  // get bottom boundary
+  bottom = position.y + radius;
+  if (bottom > worldSize.y)
+    {
+      v_bottom = 0;
+      v_top = bottom - worldSize.y;
+    }
+
+  return {left, right, top, bottom, h_left, h_right, v_top, v_bottom};
 }
 
 bool
-World::isGrass(size_t x, size_t y) const
+World::checkCellType(const Vec2d& position, const Kind& kind) const
 {
-  if (cells_[y * number_columns_ + x] == Kind::Grass)
-    {
-      return true;
-    }
-  else
-    {
-      return false;
-    }
+  return (cells_[getCellIndex(position)] == kind);
 }
 
 bool
-World::isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight)
+World::checkAreaType(const Vec2d& topLeft, const Vec2d& bottomRight, const std::vector<Kind>& kinds) const
 {
   Vec2d start = getCellPosition(topLeft);
   Vec2d end = getCellPosition(bottomRight);
@@ -726,26 +787,55 @@ World::isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight)
     {
       for (size_t j = start.y; j < end.y; ++j)
         {
-          if (!isGrass(i, j))
+          bool right_kind(false);
+          for (Kind kind : kinds)
             {
-              return false;
+              if (cells_[j * number_columns_ + i] == kind)
+                {
+                  right_kind = true;
+                }
             }
+          if (!right_kind)
+            return false;
         }
     }
   return true;
 }
 
 bool
-World::isFlyable(Vec2d const& position) const
+World::checkWrappedAreaType(const Vec2d& position, double radius, const std::vector<Kind>& kinds) const
 {
-  if (cells_[getCellIndex(position)] != Kind::Rock)
-    {
-      return true;
-    }
-  else
+  std::array<double, 8> v(calculateScanRange(position, radius));
+
+  if (!checkAreaType(Vec2d(v[0], v[2]), Vec2d(v[1], v[3]), kinds)
+      || !checkAreaType(Vec2d(v[4], v[2]), Vec2d(v[5], v[3]), kinds)
+      || !checkAreaType(Vec2d(v[0], v[6]), Vec2d(v[1], v[7]), kinds)
+      || !checkAreaType(Vec2d(v[4], v[6]), Vec2d(v[5], v[7]), kinds))
     {
       return false;
     }
+  else
+    {
+      return true;
+    }
+}
+
+bool
+World::isFlyable(Vec2d const& position) const
+{
+  if (cells_[getCellIndex(position)] != Kind::Rock)
+    return true;
+  else
+    return false;
+}
+
+bool
+World::isWalkable(const Vec2d& position) const
+{
+  if (cells_[getCellIndex(position)] != Kind::Water)
+    return true;
+  else
+    return false;
 }
 
 Vec2d
@@ -789,13 +879,9 @@ World::isInWorld(const Vec2d& position) const
   if ((position.x > getApp().getWorldSize().x - 1)
       || (position.y > getApp().getWorldSize().y - 1) || (position.x < 0)
       || (position.y < 0))
-    {
-      return false;
-    }
+    return false;
   else
-    {
-      return true;
-    }
+    return true;
 }
 
 const Vec2d&
@@ -804,3 +890,14 @@ World::getWorldSize() const
   return world_size_;
 }
 
+float
+World::getCellSize() const
+{
+  return cell_size_;
+}
+
+size_t
+World::getNumberColumns() const
+{
+  return number_columns_;
+}

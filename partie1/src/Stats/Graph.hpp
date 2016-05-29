@@ -7,7 +7,6 @@
 #ifndef INFOSV_GRAPH_HPP
 #define INFOSV_GRAPH_HPP
 
-#include <Interface/Drawable.hpp>
 #include <Utility/Vec2d.hpp>
 
 #include <SFML/Graphics.hpp>
@@ -16,8 +15,9 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include <Interface/DrawableInterface.hpp>
 
-class Graph : public Drawable
+class Graph : public DrawableInterface
 {
 public:
     /**

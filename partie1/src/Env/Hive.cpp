@@ -1,19 +1,19 @@
 #include <Env/Hive.hpp>
-#include <Env/Bee.hpp>
-#include <Env/WorkerBee.hpp>
-#include <Env/ScoutBee.hpp>
+#include <Env/Bee/Bee.hpp>
+#include <Env/Bee/WorkerBee.hpp>
+#include <Env/Bee/ScoutBee.hpp>
+#include <Env/Bee/QueenBee.hpp>
 
 Hive::Hive(const Vec2d& position, double radius) :
     Collider(position, radius), nectar_(
-        getAppConfig()["simulation"]["hive"]["initial"]["nectar"].toDouble()), hive_texture_(
-        getAppTexture(
-            getAppConfig()["simulation"]["hive"]["texture"].toString()))
+        getAppConfig()["simulation"]["hive"]["initial"]["nectar"].toDouble())
 {
   reloadConfig();
 }
 
 Hive::~Hive()
 {
+  // delete all the bees that belong to the hive
   for (size_t i = 0; i < bees_.size(); ++i)
     {
       delete bees_[i];
@@ -21,59 +21,59 @@ Hive::~Hive()
   bees_.clear();
 }
 
-void
-Hive::reloadConfig()
+Bee*
+Hive::addBee(BeeType beeType)
 {
-  nectar_thresold_ =
-      getAppConfig()["simulation"]["hive"]["reproduction"]["nectar threshold"].toDouble();
-  max_bees_ =
-      getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toDouble();
-  reproduction_probability_ =
-      getAppConfig()["simulation"]["hive"]["reproduction"]["scout probability"].toDouble();
+  Bee* bee;
+  switch (beeType)
+  {
+    case BeeType::Scout :
+      bee = new ScoutBee(this, getPosition());
+      break;
+    case BeeType::Worker :
+      bee = new WorkerBee(this, getPosition());
+      break;
+    case BeeType::Queen :
+      bee = new QueenBee(this, getPosition());
+      break;
+    default :
+      return nullptr;
+      break;
+  }
+  bee->reloadConfig();
+  bees_.push_back(bee);
+  return bee;
 }
 
-ScoutBee*
-Hive::addScout()
+Bee*
+Hive::addBee(Bee* bee)
 {
-  std::vector<State> states =
-    { Bee::IN_HIVE, ScoutBee::SEARCH_FLOWER, ScoutBee::RETURN_HIVE };
-  ScoutBee* scout(new ScoutBee(this, this->getPosition(), states));
-  scout->reloadConfig();
-  bees_.push_back(scout);
-  scouts_.push_back(scout);
-  return scout;
+  bees_.push_back(bee);
+  return bee;
 }
 
 WorkerBee*
 Hive::addWorker()
 {
-  std::vector<State> states =
-    { Bee::IN_HIVE, WorkerBee::TO_FLOWER, WorkerBee::COLLECT_POLLEN,
-        WorkerBee::RETURN_HIVE };
-  WorkerBee* worker(new WorkerBee(this, this->getPosition(), states));
+  WorkerBee* worker(new WorkerBee(this, this->getPosition()));
   worker->reloadConfig();
   bees_.push_back(worker);
-  workers_.push_back(worker);
   return worker;
 }
 
-WorkerBee*
-Hive::getWorker() const
+ScoutBee*
+Hive::addScout()
 {
-  for (size_t i = 0; i < workers_.size(); ++i)
-    {
-      if (workers_[i]->getState() == WorkerBee::IN_HIVE
-          && workers_[i]->getFlower() == Vec2d(-1, -1))
-        {
-          return workers_[i];
-        }
-    }
-  return nullptr;
+  ScoutBee* scout(new ScoutBee(this, this->getPosition()));
+  scout->reloadConfig();
+  bees_.push_back(scout);
+  return scout;
 }
 
 Bee*
 Hive::getBeeAt(const Vec2d& position)
 {
+  // check for each bee of the hive if they are at position
   for (size_t i = 0; i < bees_.size(); ++i)
     {
       if (bees_[i]->isPointInside(position))
@@ -85,63 +85,27 @@ Hive::getBeeAt(const Vec2d& position)
 }
 
 void
-Hive::update(sf::Time dt)
+Hive::interactingBees()
 {
-
-  if (bees_.size() < max_bees_ && nectar_ > nectar_thresold_)
+  // create a new vector that will contain bees in hive
+  std::vector<Bee*> beesInHive;
+  
+  for (size_t i(0); i < bees_.size(); ++i)
     {
-      if (bernoulli(reproduction_probability_))
+      // if bee is in hive add it to the vector
+      if (bees_[i]->isInHive())
         {
-          this->addWorker();
-        }
-      else
-        {
-          this->addScout();
+          beesInHive.push_back(bees_[i]);
         }
     }
-
-  for (size_t i = 0; i < bees_.size(); ++i)
+  
+  // make each bee in hive interact with every other bee in hive
+  for (size_t i(0); i < beesInHive.size(); ++i)
     {
-      bees_[i]->update(dt);
-
-      if (bees_[i]->isDead())
+      for (size_t j(0); j < beesInHive.size(); ++j)
         {
-          delete bees_[i];
-          bees_[i] = nullptr;
+          beesInHive[i]->interact(beesInHive[j]);
         }
-
-      bees_.erase(std::remove(bees_.begin(), bees_.end(), nullptr),
-                  bees_.end());
-
-    }
-}
-
-void
-Hive::drawOn(sf::RenderTarget& target) const
-{
-  auto hiveSprite = buildSprite(this->getPosition(), this->getRadius(),
-                                hive_texture_);
-  target.draw(hiveSprite);
-
-  for (size_t i = 0; i < bees_.size(); ++i)
-    {
-      bees_[i]->drawOn(target);
-    }
-
-  if (isDebugOn())
-    {
-      std::string valueString;
-      sf::Color color(sf::Color::Blue);
-      Vec2d position;
-      double text_size(getAppEnv().getTextSize());
-
-      position = this->getPosition();
-      position.y -= text_size;
-
-      valueString = "Nectar: " + to_nice_string(nectar_);
-      sf::Text text = buildText(valueString, position, getAppFont(), text_size,
-                                color);
-      target.draw(text);
     }
 }
 
@@ -149,9 +113,8 @@ double
 Hive::dropPollen(double nectar)
 {
   if (nectar > 0)
-    {
-      nectar_ = nectar_ + nectar;
-    }
+    nectar_ = nectar_ + nectar;
+    
   return nectar_;
 }
 
@@ -159,6 +122,7 @@ double
 Hive::takeNectar(double nectar)
 {
   double taken(0);
+
   if (nectar_ - nectar > 0)
     {
       nectar_ = nectar_ - nectar;
@@ -172,10 +136,139 @@ Hive::takeNectar(double nectar)
   return taken;
 }
 
+void
+Hive::update(sf::Time dt)
+{
+  for (size_t i = 0; i < bees_.size(); ++i)
+    {
+      // update each bee of the hive
+      bees_[i]->update(dt);
+      
+      // if one bee is dead delete it 
+      if (bees_[i]->isDead())
+        {
+          delete bees_[i];
+          bees_[i] = nullptr;
+        }
+
+      bees_.erase(std::remove(bees_.begin(), bees_.end(), nullptr),
+                  bees_.end());
+    }
+}
+
+void
+Hive::drawOn(sf::RenderTarget& target) const
+{
+  auto hiveSprite = buildSprite(this->getPosition(), this->getRadius(),
+                                hive_texture_);
+  target.draw(hiveSprite);
+
+  // call function drawOn for each bee of the hive
+  for (size_t i = 0; i < bees_.size(); ++i)
+    {
+      bees_[i]->drawOn(target);
+    }
+}
+
+void
+Hive::drawDebug(sf::RenderTarget& target) const
+{
+      std::string valueString;
+      sf::Color color(sf::Color::Blue);
+      Vec2d position;
+      double text_size(getAppEnv().getTextSize());
+
+      // if debug mode is on, shows the amount of nectar
+      valueString = "Nectar: " + to_nice_string(nectar_);
+
+
+      position = this->getPosition();
+      position.x += 75;
+
+      sf::Text text = buildText(valueString, position, getAppFont(), text_size,
+                                color);
+      target.draw(text);
+
+      // call function drawOn for each bee of the hive
+      for (size_t i = 0; i < bees_.size(); ++i)
+        {
+          bees_[i]->drawDebug(target);
+        }
+}
+
+void
+Hive::reloadConfig()
+{
+  nectar_threshold_ =
+      getAppConfig()["simulation"]["hive"]["reproduction"]["nectar threshold"].toDouble();
+  migration_threshold_ =
+      getAppConfig()["simulation"]["hive"]["migration threshold"].toDouble();
+  max_bees_ =
+      getAppConfig()["simulation"]["hive"]["reproduction"]["max bees"].toInt();
+
+  max_hives_ = getAppConfig()["simulation"]["env"]["max hives"].toInt();
+
+  hive_texture_ =
+          getAppTexture(
+              getAppConfig()["simulation"]["hive"]["texture"].toString());
+}
+
+bool
+Hive::canMigrate() const
+{
+  // if there is enough nectar not not too many hives and queens
+  // hive can migrate
+  if (getNectar() > migration_threshold_
+      && getAppEnv().getNumHives() < max_hives_)
+    return true;
+  else
+    return false;
+}
+
+bool
+Hive::canReproduce() const
+{
+  // if there is enough nectar and not too many bees
+  // hive can reproduce
+  if ((getNectar() > nectar_threshold_)
+      && (getNumBees() < max_bees_))
+    return true;
+  else
+    return false;
+}
+
+void
+Hive::removeBee(Bee* beeRemove)
+{
+  if (getNumBees(BeeType::Queen) > 0)
+    {
+      int i(0);
+      int remove(-1);
+      for (Bee* bee : bees_)
+        {
+          if (bee == beeRemove)
+            {
+              remove = i;
+            }
+          ++i;
+        }
+      if (remove >= 0)
+        {
+          bees_.erase(bees_.begin() + remove);
+        }
+    }
+}
+
 double
 Hive::getNectar() const
 {
   return nectar_;
+}
+
+std::vector<Bee*>
+Hive::getBees() const
+{
+  return bees_;
 }
 
 int
@@ -185,49 +278,15 @@ Hive::getNumBees() const
 }
 
 int
-Hive::getNumScouts() const
+Hive::getNumBees(BeeType beeType) const
 {
-  int numScouts(0);
+  int numBees(0);
   for (size_t i = 0; i < bees_.size(); ++i)
     {
-      if (bees_[i]->isScout())
+      if (bees_[i]->getBeeType() == beeType)
         {
-          ++numScouts;
+          ++numBees;
         }
     }
-  return numScouts;
-}
-
-int
-Hive::getNumWorkers() const
-{
-  int numWorkers(0);
-  for (size_t i = 0; i < bees_.size(); ++i)
-    {
-      if (bees_[i]->isWorker())
-        {
-          ++numWorkers;
-        }
-    }
-  return numWorkers;
-}
-
-void
-Hive::interactingBees()
-{
-  std::vector<Bee*> beesInHive;
-  for (size_t i(0); i < bees_.size(); ++i)
-    {
-      if (bees_[i]->isInHive())
-        {
-          beesInHive.push_back(bees_[i]);
-        }
-    }
-  for (size_t i(0); i < beesInHive.size(); ++i)
-    {
-      for (size_t j(0); j < beesInHive.size(); ++j)
-        {
-          beesInHive[i]->interact(beesInHive[j]);
-        }
-    }
+  return numBees;
 }

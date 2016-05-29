@@ -28,6 +28,8 @@ public:
    */
   CFSM(std::vector<State> states);
 
+  CFSM(const CFSM& cfsm);
+
   /**
    * @brief Destructor.
    *
@@ -35,7 +37,10 @@ public:
    * It's here because c++ guidelines say so
    */
   virtual
-  ~CFSM();
+  ~CFSM() = default;
+
+  CFSM&
+  operator=(const CFSM& cfsm);
 
   /**
    * @brief Get current state.
@@ -43,7 +48,10 @@ public:
    * @return current state
    */
   State
-  getState();
+  getState() const;
+
+  std::vector<State>
+  getStates() const;
 
   /**
    * @brief Move to next state.

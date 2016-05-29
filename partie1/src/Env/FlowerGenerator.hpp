@@ -12,20 +12,19 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
-#include <Application.hpp>
+#include <Interface/UpdatableInterface.hpp>
 
 #include <Utility/Logging.hpp>
 #include <Random/Random.hpp>
 
-#include <Interface/Updatable.hpp>
-
 #include <Env/Env.hpp>
-#include <Utility/Logging.hpp>
+
+#include <Application.hpp>
 
 /**
  * @brief Class generating Flower s in an Env ironment
  */
-class FlowerGenerator : public Updatable
+class FlowerGenerator : public UpdatableInterface
 {
 public:
 
@@ -33,6 +32,13 @@ public:
    * @brief Default constructor.
    */
   FlowerGenerator();
+
+  FlowerGenerator(const FlowerGenerator& flowerGenerator) = delete;
+
+  ~FlowerGenerator() = default;
+
+  const FlowerGenerator&
+  operator=(const FlowerGenerator& flowerGenerator) = delete;
 
   /**
    * @brief Evolve FlowerGeneratr.

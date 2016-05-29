@@ -10,14 +10,18 @@
 #define WORLD_H
 
 #include <SFML/Graphics.hpp>
+
+#include <Interface/ConfigurableInterface.hpp>
+#include <Interface/DrawableInterface.hpp>
+
 #include <Utility/Vertex.hpp>
 #include <Utility/Utility.hpp>
 #include <Utility/Vec2d.hpp>
 #include <Utility/Logging.hpp>
-#include <Application.hpp>
-#include <Random/Random.hpp>
 #include <JSON/JSON.hpp>
-#include <Interface/Drawable.hpp>
+#include <Random/Random.hpp>
+
+#include <Application.hpp>
 
 #include <vector>
 #include <array>
@@ -41,7 +45,7 @@ struct Seed
   Kind texture;
 };
 
-class World : public Drawable
+class World : public DrawableInterface, public virtual ConfigurableInterface
 {
 public:
 
@@ -52,6 +56,11 @@ public:
    */
   World();
 
+  World(const World& world) = delete;
+
+  const World&
+  operator=(const World& world) = delete;
+
   /**
    * @brief Load the app configuration from the config file.
    *
@@ -59,7 +68,7 @@ public:
    * of seeds and fill a blank Rock world.
    */
   void
-  reloadConfig();
+  reloadConfig() override;
 
   /**
    * @brief Generate the texture cache.
@@ -183,31 +192,14 @@ public:
   void
   humidify(size_t i);
 
-  /**
-   * @brief Check if a FLower can be grown.
-   *
-   * Check for Rocks, Water.
-   *
-   * @param position
-   *
-   * @return true is can be grown.  
-   * */
   bool
-  isGrass(const Vec2d& position) const;
+  checkCellType(const Vec2d& position, const Kind& kind) const;
 
   bool
-  isGrass(size_t x, size_t y) const;
+  checkAreaType(const Vec2d& topLeft, const Vec2d& bottomRight, const std::vector<Kind>& kinds) const;
 
-  /**
-   * @brief Check if the area is all grass.
-   *
-   * @param topLeft top left corner graphic position
-   * @param bottomRight bottom right corner graphic position
-   *
-   * @return true if is all grass
-   */
   bool
-  isGrassArea(const Vec2d& topLeft, const Vec2d& bottomRight);
+  checkWrappedAreaType(const Vec2d& position, double radius, const std::vector<Kind>& kinds) const;
 
   /**
    * @brief Check if Bee can be flown.
@@ -228,6 +220,10 @@ public:
    *
    * @return grid coordinates in world vector.
    */
+
+  bool
+  isWalkable(Vec2d const& position) const;
+
   Vec2d
   getCellPosition(const Vec2d& position) const;
 
@@ -263,6 +259,24 @@ public:
 
   const Vec2d&
   getWorldSize() const;
+  float
+  getCellSize() const;
+  size_t
+  getNumberColumns() const;
+
+  /**
+   * Find the cells to scan for given radius.
+   * Make sure that we do not go over boundaries.
+   */
+  std::array<size_t, 4>
+  calculateScanRange(size_t x, size_t y, unsigned int radius);
+
+  // order of return :
+  // left (0), right (1), top (2), bottom (3)
+  // h_left (4), h_right (5)
+  // v_top (6), v_bottom (7)
+  std::array<double, 8>
+  calculateScanRange(const Vec2d& position, double radius) const;
 
 private:
 
@@ -286,6 +300,8 @@ private:
   std::vector<Seed> seeds_;
   unsigned int num_water_seeds_;
   unsigned int num_grass_seeds_;
+  double water_neighbour_ratio_;
+  double grass_neighbour_ratio_;
 
   double teleport_probability_;
 
@@ -298,11 +314,5 @@ private:
   double humidity_initial_level_;
   double humidity_decay_rate_;
 
-  /**
-   * Find the cells to scan for given radius.
-   * Make sure that we do not go over boundaries.
-   */
-  std::array<size_t, 4>
-  calculateScanRange(size_t x, size_t y, unsigned int radius);
 };
 #endif

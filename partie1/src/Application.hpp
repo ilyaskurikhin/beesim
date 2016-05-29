@@ -8,7 +8,6 @@
 #define INFOSV_APPLICATION_HPP
 
 #include <JSON/JSON.hpp>
-//#include <Utility/BeeTracker.hpp>
 #include <Utility/Vec2d.hpp>
 
 #include <SFML/Graphics.hpp>
@@ -18,6 +17,7 @@
 #include <map>
 #include <stdexcept>
 #include <string>
+#include "Utility/AnimalTracker.hpp"
 
 class Env;
 class Stats;
@@ -77,8 +77,8 @@ public:
      *
      * @return the app's bee tracker
      */
-	// BeeTracker& getBeeTracker();
-    //BeeTracker const& getBeeTracker() const;
+    AnimalTracker& getBeeTracker();
+    AnimalTracker const& getBeeTracker() const;
 
     /*!
      * @brief Get access to the application's configuration
@@ -272,6 +272,7 @@ private:
 
     sf::RenderWindow mRenderWindow;  ///< SFML window / render target
     sf::View mSimulationView;        ///< View for simulation area
+    sf::View mDebugView;
 
     Stats*   mStats;                 ///< Statistic manager
     sf::View mStatsView;             ///< View for the stats area
@@ -291,7 +292,7 @@ private:
     bool         mIsDragging;        ///< Tells whether or not the user is dragging the view
     sf::Vector2i mLastCursorPosition;///< For handling dragging logic
 
-    //BeeTracker   mBeeTracker;        ///< Helper to keep track of a bee (optional)
+    AnimalTracker   mTracker;        ///< Helper to keep track of a bee (optional)
 };
 
 /*!

@@ -11,22 +11,25 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <Interface/ConfigurableInterface.hpp>
+#include <Interface/DrawableInterface.hpp>
+#include <Interface/UpdatableInterface.hpp>
+
 #include <Utility/Vec2d.hpp>
 #include <Utility/Utility.hpp>
 #include <Utility/Logging.hpp>
-
 #include <Random/Random.hpp>
 
-#include <Interface/Drawable.hpp>
-#include <Interface/Updatable.hpp>
-
-#include <Env/Bee.hpp>
+#include <Env/Bee/Bee.hpp>
 #include <Env/Hive.hpp>
 #include <Env/Collider.hpp>
 #include <Env/World.hpp>
+#include <Env/Bear.hpp>
+#include <Env/Cave.hpp>
 
 #include <memory>
 #include <vector>
+#include <array>
 #include <string>
 #include <unordered_map>
 
@@ -38,7 +41,9 @@ class Bee;
 /**
  * @brief Simulation Environment
  */
-class Env : public Drawable, public Updatable
+class Env : public DrawableInterface,
+    public UpdatableInterface,
+    public ConfigurableInterface
 {
 public:
   /**
@@ -51,10 +56,15 @@ public:
    */
   Env();
 
+  Env(const Env& env) = delete;
+
   /**
    * @brief Class destructor
    */
   ~Env();
+
+  const Env&
+  operator=(const Env& env) = delete;
 
   void
   regenerate();
@@ -82,6 +92,9 @@ public:
   void
   drawOn(sf::RenderTarget& target) const override;
 
+  void
+  drawDebug(sf::RenderTarget& target) const;
+
   /**
    * @brief Reset the environment by regenerating.
    */
@@ -92,7 +105,7 @@ public:
    * @brief Reload the config file
    */
   void
-  reloadConfig();
+  reloadConfig() override;
 
   /**
    * @brief Load the world_ from file.
@@ -131,18 +144,11 @@ public:
   bool
   isGrowable(const Vec2d& position) const;
 
-  /**
-   * @brief Check if a Collider could be placed.
-   *
-   * Check for presence of Hives.
-   *
-   * @param position where to place.
-   * @param radius radius of Collider.
-   *
-   * @return true is placement is possible.
-   */
   bool
-  isPlaceable(const Vec2d& position, double radius) const;
+  isHiveable(const Vec2d& position, double radius) const;
+
+  bool
+  isCaveable(const Vec2d& position, double radius) const;
 
   /**
    * @brief Check is can be flown.
@@ -155,6 +161,9 @@ public:
    */
   bool
   isFlyable(const Vec2d& position) const;
+
+  bool
+  isWalkable(const Vec2d& position) const;
 
   bool
   canAddFlower();
@@ -172,6 +181,11 @@ public:
   bool
   addFlowerAt(const Vec2d& position, double size);
 
+  bool
+  addCaveAt(const Vec2d& position);
+
+  bool
+  addCaveAt(const Vec2d& position, double size);
   /**
    * @brief Draw zone occupied by flower.
    *
@@ -188,20 +202,32 @@ public:
    *
    * @return true if Hive can be added.
    */
-  bool
+  Hive*
   addHiveAt(const Vec2d& position);
 
-  bool
+  Hive*
+  addHiveWithQueenAt(const Vec2d& position);
+
+  Hive*
   addHiveAt(const Vec2d& position, double size);
 
-  /**
-   * @brief Draw zone occupied by Hive. 
-   *
-   * @param target where to draw.
-   * @param position where new Hive would be.
-   */
   void
-  drawHiveableZone(sf::RenderTarget& target, const Vec2d& position);
+  drawPlacementZone(sf::RenderTarget& target, const Vec2d& position,
+		   double radius, std::vector<Kind> kinds) const;
+
+  void
+  drawHiveableZone(sf::RenderTarget& target, const Vec2d& position,
+                   double radius) const;
+
+  void
+  drawHiveableZone(sf::RenderTarget& target, const Vec2d& position) const;
+
+  void
+  drawCaveableZone(sf::RenderTarget& target, const Vec2d& position,
+                   double radius) const;
+
+  void
+  drawCaveableZone(sf::RenderTarget& target, const Vec2d& position) const;
 
   /**
    * @brief Check for Hive collision, return if exists.
@@ -223,6 +249,15 @@ public:
   Flower*
   getCollidingFlower(const Collider& body) const;
 
+  Cave*
+  getCollidingCave(const Collider& body) const;
+
+  bool
+  existsCollidingObject(const Vec2d& position, double radius) const;
+
+  bool
+  getCollidingObject(const Collider& body) const;
+
   /**
    * @brief Check for Bee at position.
    *
@@ -232,6 +267,15 @@ public:
    */
   Bee*
   getBeeAt(const Vec2d& position) const;
+
+  Bear*
+  getBearAt(const Vec2d& position) const;
+
+  Movable*
+  getAnimalAt(const Vec2d& position) const;
+
+  int
+  getNumHives() const;
 
   int
   getNumScouts() const;
@@ -253,9 +297,11 @@ public:
 private:
 
   World* world_;
+
   std::vector<Flower*> flowers_;
   FlowerGenerator* flower_generator_;
   std::vector<Hive*> hives_;
+  std::vector<Cave*> caves_;
 
   double flower_min_nectar_;
   double flower_max_nectar_;
@@ -264,6 +310,10 @@ private:
 
   double hive_manual_radius_;
   double hiveable_factor_;
+  size_t max_hives_;
+
+  double cave_manual_radius_;
+  size_t max_caves_;
 
   double debug_text_size_;
 };

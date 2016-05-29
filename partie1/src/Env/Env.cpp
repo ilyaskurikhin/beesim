@@ -20,12 +20,14 @@ Env::~Env()
   logEvent("Env", "destroying environment");
   delete world_;
 
+  // delete all flowers
   for (size_t i = 0; i < flowers_.size(); ++i)
     {
       delete flowers_[i];
     }
   flowers_.clear();
 
+  // delete all hives
   for (size_t i = 0; i < hives_.size(); ++i)
     {
       delete hives_[i];
@@ -38,13 +40,17 @@ void
 Env::regenerate()
 {
   logEvent("Env", "regenerating objects");
+
+  // initialises attributes from the json file
   auto const& initial = getAppConfig()["simulation"]["env"]["initial"];
 
   int num_hives(initial["hive"]["count"].toInt());
   int num_flowers(initial["flower"]["count"].toInt());
+  int num_caves(initial["cave"]["count"].toInt());
 
   int num_tries_hives(initial["hive"]["max failures"].toInt());
   int num_tries_flowers(initial["flower"]["max failures"].toInt());
+  int num_tries_caves(initial["cave"]["max failures"].toInt());
 
   double hive_min_size(initial["hive"]["size"]["min"].toDouble());
   double hive_max_size(initial["hive"]["size"]["max"].toDouble());
@@ -52,6 +58,11 @@ Env::regenerate()
   double flower_min_size(initial["flower"]["size"]["min"].toDouble());
   double flower_max_size(initial["flower"]["size"]["max"].toDouble());
 
+  double cave_min_size(initial["cave"]["size"]["min"].toDouble());
+  double cave_max_size(initial["cave"]["size"]["max"].toDouble());
+
+  // try to add a hive at a uniform position in world 
+  // count the number of tries if the hive cannot be placed
   for (int i = 0; i < num_hives; ++i)
     {
       int num_tries(0);
@@ -62,13 +73,18 @@ Env::regenerate()
           position.x = uniform(0.0, getWorldSize().x);
           position.y = uniform(0.0, getWorldSize().y);
 
-          if (addHiveAt(position, uniform(hive_min_size, hive_max_size)))
-            placed = true;
-          else
-            ++num_tries;
+          Hive* hive = addHiveAt(position, uniform(hive_min_size, hive_max_size));
+          if (hive)
+            {
+              placed = true;
+              hive->addBee(BeeType::Queen);
+            }
+
+          ++num_tries;
         }
     }
 
+  // do the same for flowers
   for (int i = 0; i < num_flowers; ++i)
     {
       int num_tries(0);
@@ -79,13 +95,30 @@ Env::regenerate()
           position.x = uniform(0.0, getWorldSize().x);
           position.y = uniform(0.0, getWorldSize().y);
 
-          int num_tries(0);
           if (addFlowerAt(position, uniform(flower_min_size, flower_max_size)))
             placed = true;
-          else
+
             ++num_tries;
         }
     }
+
+  for (int i = 0; i < num_caves; ++i)
+    {
+      int num_tries(0);
+      bool placed(false);
+      while (!placed && num_tries < num_tries_caves)
+        {
+          Vec2d position;
+          position.x = uniform(0.0, getWorldSize().x);
+          position.y = uniform(0.0, getWorldSize().y);
+
+          if (addCaveAt(position, uniform(cave_min_size, cave_max_size)))
+            placed = true;
+
+            ++num_tries;
+        }
+    }
+
 }
 
 void
@@ -101,7 +134,7 @@ Env::update(sf::Time dt)
   // iterate through flowers
   for (size_t i = 0; i < flowers_.size(); ++i)
     {
-      // flowers are updates
+      // flowers are updated
       // new flowers are drawn in next draw cycle
       flowers_[i]->update(dt);
 
@@ -117,73 +150,117 @@ Env::update(sf::Time dt)
   flowers_.erase(std::remove(flowers_.begin(), flowers_.end(), nullptr),
                  flowers_.end());
 
+  // iterate through hives
   for (size_t i = 0; i < hives_.size(); ++i)
     {
+      // hives are updated
       hives_[i]->update(dt);
 
-      if (hives_[i]->getNectar() == 0 && hives_[i]->getNumBees() == 0)
+      // check if there is no more nectar and no more bees
+      if (hives_[i]->getNectar() <= 0 && hives_[i]->getNumBees() == 0)
         {
+          // remove dead hive
           delete hives_[i];
           hives_[i] = nullptr;
         }
     }
-
+  // remove empty locations
   hives_.erase(std::remove(hives_.begin(), hives_.end(), nullptr),
                hives_.end());
 
+  // iterate through caves
+  for (size_t i = 0; i < caves_.size(); ++i)
+    {
+      // update the caves
+      caves_[i]->update(dt);
+
+      // check if there is still a bear in it 
+      if (caves_[i]->getBear() == nullptr)
+        {
+          // remove empty caves
+          delete caves_[i];
+          caves_[i] = nullptr;
+        }
+    }
+  // remove empty locations
+  caves_.erase(std::remove(caves_.begin(), caves_.end(), nullptr),
+               caves_.end());
 }
 
 void
 Env::drawOn(sf::RenderTarget& target) const
 {
   world_->drawOn(target);
+
+  // draw flowers
   for (size_t i = 0; i < flowers_.size(); ++i)
     {
       flowers_[i]->drawOn(target);
     }
 
+  // draw hives
   for (size_t i = 0; i < hives_.size(); ++i)
     {
       hives_[i]->drawOn(target);
 
     }
 
-  // if debug is on, show values
-  if (isDebugOn())
+  // draw caves 
+  for (size_t i = 0; i < caves_.size(); ++i)
     {
-      // get cursor position
-      Vec2d position = getApp().getCursorPositionInView();
-      if (world_->isInWorld(position))
+      caves_[i]->drawOn(target);
+
+    }
+}
+
+void
+Env::drawDebug(sf::RenderTarget& target) const
+{
+
+  // draw hives
+  for (size_t i = 0; i < hives_.size(); ++i)
+    {
+      hives_[i]->drawDebug(target);
+
+    }
+
+
+
+  // get cursor position
+  Vec2d position = getApp().getCursorPositionInView();
+  if (world_->isInWorld(position))
+    {
+      bool isShowing(false);
+      std::string valueString("empty");
+      sf::Color color(sf::Color::White);
+
+      // check for flowers
+      for (size_t i = 0; i < flowers_.size(); ++i)
         {
-          bool isFlower(false);
-          std::string valueString("empty");
-          sf::Color color(sf::Color::White);
-
-          // check for flowers
-          for (size_t i = 0; i < flowers_.size(); ++i)
+          if (*(flowers_[i]) > position)
             {
-              if (*(flowers_[i]) > position)
-                {
-                  isFlower = true;
-                  valueString = to_nice_string(flowers_[i]->getPollen());
-                  color = sf::Color::Yellow;
-                }
+              isShowing = true;
+              valueString = to_nice_string(flowers_[i]->getPollen());
+              color = sf::Color::Yellow;
             }
+        }
 
-          // otherwise show ambient humidity
-          if (!isFlower)
-            {
-              valueString = to_nice_string(world_->getHumidity(position));
-              color = sf::Color::Red;
-            }
+      // otherwise show ambient humidity
+      if (!isShowing && getAppConfig()["simulation"]["world"]["show humidity"].toBool())
+        {
+          valueString = to_nice_string(world_->getHumidity(position));
+          color = sf::Color::Red;
+          isShowing = true;
+        }
 
+      if (isShowing)
+        {
           sf::Text text = buildText(valueString, position, getAppFont(),
                                     debug_text_size_, color);
           target.draw(text);
-
         }
-    }
 
+    }
 }
 
 void
@@ -192,6 +269,8 @@ Env::reset()
   logEvent("Env", "resetting environment");
 
   world_->reset(true);
+
+  // iterate on flowers and delete them
   for (size_t i = 0; i < flowers_.size(); ++i)
     {
       delete flowers_[i];
@@ -199,18 +278,26 @@ Env::reset()
   flowers_.clear();
   flower_generator_->reset();
 
+  // iterate on hives and delete them
   for (size_t i = 0; i < hives_.size(); ++i)
     {
       delete hives_[i];
     }
   hives_.clear();
 
-  regenerate();
+  // iterate on caves and delete them
+  for (size_t i = 0; i < caves_.size(); ++i)
+    {
+      delete caves_[i];
+    }
+  caves_.clear();
 }
 
 void
 Env::reloadConfig()
 {
+  logEvent("Env", "reloading config");
+
   // get variables from configuration
   flower_manual_radius_ =
       getAppConfig()["simulation"]["env"]["initial"]["flower"]["size"]["manual"].toDouble();
@@ -219,18 +306,22 @@ Env::reloadConfig()
   flower_min_nectar_ =
       getAppConfig()["simulation"]["env"]["initial"]["flower"]["nectar"]["min"].toDouble();
 
-  // get max number of Flower from configuration
   max_flowers_ = getAppConfig()["simulation"]["env"]["max flowers"].toInt();
+  max_caves_ = getAppConfig()["simulation"]["env"]["max caves"].toInt();
+  max_hives_ = getAppConfig()["simulation"]["env"]["max hives"].toInt();
 
   hive_manual_radius_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["size"]["manual"].toDouble();
 
-  debug_text_size_ = 2
-      * (getAppConfig()["simulation"]["world"]["size"].toDouble()
-          / getAppConfig()["simulation"]["world"]["cells"].toDouble());
+  debug_text_size_ = 1
+        * (getAppConfig()["simulation"]["world"]["size"].toInt()
+          / getAppConfig()["simulation"]["world"]["cells"].toInt());
 
   hiveable_factor_ =
       getAppConfig()["simulation"]["env"]["initial"]["hive"]["hiveable factor"].toDouble();
+
+  cave_manual_radius_ =
+      getAppConfig()["simulation"]["env"]["initial"]["cave"]["size"]["manual"].toDouble();
 }
 
 void
@@ -261,7 +352,7 @@ Env::getHumidity(const Vec2d& position) const
 bool
 Env::isGrowable(const Vec2d& position) const
 {
-  return world_->isGrass(position);
+  return world_->checkCellType(position, Kind::Grass);
 }
 
 bool
@@ -271,19 +362,21 @@ Env::isFlyable(const Vec2d& position) const
 }
 
 bool
-Env::isPlaceable(const Vec2d& position, double radius) const
+Env::isHiveable(const Vec2d& position, double radius) const
 {
-  if (world_->isGrass(position))
-    {
-      Collider object(position, radius);
+  return world_->checkWrappedAreaType(position, radius, std::vector<Kind>({Kind::Grass}));
+}
 
-      // check if object can be made at position
-      if (getCollidingHive(object) == nullptr)
-        {
-          return true;
-        }
-    }
-  return false;
+bool
+Env::isCaveable(const Vec2d& position, double radius) const
+{
+  return world_->checkWrappedAreaType(position, radius, std::vector<Kind>({Kind::Grass, Kind::Rock}));
+}
+
+bool
+Env::isWalkable(const Vec2d& position) const
+{
+  return world_->isWalkable(position);
 }
 
 bool
@@ -305,7 +398,9 @@ bool
 Env::addFlowerAt(const Vec2d& position, double size)
 {
   // check if flower can be made at position
-  if ((flowers_.size() < max_flowers_) && (isPlaceable(position, size)))
+  if ((flowers_.size() < max_flowers_)
+      && isGrowable(position)
+      && !existsCollidingObject(position, size))
     {
       // set a random number of pollen
       double pollen = uniform(flower_min_nectar_, flower_max_nectar_);
@@ -321,7 +416,7 @@ Env::addFlowerAt(const Vec2d& position, double size)
 void
 Env::drawFlowerZone(sf::RenderTarget& target, const Vec2d& position)
 {
-  if (world_->isGrass(position))
+  if (world_->checkCellType(position, Kind::Grass))
     {
       sf::CircleShape shape = buildAnnulus(position, flower_manual_radius_,
                                            sf::Color::Green, 5.0);
@@ -335,18 +430,53 @@ Env::drawFlowerZone(sf::RenderTarget& target, const Vec2d& position)
     }
 }
 
-bool
+Hive*
 Env::addHiveAt(const Vec2d& position)
 {
   return addHiveAt(position, hive_manual_radius_);
 }
 
-bool
+Hive*
+Env::addHiveWithQueenAt(const Vec2d& position)
+{
+  Hive* hive(addHiveAt(position, hive_manual_radius_));
+  if (hive)
+    hive->addBee(BeeType::Queen);
+  return hive;
+}
+
+Hive*
 Env::addHiveAt(const Vec2d& position, double size)
 {
-  if (world_->isGrass(position) && (isPlaceable(position, size)))
+  // check if there is grass at position and object is placeabl
+  if (hives_.size() < max_hives_
+      && isHiveable(position,size)
+      && !existsCollidingObject(position, size))
     {
       hives_.push_back(new Hive(position, size));
+      return hives_.back();
+    }
+  else
+    {
+      return nullptr;
+    }
+}
+
+bool
+Env::addCaveAt(const Vec2d& position)
+{
+  return addCaveAt(position, cave_manual_radius_);
+}
+
+bool
+Env::addCaveAt(const Vec2d& position, double size)
+{
+  // if there is not too much caves, one can be placed if the cave is placeable at position
+  if ((caves_.size() < max_caves_)
+      && isCaveable(position, size)
+      && !existsCollidingObject(position, size))
+    {
+      caves_.push_back(new Cave(position, size));
       return true;
     }
   else
@@ -356,58 +486,18 @@ Env::addHiveAt(const Vec2d& position, double size)
 }
 
 void
-Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
+Env::drawPlacementZone(sf::RenderTarget& target, const Vec2d& position,
+		      double radius, std::vector<Kind> kinds) const
 {
-  // TODO implement
-
-  Vec2d worldSize = getWorldSize();
-
   sf::Color color;
   sf::Color fillColor;
   fillColor.a = 0;
-  double left, right, top, bottom;
-  double h_left(-5), h_right(-5); // horizontal
-  double v_top(-5), v_bottom(-5); // vertical
 
-  if (!world_->isInWorld(position))
-    return;
-
-  left = position.x - hive_manual_radius_;
-  if (left < 0)
-    {
-      h_right = left + worldSize.x;
-      h_left = worldSize.x;
-    }
-
-  right = position.x + hive_manual_radius_;
-  if (right > worldSize.x)
-    {
-      h_right = right - worldSize.x;
-      h_left = 0;
-    }
-
-  top = position.y - hive_manual_radius_;
-  if (top < 0)
-    {
-      v_bottom = worldSize.y;
-      v_top = top + worldSize.y;
-    }
-
-  bottom = position.y + hive_manual_radius_;
-  if (bottom > worldSize.y)
-    {
-      v_bottom = 0;
-      v_top = bottom - worldSize.y;
-    }
-
-  if (!world_->isGrassArea(Vec2d(left, top), Vec2d(right, bottom))
-      || !world_->isGrassArea(Vec2d(h_left, top), Vec2d(h_right, bottom))
-      || !world_->isGrassArea(Vec2d(left, v_top), Vec2d(right, v_bottom))
-      || !world_->isGrassArea(Vec2d(h_left, v_top), Vec2d(h_right, v_bottom)))
+  if (!world_->checkWrappedAreaType(position, radius, kinds))
     {
       color = sf::Color::Blue;
     }
-  else if (!isPlaceable(position, hive_manual_radius_))
+  else if (existsCollidingObject(position, radius))
     {
       color = sf::Color::Red;
     }
@@ -416,27 +506,57 @@ Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position)
       color = sf::Color::Green;
     }
 
+  std::array<double, 8> v(world_->calculateScanRange(position, radius));
+
   sf::RectangleShape shape(
-      buildRectangle(Vec2d(left, top), Vec2d(right, bottom), color, 5.0,
+      buildRectangle(Vec2d(v[0], v[2]), Vec2d(v[1], v[3]), color, 5.0,
                      fillColor));
   target.draw(shape);
   sf::RectangleShape h_shape(
-      buildRectangle(Vec2d(h_left, top), Vec2d(h_right, bottom), color, 5.0,
-                     fillColor));
+      buildRectangle(Vec2d(v[4], v[2]), Vec2d(v[5], v[3]), color, 5.0,
+
+      fillColor));
   target.draw(h_shape);
   sf::RectangleShape v_shape(
-      buildRectangle(Vec2d(left, v_top), Vec2d(right, v_bottom), color, 5.0,
+      buildRectangle(Vec2d(v[0], v[6]), Vec2d(v[1], v[7]), color, 5.0,
                      fillColor));
   target.draw(v_shape);
   sf::RectangleShape d_shape(
-      buildRectangle(Vec2d(h_left, v_top), Vec2d(h_right, v_bottom), color, 5.0,
+      buildRectangle(Vec2d(v[4], v[6]), Vec2d(v[5], v[7]), color, 5.0,
                      fillColor));
   target.draw(d_shape);
+}
+
+void
+Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position,
+                      double radius) const
+{
+  drawPlacementZone(target, position, radius, std::vector<Kind>({Kind::Grass}));
+}
+
+void
+Env::drawHiveableZone(sf::RenderTarget& target, const Vec2d& position) const
+{
+  drawHiveableZone(target, position, hive_manual_radius_);
+}
+
+void
+Env::drawCaveableZone(sf::RenderTarget& target, const Vec2d& position,
+                      double radius) const
+{
+  drawPlacementZone(target, position, radius, std::vector<Kind>({Kind::Grass, Kind::Rock}));
+}
+
+void
+Env::drawCaveableZone(sf::RenderTarget& target, const Vec2d& position) const
+{
+  drawCaveableZone(target, position, cave_manual_radius_);
 }
 
 Hive*
 Env::getCollidingHive(const Collider& body) const
 {
+  // iterate on hives and check if body is colliding to one of them
   for (size_t i(0); i < hives_.size(); ++i)
     {
       Collider collidingHive(hives_[i]->getPosition(),
@@ -444,6 +564,7 @@ Env::getCollidingHive(const Collider& body) const
 
       if (collidingHive.isColliding(body))
         {
+          // return the colliding hive
           return hives_[i];
         }
     }
@@ -453,18 +574,41 @@ Env::getCollidingHive(const Collider& body) const
 Flower*
 Env::getCollidingFlower(const Collider& body) const
 {
+  // iterate on flowers and check if body is colliding to one of them
   for (size_t i(0); i < flowers_.size(); ++i)
     {
-      Collider collidingFlower(flowers_[i]->getPosition(),
-                               flowers_[i]->getRadius());
-
-      if (collidingFlower.isColliding(body))
+      if (flowers_[i]->isColliding(body))
         {
+          // return the colliding flower
           return flowers_[i];
         }
     }
   return nullptr;
+}
 
+Cave*
+Env::getCollidingCave(const Collider& body) const
+{
+  // iterate on caves and check if body is colliding to one of them
+  for (size_t i(0); i < caves_.size(); ++i)
+    {
+      if (caves_[i]->isColliding(body))
+        {
+          // return the colliding cave
+          return caves_[i];
+        }
+    }
+  return nullptr;
+}
+
+bool
+Env::existsCollidingObject(const Vec2d& position, double radius) const
+{;
+  Collider body(position, radius);
+  if (getCollidingHive(body) || getCollidingCave(body))
+    return true;
+  else
+    return false;
 }
 
 Bee*
@@ -481,13 +625,46 @@ Env::getBeeAt(const Vec2d& position) const
   return nullptr;
 }
 
+Bear*
+Env::getBearAt(const Vec2d& position) const
+{
+  for (size_t i = 0; i < caves_.size(); ++i)
+    {
+      Bear* bear = caves_[i]->getBearAt(position);
+      if (bear)
+        return bear;
+    }
+  return nullptr;
+}
+
+Movable*
+Env::getAnimalAt(const Vec2d& position) const
+{
+  Movable* tracked;
+  tracked = getBeeAt(position);
+  if (tracked)
+    return tracked;
+
+  tracked = getBearAt(position);
+  if (tracked)
+    return tracked;
+
+  return nullptr;
+}
+
+int
+Env::getNumHives() const
+{
+  return hives_.size();
+}
+
 int
 Env::getNumScouts() const
 {
   int numScouts(0);
   for (size_t i = 0; i < hives_.size(); ++i)
     {
-      numScouts += hives_[i]->getNumScouts();
+      numScouts += hives_[i]->getNumBees(BeeType::Scout);
     }
   return numScouts;
 }
@@ -498,7 +675,7 @@ Env::getNumWorkers() const
   int numWorkers(0);
   for (size_t i = 0; i < hives_.size(); ++i)
     {
-      numWorkers += hives_[i]->getNumWorkers();
+      numWorkers += hives_[i]->getNumBees(BeeType::Worker);
     }
   return numWorkers;
 }
@@ -513,10 +690,12 @@ std::unordered_map<std::string, double>
 Env::fetchData(std::string graph) const
 {
   std::unordered_map<std::string, double> new_data;
+
+  // get relevant data for graph(s)
   if (graph == s::GENERAL)
     {
       new_data[s::FLOWERS] = flowers_.size();
-      new_data[s::HIVES] = hives_.size();
+      new_data[s::HIVES] = getNumHives();
       new_data[s::SCOUTS] = getNumScouts();
       new_data[s::WORKERS] = getNumWorkers();
     }

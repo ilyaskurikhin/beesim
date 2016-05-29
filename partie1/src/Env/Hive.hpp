@@ -9,17 +9,19 @@
 #ifndef HIVE_H
 #define HIVE_H
 
+#include <Interface/DrawableInterface.hpp>
+#include <Interface/UpdatableInterface.hpp>
+
+#include <Utility/Logging.hpp>
+#include <Utility/Utility.hpp>
+
 #include <Env/World.hpp>
 #include <Env/Collider.hpp>
 #include <Env/CFSM.hpp>
 
-#include <Utility/Utility.hpp>
 #include <Application.hpp>
-#include <Utility/Logging.hpp>
 
-#include <Interface/Drawable.hpp>
-#include <Interface/Updatable.hpp>
-
+enum class BeeType : short;
 class Bee;
 class WorkerBee;
 class ScoutBee;
@@ -27,7 +29,10 @@ class ScoutBee;
 /**
  * @brief Class simulating a Hive.
  */
-class Hive : public Collider, public Drawable, public Updatable
+class Hive : public Collider,
+    public DrawableInterface,
+    public UpdatableInterface,
+    public virtual ConfigurableInterface
 {
 
 public:
@@ -42,39 +47,29 @@ public:
 
   Hive(const Hive&) = delete;
 
+  ~Hive();
+
   Hive
   operator=(const Hive&) = delete;
 
-  ~Hive();
-
-  void
-  reloadConfig();
-
   /**
-   * @brief Add a new ScoutBee.
+   * @brief Add a new Bee.
+   *
+   * @param beeType type of Bee.
    *
    * @return pointer to new ScoutBee.
    */
+  Bee*
+  addBee(BeeType beeType);
+
+  Bee*
+  addBee(Bee* bee);
+
+  // methods for compatibility with tests
   ScoutBee*
   addScout();
-
-  /**
-   * @brief Add a new WorkerBee.
-   *
-   * @return pointer to new WorkerBee.
-   */
   WorkerBee*
   addWorker();
-
-  /**
-   * @brief Get a WorkerBee ready to get nectar.
-   *
-   * Get a WorkerBee that is in the hive and not busy.
-   *
-   * @return pointer to a WorkerBee.
-   */
-  WorkerBee*
-  getWorker() const;
 
   /**
    * @brief Check is there is a Bee with such position.
@@ -86,21 +81,8 @@ public:
   Bee*
   getBeeAt(const Vec2d& position);
 
-  /**
-   * @brief Evolve Hive.
-   *
-   * @param dt
-   */
   void
-  update(sf::Time dt) override;
-
-  /**
-   * @brief Draw hive on a target.
-   *
-   * @param target where to draw
-   */
-  void
-  drawOn(sf::RenderTarget& target) const override;
+  interactingBees();
 
   /**
    * @brief Drop pollen into Hive.
@@ -123,6 +105,37 @@ public:
   takeNectar(double amount);
 
   /**
+   * @brief Evolve Hive.
+   *
+   * @param dt
+   */
+  void
+  update(sf::Time dt) override;
+
+  /**
+   * @brief Draw hive on a target.
+   *
+   * @param target where to draw
+   */
+  void
+  drawOn(sf::RenderTarget& target) const override;
+
+  void
+  drawDebug(sf::RenderTarget& target) const;
+
+  void
+  reloadConfig() override;
+
+  bool
+  canMigrate() const;
+
+  bool
+  canReproduce() const;
+
+  void
+  removeBee(Bee* bee);
+
+  /**
    * @brief Get amount to nectar in Hive.
    *
    * @return current amount of nectar.
@@ -130,27 +143,24 @@ public:
   double
   getNectar() const;
 
+  std::vector<Bee*>
+  getBees() const;
+
   int
   getNumBees() const;
 
   int
-  getNumScouts() const;
-
-  int
-  getNumWorkers() const;
-
-  void
-  interactingBees();
+  getNumBees(BeeType beeType) const;
 
 private:
 
   double nectar_;
-  double nectar_thresold_;
-  double max_bees_;
+  double nectar_threshold_;
+  double migration_threshold_;
+  int max_bees_;
+  int max_hives_;
   double reproduction_probability_;
   std::vector<Bee*> bees_;
-  std::vector<WorkerBee*> workers_;
-  std::vector<ScoutBee*> scouts_;
   sf::Texture hive_texture_;
 
 };

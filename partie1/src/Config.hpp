@@ -15,7 +15,7 @@ std::string const RES_LOCATION = "../res/";
 std::string const DEFAULT_CFG = "app.json";
 
 // Define the location of the font file (could be in the config instead of here)
-std::string const FONT_LOCATION = RES_LOCATION + "sansation.ttf";
+std::string const FONT_LOCATION = RES_LOCATION + "SourceHanSansCN-Regular.otf";
 
 #endif // INFOSV_CONFIG_HPP
 

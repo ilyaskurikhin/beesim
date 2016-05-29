@@ -5,6 +5,13 @@ Flower::Flower(const Vec2d& position, double radius, double pollen) :
         getAppEnv().getHumidity(position))
 {
   loadTexture();
+  reloadConfig();
+}
+
+void
+Flower::reloadConfig()
+{
+  // intialises attributes from the json file
   split_threshold_ =
       getAppConfig()["simulation"]["flower"]["growth"]["split"].toDouble();
   humidity_threshold_ =
@@ -60,7 +67,10 @@ void
 Flower::update(sf::Time dt)
 {
   // set the new pollen value
-  pollen_ = pollen_ + dt.asSeconds() * humidity_factor_;
+  if (getPollen() > 0)
+    {
+      pollen_ = pollen_ + dt.asSeconds() * humidity_factor_;
+    }
 
   // split flower if has enough pollen
   if ((pollen_ > split_threshold_) && getAppEnv().canAddFlower())
@@ -95,3 +105,8 @@ Flower::getPollen()
   return pollen_;
 }
 
+void
+Flower::setPollen(double pollen)
+{
+  pollen_ = pollen;
+}
