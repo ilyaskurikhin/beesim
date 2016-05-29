@@ -37,6 +37,8 @@ QueenBee::reloadConfig()
 
   reproduction_probability_ = getConfig()["reproduction"]["scout probability"].toDouble();
 
+  max_queens_ = getAppConfig()["simulation"]["hive"]["max queens"].toInt();
+
   this->setRotationProbability(
       getConfig()["moving behaviour"]["random"]["rotation probability"].toDouble());
   this->setMaxAngle(
@@ -94,6 +96,7 @@ QueenBee::onState(State state, sf::Time dt)
           // else give birth to a new queen and migrate
           else
             {
+              if (getHive().getNumBees(BeeType::Queen) < max_queens_)
               giveBirthTo(BeeType::Queen);
               nextState();
             }

@@ -63,6 +63,8 @@ private:
   double nectar_threshold_;
   double nectar_transfer_rate_;
 
+  int max_queens_;
+
   double reproduction_probability_;
 
   double migration_distance_;
