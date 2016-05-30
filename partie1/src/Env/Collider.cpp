@@ -1,259 +1,247 @@
-#include <Env/Collider.hpp>
+#include "Collider.hpp"
+#include <iostream>
+#include "../Utility/Vec2d.hpp"
+#include <Application.hpp>
+#include <cassert>
+#include <vector>
 
-#include <Env/Env.hpp>
+using namespace std;
+
 
 Collider::Collider(const Vec2d& position, double radius)
 // affecte par défaut le rayon et la position
-:
-    radius_(radius), position_(position)
+    : radius_(radius), position_(position)
 {
-  reloadConfig();
-  // PRECODITIONS for constructor
-  if (radius_ < 0)
-    {
-      throw std::runtime_error(
-          "Collider with negative radius created. (Collider::Collider)");
-    }
+    //si le rayon<0 envoie un message d'erreur "assertion failed"
+    assert (radius_ >= 0);
 
-  // puts Collider into map
-  clamping();
-}
-
-Collider::Collider(const Vec2d& position) :
-    Collider(position, 0)
-{
+    //fait appelle a la méthode clamping pour corriger la position entrée
+    clamping();
 }
 
 Collider::Collider(const Collider& collider)
 {
-  radius_ = collider.getRadius();
-  position_ = collider.getPosition();
+    radius_=collider.getRadius();
+    position_=collider.getPosition();
 }
 
-void
-Collider::reloadConfig()
-{
-  world_size_ = getApp().getWorldSize();
-}
+
 
 bool
-Collider::operator>(const Collider& other) const
+Collider::operator> (const Collider& other)
 {
-  return isColliderInside(other);
+    return isColliderInside(other);
 }
 
-bool
-Collider::operator|(const Collider& other) const
-{
-  return isColliding(other);
-}
+
 
 bool
-Collider::operator>(const Vec2d& p) const
+Collider::operator| (const Collider& other)
 {
-  return isPointInside(p);
+    return isColliding(other);
 }
+
+
+
+bool
+Collider::operator> (const Vec2d& p)
+{
+    return isPointInside(p);
+}
+
+
 
 std::ostream&
-operator<<(std::ostream& oss, const Collider& collider)
+operator<< (std::ostream& oss, const Collider& collider)
 {
-  oss << "Collider: position = (" << collider.getPosition().x << ","
-      << collider.getPosition().y << ") ";
-  oss << "radius = " << collider.getRadius() << std::endl;
+    oss << "Collider: position = (" << collider.getPosition().x << "," << collider.getPosition().y << ") ";
+    oss << "radius = " << collider.getRadius() << std::endl;
 
-  return oss;
+    return oss;
 }
+
+
 
 Collider&
 Collider::operator=(Collider other)
 {
-  position_ = other.getPosition();
-  radius_ = other.getRadius();
-  return *this;
+    position_ = other.getPosition();
+    radius_ = other.getRadius();
+    return *this;
 }
+
+
 
 Collider&
 Collider::operator+=(const Vec2d& dx)
 {
-  return move(dx);
+    move(dx);
+    return *this;
 }
+
+
 
 Vec2d
 Collider::clamping()
 {
-  //tant que position en x <0, on lui incrémente la largeur du monde
-  //tant que position > largeur du monde, on lui décremente la largeur du monde
 
-  if (position_.x < 0)
-    position_.x += world_size_.x;
+    //permet d'obtenir largeur et hautueur du monde
+    auto worldSize = getApp().getWorldSize();
+    auto width  = worldSize.x;
+    auto height = worldSize.y;
 
-  if (position_.x > world_size_.x)
-    position_.x -= world_size_.x;
+    //tant que position en x <0, on lui incrémente la largeur du monde
+    //tant que position > largeur du monde, on lui décremente la largeur du monde
 
-  //idem pour position en y
-  if (position_.y < 0)
-    position_.y += world_size_.y;
+    while (position_.x < 0) {
+        position_.x += width;
+    }
 
-  if (position_.y > world_size_.y)
-    position_.y -= world_size_.y;
+    while(position_.x > width) {
+        position_.x -= width;
+    }
 
-  if (!isClamped())
-    clamping();
-  //retourne le nouveau vec2d position
-  return position_;
+    //idem pour position en y
+    while (position_.y < 0) {
+        position_.y += height;
+    }
+
+    while(position_.y > width) {
+        position_.y -= height;
+    }
+
+    //retourne le nouveau vec2d position
+    return position_;
 }
+
+
 
 bool
-Collider::isClamped() const
+Collider::isColliderInside (const Collider& other)
 {
-  if (position_.x < 0)
-    return false;
-
-  if (position_.x > world_size_.x)
-    return false;
-
-  //idem pour position en y
-  if (position_.y < 0)
-    return false;
-
-  if (position_.y > world_size_.y)
-    return false;
-
-  return true;
+    if ((other.getRadius() > radius_) || (distanceTo(other) > radius_ - other.getRadius())) {
+        return false;
+    } else {
+        return true;
+    }
 }
+
+
 
 bool
-Collider::isColliderInside(const Collider& other) const
+Collider::isColliding (const Collider& other)
 {
-  if ((other.getRadius() > radius_)
-      || (distanceTo(other) > radius_ - other.getRadius()))
-    {
-      return false;
-    }
-  else
-    {
-      return true;
+    double minimumDistance(other.getRadius() + radius_);
+
+    if (distanceTo(other) <= minimumDistance) {
+        return true;
+    } else {
+        return false;
     }
 }
+
+
 
 bool
-Collider::isColliding(const Collider& other) const
+Collider::isPointInside (const Vec2d& p)
 {
-  double minimumDistance(other.getRadius() + radius_);
-
-  if (distanceTo(other) <= minimumDistance)
-    {
-      return true;
-    }
-  else
-    {
-      return false;
+    if (distanceTo(p) <= radius_) {
+        return true;
+    } else {
+        return false;
     }
 }
 
-bool
-Collider::isPointInside(const Vec2d& p) const
-{
-  if (distanceTo(p) <= radius_)
-    {
-      return true;
-    }
-  else
-    {
-      return false;
-    }
-}
 
 Vec2d
-Collider::directionTo(const Vec2d& to) const
+Collider::directionTo(const Vec2d& to)
 {
-  double max_x = world_size_.x / 2;
-  double max_y = world_size_.y / 2;
 
-  Vec2d direction;
+    // permet d'obtenir largeur et hautueur du monde
+    auto worldSize = getApp().getWorldSize();
+    auto width  = worldSize.x;
+    auto height = worldSize.y;
 
-  direction.x = to.x - position_.x;
-  if (direction.x < -max_x)
-    direction.x = to.x - position_.x + world_size_.x;
+    // create vector of possible positions of to
+    vector<vector<double>> multipliers;
+    multipliers.push_back({0,0});
+    multipliers.push_back({0,1});
+    multipliers.push_back({0,-1});
+    multipliers.push_back({1,0});
+    multipliers.push_back({-1,0});
+    multipliers.push_back({1,1});
+    multipliers.push_back({1,-1});
+    multipliers.push_back({-1,1});
+    multipliers.push_back({-1,-1});
 
-  if (direction.x > max_x)
-    direction.x = to.x - position_.x - world_size_.x;
+    // find the 'to' at minimal distance from position_'
+    Vec2d currentTo;
+    Vec2d minimumTo;
+    Vec2d moveTo;
+    double min(100000);
+    size_t size(multipliers.size());
+    for (size_t i(0); i < size; ++i) {
+        currentTo.x = multipliers[i][0]*width + to.x;
+        currentTo.y = multipliers[i][1]*height + to.y;
 
-  direction.y = to.y - position_.y;
-  if (direction.y < -max_y)
-    direction.y = to.y - position_.y + world_size_.y;
+        if (distance(position_, currentTo) < min) {
+            minimumTo = currentTo;
+            min = distance(position_, currentTo);
+            moveTo.x = minimumTo.x - position_.x;
+            moveTo.y = minimumTo.y - position_.y;
+        }
+    }
 
-  if (direction.y > max_y)
-    direction.y = to.y - position_.y - world_size_.y;
-
-  return direction;
+    return moveTo;
 }
+
+
 
 Vec2d
-Collider::directionTo(const Collider& other) const
+Collider::directionTo(const Collider& other)
 {
-  return directionTo(other.getPosition());
+    return directionTo(other.getPosition());
 }
+
+
 
 double
-Collider::distanceTo(const Vec2d& to) const
+Collider::distanceTo(const Vec2d& to)
 {
-  return directionTo(to).length();
+    return directionTo(to).length();
 }
+
+
 
 double
-Collider::distanceTo(const Collider& other) const
+Collider::distanceTo(const Collider& other)
 {
-  return distanceTo(other.getPosition());
+    return distanceTo(other.getPosition());
 }
 
-Collider&
+
+
+void
 Collider::move(const Vec2d& dx)
 {
-  position_ += dx;
+    position_.x += dx.x;
+    position_.y += dx.y;
 
-  clamping();
-  return *this;
+    clamping();
 }
+
+
 
 Vec2d
 Collider::getPosition() const
 {
-  return position_;
+    return position_;
 }
 
-void
-Collider::setPosition(const Vec2d& position)
-{
-  position_ = position;
-  clamping();
-}
+
 
 double
 Collider::getRadius() const
 {
-  return radius_;
-}
-
-void
-Collider::setRadius(double radius)
-{
-  try
-    {
-      radius_ = radius;
-      if (radius_ < 0)
-        {
-          throw std::runtime_error("ERROR: Negative radius set (Collider)");
-        }
-    }
-  catch (std::string& e)
-    {
-      radius_ = 0;
-    }
-}
-
-const Collider&
-Collider::getCollider()
-{
-  return *this;
+    return radius_;
 }

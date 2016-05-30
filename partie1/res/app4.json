@@ -70,7 +70,7 @@
         },
         "flower generator" : {
             "active" : true,
-            "delay" : 1.0
+            "delay" : 5.0
         },
         "hive" : {
             "initial" : {
@@ -92,11 +92,11 @@
                 "water teleport probability" : 0.0001
             },
             "generation" : {
-                "steps" : 200,
+                "steps" : 20000,
                 "smoothness" : {
                     "level" : 10,
                     "grass neighbourhood ratio" : 0.5,
-                    "water neighbourhood ratio" : 0.7
+                    "water neighbourhood ratio" : 0.95
                 },
                 "humidity" : {
                     "decay rate" : 20,
@@ -110,7 +110,7 @@
                 "water" : "water.jpg"
             },
             "show humidity" : false,
-            "file" : "world4.map"
+            "file" : "world3.map"
         },
         "env" : {
             "initial" : {

@@ -22,7 +22,7 @@ includeFlags = '-I{sfmlcosun}/include/ -I{catch} -I/usr/local/include/'.format(
   catch = "extlib/Catch/include/"
 )
 
-env.Append(CCFLAGS = '-std=c++11 -Wall -Wextra -g -O3 ' + includeFlags)
+env.Append(CCFLAGS = '-std=c++11 -Wall -Wextra -g ' + includeFlags)
 env.Append(LIBS = ['sfml-system', 'sfml-window', 'sfml-graphics'])
 env.Append(LINKFLAGS = '-L/usr/local/softs/SFML/lib')
 env.Decider('content')
@@ -36,12 +36,11 @@ env.Append(CPPPATH = '../src/') # pwd is the build directory
 app_src         = Glob('Application.cpp')
 cfg_src         = Glob('JSON/*.cpp')
 env_src         = Glob('Env/*.cpp')
-bee_src			= Glob('Env/Bee/*.cpp')
 rand_src        = Glob('Random/*.cpp')
 stats_src       = Glob('Stats/*.cpp')
 utility_src     = Glob('Utility/*.cpp')
 
-src_files = app_src + cfg_src + env_src + bee_src + rand_src + stats_src + utility_src
+src_files = app_src + cfg_src + env_src + rand_src + stats_src + utility_src
 objects=env.Object(source=src_files)
 
 
@@ -70,12 +69,6 @@ def DefineProgram(name, additional_src):
 
 DefineProgram('application', Glob('FinalApplication.cpp'))
 DefineProgram('UnitTests', Glob('Tests/UnitTests/*.cpp'))
-DefineProgram('WorldTest', Glob('Tests/GraphicalTests/WorldTest.cpp'))
-DefineProgram('FlowerTest', Glob('Tests/GraphicalTests/FlowerTest.cpp'))
-DefineProgram('HiveTest', Glob('Tests/GraphicalTests/HiveTest.cpp'))
-DefineProgram('ScoutTest', Glob('Tests/GraphicalTests/ScoutTest.cpp'))
-DefineProgram('WorkerTest', Glob('Tests/GraphicalTests/WorkerTest.cpp'))
-DefineProgram('CollaborationTest', Glob('Tests/GraphicalTests/CollaborationTest.cpp'))
 
 
 if env['CXX'] == 'clang++':
