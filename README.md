@@ -27,12 +27,10 @@ In order to compile with SCons, you will need to have that too.
 
 In order to use the documentation, you will need Doxygen.
 
-
 ## Generating documentation
 
 Documentation can be generated with doxygen, from the /doc directory with the 
 provided Doxyfile.
-
 
 Usage
 ================================================================================
@@ -137,8 +135,13 @@ It defines the ways in which objects move in the environment.
 
 ### Hive
 
-There can be a limited number of hive in the environment. Each hive has a 
-limited number of bees and a level of nectar that varied.
+The Hive is the home of the Bees, where they can replenish their nectar and 
+where new Bees are created. The Hive usually has one or more Queens, and will 
+die when it runs out of nectar.
+
+If the Hive has no more nectar, the Bees will be in survival mode and will try
+to go out for more nectar even if thet do not have the required energy level. 
+The Queen will give up her own energy resources up til her minimum limit.
 
 ### Bee
 
@@ -167,12 +170,16 @@ when it is in the Hive.
 
 ### Cave
 
-There can be two caves in the environment. To each cave belongs only one bear.
+A Cave is the living place of the Bear. It does not have an energy level, and
+only serves as the sleeping place of the Bear. There is a limit to the number 
+of Caves that can be placed.
 
 ### Bear
 
 Bears can not reproduce. They live in a cave where they hibernate for a certain
-time. Then they move randomly and if they pass by a hive they eat its nectar.
+time. Then they move randomly and if they pass by a hive they eat its nectar. 
+There is a limit to the number of Bears that can be in the environment that is 
+given by the number of Caves that can be placed.
 
 ### Interfaces
 
