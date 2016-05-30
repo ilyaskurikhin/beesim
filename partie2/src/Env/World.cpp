@@ -1,7 +1,7 @@
 #include <Env/World.hpp>
 #include <Utility/Vertex.hpp>
 #include <Application.hpp>
-#include <SFML/Graphics.hpp> 
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <JSON/JSON.hpp>
 #include <fstream>
@@ -24,7 +24,7 @@ simulationWorld()
 
 
 void
-World::reloadConfig() 
+World::reloadConfig()
 {
     // numberbColumns : number of cells in a row
     numberColumns_= simulationWorld()["cells"].toInt();
@@ -41,38 +41,38 @@ World::reloadConfig()
 
     // make an empty vector of Seed
     vector<Seed> tmp(nbGrassSeeds_ + nbWaterSeeds_);
-    seeds_ = tmp; 
+    seeds_ = tmp;
 }
 
 
 
 void
-World::reloadCacheStructure() 
+World::reloadCacheStructure()
 {
     grassVertexes_ = generateVertexes(simulationWorld()["textures"],
-                        numberColumns_, cellSize_);
+                                      numberColumns_, cellSize_);
     waterVertexes_ = grassVertexes_;
     rockVertexes_ = grassVertexes_;
 
     // create a cache of all the pixels to display
-    renderingCache_.create(numberColumns_* cellSize_, 
-                        numberColumns_ * cellSize_);
+    renderingCache_.create(numberColumns_* cellSize_,
+                           numberColumns_ * cellSize_);
 }
 
 
 
 void
-World::updateCache() 
+World::updateCache()
 {
     sf::RenderStates rsGrass;
     rsGrass.texture = &getAppTexture(simulationWorld()["textures"]
-                        ["grass"].toString()); 
+                                     ["grass"].toString());
     sf::RenderStates rsWater;
     rsWater.texture = &getAppTexture(simulationWorld()["textures"]
-                        ["water"].toString());
+                                     ["water"].toString());
     sf::RenderStates rsRock;
     rsRock.texture = &getAppTexture(simulationWorld()["textures"]
-                        ["rock"].toString()); 
+                                    ["rock"].toString());
 
     size_t size(cells_.size());
     for (size_t i(0); i < size; ++i) {
@@ -83,24 +83,24 @@ World::updateCache()
         size_t y(i / numberColumns_);
 
         // get the indexes of the vertixes of current cell
-        vector<size_t> positionIndexes = indexesForCellVertexes(x, y, 
-                                                            numberColumns_);
-        
+        vector<size_t> positionIndexes = indexesForCellVertexes(x, y,
+                                         numberColumns_);
+
         // get the right alpha values of the three layers
         vector<int> aValues;
         switch (cells_[i]) {
-            case Kind::Grass :
-                aValues = {255,0,0};
-                break;
-            case Kind::Water :
-                aValues = {0,255,0};
-                break;
-            case Kind::Rock :
-                aValues = {0,0,255};
-                break;
-            default :
-                aValues = {0,0,0};
-                break;
+        case Kind::Grass :
+            aValues = {255,0,0};
+            break;
+        case Kind::Water :
+            aValues = {0,255,0};
+            break;
+        case Kind::Rock :
+            aValues = {0,0,255};
+            break;
+        default :
+            aValues = {0,0,0};
+            break;
         }
 
         // set the right alpha values for the three layers
@@ -113,12 +113,12 @@ World::updateCache()
 
     renderingCache_.clear();
 
-    renderingCache_.draw(grassVertexes_.data(), grassVertexes_.size(), 
-                            sf::Quads, rsGrass);
-    renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(), 
-                            sf::Quads, rsWater);
-    renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(), 
-                            sf::Quads, rsRock);
+    renderingCache_.draw(grassVertexes_.data(), grassVertexes_.size(),
+                         sf::Quads, rsGrass);
+    renderingCache_.draw(waterVertexes_.data(), waterVertexes_.size(),
+                         sf::Quads, rsWater);
+    renderingCache_.draw(rockVertexes_.data(), rockVertexes_.size(),
+                         sf::Quads, rsRock);
 
     renderingCache_.display();
 }
@@ -130,7 +130,7 @@ World::reset(bool regenerate)
 {
     reloadConfig();
     reloadCacheStructure();
-  
+
     // set the first part of seeds_ as grass
     for (size_t i(0); i < nbGrassSeeds_; ++i) {
         seeds_[i].texture = Kind::Grass;
@@ -144,50 +144,50 @@ World::reset(bool regenerate)
     // set random positions for the seeds_
     size_t min(0);
     size_t max(numberColumns_ -1);
-        for (size_t i(0); i < seeds_.size(); ++i) {
+    for (size_t i(0); i < seeds_.size(); ++i) {
         seeds_[i].position.x = uniform(min, max);
         seeds_[i].position.y = uniform(min, max);
     }
 
     // unless they landed in water, plant the seeds
     for (size_t i(0); i < seeds_.size(); ++i) {
-        size_t index(seeds_[i].position.y * numberColumns_ 
-                        + seeds_[i].position.x);
+        size_t index(seeds_[i].position.y * numberColumns_
+                     + seeds_[i].position.x);
         if (cells_[index] != Kind::Water) {
             cells_[index] = seeds_[i].texture;
         }
     }
-    
+
     if (regenerate) {
         steps(simulationWorld()["generation"]
-                                    ["steps"].toInt());
+              ["steps"].toInt());
         smooths(simulationWorld()["generation"]
-                                    ["smoothness"]["level"].toInt());
+                ["smoothness"]["level"].toInt());
     }
 
     updateCache();
-}	
+}
 
 
 
 void
-World::drawOn(sf::RenderTarget& target) 
+World::drawOn(sf::RenderTarget& target)
 {
     sf::Sprite cache(renderingCache_.getTexture());
     target.draw(cache);
 }
-	
-	
+
+
 
 void
 World::loadFromFile()
-{	
+{
     // get app values for current config
     reloadConfig();
 
     // open config .map file
-    string fileName(getApp().getResPath() 
-                            + simulationWorld()["file"].toString());
+    string fileName(getApp().getResPath()
+                    + simulationWorld()["file"].toString());
     ifstream input(fileName.c_str());
 
     // check existance of file
@@ -220,7 +220,7 @@ World::loadFromFile()
     }
 
 
-    input.close();	
+    input.close();
 
     reloadCacheStructure();
     updateCache();
@@ -232,8 +232,8 @@ void
 World::saveToFile() const
 {
     // open config .map file
-    string fileName(getApp().getResPath() 
-                            + simulationWorld()["file"].toString());
+    string fileName(getApp().getResPath()
+                    + simulationWorld()["file"].toString());
     ofstream output(fileName.c_str());
 
     // check if output can be made
@@ -249,18 +249,18 @@ World::saveToFile() const
         size_t size(numberColumns_ * numberColumns_);
         for (size_t i(0); i < size; ++i) {
             switch (cells_[i]) {
-                case Kind::Grass :
-                    output << "0";
-                    break;
-                case Kind::Water :
-                    output << "1";
-                    break;
-                case Kind::Rock :
-                    output << "2";
-                    break;
-                default :
-                    output << "2";
-                    break;
+            case Kind::Grass :
+                output << "0";
+                break;
+            case Kind::Water :
+                output << "1";
+                break;
+            case Kind::Rock :
+                output << "2";
+                break;
+            default :
+                output << "2";
+                break;
             }
             output << " ";
         }
@@ -271,8 +271,8 @@ World::saveToFile() const
 
 
 
-void 
-World::moveSeed(Seed& seed, int min, int max) 
+void
+World::moveSeed(Seed& seed, int min, int max)
 {
     // move the seed by a random amount in range [min:max]
     seed.position.x = seed.position.x + uniform(min, max);
@@ -282,7 +282,7 @@ World::moveSeed(Seed& seed, int min, int max)
     int worldMax(numberColumns_ - 1);
     if (seed.position.x > worldMax) {
         seed.position.x = numberColumns_- 1;
-    }                                                                          
+    }
     if (seed.position.y > worldMax) {
         seed.position.y = numberColumns_ -1;
     }
@@ -295,8 +295,8 @@ World::moveSeed(Seed& seed, int min, int max)
     }
 
     // set the texture of the seed's cell
-    cells_[(seed.position.x * numberColumns_) 
-            + seed.position.y] = seed.texture;
+    cells_[(seed.position.x * numberColumns_)
+           + seed.position.y] = seed.texture;
 }
 
 
@@ -311,9 +311,9 @@ World::step()
         int max(0);
 
         // set the move distance
-        if ((seeds_[i].texture == Kind::Water) 
-                && (bernoulli(simulationWorld()["seeds"]
-                        ["water teleport probability"].toDouble() == 0))) {
+        if ((seeds_[i].texture == Kind::Water)
+            && (bernoulli(simulationWorld()["seeds"]
+                          ["water teleport probability"].toDouble() == 0))) {
             min = 0;
             max = numberColumns_ - 1;
         } else {
@@ -328,7 +328,7 @@ World::step()
 
 
 void
-World::steps(unsigned int n, bool update) 
+World::steps(unsigned int n, bool update)
 {
     for (unsigned int i(0); i < n; ++i) {
         step();
@@ -341,7 +341,7 @@ World::steps(unsigned int n, bool update)
 
 
 
-void 
+void
 World::smooth()
 {
     // copy cells_ so as to not have directional bias
@@ -390,22 +390,22 @@ World::smooth()
         for (size_t dx(startx); dx <= endx; ++dx) {
             for (size_t dy(starty); dy <= endy; ++dy) {
 
-                // check that we are not on original cell 
+                // check that we are not on original cell
                 if (!((dx == x) && (dy == y))) {
 
                     // increment for each type of cell
                     switch (cells_[dy*numberColumns_ + dx]) {
-                        case Kind::Rock :
-                            ++nbRock;
-                            break;
-                        case Kind::Water :
-                            ++nbWater;
-                            break;
-                        case Kind::Grass :
-                            ++nbGrass;
-                            break;
-                        default :
-                            break;
+                    case Kind::Rock :
+                        ++nbRock;
+                        break;
+                    case Kind::Water :
+                        ++nbWater;
+                        break;
+                    case Kind::Grass :
+                        ++nbGrass;
+                        break;
+                    default :
+                        break;
                     }
                 }
             }
@@ -415,21 +415,21 @@ World::smooth()
         double waterRatio(nbWater / (nbRock + nbGrass + nbWater));
         double grassRatio(nbGrass / (nbRock + nbGrass + nbWater));
         switch (cells_[i]) {
-            case Kind::Rock :
-                if (grassRatio > simulationWorld()["generation"]
-                        ["smoothness"]["grass neighbourhood ratio"].toInt()) {
-                    localCells[i] = Kind::Grass;
-                }
-            case Kind::Grass :
-                if (waterRatio > simulationWorld()["generation"]
-                        ["smoothness"]["water neighbourhood ratio"].toInt()) {
-                    localCells[i] = Kind::Water;
-                }
-                break;
-            case Kind::Water :
-                break;
-            default :
-                break;
+        case Kind::Rock :
+            if (grassRatio > simulationWorld()["generation"]
+                ["smoothness"]["grass neighbourhood ratio"].toInt()) {
+                localCells[i] = Kind::Grass;
+            }
+        case Kind::Grass :
+            if (waterRatio > simulationWorld()["generation"]
+                ["smoothness"]["water neighbourhood ratio"].toInt()) {
+                localCells[i] = Kind::Water;
+            }
+            break;
+        case Kind::Water :
+            break;
+        default :
+            break;
         }
     }
     // swap the changes and original cells_
@@ -437,7 +437,7 @@ World::smooth()
 }
 
 void
-World::smooths(unsigned int n, bool update) 
+World::smooths(unsigned int n, bool update)
 {
     for (unsigned int i(0); i < n; ++i) {
         smooth();

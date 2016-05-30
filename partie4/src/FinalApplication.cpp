@@ -23,7 +23,8 @@ void FinalApplication::onEvent(sf::Event event, sf::RenderWindow&)
 {
     if (event.type == sf::Event::KeyPressed) {
         switch (event.key.code) {
-        default: break;
+        default:
+            break;
 
         // Add flower: show the area covered by the flower
         case sf::Keyboard::F:
@@ -36,7 +37,8 @@ void FinalApplication::onEvent(sf::Event event, sf::RenderWindow&)
         }
     } else if (event.type == sf::Event::KeyReleased) {
         switch (event.key.code) {
-        default: break;
+        default:
+            break;
 
         // Add flower: try to create a new one and disable visualisation zone
         case sf::Keyboard::F:
@@ -51,14 +53,14 @@ void FinalApplication::onEvent(sf::Event event, sf::RenderWindow&)
         // Add hive: try to create a new one and disable "hiveable" zone
         case sf::Keyboard::H:
             mShowHiveableZone = false;
-			
-			  // uncomment me when addHiveAt is coded
+
+            // uncomment me when addHiveAt is coded
             if (getEnv().addHiveAt(getCursorPositionInView())) {
                 std::cout << "New hive created\n";
             } else {
                 std::cout << "Couldn't create new hive\n";
             }
-			
+
             break;
         }
     }

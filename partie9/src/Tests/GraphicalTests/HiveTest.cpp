@@ -41,11 +41,12 @@ void HiveTest::onEvent(sf::Event event, sf::RenderWindow&)
 {
     if (event.type == sf::Event::KeyPressed) {
         switch (event.key.code) {
-        default: break;
+        default:
+            break;
 
         case sf::Keyboard::B:
             if (mLastHive != nullptr) {
-               // mLastHive->addBee();
+                // mLastHive->addBee();
             }
             break;
 
@@ -55,10 +56,10 @@ void HiveTest::onEvent(sf::Event event, sf::RenderWindow&)
         }
     } else if (event.type == sf::Event::KeyReleased) {
         switch (event.key.code) {
-        default: break;
+        default:
+            break;
 
-        case sf::Keyboard::H:
-        {
+        case sf::Keyboard::H: {
             // Add hive: try to create a new one and disable "hiveable" zone
             mShowHiveableZone = false;
             auto position = getCursorPositionInView();

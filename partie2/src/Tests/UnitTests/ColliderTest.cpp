@@ -16,20 +16,18 @@ class Body : public Collider
 {
 public:
     Body(Vec2d const& position, double radius)
-    : Collider(position, radius)
+        : Collider(position, radius)
     {
     }
 };
 
 SCENARIO("Collision/IsColliderInside with Collider", "[Body]")
 {
-    GIVEN("Two identical bodies")
-    {
+    GIVEN("Two identical bodies") {
         auto b1 = Body({ 1, 1 }, 2);
         auto b2 = b1;
 
-        THEN("they collide")
-        {
+        THEN("they collide") {
             std::cout << b1 << std::endl;
 
             CHECK(b1.isColliding(b2));
@@ -38,8 +36,7 @@ SCENARIO("Collision/IsColliderInside with Collider", "[Body]")
             CHECK((b2 | b1));
         }
 
-        THEN("they are inside of each other")
-        {
+        THEN("they are inside of each other") {
             CHECK(b1.isColliderInside(b2));
             CHECK(b2.isColliderInside(b1));
             CHECK(b1 > b2);
@@ -47,21 +44,18 @@ SCENARIO("Collision/IsColliderInside with Collider", "[Body]")
         }
     }
 
-    GIVEN("Two bodies that don't overlap")
-    {
+    GIVEN("Two bodies that don't overlap") {
         auto b1 = Body({ 1, 1 }, 0.5);
         auto b2 = Body({ -1, -1 }, 0.5);
 
-        THEN("they don't collide")
-        {
+        THEN("they don't collide") {
             CHECK_FALSE(b1.isColliding(b2));
             CHECK_FALSE(b2.isColliding(b1));
             CHECK_FALSE((b1 | b2));
             CHECK_FALSE((b2 | b1));
         }
 
-        AND_THEN("they are not inside of each other")
-        {
+        AND_THEN("they are not inside of each other") {
             CHECK_FALSE(b1.isColliderInside(b2));
             CHECK_FALSE(b2.isColliderInside(b1));
             CHECK_FALSE(b1 > b2);
@@ -69,21 +63,18 @@ SCENARIO("Collision/IsColliderInside with Collider", "[Body]")
         }
     }
 
-    GIVEN("Two bodies that overlap but are not inside of each other")
-    {
+    GIVEN("Two bodies that overlap but are not inside of each other") {
         auto b1 = Body({ 0, 0 }, 2);
         auto b2 = Body({ 3, 0 }, 2);
 
-        THEN("they collide")
-        {
+        THEN("they collide") {
             CHECK(b1.isColliding(b2));
             CHECK(b2.isColliding(b1));
             CHECK((b1 | b2));
             CHECK((b2 | b1));
         }
 
-        THEN("they are not inside of each other")
-        {
+        THEN("they are not inside of each other") {
             CHECK_FALSE(b1.isColliderInside(b2));
             CHECK_FALSE(b2.isColliderInside(b1));
             CHECK_FALSE(b1 > b2);
@@ -91,40 +82,34 @@ SCENARIO("Collision/IsColliderInside with Collider", "[Body]")
         }
     }
 
-    GIVEN("A body inside another one")
-    {
+    GIVEN("A body inside another one") {
         auto b1 = Body({ 0, 0 }, 5);
         auto b2 = Body({ 0, 0 }, 1);
 
-        THEN("they collide")
-        {
+        THEN("they collide") {
             CHECK(b1.isColliding(b2));
             CHECK(b2.isColliding(b1));
             CHECK((b1 | b2));
             CHECK((b2 | b1));
         }
 
-        THEN("the smaller one is inside the bigger one")
-        {
+        THEN("the smaller one is inside the bigger one") {
             CHECK(b1.isColliderInside(b2));
             CHECK(b1 > b2);
         }
 
-        THEN("the bigger one is not inside the smaller one")
-        {
+        THEN("the bigger one is not inside the smaller one") {
             CHECK_FALSE(b2.isColliderInside(b1));
             CHECK_FALSE(b2 > b1);
         }
     }
 
-    GIVEN("A body and two points, one inside and one outside the body")
-    {
+    GIVEN("A body and two points, one inside and one outside the body") {
         auto b = Body({ 0, 0 }, 5);
         auto p1 = Vec2d(0, 0);
         auto p2 = Vec2d(6, 0);
 
-        THEN("only one point is inside")
-        {
+        THEN("only one point is inside") {
             CHECK(b.isPointInside(p1));
             CHECK_FALSE(b.isPointInside(p2));
             CHECK(b > p1);
@@ -132,20 +117,17 @@ SCENARIO("Collision/IsColliderInside with Collider", "[Body]")
         }
     }
 
-    GIVEN("A body")
-    {
+    GIVEN("A body") {
         auto b = Body({ 1, 2 }, 2);
 
-        THEN("it moves correctly")
-        {
+        THEN("it moves correctly") {
             b.move({ 1, 0 });
             CHECK(Vec2d(2, 2) == b.getPosition());
             b += { -2, -2 };
             CHECK(Vec2d(0, 0) == b.getPosition());
         }
 
-        THEN("it can be copied")
-        {
+        THEN("it can be copied") {
             auto copy = b;
             CHECK(b.getPosition() == copy.getPosition());
             CHECK(b.getRadius() == copy.getRadius());
@@ -160,8 +142,7 @@ SCENARIO("Collision/IsColliderInside with Collider", "[Body]")
 
 SCENARIO("Collision/IsColliderInside with Collider using toric properties", "[Collider]")
 {
-    GIVEN("A few bodies")
-    {
+    GIVEN("A few bodies") {
         //
         // Illustration of the bodies in the world.
         // All bodies have a radius of 2.
@@ -189,8 +170,7 @@ SCENARIO("Collision/IsColliderInside with Collider using toric properties", "[Co
         auto b4 = Body({ -1, -1 }, 2);
         auto b5 = Body({ -4,  2 }, 2);
 
-        THEN("some collide, some don't")
-        {
+        THEN("some collide, some don't") {
             CHECK(b1.isColliding(b2));
             CHECK(b2.isColliding(b1));
 
@@ -222,8 +202,7 @@ SCENARIO("Collision/IsColliderInside with Collider using toric properties", "[Co
             CHECK(!b5.isColliding(b4));
         }
 
-        AND_THEN("none is inside another one but itself")
-        {
+        AND_THEN("none is inside another one but itself") {
             CHECK(b1.isColliderInside(b1));
             CHECK(!b1.isColliderInside(b2));
             CHECK(!b1.isColliderInside(b3));
@@ -243,8 +222,7 @@ SCENARIO("Collision/IsColliderInside with Collider using toric properties", "[Co
             CHECK(!b4.isColliderInside(b5));
         }
 
-        AND_THEN("isPointInside works too")
-        {
+        AND_THEN("isPointInside works too") {
             CHECK(b1.isPointInside({ 1, 1 }));
             CHECK(b1.isPointInside({ 3, 1 }));
             CHECK(b1.isPointInside({ 2, 2 }));
@@ -256,23 +234,20 @@ SCENARIO("Collision/IsColliderInside with Collider using toric properties", "[Co
             CHECK(!b1.isPointInside({ -2, -2 }));
         }
     }
-	GIVEN("One body inside another one")
-    {
+    GIVEN("One body inside another one") {
         // Those two bodies are colliding and the
         // second one is inside the first one because
         // the world is toric.
         auto b1 = Body({  1,  1 }, 5);
         auto b2 = Body({ -1, -1 }, 1);
 
-        THEN("they collide and isColliderInside works")
-        {
+        THEN("they collide and isColliderInside works") {
             CHECK(b1.isColliding(b2));
             CHECK(b1.isColliderInside(b2));
         }
     }
 
-    GIVEN("One simple body")
-    {
+    GIVEN("One simple body") {
         REQUIRE(getApp().getWorldSize().x >= 10);
         REQUIRE(getApp().getWorldSize().y >= 10);
 
@@ -302,8 +277,7 @@ SCENARIO("Collision/IsColliderInside with Collider using toric properties", "[Co
         auto v = Vec2d(2, 1);
         auto w = Vec2d(1, 2);
 
-        THEN("distanceTo works")
-        {
+        THEN("distanceTo works") {
             CHECK(b.distanceTo(u) == Approx(std::sqrt(2)));
             CHECK(b.distanceTo(v) == Approx(1));
             CHECK(b.distanceTo(w) == Approx(1));
@@ -312,8 +286,7 @@ SCENARIO("Collision/IsColliderInside with Collider using toric properties", "[Co
             CHECK(b.distanceTo(z) == Approx(std::sqrt(8)));
         }
 
-        AND_THEN("directionTo works")
-        {
+        AND_THEN("directionTo works") {
             CHECK(b.directionTo(u) == Vec2d( 1, 1 ));
             CHECK(b.directionTo(v) == Vec2d( 1, 0 ));
             CHECK(b.directionTo(w) == Vec2d( 0, 1 ));

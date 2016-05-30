@@ -14,7 +14,7 @@ std::vector<sf::Vertex> generateVertexes(j::Value const& textures, int nbCell, f
 {
     auto vertexes = std::vector<sf::Vertex>(nbCell * nbCell * 4); // RVO
 
-	(void)textures;
+    (void)textures;
     // Load the textures
     //auto const& grassTexture = getAppTexture(textures["grass"].toString());
     //auto const& rockTexture  = getAppTexture(textures["rock"].toString());
@@ -27,7 +27,7 @@ std::vector<sf::Vertex> generateVertexes(j::Value const& textures, int nbCell, f
     // Generate the vertexes (caches)
     for (int x = 0; x < nbCell; ++x) {
         for (int y = 0; y < nbCell; ++y) {
-            auto pos = std::vector<sf::Vector2f>{
+            auto pos = std::vector<sf::Vector2f> {
                 { (x+0.f) * cellSize, (y+0.f) * cellSize },
                 { (x+1.f) * cellSize, (y+0.f) * cellSize },
                 { (x+1.f) * cellSize, (y+1.f) * cellSize },
@@ -43,15 +43,17 @@ std::vector<sf::Vertex> generateVertexes(j::Value const& textures, int nbCell, f
             //     { static_cast<float>((x+1) * size % texWidth), static_cast<float>((y+1) * size % texHeight) },
             //     { static_cast<float>((x+0) * size % texWidth), static_cast<float>((y+1) * size % texHeight) }
             // };
-			auto tex   = std::vector<sf::Vector2f>{
-				{ static_cast<float>((x+0) * size), static_cast<float>((y+0) * size) },
-				{ static_cast<float>((x+1) * size), static_cast<float>((y+0) * size) },
-				{ static_cast<float>((x+1) * size), static_cast<float>((y+1) * size) },
-				{ static_cast<float>((x+0) * size), static_cast<float>((y+1) * size) }
-};
+            auto tex   = std::vector<sf::Vector2f> {
+                { static_cast<float>((x+0) * size), static_cast<float>((y+0) * size) },
+                { static_cast<float>((x+1) * size), static_cast<float>((y+0) * size) },
+                { static_cast<float>((x+1) * size), static_cast<float>((y+1) * size) },
+                { static_cast<float>((x+0) * size), static_cast<float>((y+1) * size) }
+            };
             // Update NW, NE, SE, SW vertexes for the current cell
             auto idx = startIndexForCellVertexes(x, y, nbCell);
-            for (auto offset : { 0, 1, 2, 3 }) {
+            for (auto offset : {
+                     0, 1, 2, 3
+                 }) {
                 vertexes[idx + offset] = { pos[offset], color, tex[offset] };
             }
         }

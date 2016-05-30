@@ -14,17 +14,17 @@ class FlowerGenerator : public Updatable
 {
 public:
 
-  FlowerGenerator ();
+    FlowerGenerator ();
 
-  void
-  update (sf::Time dt);
+    void
+    update (sf::Time dt);
 
-  void
-  reset ();
+    void
+    reset ();
 
 private:
 
-  sf::Time counter_;
+    sf::Time counter_;
 };
 
 #endif

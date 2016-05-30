@@ -12,11 +12,11 @@ class ConfigurableInterface
 {
 public:
 
-  virtual
-  ~ConfigurableInterface() = default;
+    virtual
+    ~ConfigurableInterface() = default;
 
-  virtual void
-  reloadConfig() =0;
+    virtual void
+    reloadConfig() =0;
 
 };
 

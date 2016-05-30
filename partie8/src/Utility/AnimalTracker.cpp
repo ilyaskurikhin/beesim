@@ -16,29 +16,29 @@ AnimalTracker::AnimalTracker() :
 void
 AnimalTracker::startTracking(Movable* animal)
 {
-  if (animal)
-    tracked_animal_ = animal;
+    if (animal)
+        tracked_animal_ = animal;
 }
 
 void
 AnimalTracker::stopTracking()
 {
-  tracked_animal_ = nullptr;
+    tracked_animal_ = nullptr;
 }
 
 bool
 AnimalTracker::isTracking()
 {
-  if (tracked_animal_)
-    return true;
-  else
-    return false;
+    if (tracked_animal_)
+        return true;
+    else
+        return false;
 }
 
 const Vec2d&
 AnimalTracker::getTrackedPosition()
 {
-  if (tracked_animal_)
-    tracked_position_ = tracked_animal_->getPosition();
-  return tracked_position_;
+    if (tracked_animal_)
+        tracked_position_ = tracked_animal_->getPosition();
+    return tracked_position_;
 }

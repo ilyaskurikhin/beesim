@@ -17,31 +17,31 @@ class Movable;
 class AnimalTracker
 {
 public:
-  AnimalTracker();
+    AnimalTracker();
 
-  AnimalTracker(const AnimalTracker&) = delete;
+    AnimalTracker(const AnimalTracker&) = delete;
 
-  ~AnimalTracker() = default;
+    ~AnimalTracker() = default;
 
-  AnimalTracker
-  operator=(const AnimalTracker&) = delete;
+    AnimalTracker
+    operator=(const AnimalTracker&) = delete;
 
-  void
-  startTracking(Movable* animal);
+    void
+    startTracking(Movable* animal);
 
-  void
-  stopTracking();
+    void
+    stopTracking();
 
-  bool
-  isTracking();
+    bool
+    isTracking();
 
-  const Vec2d&
-  getTrackedPosition();
+    const Vec2d&
+    getTrackedPosition();
 
 private:
 
-  Vec2d tracked_position_;
-  Movable* tracked_animal_;
+    Vec2d tracked_position_;
+    Movable* tracked_animal_;
 
 };
 

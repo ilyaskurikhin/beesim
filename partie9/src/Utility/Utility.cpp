@@ -81,7 +81,9 @@ sf::CircleShape buildAnnulus(Vec2d const& position, double radius, sf::Color col
 
 sf::RectangleShape buildSquare(Vec2d const& position, double side, sf::Color color)
 {
-    Vec2d const size{ side, side };
+    Vec2d const size {
+        side, side
+    };
     sf::RectangleShape square(size);
     square.setPosition(position);
     square.setOrigin(size / 2.0);

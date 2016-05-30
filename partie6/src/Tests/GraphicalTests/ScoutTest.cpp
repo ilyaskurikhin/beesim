@@ -52,7 +52,8 @@ void ScoutTest::onEvent(sf::Event event, sf::RenderWindow&)
 {
     if (event.type == sf::Event::KeyPressed) {
         switch (event.key.code) {
-        default: break;
+        default:
+            break;
 
         // Add flower: show the area covered by the flower
         case sf::Keyboard::F:
@@ -65,7 +66,8 @@ void ScoutTest::onEvent(sf::Event event, sf::RenderWindow&)
         }
     } else if (event.type == sf::Event::KeyReleased) {
         switch (event.key.code) {
-        default: break;
+        default:
+            break;
 
         // Add flower: try to create a new one and disable visualisation zone
         case sf::Keyboard::F:
@@ -77,8 +79,7 @@ void ScoutTest::onEvent(sf::Event event, sf::RenderWindow&)
             }
             break;
 
-        case sf::Keyboard::H:
-        {
+        case sf::Keyboard::H: {
             // Add hive: try to create a new one and disable "hiveable" zone
             mShowHiveableZone = false;
             auto position = getCursorPositionInView();

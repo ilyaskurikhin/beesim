@@ -3,26 +3,25 @@
 FlowerGenerator::FlowerGenerator() :
     counter_(sf::Time::Zero)
 {
-  delay_ =
-      sf::seconds(
-          (float) getAppConfig()["simulation"]["flower generator"]["delay"].toDouble());
+    delay_ =
+        sf::seconds(
+            (float) getAppConfig()["simulation"]["flower generator"]["delay"].toDouble());
 }
 
 void
 FlowerGenerator::update(sf::Time dt)
 {
-  counter_ += dt;
+    counter_ += dt;
 
-  // if generation is active and a delay has passed
-  // generate flowers at random locations
-  if (counter_ > delay_)
-    {
-      // reset the counter
-      counter_ = sf::Time::Zero;
-      Vec2d position;
-      position.x = uniform(0.0, getAppEnv().getWorldSize().x);
-      position.y = uniform(0.0, getAppEnv().getWorldSize().y);
-      getAppEnv().addFlowerAt(position);
+    // if generation is active and a delay has passed
+    // generate flowers at random locations
+    if (counter_ > delay_) {
+        // reset the counter
+        counter_ = sf::Time::Zero;
+        Vec2d position;
+        position.x = uniform(0.0, getAppEnv().getWorldSize().x);
+        position.y = uniform(0.0, getAppEnv().getWorldSize().y);
+        getAppEnv().addFlowerAt(position);
     }
 
 }
@@ -30,5 +29,5 @@ FlowerGenerator::update(sf::Time dt)
 void
 FlowerGenerator::reset()
 {
-  counter_ = sf::Time::Zero;
+    counter_ = sf::Time::Zero;
 }

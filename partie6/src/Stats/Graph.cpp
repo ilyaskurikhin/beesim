@@ -14,14 +14,15 @@ namespace
 {
 
 std::vector<sf::Color> const& COLORS = { sf::Color::Red, sf::Color::Green, sf::Color::Yellow, sf::Color::Cyan,
-                                         sf::Color::White };
+                                         sf::Color::White
+                                       };
 
 } // anonymous
 
 Graph::Graph(std::vector<std::string> const& titles, Vec2d const& size, double min, double max)
-: mSize(size)
-, mYMin(std::min(max, min))
-, mYMax(std::max(max, min))
+    : mSize(size)
+    , mYMin(std::min(max, min))
+    , mYMax(std::max(max, min))
 {
     assert(titles.size() <= COLORS.size());
 
@@ -56,7 +57,9 @@ void Graph::updateData(sf::Time deltaEpoch, std::unordered_map<std::string, doub
         }
 
         // Remove vertices from the previous buffer that overlap with the current buffer
-        auto shouldBeRemove = [&](sf::Vertex const& v) { return v.position.x <= newEpoch.asSeconds() * X_SCALE; };
+        auto shouldBeRemove = [&](sf::Vertex const& v) {
+            return v.position.x <= newEpoch.asSeconds() * X_SCALE;
+        };
         serie.pastVertices.erase(std::remove_if(serie.pastVertices.begin(), serie.pastVertices.end(), shouldBeRemove),
                                  serie.pastVertices.end());
 

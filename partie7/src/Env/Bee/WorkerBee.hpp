@@ -17,86 +17,86 @@ class WorkerBee : public Bee
 {
 public:
 
-  WorkerBee(Hive* hive, const Vec2d& position);
+    WorkerBee(Hive* hive, const Vec2d& position);
 
-  ~WorkerBee();
+    ~WorkerBee();
 
-  void
-  reloadConfig();
+    void
+    reloadConfig();
 
-  j::Value const&
-  getConfig() override;
+    j::Value const&
+    getConfig() override;
 
-  void
-  drawOn(sf::RenderTarget& target) const;
+    void
+    drawOn(sf::RenderTarget& target) const;
 
-  void
-  onState(State state, sf::Time dt) override;
+    void
+    onState(State state, sf::Time dt) override;
 
-  void
-  onEnterState(State state) override;
+    void
+    onEnterState(State state) override;
 
-  void
-  setFlower(const Vec2d& position);
+    void
+    setFlower(const Vec2d& position);
 
-  const Vec2d&
-  getFlower() const;
+    const Vec2d&
+    getFlower() const;
 
-  double
-  getPollen() const;
+    double
+    getPollen() const;
 
-  double
-  takePollen(double pollen);
+    double
+    takePollen(double pollen);
 
-  double
-  transferPollen(sf::Time dt);
+    double
+    transferPollen(sf::Time dt);
 
-  double
-  eatPollen(Flower* flower, sf::Time dt);
+    double
+    eatPollen(Flower* flower, sf::Time dt);
 
-  void
-  learnFlowerLocation(const Vec2d& flowerPosition);
+    void
+    learnFlowerLocation(const Vec2d& flowerPosition);
 
-  void
-  setPollen(double amount);
+    void
+    setPollen(double amount);
 
-  bool
-  isScout() const override;
+    bool
+    isScout() const override;
 
-  bool
-  isWorker() const override;
+    bool
+    isWorker() const override;
 
-  bool
-  isInHive() const override;
+    bool
+    isInHive() const override;
 
-  void
-  interact(Bee* other) override;
+    void
+    interact(Bee* other) override;
 
-  void
-  interactWith(ScoutBee* scouting) override;
+    void
+    interactWith(ScoutBee* scouting) override;
 
-  void
-  interactWith(WorkerBee* working) override;
+    void
+    interactWith(WorkerBee* working) override;
 
-  const Vec2d&
-  getFlowerLocation() const;
+    const Vec2d&
+    getFlowerLocation() const;
 
-  void
-  setFlowerLocation(const Vec2d& flowerLocation);
+    void
+    setFlowerLocation(const Vec2d& flowerLocation);
 
 private:
 
-  Vec2d flower_location_;
-  double pollen_;
-  double max_pollen_;
-  double pollen_collecting_rate_;
-  double energy_leave_hive_;
-  double pollen_transfer_rate_;
+    Vec2d flower_location_;
+    double pollen_;
+    double max_pollen_;
+    double pollen_collecting_rate_;
+    double energy_leave_hive_;
+    double pollen_transfer_rate_;
 
-  State static const TO_FLOWER;
-  State static const COLLECT_POLLEN;
-  State static const IN_HIVE;
-  State static const RETURN_HIVE;
+    State static const TO_FLOWER;
+    State static const COLLECT_POLLEN;
+    State static const IN_HIVE;
+    State static const RETURN_HIVE;
 
 };
 
