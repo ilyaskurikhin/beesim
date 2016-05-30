@@ -30,8 +30,8 @@ private:
     bool  mShowFlowerZone   = false;   ///< Enable/disable flower zone visualisation
     bool  mShowHiveableZone = false;   ///< Enable/disable hiveable zone visualisation
     Hive* mLastHive         = nullptr; ///< Keep track of the last hive that was created
-    bool  mFlowerCreated    = false;
-    Vec2d mFlowerPosition;
+	bool  mFlowerCreated    = false;
+	Vec2d mFlowerPosition;
 };
 
 IMPLEMENT_MAIN(WorkerTest);
@@ -51,17 +51,16 @@ void WorkerTest::onSimulationStart()
     auto& generator = cfg["flower generator"];
     generator["active"] = j::boolean(false);
 
-    initial["flower"]["nectar"]["min"] = j::number(1e8);
-    initial["flower"]["nectar"]["max"] = j::number(1e9);
-    cfg["flower"]["growth"]["split"] = j::number(1e10);
+	initial["flower"]["nectar"]["min"] = j::number(1e8);
+	initial["flower"]["nectar"]["max"] = j::number(1e9);
+	cfg["flower"]["growth"]["split"] = j::number(1e10);
 }
 
 void WorkerTest::onEvent(sf::Event event, sf::RenderWindow&)
 {
     if (event.type == sf::Event::KeyPressed) {
         switch (event.key.code) {
-        default:
-            break;
+        default: break;
 
         // Add flower: show the area covered by the flower
         case sf::Keyboard::F:
@@ -74,8 +73,7 @@ void WorkerTest::onEvent(sf::Event event, sf::RenderWindow&)
         }
     } else if (event.type == sf::Event::KeyReleased) {
         switch (event.key.code) {
-        default:
-            break;
+        default: break;
 
         case sf::Keyboard::I:
         case sf::Keyboard::R:
@@ -85,16 +83,17 @@ void WorkerTest::onEvent(sf::Event event, sf::RenderWindow&)
         // Add flower: try to create a new one and disable visualisation zone
         case sf::Keyboard::F:
             mShowFlowerZone = false;
-            mFlowerPosition = getCursorPositionInView();
+			mFlowerPosition = getCursorPositionInView();
             if (getEnv().addFlowerAt(mFlowerPosition)) {
-                mFlowerCreated  = true;
+				mFlowerCreated  = true;
                 std::cout << "New flower created\n";
             } else {
                 std::cout << "Couldn't create new flower\n";
             }
             break;
 
-        case sf::Keyboard::H: {
+        case sf::Keyboard::H:
+        {
             // Add hive: try to create a new one and disable "hiveable" zone
             mShowHiveableZone = false;
             auto position = getCursorPositionInView();
@@ -104,18 +103,18 @@ void WorkerTest::onEvent(sf::Event event, sf::RenderWindow&)
                 assert(mLastHive != nullptr);
                 std::cout << "New hive created\n";
                 WorkerBee* newWorker = mLastHive->addWorker();
-
-                // uncomment me when learnFlowerLocation is coded
-                if (newWorker != nullptr) newWorker->learnFlowerLocation(mFlowerPosition);
+				
+				  // uncomment me when learnFlowerLocation is coded
+				if (newWorker != nullptr) newWorker->learnFlowerLocation(mFlowerPosition);
             } else {
                 std::cout << "Couldn't create new hive, add flowers first\n";
             }
-
+				
             break;
 
         }
-        }
     }
+}
 }
 
 void WorkerTest::onDraw(sf::RenderTarget& target)

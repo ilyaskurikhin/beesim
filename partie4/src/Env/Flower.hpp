@@ -16,34 +16,34 @@ class Flower : public Collider, public Drawable, public Updatable
 {
 
 public:
-    Flower ();
+  Flower ();
 
-    Flower (const Vec2d& position, double radius, double pollen);
+  Flower (const Vec2d& position, double radius, double pollen);
 
-    double
-    takePollen (const double& pollen);
+  double
+  takePollen (const double& pollen);
 
-    void
-    loadTexture ();
+  void
+  loadTexture ();
 
-    void
-    update (sf::Time dt) override;
+  void
+  update (sf::Time dt) override;
 
-    void
-    drawOn (sf::RenderTarget& target) const override;
+  void
+  drawOn (sf::RenderTarget& target) const override;
 
-    double
-    getPollen ();
+  double
+  getPollen ();
 
 private:
 
-    double pollen_;
-    sf::Texture texture_;
+  double pollen_;
+  sf::Texture texture_;
 
-    double humidityFactor_;
-    double splitThreshold_;
-    double humidityThreshold_;
-    double humidity_;
+  double humidityFactor_;
+  double splitThreshold_;
+  double humidityThreshold_;
+  double humidity_;
 };
 
 #endif

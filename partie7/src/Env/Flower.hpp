@@ -1,6 +1,6 @@
 /**
  * @file Flower.hpp
- * @brief
+ * @brief 
  * @author Ilya Skurikhin
  * @author Julia Besson
  * @version p5.1
@@ -35,74 +35,74 @@ class Flower : public Collider,
 {
 
 public:
-    /**
-     * @brief Default constructor.
-     */
-    Flower();
+  /**
+   * @brief Default constructor.
+   */
+  Flower();
 
-    /**
-     * @brief Detailed constructor.
-     *
-     * @param position graphic position of Flower.
-     * @param radius size of Flower.
-     * @param pollen initial pollen of Flower.
-     */
-    Flower(const Vec2d& position, double radius, double pollen);
+  /**
+   * @brief Detailed constructor.
+   *
+   * @param position graphic position of Flower.
+   * @param radius size of Flower.
+   * @param pollen initial pollen of Flower.
+   */
+  Flower(const Vec2d& position, double radius, double pollen);
 
-    void
-    reloadConfig() override;
+  void
+  reloadConfig() override;
 
-    /**
-     * @brief Remove given quantity of pollen from Flower.
-     *
-     * @param pollen Quantity of pollen to take.
-     *
-     * @return Quantity of pollen taken.
-     */
-    double
-    takePollen(const double& pollen);
+  /**
+   * @brief Remove given quantity of pollen from Flower.
+   *
+   * @param pollen Quantity of pollen to take.
+   *
+   * @return Quantity of pollen taken.
+   */
+  double
+  takePollen(const double& pollen);
 
-    /**
-     * @brief Load Flower texture.
-     */
-    void
-    loadTexture();
+  /**
+   * @brief Load Flower texture.
+   */
+  void
+  loadTexture();
 
-    /**
-     * @brief Evolve Flower.
-     *
-     * @param dt
-     */
-    void
-    update(sf::Time dt) override;
+  /**
+   * @brief Evolve Flower.
+   *
+   * @param dt
+   */
+  void
+  update(sf::Time dt) override;
 
-    /**
-     * @brief Draw Flower on target.
-     *
-     * @param target where to draw.
-     */
-    void
-    drawOn(sf::RenderTarget& target) const override;
+  /**
+   * @brief Draw Flower on target. 
+   *
+   * @param target where to draw.
+   */
+  void
+  drawOn(sf::RenderTarget& target) const override;
 
-    /**
-     * @brief Get current flower pollen content.
-     *
-     * @return current pollen content.
-     */
-    double
-    getPollen();
-    void
-    setPollen(double pollen);
+  /**
+   * @brief Get current flower pollen content.
+   *
+   * @return current pollen content.
+   */
+  double
+  getPollen();
+  void
+  setPollen(double pollen);
 
 private:
 
-    double pollen_;
-    sf::Texture texture_;
+  double pollen_;
+  sf::Texture texture_;
 
-    double humidity_factor_;
-    double split_threshold_;
-    double humidity_threshold_;
-    double humidity_;
+  double humidity_factor_;
+  double split_threshold_;
+  double humidity_threshold_;
+  double humidity_;
 };
 
 #endif

@@ -31,45 +31,46 @@ class Stats : public DrawableInterface, public UpdatableInterface
 {
 public:
 
-    Stats();
+  Stats();
 
-    ~Stats();
+  ~Stats();
 
-    void
-    reloadConfig();
+  void
+  reloadConfig();
 
-    const j::Value&
-    getConfig();
+  const j::Value&
+  getConfig();
 
-    void
-    reset();
+  void
+  reset();
 
-    void
-    drawOn(sf::RenderTarget& target) const override;
+  void
+  drawOn(sf::RenderTarget& target) const override;
 
-    void
-    update(sf::Time dt) override;
+  void
+  update(sf::Time dt) override;
 
-    void
-    setActive(int currentGraphID);
+  void
+  setActive(int currentGraphID);
 
-    void
-    addGraph(int graphId, std::string title, std::vector<std::string> series,
-             double min, double max, const Vec2d& size);
+  void
+  addGraph(int graphId, std::string title, std::vector<std::string> series,
+           double min, double max, const Vec2d& size);
 
 private:
-    struct TitledGraph {
-        std::string title;
-        int id;
-        std::unique_ptr<Graph> graph;
-    };
+  struct TitledGraph
+  {
+    std::string title;
+    int id;
+    std::unique_ptr<Graph> graph;
+  };
 
-    std::vector<TitledGraph> titled_graphs_;
+  std::vector<TitledGraph> titled_graphs_;
 
-    sf::Time delay_;
-    sf::Time counter_;
+  sf::Time delay_;
+  sf::Time counter_;
 
-    int active_;
+  int active_;
 
 };
 

@@ -14,52 +14,52 @@ namespace j
 {
 
 BadConversion::BadConversion(std::string const& from, std::string const& to)
-    : std::logic_error("Cannot convert JSON value " + from + " to " + to)
+: std::logic_error("Cannot convert JSON value " + from + " to " + to)
 {
 }
 
 NoSuchElement::NoSuchElement(std::string const& elem)
-    : std::logic_error("No such element with id `" + elem + "` in JSON object")
+: std::logic_error("No such element with id `" + elem + "` in JSON object")
 {
 }
 
 NoSuchElement::NoSuchElement(std::size_t index)
-    : std::logic_error("No such index " + std::to_string(index) + " in JSON array")
+: std::logic_error("No such index " + std::to_string(index) + " in JSON array")
 {
 }
 
 Value::Value(std::string const& str)
-    : mImpl(new impl::String(str))
+: mImpl(new impl::String(str))
 {
 }
 
 Value::Value(int num)
-    : mImpl(new impl::Number(num))
+: mImpl(new impl::Number(num))
 {
 }
 
 Value::Value(double num)
-    : mImpl(new impl::Number(num))
+: mImpl(new impl::Number(num))
 {
 }
 
 Value::Value(bool b)
-    : mImpl(new impl::Boolean(b))
+: mImpl(new impl::Boolean(b))
 {
 }
 
 Value::Value(ObjectTag)
-    : mImpl(new impl::Object())
+: mImpl(new impl::Object())
 {
 }
 
 Value::Value(ArrayTag)
-    : mImpl(new impl::Array())
+: mImpl(new impl::Array())
 {
 }
 
 Value::Value(Value const& other)
-    : mImpl(other.mImpl->clone())
+: mImpl(other.mImpl->clone())
 {
 }
 

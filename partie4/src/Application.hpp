@@ -280,9 +280,9 @@ private:
 
     bool         mPaused;            ///< Tells if the application is in pause or not
     bool         mIsResetting;       ///< Is true for one main loop iteration when resetting.
-    ///  This is useful to pause the clock while generating
-    ///  a new world. Without this, a huge dt would result from
-    ///  rebuilding the world.
+                                     ///  This is useful to pause the clock while generating
+                                     ///  a new world. Without this, a huge dt would result from
+                                     ///  rebuilding the world.
     bool         mIsDragging;        ///< Tells whether or not the user is dragging the view
     sf::Vector2i mLastCursorPosition;///< For handling dragging logic
 

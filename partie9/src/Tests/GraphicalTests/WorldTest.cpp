@@ -52,8 +52,7 @@ void WorldTest::onEvent(sf::Event event, sf::RenderWindow&)
 {
     if (event.type == sf::Event::KeyPressed) {
         switch (event.key.code) {
-        default:
-            break;
+        default: break;
 
         case sf::Keyboard::I:
             mWorld.loadFromFile();

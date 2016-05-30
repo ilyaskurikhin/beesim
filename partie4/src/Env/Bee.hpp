@@ -18,43 +18,43 @@ class Bee: public Collider, public Drawable, public Updatable
 {
 public:
 
-    Bee(Hive* hive, const Vec2d& position, double radius, double speedAmpl, double energy);
+Bee(Hive* hive, const Vec2d& position, double radius, double speedAmpl, double energy);
 
-    void
-    reloadConfig();
+void
+reloadConfig();
 
-    /*
-    Void
-    move(sf::Time dt, Vec2d position, double speed); */
+/*
+Void 
+move(sf::Time dt, Vec2d position, double speed); */
 
-    bool
-    isDead();
+bool
+isDead();
 
-    void
-    update (sf::Time dt) override;
+void
+update (sf::Time dt) override;
 
-    void
-    drawOn (sf::RenderTarget& target) const override;
+void
+drawOn (sf::RenderTarget& target) const override;
 
-    double
-    getEnergy() const;
+double
+getEnergy() const;
 
-    virtual j::Value
-    const& getConfig();
+virtual j::Value 
+const& getConfig();
 
 
-    virtual void
-    loadTexture ();
+virtual void
+loadTexture ();
 
 protected:
 
-    Hive* hive_;
-    Vec2d speed_;
-    double speedAmpl_;
-    double energy_;
-    double maxAngle_;
-    double rotationProbability_;
-    sf::Texture beeTexture_;
+Hive* hive_;
+Vec2d speed_;
+double speedAmpl_;
+double energy_;
+double maxAngle_;
+double rotationProbability_;
+sf::Texture beeTexture_;
 
 };
 

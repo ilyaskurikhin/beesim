@@ -21,75 +21,75 @@ class FlowerGenerator;
 class Env : public Drawable, public Updatable
 {
 public:
-    /**
-     * @brief Default class constructor.
-     *
-     * Construct a World in world_ from file in configuration.
-     * If file cannot be loaded, generate World.
-     * Draw the world_ to cache.
-     * Initialize numberFlowers_ to 0.
-     */
-    Env ();
+  /**
+   * @brief Default class constructor.
+   *
+   * Construct a World in world_ from file in configuration.
+   * If file cannot be loaded, generate World.
+   * Draw the world_ to cache.
+   * Initialize numberFlowers_ to 0.
+   */
+  Env ();
 
-    ~Env ();
+  ~Env ();
 
-    void
-    update (sf::Time dt) override;
+  void
+  update (sf::Time dt) override;
 
-    void
-    drawOn (sf::RenderTarget& target) const override;
+  void
+  drawOn (sf::RenderTarget& target) const override;
 
-    void
-    reset ();
+  void
+  reset ();
 
-    void
-    reloadConfig ();
+  void
+  reloadConfig ();
 
-    void
-    loadWorldFromFile ();
+  void
+  loadWorldFromFile ();
 
-    void
-    saveWorldToFile () const;
+  void
+  saveWorldToFile () const;
 
-    double
-    getHumidity (const Vec2d& position) const;
+  double
+  getHumidity (const Vec2d& position) const;
 
-    bool
-    isGrowable (const Vec2d& position) const;
+  bool
+  isGrowable (const Vec2d& position) const;
 
-    bool
-    isPlaceable (const Vec2d& position, double radius) const;
+  bool
+  isPlaceable (const Vec2d& position, double radius) const;
+  
+  bool
+  isFlyable (const Vec2d& position) const;
 
-    bool
-    isFlyable (const Vec2d& position) const;
+  bool
+  addFlowerAt (const Vec2d& position);
 
-    bool
-    addFlowerAt (const Vec2d& position);
+  void
+  drawFlowerZone (sf::RenderTarget& target, const Vec2d& position);
 
-    void
-    drawFlowerZone (sf::RenderTarget& target, const Vec2d& position);
+  bool
+  addHiveAt (const Vec2d& position);
 
-    bool
-    addHiveAt (const Vec2d& position);
+  Hive*
+  getCollidingHive (const Collider& body) const;
 
-    Hive*
-    getCollidingHive (const Collider& body) const;
-
-    Flower*
-    getCollidingFlower (const Collider& body) const;
+  Flower*
+  getCollidingFlower (const Collider& body) const;
 
 private:
 
-    World* world_;
-    std::vector<Flower*> flowers_;
-    FlowerGenerator* flowerGenerator_;
-    std::vector<Hive*> hives_;
+  World* world_;
+  std::vector<Flower*> flowers_;
+  FlowerGenerator* flowerGenerator_;
+  std::vector<Hive*> hives_;
 
-    double flowerMinNectar_;
-    double flowerMaxNectar_;
-    double flowerManualRadius_;
-    size_t maxFlowers_;
+  double flowerMinNectar_;
+  double flowerMaxNectar_;
+  double flowerManualRadius_;
+  size_t maxFlowers_;
 
-    double hiveManualRadius_;
+  double hiveManualRadius_;
 };
 #endif
