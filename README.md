@@ -43,7 +43,9 @@ argument.
 We have extended the configuration file to include new features, as well as to 
 tweak previous features.
 
-There are two configuration files available for a big and a small world.
+There are two configuration files available for a big and a small world. The 
+default that will be run without an argument creates the big world. Create a 
+small world, use the appsmall.json config file.
 
 Here is an overview of the program :
 	- The world is created, automatically generating the texture and the bees and bears.
