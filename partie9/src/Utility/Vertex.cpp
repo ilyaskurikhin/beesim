@@ -8,6 +8,7 @@
 #include <Utility/Vertex.hpp>
 
 #include <algorithm>
+#include <cmath>
 #include <numeric>
 
 std::vector<sf::Vertex> generateVertexes(j::Value const& textures, int nbCell, float cellSize)
