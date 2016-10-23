@@ -58,7 +58,7 @@ void
 QueenBee::drawDebug(sf::RenderTarget& target) const
 {
     std::string valueString;
-    sf::Color color(sf::Color::Yellow);
+    sf::Color color(sf::Color::Black);
     Vec2d position;
     double text_size(getAppEnv().getTextSize());
 
